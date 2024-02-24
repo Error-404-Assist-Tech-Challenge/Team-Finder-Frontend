@@ -1,7 +1,12 @@
+import '@mantine/core/styles.css';
+import { MantineProvider } from '@mantine/core';
+import { Router } from './Router';
+import { theme } from './theme';
+
 export default function App() {
     return (
-      <h1 className="text-3xl font-bold underline m-[20px]">
-        Hello world!
-      </h1>
+        <MantineProvider theme={theme}>
+        <Router />
+      </MantineProvider>
     )
-  }
+}
