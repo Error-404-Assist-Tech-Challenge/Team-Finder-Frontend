@@ -1,6 +1,19 @@
+import React from 'react';
 import { Container, Title, TextInput, PasswordInput, Button } from '@mantine/core';
+import { useNavigate } from 'react-router-dom';
 
 export default function SignUpAdminPage() {
+
+    const navigateTo = useNavigate();
+
+    const handleLogIn = () => {
+        navigateTo('/login');
+    };
+
+    const handleSignUp = () => {
+        navigateTo('/skills');
+    };
+
     return (
         <div className="flex items-center justify-center min-h-screen min-w-full bg-[#272F32] text-[#272F32]">
             <Container className="bg-[#9DBDC6] h-[auto] w-[494px] rounded-[50px]">
@@ -30,7 +43,8 @@ export default function SignUpAdminPage() {
                     />
                 </div>
                 <div className="flex justify-center">
-                    <Button variant="filled" size="xl" radius="lg" className="bg-[#FF3D2E] mt-[50px]">
+                    <Button variant="filled" size="xl" radius="lg" className="bg-[#FF3D2E] mt-[50px]"
+                            onClick={handleSignUp}>
                         Sign Up
                     </Button>
                 </div>
@@ -38,7 +52,8 @@ export default function SignUpAdminPage() {
                     <Title order={4}>
                         Or if you already have an account: 
                     </Title>
-                    <Button variant="filled" size="lg" radius="lg" className="bg-[#FF3D2E]">
+                    <Button variant="filled" size="lg" radius="lg" className="bg-[#FF3D2E]"
+                            onClick={handleLogIn}>
                         Log in
                     </Button>
                 </div>
