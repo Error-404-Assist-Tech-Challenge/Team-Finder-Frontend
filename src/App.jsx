@@ -1,7 +1,19 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Layout from "./pages/Layout";
+import LoginPage from "./pages/LoginPage";
+import MySkillsPage from "./pages/MySkillsPage";
+import MyProjectsPage from "./pages/MyProjectsPage";
+
 export default function App() {
-    return (
-      <h1 className="text-3xl font-bold underline m-[20px]">
-        Hello world!
-      </h1>
-    )
-  }
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<LoginPage />} />
+          <Route path="skills" element={<MySkillsPage />} />
+          <Route path="projects" element={<MyProjectsPage />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
+}
