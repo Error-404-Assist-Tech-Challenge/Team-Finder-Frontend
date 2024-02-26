@@ -1,17 +1,26 @@
-/** @type {import('tailwindcss').Config} */
-export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
-  theme: {
-    extend: {
-      'canvas': '#272F32',
-      'background': '#9DBDC6',
-      'background2': '#DAEAEF',
-      'accent': '#FF3D2E',
+module.exports = {
+    content: [
+      "./index.html",
+      "./src/**/*.{js,ts,jsx,tsx}",
+    ],
+    theme: {
+      extend: {
+        colors: {
+          darkcanvas: '#272F32',
+          darkbg: '#DAEAEF',
+          darkbg2: '#9DBDC6',
+          darkaccent: '#FF3D2E',
+          darktext: '#FFFFFF',
+          
+          canvas: '#FFFFFF',
+          bg: '#9DBDC6',
+          bg2: '#DAEAEF',
+          accent: '#FF3D2E',
+          text: '#272F32'
+        },
+      },
     },
-  },
-  plugins: [],
-  darkMode:"class",
-}
+    plugins: [],
+    darkMode: "class",
+  };
+  
