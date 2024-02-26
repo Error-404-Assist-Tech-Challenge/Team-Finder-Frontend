@@ -57,7 +57,7 @@ export default function MySkillsPage() {
                         <GenericHeader />
                     </Box>
                     <div className={`${darkMode && 'dark'}`}>
-                        <div className='dark:bg-darkcanvas bg-canvas select-none h-screen'>
+                        <div className='dark:bg-darkcanvas bg-canvas select-none h-auto'>
                             <table>
                                 <thead>
                                     <tr>
@@ -93,6 +93,7 @@ export default function MySkillsPage() {
                                 </tfoot>
                             </table>
                         </div>
+                        <div className='dark:bg-darkcanvas bg-canvas h-screen'></div>
                     </div>
                 </Portal>
             </ScrollArea>

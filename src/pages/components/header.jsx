@@ -1,15 +1,20 @@
 import { Button, Avatar } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { Switch, useMantineTheme, rem, Group, Popover, Text } from '@mantine/core';
 import { IconSun, IconMoonStars } from '@tabler/icons-react';
 import { Tabs } from '@mantine/core';
+import { useLocalStorage } from '@mantine/hooks';
 import { Context } from '../../App';
 
 // ADMIN EMPLOYEE DP_MANAGER PR_MANAGER
 const role = 'ADMIN'
 
 export default function GenericHeader() {
+
+    const [Value, setValue] = useLocalStorage({
+        defaultValue: '',
+      });
 
     const [darkMode, setDarkMode] = useContext(Context);
     const toogleDarkMode = () => {
@@ -18,12 +23,15 @@ export default function GenericHeader() {
 
     const navigateTo = useNavigate();
     const handleMyProjects = () => {
+        setValue('MyProjects')
         navigateTo('/myprojects');
     };
     const handleMySkills = () => {
+        setValue('MySkills')
         navigateTo('/myskills');
     };
     const handleOrganizationSkills = () => {
+        setValue('Organization Skills')
         navigateTo('/organizationskills');
     };
 
@@ -57,12 +65,12 @@ export default function GenericHeader() {
 
                     <div className="pl-6 pb-3 flex justify-between items-center">
                         <div className="flex space-x-2 pt-1">
-                            <Tabs color="#FF3D2E" radius="xs" defaultValue="MySkills" variant="default">
+                            <Tabs color="#FF3D2E" radius="xs" defaultValue="" variant="default" value={Value}>
                                 <Tabs.List>
-                                    <Tabs.Tab onClick={handleMySkills} value="MySkills" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl w-[200px]">
+                                    <Tabs.Tab onClick={handleMySkills} value="MySkills"  className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl w-[200px]">
                                         My Skills
                                     </Tabs.Tab>
-                                    <Tabs.Tab color="#FF3D2E" onClick={handleMyProjects} value="MyProjects" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl w-[200px]">
+                                    <Tabs.Tab onClick={handleMyProjects} color="#FF3D2E" value="MyProjects" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl w-[200px]">
                                         My Projects
                                     </Tabs.Tab>
                                     <Tabs.Tab value="Employees" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl w-[200px]">
@@ -71,7 +79,7 @@ export default function GenericHeader() {
                                     <Tabs.Tab value="Departments" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl w-[200px]">
                                         Departments
                                     </Tabs.Tab>
-                                    <Tabs.Tab value="Organization Skills" onClick={handleOrganizationSkills} className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl w-[200px]">
+                                    <Tabs.Tab onClick={handleOrganizationSkills} value="Organization Skills"  className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl w-[200px]">
                                         Organization Skills
                                     </Tabs.Tab>
                                 </Tabs.List>
@@ -82,7 +90,7 @@ export default function GenericHeader() {
                                 <Popover.Target>
                                     <Avatar radius="xl" color="rgba(232, 232, 232, 1)" />
                                 </Popover.Target>
-                                <Popover.Dropdown>
+                                <Popover.Dropdown style={{ backgroundColor: 'rgba(227, 224, 215, 1)' }}>
                                     <div>
                                         <Text size="s" className="text-center pt-1">Username</Text>
                                         <Text size="s" className="text-center pt-1">username@company.com</Text>
