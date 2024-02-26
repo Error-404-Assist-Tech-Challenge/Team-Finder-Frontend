@@ -1,6 +1,6 @@
-import { Button, Avatar, Box } from '@mantine/core';
+import { Button, Avatar } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
-import React, { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { Switch, useMantineTheme, rem, Group, Popover, Text } from '@mantine/core';
 import { IconSun, IconMoonStars } from '@tabler/icons-react';
 import { Tabs } from '@mantine/core';
@@ -47,7 +47,7 @@ export default function GenericHeader() {
     if (role === 'ADMIN') {
         return (
             <div className={`${darkMode && 'dark'}`}>
-                <div className="dark:bg-darkcanvas bg-canvas">
+                <div className="dark:bg-darkcanvas bg-canvas select-none">
                     <div className="p-[20px] flex flex-col md:flex-row items-start md:items-center justify-between">
                         <div>
                             <h1 className="text-3xl font-bold dark:text-darktext text-text">Welcome back, David</h1>
