@@ -5,8 +5,13 @@ import { Box, Portal, rem, Text, Button } from '@mantine/core';
 import { useHeadroom } from '@mantine/hooks';
 import skillsData from './components/skillsData'
 import { useState, useEffect } from 'react';
+import React from 'react';
+
+export const  Context = React.createContext();
 
 export default function MySkillsPage() {
+
+    const [darkMode, setDarkMode] = useState(false);
 
     const pinned = useHeadroom({ fixedAt: 20 });
     const initialLevels = skillsData.map(skill => skill.level);
@@ -24,7 +29,7 @@ export default function MySkillsPage() {
     }
 
     return (
-        <>
+        <Context.Provider value={[darkMode, setDarkMode]}>
             <ScrollArea h={rem(140)}>
                 <Portal>
                     <Box
@@ -41,24 +46,26 @@ export default function MySkillsPage() {
                     >
                         <GenericHeader />
                     </Box>
-                    <div className='bg-[#272F32] h-screen p-[20px]'>
-                        <table>
-                            <tbody>
-                                {skillsData.map((skill, index) => (
-                                    <tr key={index}>
-                                        <td className="text-white p-[5px] mr-[20px]">{skill.skill}</td>
-                                        <td className="pl-[20px]"><LevelCircles id={index} circles={skillLevels[index]}
-                                            skillLevels={skillLevels} setSkillLevels={setSkillLevels} /></td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                            <div>
-                                {changed && <Button variant="outline" color="#FF3D2E" onClick={handleSave}>Save</Button>}
-                            </div>
-                        </table>
+                    <div className={`${darkMode && 'dark'}`}>
+                        <div className='dark:bg-[#272F32] bg-white h-screen p-[20px]'>
+                            <table>
+                                <tbody>
+                                    {skillsData.map((skill, index) => (
+                                        <tr key={index}>
+                                            <td className="text-white p-[5px] mr-[20px]">{skill.skill}</td>
+                                            <td className="pl-[20px]"><LevelCircles id={index} circles={skillLevels[index]}
+                                                skillLevels={skillLevels} setSkillLevels={setSkillLevels} /></td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                                <div>
+                                    {changed && <Button variant="outline" color="#FF3D2E" onClick={handleSave}>Save</Button>}
+                                </div>
+                            </table>
+                        </div>
                     </div>
                 </Portal>
             </ScrollArea>
-        </>
+        </Context.Provider>
     )
 }
