@@ -1,32 +1,47 @@
+/* eslint-disable no-unused-vars */
 import GenericHeader from './components/header';
 import LevelCircles from './components/skillLevel';
 import { ScrollArea } from '@mantine/core';
 import { Box, Portal, rem } from '@mantine/core';
 import { useHeadroom } from '@mantine/hooks';
-import skillsData from './fakedb/skillsData'
 import { useState, useEffect } from 'react';
 import { useContext } from 'react';
 import { Context } from '../App';
 import ExperienceCircles from './components/skillExperience';
 
+const USER_ID = 'aaf86aa9-c868-4f9b-b5a0-178aff826b5a'
+const USER_SKILLS_ENDPOINT = `https://api-team-finder.koyeb.app/api/user_skills?user_id=${USER_ID}`
 
 export default function MySkillsPage() {
 
     const [darkMode, setDarkMode] = useContext(Context);
-
-
     const pinned = useHeadroom({ fixedAt: 20 });
-    const initialLevels = skillsData.map(skill => skill.level);
-    const [skillLevels, setSkillLevels] = useState(initialLevels);
-    const initialExperience = skillsData.map(skill => skill.experience);
-    const [skillExperience, setSkillExperience] = useState(initialExperience);
+
+    const [skills, setSkills] = useState([]);
     const [changed, setChange] = useState(false)
 
     useEffect(() => {
-        if (JSON.stringify(skillLevels) !== JSON.stringify(initialLevels) || JSON.stringify(skillExperience) !== JSON.stringify(initialExperience)) {
-            setChange(true);
+        fetchUserSkills();
+    }, []);
+
+    async function fetchUserSkills() {
+        try {
+            const response = await fetch(USER_SKILLS_ENDPOINT);
+            if (!response.ok) {
+                throw new Error('Failed to fetch user skills');
+            }
+            const data = await response.json();
+
+            console.log(data[0].skill_name);
+            setSkills(data);
+        } catch (error) {
+            console.error('Error fetching user skills:', error);
         }
-    }, [skillLevels, skillExperience]);
+    }
+
+    useEffect(() => {
+        setChange(true);
+    }, [skills]);
 
     useEffect(() => {
 
@@ -66,13 +81,13 @@ export default function MySkillsPage() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {skillsData.map((skill, index) => (
+                                {skills.map((skill, index) => (
                                     <tr key={index}>
-                                        <td className="dark:text-darktext text-text text-lg px-[60px] py-[7px]">{skill.skill}</td>
-                                        <td className="px-[60px]"><LevelCircles id={index} circles={skillLevels[index]}
-                                            skillLevels={skillLevels} setSkillLevels={setSkillLevels} /></td>
-                                        <td className="px-[60px]"><ExperienceCircles id={index} circles={skillExperience[index]}
-                                            skillExperience={skillExperience} setSkillExperience={setSkillExperience} /></td>
+                                        <td className="dark:text-darktext text-text text-lg px-[60px] py-[7px]">{skill.skill_name}</td>
+                                        <td className="px-[60px]"><LevelCircles id={index} circles={skill.level}
+                                            skills={skills} setSkills={setSkills} /></td>
+                                        <td className="px-[60px]"><ExperienceCircles id={index} circles={skill.experience}
+                                            skills={skills} setSkills={setSkills} /></td>
                                     </tr>
                                 ))}
                             </tbody>
