@@ -44,28 +44,28 @@ export default function GenericHeader() {
     if( role === 'ADMIN'){
         return(
             <div className={`${darkMode && 'dark'}`}>
-                <div className="dark:bg-[#272F32] bg-cream border border-grey border-2 rounded">
-                    <p className="text-1xl font-bold text-[#D3D3D3] text-right px-4 pt-3 pb-0">Organization Admin Account</p>
+                <div className="dark:bg-darkcanvas bg-canvas">
+                    <p className="text-1xl font-bold dark:text-darktext text-text text-right px-4 pt-3 pb-0">Organization Admin Account</p>
                     <div className="pl-4 pb-4">
-                        <h1 className="text-2xl font-bold text-white pl-3">Wellcome back, username</h1>
+                        <h1 className="text-2xl font-bold dark:text-darktext text-text pl-3">Welcome back, David</h1>
                     </div>
                     <div className="pl-6 pb-3 flex justify-between items-center">
                         <div className="flex space-x-2 pt-1">
-                        <Tabs color="red" radius="xs" defaultValue="MySkills" variant="default">
+                        <Tabs color="#FF3D2E" radius="xs" defaultValue="MySkills" variant="default">
                             <Tabs.List>
-                                <Tabs.Tab onClick={handleMySkills} value="MySkills" className="hover:text-[#FF3D2E] text-white">
+                                <Tabs.Tab onClick={handleMySkills} value="MySkills" className="hover:text-[#FF3D2E] dark:text-darktext text-text">
                                     My Skills
                                 </Tabs.Tab>
-                                <Tabs.Tab onClick={handleMyProjects} value="MyProjects" className="hover:text-[#FF3D2E] text-white">
+                                <Tabs.Tab color="#FF3D2E" onClick={handleMyProjects} value="MyProjects" className="hover:text-[#FF3D2E] dark:text-darktext text-text">
                                     My Projects
                                 </Tabs.Tab>
-                                <Tabs.Tab value ="Employees" className="hover:text-[#FF3D2E] text-white">
+                                <Tabs.Tab value ="Employees" className="hover:text-[#FF3D2E] dark:text-darktext text-text">
                                     Employees
                                 </Tabs.Tab>
-                                <Tabs.Tab value="Departments" className="hover:text-[#FF3D2E] text-white">
+                                <Tabs.Tab value="Departments" className="hover:text-[#FF3D2E] dark:text-darktext text-text">
                                     Departments
                                 </Tabs.Tab>
-                                <Tabs.Tab value="Skills" className="hover:text-[#FF3D2E] text-white">
+                                <Tabs.Tab value="Skills" className="hover:text-[#FF3D2E] dark:text-darktext text-text">
                                     Skills
                                 </Tabs.Tab>
                             </Tabs.List>
