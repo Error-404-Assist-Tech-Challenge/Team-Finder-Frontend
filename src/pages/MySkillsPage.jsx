@@ -3,7 +3,7 @@ import LevelCircles from './components/skillLevel';
 import { ScrollArea } from '@mantine/core';
 import { Box, Portal, rem, Button } from '@mantine/core';
 import { useHeadroom } from '@mantine/hooks';
-import skillsData from './components/skillsData'
+import skillsData from './fakedb/skillsData'
 import { useState, useEffect } from 'react';
 import React, { useContext } from 'react';
 import { Context } from '../App';
@@ -83,6 +83,7 @@ export default function MySkillsPage() {
                                 </tfoot>
                             </table>
                         </div>
+                    </div>
                 </Portal>
             </ScrollArea>
     )

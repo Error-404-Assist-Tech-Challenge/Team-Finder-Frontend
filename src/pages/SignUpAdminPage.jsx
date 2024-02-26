@@ -11,7 +11,7 @@ export default function SignUpAdminPage() {
     };
 
     const handleSignUp = () => {
-        navigateTo('/skills');
+        navigateTo('/myskills');
     };
 
     return (

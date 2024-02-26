@@ -3,6 +3,7 @@ import SignUpAdminPage from "./pages/SignUpAdminPage";
 import LoginPage from "./pages/LoginPage";
 import MySkillsPage from "./pages/MySkillsPage";
 import MyProjectsPage from "./pages/MyProjectsPage";
+import OrganizationSkillsPage from "./pages/OrganizationSkillsPage";
 
 const router = createBrowserRouter([
   {
@@ -14,12 +15,16 @@ const router = createBrowserRouter([
     element: <LoginPage />,
   },
   {
-    path: '/skills',
+    path: '/myskills',
     element: <MySkillsPage />,
   },
   {
-    path: '/projects',
+    path: '/myprojects',
     element: <MyProjectsPage />,
+  },
+  {
+    path: '/organizationskills',
+    element: <OrganizationSkillsPage />,
   }
 ]);
 
