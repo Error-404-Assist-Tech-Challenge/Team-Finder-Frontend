@@ -5,14 +5,15 @@ import { Box, Portal, rem, Button } from '@mantine/core';
 import { useHeadroom } from '@mantine/hooks';
 import skillsData from './components/skillsData'
 import { useState, useEffect } from 'react';
-import React from 'react';
+import React, { useContext } from 'react';
+import { Context } from '../App';
 import ExperienceCircles from './components/skillExperience';
 
-export const Context = React.createContext();
 
 export default function MySkillsPage() {
 
-    const [darkMode, setDarkMode] = useState(false);
+    const [darkMode, setDarkMode] = useContext(Context);
+
 
     const pinned = useHeadroom({ fixedAt: 20 });
     const initialLevels = skillsData.map(skill => skill.level);
@@ -27,12 +28,15 @@ export default function MySkillsPage() {
         }
     }, [skillLevels, skillExperience]);
 
+    useEffect(() => {
+
+    }, [darkMode]);
+
     function handleSave() {
         setChange(false);
     }
 
     return (
-        <Context.Provider value={[darkMode, setDarkMode]}>
             <ScrollArea h={rem(140)}>
                 <Portal>
                     <Box
@@ -79,9 +83,7 @@ export default function MySkillsPage() {
                                 </tfoot>
                             </table>
                         </div>
-                    </div>
                 </Portal>
             </ScrollArea>
-        </Context.Provider>
     )
 }

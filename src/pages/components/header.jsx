@@ -4,8 +4,7 @@ import React, { useContext, useState } from 'react';
 import { Switch, useMantineTheme, rem, Group, Popover, Text} from '@mantine/core';
 import { IconSun, IconMoonStars } from '@tabler/icons-react';
 import { Tabs } from '@mantine/core';
-import { Context } from '../MySkillsPage';
-
+import { Context } from '../../App';
 
 // ADMIN EMPLOYEE DP_MANAGER PR_MANAGER
 const role = 'ADMIN'
