@@ -27,60 +27,22 @@ export default function ExperienceCircles(props) {
     const emptyCircles = Math.max(6 - filledCircles, 0);
     return (
         <div>
-            <Button
-                variant="outline"
-                color="#FF3D2E"
-                style={{
-                    borderRadius: '50%',
-                    width: '20px',
-                    height: '20px',
-                    margin: '6px',
-                    padding: 0,
-                }}
-                onClick={() => downgradeSkill(props.id)}
+            <Button variant="outline" onClick={() => downgradeSkill(props.id)}
+                className="w-[20px] h-[20px] m-[6px] rounded-full p-0 pr-[1px] pb-[1px] text-accent border-accent"
             >-</Button>
-           
+
             {[...Array(filledCircles)].map((_, index) => (
-                <Button
-                    key={`filled-${index}`}
-                    variant="filled"
-                    className="dark:bg-darktext bg-text"
-                    style={{
-                        borderRadius: '50%',
-                        width: '20px',
-                        height: '20px',
-                        margin: '6px',
-                        padding: 0,
-                    }}
-                />
+                <Button key={`filled-${index}`} variant="filled"
+                    className="w-[20px] h-[20px] m-[6px] rounded-full p-0 pr-[1px] pb-[1px] dark:bg-darktext bg-text"/>
             ))}
 
             {[...Array(emptyCircles)].map((_, index) => (
-                <Button
-                    key={`empty-${index}`}
-                    variant="outline"
-                    className="dark:border-darktext border-text"
-                    style={{
-                        borderRadius: '50%',
-                        width: '20px',
-                        height: '20px',
-                        margin: '6px',
-                        padding: 0,
-                    }}
-                />
+                <Button key={`empty-${index}`} variant="outline"
+                    className="w-[20px] h-[20px] m-[6px] rounded-full p-0 pr-[1px] pb-[1px] dark:border-darktext border-text"/>
             ))}
 
-            <Button
-                variant="outline"
-                color="#FF3D2E"
-                style={{
-                    borderRadius: '50%',
-                    width: '20px',
-                    height: '20px',
-                    margin: '6px',
-                    padding: 0,
-                }}
-                onClick={() => upgradeSkill(props.id)}
+            <Button variant="outline" onClick={() => upgradeSkill(props.id)}
+                className="w-[20px] h-[20px] m-[6px] rounded-full p-0 pr-[1px] pb-[1px] text-accent border-accent"
             >+</Button>
         </div>
     );

@@ -17,7 +17,7 @@ module.exports = {
           bg2: '#DAEAEF',
           accent: '#FF3D2E',
           text: '#272F32'
-        },
+        }
       },
     },
     plugins: [],
