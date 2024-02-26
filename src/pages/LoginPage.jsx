@@ -10,7 +10,7 @@ export default function LoginPage() {
     };
 
     const handleLogIn = () =>{
-        navigateTo('/skills');
+        navigateTo('/myskills');
     };
 
     return (
