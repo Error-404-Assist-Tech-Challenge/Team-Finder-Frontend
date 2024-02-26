@@ -6,7 +6,7 @@ import { useHeadroom } from '@mantine/hooks';
 import { useContext, useEffect } from 'react';
 import { Context } from '../App';
 
-export default function OrganizationEmployeesPage() {
+export default function OrganizationDepartmentsPage() {
 
     const [darkMode, setDarkMode] = useContext(Context);
     const pinned = useHeadroom({ fixedAt: 20 });
@@ -33,7 +33,7 @@ export default function OrganizationEmployeesPage() {
                             }}
                         >
                             <GenericHeader />
-                            <h1>Employees</h1>
+                            <h1>Departments</h1>
                         </Box>
                     </Portal>
                 </ScrollArea>

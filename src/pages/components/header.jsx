@@ -23,6 +23,12 @@ export default function GenericHeader() {
     const handleMySkills = () => {
         navigateTo('/myskills');
     };
+    const handleOrganizationEmployees = () => {
+        navigateTo('/organizationemployees');
+    };
+    const handleOrganizationDepartments = () => {
+        navigateTo('/organizationdepartments');
+    };
     const handleOrganizationSkills = () => {
         navigateTo('/organizationskills');
     };
@@ -59,19 +65,19 @@ export default function GenericHeader() {
                         <div className="flex space-x-2 pt-1">
                             <Tabs color="#FF3D2E" radius="xs" defaultValue="MySkills" variant="default">
                                 <Tabs.List>
-                                    <Tabs.Tab onClick={handleMySkills} value="MySkills" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl w-[200px]">
+                                    <Tabs.Tab onClick={handleMySkills} value="MySkills" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-[50px]">
                                         My Skills
                                     </Tabs.Tab>
-                                    <Tabs.Tab color="#FF3D2E" onClick={handleMyProjects} value="MyProjects" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl w-[200px]">
+                                    <Tabs.Tab color="#FF3D2E" onClick={handleMyProjects} value="MyProjects" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-[50px]">
                                         My Projects
                                     </Tabs.Tab>
-                                    <Tabs.Tab value="Employees" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl w-[200px]">
-                                        Employees
+                                    <Tabs.Tab value="Organization Employees" onClick={handleOrganizationEmployees} className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-[50px]">
+                                        Organization Employees
                                     </Tabs.Tab>
-                                    <Tabs.Tab value="Departments" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl w-[200px]">
-                                        Departments
+                                    <Tabs.Tab value="Organization Departments" onClick={handleOrganizationDepartments} className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-[50px]">
+                                        Organization Departments
                                     </Tabs.Tab>
-                                    <Tabs.Tab value="Organization Skills" onClick={handleOrganizationSkills} className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl w-[200px]">
+                                    <Tabs.Tab value="Organization Skills" onClick={handleOrganizationSkills} className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-[50px]">
                                         Organization Skills
                                     </Tabs.Tab>
                                 </Tabs.List>

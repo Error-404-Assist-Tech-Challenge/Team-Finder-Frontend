@@ -4,6 +4,8 @@ import LoginPage from "./pages/LoginPage";
 import MySkillsPage from "./pages/MySkillsPage";
 import MyProjectsPage from "./pages/MyProjectsPage";
 import OrganizationSkillsPage from "./pages/OrganizationSkillsPage";
+import OrganizationEmployeesPage from './pages/OrganizationEmployeesPage';
+import OrganizationDepartmentsPage from './pages/OrganizationDepartmentsPage';
 
 const router = createBrowserRouter([
   {
@@ -21,6 +23,14 @@ const router = createBrowserRouter([
   {
     path: '/myprojects',
     element: <MyProjectsPage />,
+  },
+  {
+    path: '/organizationemployees',
+    element: <OrganizationEmployeesPage />,
+  },
+  {
+    path: '/organizationdepartments',
+    element: <OrganizationDepartmentsPage />,
   },
   {
     path: '/organizationskills',
