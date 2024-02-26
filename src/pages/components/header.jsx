@@ -47,7 +47,7 @@ export default function GenericHeader() {
     if (role === 'ADMIN') {
         return (
             <div className={`${darkMode && 'dark'}`}>
-                <div className="dark:bg-darkcanvas bg-canvas">
+                <div className="dark:bg-darkcanvas bg-canvas select-none">
                     <div className="p-[20px] flex flex-col md:flex-row items-start md:items-center justify-between">
                         <div>
                             <h1 className="text-3xl font-bold dark:text-darktext text-text">Welcome back, David</h1>
