@@ -1,29 +1,30 @@
+/* eslint-disable react/prop-types */
 import { Button } from '@mantine/core';
 
-export default function LevelCircles(props) {
+export default function ExperienceCircles(props) {
 
     function upgradeSkill(id) {
-        if (props.skillLevels[id] < 5) {
-            props.setSkillLevels(prevSkillLevels => {
-                const updatedSkillLevels = [...prevSkillLevels];
-                updatedSkillLevels[id]++;
-                return updatedSkillLevels;
+        if (props.skillExperience[id] < 6) {
+            props.setSkillExperience(prevSkillExperience => {
+                const updatedSkillExperience = [...prevSkillExperience];
+                updatedSkillExperience[id]++;
+                return updatedSkillExperience;
             });
         }
     }
     
     function downgradeSkill(id) {
-        if (props.skillLevels[id] > 0) {
-            props.setSkillLevels(prevSkillLevels => {
-                const updatedSkillLevels = [...prevSkillLevels];
-                updatedSkillLevels[id]--;
-                return updatedSkillLevels;
+        if (props.skillExperience[id] > 0) {
+            props.setSkillExperience(prevSkillExperience => {
+                const updatedSkillExperience = [...prevSkillExperience];
+                updatedSkillExperience[id]--;
+                return updatedSkillExperience;
             });
         }
     }
     
-    const filledCircles = Math.min(props.skillLevels[props.id], 5);
-    const emptyCircles = Math.max(5 - filledCircles, 0);
+    const filledCircles = Math.min(props.skillExperience[props.id], 6);
+    const emptyCircles = Math.max(6 - filledCircles, 0);
     return (
         <div>
             <Button
