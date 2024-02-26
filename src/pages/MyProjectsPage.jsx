@@ -16,8 +16,7 @@ export default function MyProjectsPage() {
 
     return (
         <div className={`${darkMode && 'dark'}`}>
-            <div className='dark:bg-[#272F32] bg-white h-screen'>
-            <ScrollArea h={rem(140)}>
+            <ScrollArea h={rem(140)} className='dark:bg-darkcanvas bg-canvas'>
                 <Portal>
                     <Box
                         style={{
@@ -28,26 +27,27 @@ export default function MyProjectsPage() {
                             height: rem(60),
                             zIndex: 1000000,
                             transform: `translate3d(0, ${pinned ? 0 : rem(-80)}, 0)`,
-                            transition: 'transform 200ms ease',
+                            transition: 'transform 400ms ease',
                             }}
                         >
                         <GenericHeader/ >
                     </Box>
-                    <div>
-                        <h1 className='text-white'>My Projects1</h1>
-                        <h1 className='text-white'>My Projects2</h1>
-                        <h1 className='text-white'>My Projects3</h1>
-                        <h1 className='text-white'>My Projects4</h1>
-                        <h1 className='text-white'>My Projects5</h1>
-                        <h1 className='text-white'>My Projects6</h1>
-                        <h1 className='text-white'>My Projects7</h1>
-                        <h1 className='text-white'>My Projects8</h1>
-                        <h1 className='text-white'>My Projects9</h1>
-                        <h1 className='text-white'>My Projects0</h1>
+                    <div className={`${darkMode && 'dark'}`}>
+                        <div className='dark:bg-darkcanvas bg-canvas h-screen'>
+                            <h1 className='text-white'>My Projects1</h1>
+                            <h1 className='text-white'>My Projects2</h1>
+                            <h1 className='text-white'>My Projects3</h1>
+                            <h1 className='text-white'>My Projects4</h1>
+                            <h1 className='text-white'>My Projects5</h1>
+                            <h1 className='text-white'>My Projects6</h1>
+                            <h1 className='text-white'>My Projects7</h1>
+                            <h1 className='text-white'>My Projects8</h1>
+                            <h1 className='text-white'>My Projects9</h1>
+                            <h1 className='text-white'>My Projects0</h1>
+                        </div>
                     </div>
                 </Portal>
             </ScrollArea>
-            </div>
         </div>
     )
 }

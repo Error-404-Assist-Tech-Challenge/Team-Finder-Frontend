@@ -23,7 +23,8 @@ const skillsData = [
       skill: 'HTML',
       level: 4,
       experience: 5,
-    }
+    },
+
   ];
   
   export default skillsData;
