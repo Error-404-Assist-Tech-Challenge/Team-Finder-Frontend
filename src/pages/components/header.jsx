@@ -6,6 +6,7 @@ import { IconSun, IconMoonStars } from '@tabler/icons-react';
 import { Tabs } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
 import { Context } from '../../App';
+import { IconBell } from '@tabler/icons-react'
 
 // ADMIN EMPLOYEE DP_MANAGER PR_MANAGER
 const role = 'ADMIN'
@@ -108,6 +109,24 @@ export default function GenericHeader() {
                             </Tabs>
                         </div>
                         <Group justify="center" className='pr-4 pt-1'>
+                            {darkMode && (
+                               <Button className='hover:bg-transparent'> 
+                                    <IconBell
+                                        style={{ width: rem(35), height: rem(35) }}
+                                        stroke={1.5}
+                                        color="white"
+                                    />
+                                </Button>
+                            )}
+                            {!darkMode && (
+                                <Button className='hover:bg-transparent'> 
+                                    <IconBell
+                                        style={{ width: rem(35), height: rem(35) }}
+                                        stroke={1.5}
+                                        color="black"
+                                    />
+                                </Button>
+                            )}
                             <Popover width={250} position="bottom" withArrow shadow="md" className="custom-popover">
                                 <Popover.Target>
                                     <Avatar radius="xl" color="rgba(232, 232, 232, 1)" />

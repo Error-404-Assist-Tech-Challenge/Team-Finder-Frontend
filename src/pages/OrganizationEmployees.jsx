@@ -1,21 +1,22 @@
 /* eslint-disable no-unused-vars */
 import GenericHeader from './components/header';
-import { Avatar } from '@mantine/core';
-import { Box, Portal, ScrollArea, Button, rem } from '@mantine/core';
+import { Box, Portal, ScrollArea, Button, rem, LoadingOverlay } from '@mantine/core';
 import { useHeadroom } from '@mantine/hooks';
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../App';
-import EmployeeCard from './components/employeeCard';
-import employeesData from './fakedb/employeesData'
 import Users from './components/users';
 
 export default function OrganizationEmployeesPage() {
 
     const [darkMode, setDarkMode] = useContext(Context);
     const pinned = useHeadroom({ fixedAt: 20 });
+    const [visible, setVisible] = useState(true);
 
     useEffect(() => {
-
+        const timeout = 400; 
+        setTimeout(() => {
+            setVisible(false);
+        }, timeout);
     }, [darkMode]);
 
     return (
@@ -38,6 +39,7 @@ export default function OrganizationEmployeesPage() {
                             <GenericHeader />
                         </Box>
                         <div className={`${darkMode && 'dark'}`}>
+                            <LoadingOverlay visible={visible} zIndex={1000} overlayProps={{ radius: "sm", blur: 3 }} />
                             <div className='dark:bg-darkcanvas bg-canvas h-screen flex flex-wrap'>
                                 <Users/>
                                 <Button className='w-[300px] h-[230px] mx-[40px] my-[20px] rounded-xl select-none

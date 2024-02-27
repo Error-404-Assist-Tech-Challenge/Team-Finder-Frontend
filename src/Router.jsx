@@ -8,6 +8,7 @@ import OrganizationEmployeesPage from './pages/OrganizationEmployees';
 import OrganizationDepartmentsPage from './pages/OrganizationDepartments';
 import MyDepartment from './pages/MyDepartment';
 import MyProjects from './pages/MyProjects'
+import GenericHeader from './pages/components/header';
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
   {
     path: '/login',
     element: <LoginPage />,
+  },
+  {
+    path: '/main',
+    element: <GenericHeader />,
   },
   {
     path: '/myskills',
