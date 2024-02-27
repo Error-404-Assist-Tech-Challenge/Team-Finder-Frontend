@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
 import GenericHeader from './components/header';
 import LevelCircles from './components/skillLevel';
-import { ScrollArea } from '@mantine/core';
+import { ScrollArea, LoadingOverlay } from '@mantine/core';
 import { Box, Portal, rem } from '@mantine/core';
-import { useHeadroom } from '@mantine/hooks';
+import { useHeadroom, useDisclosure } from '@mantine/hooks';
 import { useState, useEffect } from 'react';
 import { useContext } from 'react';
 import { Context } from '../App';
@@ -13,7 +13,8 @@ const USER_ID = 'aaf86aa9-c868-4f9b-b5a0-178aff826b5a'
 const USER_SKILLS_ENDPOINT = `https://api-team-finder.koyeb.app/api/user_skills`
 
 export default function MySkillsPage() {
-
+    
+    const [visible, setVisible] = useState(true);
     const [darkMode, setDarkMode] = useContext(Context);
     const pinned = useHeadroom({ fixedAt: 20 });
 
@@ -31,7 +32,8 @@ export default function MySkillsPage() {
                 throw new Error('Failed to fetch user skills');
             }
             const data = await response.json();
-            console.log('Fetched Skill', data[0].skill_name);
+
+            console.log(data[0].skill_name);
             setSkills(data);
         } catch (error) {
             console.error('Error fetching user skills:', error);
@@ -43,7 +45,10 @@ export default function MySkillsPage() {
     }, [skills]);
 
     useEffect(() => {
-
+        const timeout = 400; 
+        setTimeout(() => {
+            setVisible(false);
+        }, timeout);
     }, [darkMode]);
 
     function handleSave() {
@@ -68,12 +73,14 @@ export default function MySkillsPage() {
         };
     
         saveSkills();
+        
     }
 
     function handleAddSkill() { }
 
     return (
         <div className={`${darkMode && 'dark'}`}>
+            
             <ScrollArea h={rem(140)} className='dark:bg-darkcanvas bg-canvas'>
                 <Portal>
                     <Box
@@ -88,9 +95,10 @@ export default function MySkillsPage() {
                             transition: 'transform 400ms ease',
                         }}
                     >
-                        <GenericHeader />
+                        <GenericHeader />    
                     </Box>
                     <div className={`${darkMode && 'dark'}`}>
+                        <LoadingOverlay visible={visible} zIndex={1000} overlayProps={{ radius: "sm", blur: 3 }} />
                         <div className='dark:bg-darkcanvas bg-canvas h-auto select-none'>
                             <table>
                                 <thead>
