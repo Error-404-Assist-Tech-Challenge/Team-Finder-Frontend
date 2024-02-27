@@ -31,8 +31,7 @@ export default function MySkillsPage() {
                 throw new Error('Failed to fetch user skills');
             }
             const data = await response.json();
-
-            console.log(data[0].skill_name);
+            console.log('Fetched Skill', data[0].skill_name);
             setSkills(data);
         } catch (error) {
             console.error('Error fetching user skills:', error);
