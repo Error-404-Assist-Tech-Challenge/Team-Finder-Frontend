@@ -4,7 +4,7 @@ import { Button } from '@mantine/core';
 export default function ExperienceCircles(props) {
 
     function upgradeSkill(id) {
-        if (props.skills[id].experience < 5) {
+        if (props.skills[id].experience < 6) {
             const updatedSkills = [...props.skills];
             updatedSkills[id].experience++;
             props.setSkills(updatedSkills);
