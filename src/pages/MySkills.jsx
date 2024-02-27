@@ -10,7 +10,7 @@ import { Context } from '../App';
 import ExperienceCircles from './components/skillExperience';      
 
 const USER_ID = 'aaf86aa9-c868-4f9b-b5a0-178aff826b5a'
-const USER_SKILLS_ENDPOINT = `https://api-team-finder.koyeb.app/api/user_skills?user_id=${USER_ID}`
+const USER_SKILLS_ENDPOINT = `https://api-team-finder.koyeb.app/api/user_skills`
 
 export default function MySkillsPage() {
 
@@ -26,7 +26,7 @@ export default function MySkillsPage() {
 
     async function fetchUserSkills() {
         try {
-            const response = await fetch(USER_SKILLS_ENDPOINT);
+            const response = await fetch(`${USER_SKILLS_ENDPOINT}?user_id=${USER_ID}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch user skills');
             }
@@ -49,6 +49,26 @@ export default function MySkillsPage() {
 
     function handleSave() {
         setChange(false);
+        const saveSkills = async () => {
+            try {
+                const response = await fetch(USER_SKILLS_ENDPOINT, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(skills)
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to save user skills');
+                }
+                console.log('Skills saved successfully!');
+                setChange(false);
+            } catch (error) {
+                console.error('Error saving user skills:', error);
+            }
+        };
+    
+        saveSkills();
     }
 
     function handleAddSkill() { }

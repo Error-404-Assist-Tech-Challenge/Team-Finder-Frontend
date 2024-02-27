@@ -8,7 +8,7 @@ export const  Context = React.createContext();
 
 export default function App() {
 
-    const [darkMode, setDarkMode] = useState(false);
+    const [darkMode, setDarkMode] = useState(true);
 
     return (
         <Context.Provider value={[darkMode, setDarkMode]}>
