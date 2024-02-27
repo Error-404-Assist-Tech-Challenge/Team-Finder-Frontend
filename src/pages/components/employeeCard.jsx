@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Card, Avatar, Button } from '@mantine/core';
+import { Card, Avatar } from '@mantine/core';
 
 
 export default function EmployeeCard({ employee }) {
@@ -19,14 +19,14 @@ export default function EmployeeCard({ employee }) {
             </div>
             <div className='ml-3'>{employee.email}</div>
             <div className='mt-1'>
-                {employee.user_roles.map((role, index) => (
+                {/*employee.user_roles.map((role, index) => (
                     <div key={index} className='flex items-center'>
                         <Button variant="outline"
                             className="w-[20px] h-[20px] m-[6px] rounded-full p-0 pr-[1px] pb-[1px] text-accent border-accent"
                         >-</Button>
                         <div className='font-bold'> {role}</div>
                     </div>
-                ))}
+                ))*/}
             </div>
         </Card>
 
