@@ -22,13 +22,13 @@ export default function GenericHeader() {
     }
 
     const navigateTo = useNavigate();
-    const handleMyProjects = () => {
-        setValue('MyProjects')
-        navigateTo('/myprojects');
-    };
     const handleMySkills = () => {
         setValue('MySkills')
         navigateTo('/myskills');
+    };
+    const handleProjects = () => {
+        setValue('Projects')
+        navigateTo('/projects');
     };
     const handleOrganizationEmployees = () => {
         setValue('OrganizationEmployees');
@@ -41,6 +41,14 @@ export default function GenericHeader() {
     const handleOrganizationSkills = () => {
         setValue('OrganizationSkills')
         navigateTo('/organizationskills');
+    };
+    const handleMyDepartment = () => {
+        setValue('MyDepartment')
+        navigateTo('/mydepartment');
+    };
+    const handleMyProjects = () => {
+        setValue('MyProjects')
+        navigateTo('/myprojects');
     };
 
     const theme = useMantineTheme();
@@ -68,27 +76,33 @@ export default function GenericHeader() {
                         <div>
                             <h1 className="text-3xl font-bold dark:text-darktext text-text">Welcome back, David</h1>
                         </div>
-                        <p className="text-2xl font-bold text-gray-600 dark:text-gray-400 md:text-right">Organization Admin Account</p>
+                        <p className="text-2xl font-bold text-[#505A5E] md:text-right">Organization Admin Account</p>
                     </div>
 
                     <div className="pl-6 pb-3 flex justify-between items-center">
                         <div className="flex space-x-2 pt-1">
                             <Tabs color="#FF3D2E" radius="xs" defaultValue="" variant="default" value={Value}>
                                 <Tabs.List>
-                                    <Tabs.Tab onClick={handleMySkills} value="MySkills"  className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-[50px]">
+                                    <Tabs.Tab onClick={handleMySkills} value="MySkills"  className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-[40px]">
                                         My Skills
                                     </Tabs.Tab>
-                                    <Tabs.Tab onClick={handleMyProjects} color="#FF3D2E" value="MyProjects" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-[50px]">
+                                    <Tabs.Tab onClick={handleProjects} color="#FF3D2E" value="Projects" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-[40px]">
+                                        Projects
+                                    </Tabs.Tab>
+                                    <Tabs.Tab onClick={handleOrganizationEmployees} value="OrganizationEmployees" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-[40px]">
+                                        Org. Employees
+                                    </Tabs.Tab>
+                                    <Tabs.Tab onClick={handleOrganizationDepartments} value="OrganizationDepartments" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-[40px]">
+                                        Org. Departments
+                                    </Tabs.Tab>
+                                    <Tabs.Tab onClick={handleOrganizationSkills} value="OrganizationSkills"  className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-[40px]">
+                                        Org. Skills
+                                    </Tabs.Tab>
+                                    <Tabs.Tab onClick={handleMyDepartment} value="MyDepartment" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-[40px]">
+                                        My Department
+                                    </Tabs.Tab>
+                                    <Tabs.Tab onClick={handleMyProjects} value="MyProjects" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-[40px]">
                                         My Projects
-                                    </Tabs.Tab>
-                                    <Tabs.Tab onClick={handleOrganizationEmployees} value="OrganizationEmployees" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-[50px]">
-                                        Organization Employees
-                                    </Tabs.Tab>
-                                    <Tabs.Tab onClick={handleOrganizationDepartments} value="OrganizationDepartments" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-[50px]">
-                                        Organization Departments
-                                    </Tabs.Tab>
-                                    <Tabs.Tab onClick={handleOrganizationSkills} value="OrganizationSkills"  className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-[50px]">
-                                        Organization Skills
                                     </Tabs.Tab>
                                 </Tabs.List>
                             </Tabs>
@@ -98,10 +112,10 @@ export default function GenericHeader() {
                                 <Popover.Target>
                                     <Avatar radius="xl" color="rgba(232, 232, 232, 1)" />
                                 </Popover.Target>
-                                <Popover.Dropdown style={{ backgroundColor: 'rgba(227, 224, 215, 1)' }}>
+                                <Popover.Dropdown style={{ backgroundColor: 'rgba(80, 90, 94, 37)', border: '0'}}>
                                     <div>
-                                        <Text size="s" className="text-center pt-1">Username</Text>
-                                        <Text size="s" className="text-center pt-1">username@company.com</Text>
+                                        <Text size="s" className="text-center pt-1 text-white">David the Boss</Text>
+                                        <Text size="s" className="text-center pt-1 text-white">davidtheboss@company.com</Text>
                                     </div>
                                     <div className="flex justify-between items-center">
                                         <Switch className="pt-2" size="lg" color="dark.4" onLabel={sunIcon} offLabel={moonIcon} onClick={toogleDarkMode} />

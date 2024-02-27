@@ -1,12 +1,12 @@
 /* eslint-disable no-unused-vars */
 import GenericHeader from './components/header';
 import { ScrollArea } from '@mantine/core';
-import { Box, Portal, rem, Table } from '@mantine/core';
+import { Box, Portal, rem } from '@mantine/core';
 import { useHeadroom } from '@mantine/hooks';
-import { useContext, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Context } from '../App';
 
-export default function OrganizationEmployeesPage() {
+export default function OrganizationDepartmentsPage() {
 
     const [darkMode, setDarkMode] = useContext(Context);
     const pinned = useHeadroom({ fixedAt: 20 });
@@ -16,9 +16,9 @@ export default function OrganizationEmployeesPage() {
     }, [darkMode]);
 
     return (
-        <div className={`${darkMode && 'dark'}`}>
-            <div className='dark:bg-darkcanvas bg-canvas h-screen'>
-                <ScrollArea h={rem(140)}>
+        <>
+            <div className={`${darkMode && 'dark'}`}>
+                <ScrollArea h={rem(140)} className='dark:bg-darkcanvas bg-canvas'>
                     <Portal>
                         <Box
                             style={{
@@ -29,15 +29,20 @@ export default function OrganizationEmployeesPage() {
                                 height: rem(60),
                                 zIndex: 1000000,
                                 transform: `translate3d(0, ${pinned ? 0 : rem(-80)}, 0)`,
-                                transition: 'transform 200ms ease',
+                                transition: 'transform 400ms ease',
                             }}
                         >
                             <GenericHeader />
-                            <h1>Employees</h1>
                         </Box>
+                            <div className='dark:bg-darkcanvas bg-canvas h-auto'>
+                                <h1 className='dark:text-darktext text-text text-xl m-[20px]'>Organization Departments</h1>
+                            </div>
+                        <div className={`${darkMode && 'dark'}`}>
+                            <div className='dark:bg-darkcanvas bg-canvas h-screen'></div>
+                        </div>
                     </Portal>
                 </ScrollArea>
             </div>
-        </div>
+        </>
     )
 }
