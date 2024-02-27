@@ -39,13 +39,13 @@ export default function OrganizationEmployeesPage() {
                         </Box>
                         <div className={`${darkMode && 'dark'}`}>
                             <div className='dark:bg-darkcanvas bg-canvas h-screen flex flex-wrap'>
-                                <Users />
-                                <Button className='w-[300px] h-[230px] bg-accent mx-[40px] my-[20px] rounded-xl dark:text-darktext text-text select-none'>
+                                <Users/>
+                                <Button className='w-[300px] h-[230px] mx-[40px] my-[20px] rounded-xl select-none
+                                bg-accent text-white'>
                                     <h2 className='text-2xl block'>Need more employees?</h2>
                                 </Button>
                             </div>
                         </div>
-
                     </Portal>
                 </ScrollArea>
             </div>
