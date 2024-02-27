@@ -7,7 +7,7 @@ import { useHeadroom } from '@mantine/hooks';
 import { useState, useEffect } from 'react';
 import { useContext } from 'react';
 import { Context } from '../App';
-import ExperienceCircles from './components/skillExperience';
+import ExperienceCircles from './components/skillExperience';      
 
 const USER_ID = 'aaf86aa9-c868-4f9b-b5a0-178aff826b5a'
 const USER_SKILLS_ENDPOINT = `https://api-team-finder.koyeb.app/api/user_skills?user_id=${USER_ID}`

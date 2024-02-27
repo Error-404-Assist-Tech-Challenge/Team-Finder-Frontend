@@ -6,7 +6,7 @@ import { useHeadroom } from '@mantine/hooks';
 import React, { useContext, useEffect } from 'react';
 import { Context } from '../App';
 
-export default function MyProjectsPage() {
+export default function MyDepartment() {
 
     const [darkMode, setDarkMode] = useContext(Context);
     const pinned = useHeadroom({ fixedAt: 20 });
@@ -34,10 +34,10 @@ export default function MyProjectsPage() {
                         >
                             <GenericHeader />
                         </Box>
-                        <div className={`${darkMode && 'dark'}`}>
                             <div className='dark:bg-darkcanvas bg-canvas h-auto'>
-                                <h1 className='text-white'>My Projects1</h1>
+                                <h1 className='dark:text-darktext text-text text-xl m-[20px]'>My Department</h1>
                             </div>
+                        <div className={`${darkMode && 'dark'}`}>
                             <div className='dark:bg-darkcanvas bg-canvas h-screen'></div>
                         </div>
                     </Portal>

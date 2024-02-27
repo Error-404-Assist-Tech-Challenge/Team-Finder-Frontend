@@ -1,11 +1,13 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import SignUpAdminPage from "./pages/SignUpAdminPage";
-import LoginPage from "./pages/LoginPage";
-import MySkillsPage from "./pages/MySkillsPage";
-import MyProjectsPage from "./pages/MyProjectsPage";
-import OrganizationSkillsPage from "./pages/OrganizationSkillsPage";
-import OrganizationEmployeesPage from './pages/OrganizationEmployeesPage';
-import OrganizationDepartmentsPage from './pages/OrganizationDepartmentsPage';
+import SignUpAdminPage from "./pages/SignUpAdmin";
+import LoginPage from "./pages/Login";
+import MySkillsPage from "./pages/MySkills";
+import ProjectsPage from "./pages/Projects";
+import OrganizationSkillsPage from "./pages/OrganizationSkills";
+import OrganizationEmployeesPage from './pages/OrganizationEmployees';
+import OrganizationDepartmentsPage from './pages/OrganizationDepartments';
+import MyDepartment from './pages/MyDepartment';
+import MyProjects from './pages/MyProjects'
 
 const router = createBrowserRouter([
   {
@@ -21,8 +23,8 @@ const router = createBrowserRouter([
     element: <MySkillsPage />,
   },
   {
-    path: '/myprojects',
-    element: <MyProjectsPage />,
+    path: '/projects',
+    element: <ProjectsPage />,
   },
   {
     path: '/organizationemployees',
@@ -35,6 +37,14 @@ const router = createBrowserRouter([
   {
     path: '/organizationskills',
     element: <OrganizationSkillsPage />,
+  },
+  {
+    path: '/mydepartment',
+    element: <MyDepartment />,
+  },
+  {
+    path: '/myprojects',
+    element: <MyProjects />,
   }
 ]);
 
