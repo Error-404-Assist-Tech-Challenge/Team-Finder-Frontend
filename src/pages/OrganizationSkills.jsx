@@ -1,9 +1,11 @@
 /* eslint-disable no-unused-vars */
-import { Table } from '@mantine/core';
 import { useHeadroom } from '@mantine/hooks';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { Table } from '@mantine/core';
 import { Context } from '../App';
-import organizationSkillsData from './fakedb/organizationSkillsData'
+import axios from '../api/axios'
+
+const USER_ID = 'aaf86aa9-c868-4f9b-b5a0-178aff826b5a'
 
 export default function OrganizationSkillsPage() {
 
@@ -14,10 +16,37 @@ export default function OrganizationSkillsPage() {
 
     }, [darkMode]);
 
+    const [skills, setSkills] = useState([]);
+
+    useEffect(() => {
+        let isMounted = true;
+        const controller = new AbortController();
+
+        const getUsers = async () => {
+            try {
+                const response = await axios.get(`/organizations/skills?user_id=${USER_ID}`, {
+                    signal: controller.signal
+                });
+                console.log('Skills:', response.data);
+                isMounted && setSkills(response.data);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        getUsers();
+
+        return () => {
+            isMounted = false;
+            controller.abort();
+        }
+    }, [])
+
+
     return (
         <div className={`${darkMode && 'dark'}`}>
             <div className='dark:bg-darkcanvas bg-canvas select-none h-auto'>
-                <Table className="w-full p-[20px]">
+                <Table className="p-[20px]">
                     <thead>
                         <tr className="text-xl text-left">
                             <th className="dark:text-darktext text-text p-[7px]">Category</th>
@@ -28,13 +57,13 @@ export default function OrganizationSkillsPage() {
                         </tr>
                     </thead>
                     <tbody>
-                        {organizationSkillsData.map((skill, index) => (
+                        {skills.map((skill, index) => (
                             <tr key={index} className="text-left">
-                                <td className="dark:text-darktext text-text px-[10px] py-[7px]">{skill.category}</td>
+                                <td className="dark:text-darktext text-text px-[10px] py-[7px]">skill.category_id</td>
                                 <td className="dark:text-darktext text-text px-[10px] py-[7px]">{skill.name}</td>
                                 <td className="dark:text-darktext text-text px-[10px] py-[7px]">{skill.description}</td>
-                                <td className="dark:text-darktext text-text px-[10px] py-[7px]">{skill.author}</td>
-                                <td className="dark:text-darktext text-text px-[10px] py-[7px]">{skill.departments.join(', ')}</td>
+                                <td className="dark:text-darktext text-text px-[10px] py-[7px]">{skill.author_name}</td>
+                                <td className="dark:text-darktext text-text px-[10px] py-[7px]">skill.departments.join(', ')</td>
                             </tr>
                         ))}
                     </tbody>
