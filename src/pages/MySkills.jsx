@@ -33,6 +33,7 @@ export default function MySkillsPage() {
 
             console.log(data[0].skill_name);
             setSkills(data);
+            setVisible(false);
         } catch (error) {
             console.error('Error fetching user skills:', error);
         }
@@ -79,7 +80,7 @@ export default function MySkillsPage() {
     return (
         <div className={`${darkMode && 'dark'}`}>
             <div className={`${darkMode && 'dark'}`}>
-                <LoadingOverlay visible={visible} zIndex={1000} overlayProps={{ radius: "sm", blur: 3 }} />
+                <LoadingOverlay visible={visible} zIndex={1000} overlayProps={{ radius: "sm", blur: 3 }} overlayOpacity={1} overlayColor="#000000"/>
                 <div className='dark:bg-darkcanvas bg-canvas h-auto select-none'>
                     <table>
                         <thead>
