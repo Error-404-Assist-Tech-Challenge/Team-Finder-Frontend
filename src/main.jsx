@@ -4,6 +4,7 @@ import App from './App.jsx'
 import './index.css'
 import { AuthProvider } from './context/AuthProvider.jsx';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import '@mantine/notifications/styles.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>

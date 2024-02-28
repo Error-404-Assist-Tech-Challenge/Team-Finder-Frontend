@@ -17,6 +17,7 @@ import MyProjects from './pages/MyProjects'
 import MainPage from './pages/MainPage'
 import requireAuth from './pages/components/requireAuth'
 import RequireAuth from './pages/components/requireAuth';
+import { Notifications } from '@mantine/notifications';
 
 export const Context = React.createContext();
 
@@ -27,6 +28,7 @@ export default function App() {
     return (
         <Context.Provider value={[darkMode, setDarkMode]}>
             <MantineProvider theme={theme}>
+            <Notifications />
                 <Routes>
                     <Route path="/" element={<Layout />}>
                         <Route path="login" element={<LoginPage />} />
@@ -43,6 +45,7 @@ export default function App() {
                         </Route>
                     </Route>
                 </Routes>
+        
             </MantineProvider>
         </Context.Provider>
     )

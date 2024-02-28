@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { Button, LoadingOverlay } from '@mantine/core';
+import { Button, Loader } from '@mantine/core';
 import { useHeadroom } from '@mantine/hooks';
 import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../App';
@@ -20,13 +20,19 @@ export default function OrganizationEmployeesPage() {
 
     return (
         <div className={`${darkMode && 'dark'}`}>
-            <LoadingOverlay visible={visible} zIndex={1000} overlayProps={{ radius: "sm", blur: 3 }} />
             <div className='dark:bg-darkcanvas bg-canvas h-screen flex flex-wrap'>
-                <Users />
+             {visible && (
+                        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                            <Loader size={30} color="red" />
+                        </div>
+                    )}
+                {!visible &&
+                <Users />}
+                {!visible &&
                 <Button className='w-[300px] h-[230px] mx-[40px] my-[20px] rounded-xl select-none
                                 bg-accent text-white'>
                     <h2 className='text-2xl block'>Need more employees?</h2>
-                </Button>
+                </Button>}
             </div>
         </div>
     )
