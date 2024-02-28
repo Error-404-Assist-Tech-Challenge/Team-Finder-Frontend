@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
-import GenericHeader from './components/header';
-import { Box, Portal, ScrollArea, Button, rem, LoadingOverlay } from '@mantine/core';
+import { Button, LoadingOverlay } from '@mantine/core';
 import { useHeadroom } from '@mantine/hooks';
 import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../App';
@@ -13,44 +12,22 @@ export default function OrganizationEmployeesPage() {
     const [visible, setVisible] = useState(true);
 
     useEffect(() => {
-        const timeout = 400; 
+        const timeout = 400;
         setTimeout(() => {
             setVisible(false);
         }, timeout);
     }, [darkMode]);
 
     return (
-        <>
-            <div className={`${darkMode && 'dark'}`}>
-                <ScrollArea h={rem(140)} className='dark:bg-darkcanvas bg-canvas'>
-                    <Portal>
-                        <Box
-                            style={{
-                                position: 'fixed',
-                                top: 0,
-                                left: 0,
-                                right: 0,
-                                height: rem(60),
-                                zIndex: 1000000,
-                                transform: `translate3d(0, ${pinned ? 0 : rem(-80)}, 0)`,
-                                transition: 'transform 400ms ease',
-                            }}
-                        >
-                            <GenericHeader />
-                        </Box>
-                        <div className={`${darkMode && 'dark'}`}>
-                            <LoadingOverlay visible={visible} zIndex={1000} overlayProps={{ radius: "sm", blur: 3 }} />
-                            <div className='dark:bg-darkcanvas bg-canvas h-screen flex flex-wrap'>
-                                <Users/>
-                                <Button className='w-[300px] h-[230px] mx-[40px] my-[20px] rounded-xl select-none
+        <div className={`${darkMode && 'dark'}`}>
+            <LoadingOverlay visible={visible} zIndex={1000} overlayProps={{ radius: "sm", blur: 3 }} />
+            <div className='dark:bg-darkcanvas bg-canvas h-screen flex flex-wrap'>
+                <Users />
+                <Button className='w-[300px] h-[230px] mx-[40px] my-[20px] rounded-xl select-none
                                 bg-accent text-white'>
-                                    <h2 className='text-2xl block'>Need more employees?</h2>
-                                </Button>
-                            </div>
-                        </div>
-                    </Portal>
-                </ScrollArea>
+                    <h2 className='text-2xl block'>Need more employees?</h2>
+                </Button>
             </div>
-        </>
+        </div>
     )
 }

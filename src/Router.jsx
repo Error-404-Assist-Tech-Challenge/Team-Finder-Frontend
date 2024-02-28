@@ -8,7 +8,7 @@ import OrganizationEmployeesPage from './pages/OrganizationEmployees';
 import OrganizationDepartmentsPage from './pages/OrganizationDepartments';
 import MyDepartment from './pages/MyDepartment';
 import MyProjects from './pages/MyProjects'
-import GenericHeader from './pages/components/header';
+import MainPage from './pages/MainPage'
 
 const router = createBrowserRouter([
   {
@@ -20,36 +20,33 @@ const router = createBrowserRouter([
     element: <LoginPage />,
   },
   {
-    path: '/main',
-    element: <GenericHeader />,
-  },
-  {
     path: '/myskills',
-    element: <MySkillsPage />,
+    element: <MainPage Content={MySkillsPage} />,
   },
   {
     path: '/projects',
-    element: <ProjectsPage />,
-  },
-  {
+    element: <MainPage Content={ProjectsPage}/>,
+},
+{
     path: '/organizationemployees',
-    element: <OrganizationEmployeesPage />,
+    element: <MainPage Content={OrganizationEmployeesPage}/>,
   },
   {
     path: '/organizationdepartments',
-    element: <OrganizationDepartmentsPage />,
+    element: <MainPage Content={OrganizationDepartmentsPage}/>,
+
   },
   {
     path: '/organizationskills',
-    element: <OrganizationSkillsPage />,
+    element: <MainPage Content={OrganizationSkillsPage}/>,
   },
   {
     path: '/mydepartment',
-    element: <MyDepartment />,
+    element: <MainPage Content={MyDepartment}/>,
   },
   {
     path: '/myprojects',
-    element: <MyProjects />,
+    element: <MainPage Content={MyProjects}/>,
   }
 ]);
 
