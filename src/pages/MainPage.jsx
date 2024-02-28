@@ -6,9 +6,12 @@ import { Box, Portal, rem } from '@mantine/core';
 import { useHeadroom } from '@mantine/hooks';
 import React, { useContext, useEffect } from 'react';
 import { Context } from '../App';
+import useAuth from '../hooks/useAuth'
+
 
 export default function MainPage({Content}) {
 
+    const { setAuth } = useAuth();
     const [darkMode, setDarkMode] = useContext(Context);
     const pinned = useHeadroom({ fixedAt: 20 });
 

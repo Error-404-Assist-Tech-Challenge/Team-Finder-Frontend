@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Card, Avatar } from '@mantine/core';
+import RoleCard from './roleCard';
 
 
 export default function EmployeeCard({ employee }) {
@@ -19,14 +20,18 @@ export default function EmployeeCard({ employee }) {
             </div>
             <div className='ml-3'>{employee.email}</div>
             <div className='mt-1'>
-                {/*employee.user_roles.map((role, index) => (
-                    <div key={index} className='flex items-center'>
-                        <Button variant="outline"
-                            className="w-[20px] h-[20px] m-[6px] rounded-full p-0 pr-[1px] pb-[1px] text-accent border-accent"
-                        >-</Button>
-                        <div className='font-bold'> {role}</div>
-                    </div>
-                ))*/}
+                {
+                    employee.user_roles.includes("admin") && (<RoleCard role={"Organization Admin"} />)
+                }
+                {
+                    employee.user_roles.includes("dept_manager") && (<RoleCard role={"Department manager"} />)
+                }
+                {
+                    employee.user_roles.includes("proj_manager") && (<RoleCard role={"Project Manager"} />)
+                }
+                {
+                    employee.user_roles.length == 0 && (<RoleCard role={"Employee"} />)
+                }
             </div>
         </Card>
 
