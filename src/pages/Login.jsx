@@ -2,19 +2,19 @@
 /* eslint-disable no-unused-vars */
 import { Container, Title, TextInput, PasswordInput, Button } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
-import { useRef, useState, useEffect, useContext } from 'react';
-import axios from '../api/axios';
-import AuthContext from './context/AuthProvider'
+import { useRef, useState, useEffect } from 'react';
+import useAuth from '../hooks/useAuth'
 
+import axios from '../api/axios';
 const LOGIN_URL = '/users/login'
 
 export default function LoginPage() {
 
-    const { setAuth } = useContext(AuthContext);
-    const navigateTo = useNavigate();
+    const { setAuth } = useAuth();
+    const navigate = useNavigate();
 
     const handleSignUp = () => {
-        navigateTo('/');
+        navigate('/signup');
     };
 
     const handleLogIn = async (e) => {
@@ -29,14 +29,14 @@ export default function LoginPage() {
                     headers: { 'Content-Type': 'application/json' },
                     //withCredentials: true
                 });
-            console.log('Your token is:', response.data);
+            console.log('Your token is:', response.data.token);
 
             const name = response?.data?.name;
-            const accessToken = response?.data?.token;
+            const token = response?.data?.token;
 
-            setAuth({name, email, password, accessToken})
+            setAuth({name, email, password, token})
 
-            navigateTo('/myskills');
+            navigate('/myskills');
         } catch (err) {
             if (!err?.response) {
                 setErrorMessage('No Server Response');

@@ -7,12 +7,15 @@ import { Tabs } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
 import { Context } from '../../App';
 import { IconBell } from '@tabler/icons-react'
+import useAuth from '../../hooks/useAuth'
+
 
 // ADMIN EMPLOYEE DP_MANAGER PR_MANAGER
 const role = 'ADMIN'
 
 export default function GenericHeader() {
 
+    const { auth } = useAuth();
     const [Value, setValue] = useLocalStorage({
         defaultValue: '',
       });
@@ -75,7 +78,7 @@ export default function GenericHeader() {
                 <div className="dark:bg-darkcanvas bg-canvas select-none">
                     <div className="p-[20px] flex flex-col md:flex-row items-start md:items-center justify-between">
                         <div>
-                            <h1 className="text-3xl font-bold dark:text-darktext text-text">Welcome back, David</h1>
+                            <h1 className="text-3xl font-bold dark:text-darktext text-text">Welcome back, {auth?.name}</h1>
                         </div>
                         <p className="text-2xl font-bold text-[#505A5E] md:text-right">Organization Admin Account</p>
                     </div>
@@ -133,8 +136,8 @@ export default function GenericHeader() {
                                 </Popover.Target>
                                 <Popover.Dropdown style={{ backgroundColor: 'rgba(80, 90, 94, 37)', border: '0'}}>
                                     <div>
-                                        <Text size="s" className="text-center pt-1 text-white">David the Boss</Text>
-                                        <Text size="s" className="text-center pt-1 text-white">davidtheboss@company.com</Text>
+                                        <Text size="s" className="text-center pt-1 text-white">{auth.name}</Text>
+                                        <Text size="s" className="text-center pt-1 text-white">{auth.email}</Text>
                                     </div>
                                     <div className="flex justify-between items-center">
                                         <Switch className="pt-2" size="lg" color="dark.4" onLabel={sunIcon} offLabel={moonIcon} onClick={toogleDarkMode} />
