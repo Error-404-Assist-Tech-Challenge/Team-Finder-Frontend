@@ -2,13 +2,15 @@
 /* eslint-disable no-unused-vars */
 import { Container, Title, TextInput, PasswordInput, Button } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useContext } from 'react';
 import axios from '../api/axios';
+import AuthContext from './context/AuthProvider'
 
 const LOGIN_URL = '/users/login'
 
 export default function LoginPage() {
 
+    const { setAuth } = useContext(AuthContext);
     const navigateTo = useNavigate();
 
     const handleSignUp = () => {
@@ -29,18 +31,23 @@ export default function LoginPage() {
                 });
             console.log('Your token is:', response.data);
 
-            //navigateTo('/myskills');
+            const name = response?.data?.name;
+            const accessToken = response?.data?.token;
+
+            setAuth({name, email, password, accessToken})
+
+            navigateTo('/myskills');
         } catch (err) {
             if (!err?.response) {
                 setErrorMessage('No Server Response');
             } else if (err.response?.status === 409) {
-                setErrorMessage('Email Already Being Used');
+                setErrorMessage('Incorrect email or password');
             } else {
-                setErrorMessage('Registration Failed')
+                setErrorMessage('Login Failed')
             }
             errorRef.current.focus();
         }
-        // navigateTo('/myskills');
+        errorRef.current.focus();
     };
 
     const userRef = useRef();

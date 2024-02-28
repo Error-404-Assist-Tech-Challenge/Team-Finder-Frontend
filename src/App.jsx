@@ -2,7 +2,7 @@ import '@mantine/core/styles.css';
 import { MantineProvider } from '@mantine/core';
 import { Router } from './Router';
 import { theme } from './theme';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 
 export const  Context = React.createContext();
 

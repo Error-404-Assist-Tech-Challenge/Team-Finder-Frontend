@@ -36,7 +36,7 @@ export default function SignUpAdminPage() {
                 });
             console.log('Your token is:', response.data.token);
 
-            //navigateTo('/myskills');
+            navigateTo('/myskills');
         } catch (err) {
             if (!err?.response) {
                 setErrorMessage('No Server Response');
