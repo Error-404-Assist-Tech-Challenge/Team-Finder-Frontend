@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import LevelCircles from './SkillLevel';
 import { Loader } from '@mantine/core';
@@ -9,13 +10,11 @@ import ExperienceCircles from './SkillExperience';
 import { notifications } from '@mantine/notifications';
 import { Button, rem } from '@mantine/core';
 import { IconCheck } from '@tabler/icons-react';
-import axios from '../../api/axios';
-
-const USER_ID = 'aaf86aa9-c868-4f9b-b5a0-178aff826b5a'
-const USER_SKILLS_ENDPOINT = `https://api-team-finder.koyeb.app/api/skills/user`
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 export default function MySkillsPage() {
 
+    const axiosPrivate = useAxiosPrivate();
     const [visible, setVisible] = useState(true);
     const [darkMode, setDarkMode] = useContext(Context);
     const pinned = useHeadroom({ fixedAt: 20 });
@@ -27,9 +26,9 @@ export default function MySkillsPage() {
         let isMounted = true;
         const controller = new AbortController();
 
-        async function fetchUserSkills() {
+        const fetchUserSkills = async () => {
             try {
-                const response = await axios.get(`skills/user?user_id=${USER_ID}`, {
+                const response = await axiosPrivate.get('skills/user', {
                     signal: controller.signal
                 });
                 isMounted && setSkills(response.data);
@@ -67,33 +66,33 @@ export default function MySkillsPage() {
 
     function handleSave() {
         setChange(false);
-        const saveSkills = async () => {
-            try {
-                const response = await fetch(USER_SKILLS_ENDPOINT, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(skills)
-                });
-                if (!response.ok) {
-                    throw new Error('Failed to save user skills');
-                }
-                console.log('Skills saved successfully!');
-                setChange(false);
-            } catch (error) {
-                console.error('Error saving user skills:', error);
-            }
-        };
+        // const saveSkills = async () => {
+        //     try {
+        //         const response = await fetch(USER_SKILLS_ENDPOINT, {
+        //             method: 'PUT',
+        //             headers: {
+        //                 'Content-Type': 'application/json'
+        //             },
+        //             body: JSON.stringify(skills)
+        //         });
+        //         if (!response.ok) {
+        //             throw new Error('Failed to save user skills');
+        //         }
+        //         console.log('Skills saved successfully!');
+        //         setChange(false);
+        //     } catch (error) {
+        //         console.error('Error saving user skills:', error);
+        //     }
+        // };
 
-        saveSkills();
+        // saveSkills();
 
-        const id = notifications.show({
-            title: 'Data saved',
-            message: 'Your data has been fetched.',
-            icon: <IconCheck style={{ width: rem(35), height: rem(35) }} />,
-            color: "teal",
-        });
+        // const id = notifications.show({
+        //     title: 'Data saved',
+        //     message: 'Your data has been fetched.',
+        //     icon: <IconCheck style={{ width: rem(35), height: rem(35) }} />,
+        //     color: "teal",
+        // });
     }
 
     function handleAddSkill() { }

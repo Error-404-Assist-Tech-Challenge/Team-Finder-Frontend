@@ -22,6 +22,7 @@ import RequireAuth from './components/authentification/RequireAuth';
 import Welcome from './components/default_pages/Welcome';
 import Missing from './components/default_pages/Missing'
 import Unauthorized from './components/default_pages/Unauthorized'
+import PersistLogin from './components/authentification/PersistLogin';
 
 export const Context = React.createContext();
 
@@ -32,21 +33,26 @@ export default function App() {
     return (
         <Context.Provider value={[darkMode, setDarkMode]}>
             <MantineProvider theme={theme}>
-            <Notifications />
+                <Notifications />
                 <Routes>
                     <Route path="/" element={<Layout />}>
+                        {/* ANYONE CAN SEE THESE PAGES */}
                         <Route path="/" element={<Welcome />} />
                         <Route path="login" element={<LoginPage />} />
                         <Route path="signup" element={<SignUpAdminPage />} />
                         <Route path="unauthorized" element={<Unauthorized />} />
-                        <Route element={<RequireAuth />}>
-                            <Route path='/myskills' element={<MainPage Content={MySkillsPage} />} />
-                            <Route path='/projects' element={<MainPage Content={ProjectsPage} />} />
-                            <Route path='/organizationemployees' element={<MainPage Content={OrganizationEmployeesPage} />} />
-                            <Route path='/organizationdepartments' element={<MainPage Content={OrganizationDepartmentsPage} />} />
-                            <Route path='/organizationskills' element={<MainPage Content={OrganizationSkillsPage} />} />
-                            <Route path='/mydepartment' element={<MainPage Content={MyDepartment} />} />
-                            <Route path='/myprojects' element={<MainPage Content={MyProjects} />} />
+
+                        <Route element={<PersistLogin />}>
+                            <Route element={<RequireAuth />}>
+                                {/* YOU HAVE TO BE LOGGED IN TO SEE THESE PAGES */}
+                                <Route path='/myskills' element={<MainPage Content={MySkillsPage} />} />
+                                <Route path='/projects' element={<MainPage Content={ProjectsPage} />} />
+                                <Route path='/organizationemployees' element={<MainPage Content={OrganizationEmployeesPage} />} />
+                                <Route path='/organizationdepartments' element={<MainPage Content={OrganizationDepartmentsPage} />} />
+                                <Route path='/organizationskills' element={<MainPage Content={OrganizationSkillsPage} />} />
+                                <Route path='/mydepartment' element={<MainPage Content={MyDepartment} />} />
+                                <Route path='/myprojects' element={<MainPage Content={MyProjects} />} />
+                            </Route>
                         </Route>
                         <Route path="*" element={<Missing />} />
                     </Route>

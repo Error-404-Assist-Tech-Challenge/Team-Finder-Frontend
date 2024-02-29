@@ -5,14 +5,11 @@ import { useNavigate } from 'react-router-dom';
 import axios from '../../api/axios';
 import useAuth from '../../hooks/useAuth'
 
-
 const nameRegex = /^[A-Za-z]+(?:\s+[A-Za-z]+)*$/;
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@.]+$/;
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 const organizationRegex = /^[A-Za-z0-9\s\-.,&'()]+$/;
 const addressRegex = /^[A-Za-z0-9\s\-.,&'()]+$/;
-
-const SIGNUP_ADMIN_URL = '/users/admin'
 
 export default function SignUpAdminPage() {
 
@@ -26,7 +23,7 @@ export default function SignUpAdminPage() {
         e.preventDefault();
 
         try {
-            const response = await axios.post(SIGNUP_ADMIN_URL,
+            const response = await axios.post('/users/admin',
                 JSON.stringify({
                     name: user,
                     email: email,
@@ -38,10 +35,10 @@ export default function SignUpAdminPage() {
                     headers: {'Content-Type': 'application/json'},
                     //withCredentials: true
                 });
-            console.log('Your token is:', response.data.token);
+            console.log('Your token is:', response.data.access_token);
 
             const name = response?.data?.name;
-            const accessToken = response?.data?.token;
+            const accessToken = response?.data?.access_token;
 
             setAuth({name, email, password, accessToken})
             navigateTo('/myskills');
@@ -108,7 +105,7 @@ export default function SignUpAdminPage() {
 
     return (
         <div className="flex items-center justify-center min-h-screen min-w-full bg-[#272F32] text-[#272F32] select-none">
-            <Container className="bg-[#9DBDC6] h-[auto] w-[494px] rounded-[50px]">
+            <Container className="bg-[#505a5e] h-[auto] w-[494px] rounded-[20px] text-white px-[30px]">
                 <Title order={1} className="text-5xl text-select-none text-center py-[50px]">
                     Team Finder
                 </Title>
@@ -173,7 +170,7 @@ export default function SignUpAdminPage() {
                         Sign Up
                     </Button>
                 </div>
-                <div className="text-lg flex items-center justify-between px-[20px] py-[50px]">
+                <div className="text-lg flex items-center justify-between px-[5px] py-[50px]">
                     <Title order={4}>
                         Or if you already have an account:
                     </Title>
