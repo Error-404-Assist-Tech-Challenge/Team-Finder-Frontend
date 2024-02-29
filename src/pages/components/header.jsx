@@ -1,10 +1,10 @@
 import { Button, Avatar } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
-import { Switch, useMantineTheme, rem, Group, Popover, Text } from '@mantine/core';
+import { Switch, useMantineTheme, rem, Group, Popover, Text, Modal } from '@mantine/core';
 import { IconSun, IconMoonStars } from '@tabler/icons-react';
 import { Tabs } from '@mantine/core';
-import { useLocalStorage } from '@mantine/hooks';
+import { useLocalStorage, useDisclosure } from '@mantine/hooks';
 import { Context } from '../../App';
 import { IconBell } from '@tabler/icons-react'
 import useAuth from '../../hooks/useAuth'
@@ -19,6 +19,8 @@ export default function GenericHeader() {
     const [Value, setValue] = useLocalStorage({
         defaultValue: '',
       });
+
+    const [opened, { open, close }] = useDisclosure(false);
 
     const [darkMode, setDarkMode] = useContext(Context);
     const toogleDarkMode = () => {
@@ -112,32 +114,23 @@ export default function GenericHeader() {
                             </Tabs>
                         </div>
                         <Group justify="center" className='pr-4 pt-1'>
-                            {darkMode && (
-                               <Button className='hover:bg-transparent'> 
-                                    <IconBell
-                                        style={{ width: rem(35), height: rem(35) }}
-                                        stroke={1.5}
-                                        color="white"
-                                    />
-                                </Button>
-                            )}
-                            {!darkMode && (
-                                <Button className='hover:bg-transparent'> 
-                                    <IconBell
-                                        style={{ width: rem(35), height: rem(35) }}
-                                        stroke={1.5}
-                                        color="black"
-                                    />
-                                </Button>
-                            )}
+                            <Button className='hover:bg-transparent' onClick={open}> 
+                                <IconBell
+                                    style={{ width: rem(35), height: rem(35), color: darkMode ? 'white' : 'black' }}
+                                    stroke={1.5}
+                                />
+                            </Button>
+                            <Modal opened={opened} onClose={close} title="Notifications" centered overflow="inside">
+                                        {/* Modal content */}
+                            </Modal>
                             <Popover width={250} position="bottom" withArrow shadow="md" className="custom-popover">
                                 <Popover.Target>
-                                    <Avatar radius="xl" color="rgba(232, 232, 232, 1)" />
+                                    <Avatar radius="xl" className="dark:bg-darkcanvas bg-gray-100"/>
                                 </Popover.Target>
-                                <Popover.Dropdown style={{ backgroundColor: 'rgba(80, 90, 94, 37)', border: '0'}}>
+                                <Popover.Dropdown style={{ backgroundColor: darkMode ? 'rgba(217, 221, 222, 0.37)' : 'rgba(237, 241, 242, 1)', border: '0'}}>
                                     <div>
-                                        <Text size="s" className="text-center pt-1 text-white">{auth.name}</Text>
-                                        <Text size="s" className="text-center pt-1 text-white">{auth.email}</Text>
+                                        <Text size="s" className="text-center pt-1 " style={{color: darkMode ? 'white' : 'black' }}>{auth.name}</Text>
+                                        <Text size="s" className="text-center pt-1 " style={{color: darkMode ? 'white' : 'black' }}>{auth.email}</Text>
                                     </div>
                                     <div className="flex justify-between items-center">
                                         <Switch className="pt-2" size="lg" color="dark.4" onLabel={sunIcon} offLabel={moonIcon} onClick={toogleDarkMode} />
@@ -175,7 +168,6 @@ export default function GenericHeader() {
                     <Group justify="center" className='pr-4 pt-1'>
                         <Popover width={250} position="bottom" withArrow shadow="md">
                             <Popover.Target>
-                                <Avatar radius="xl" color="rgba(232, 232, 232, 1)" />
                             </Popover.Target>
                             <Popover.Dropdown>
                                 <div>
