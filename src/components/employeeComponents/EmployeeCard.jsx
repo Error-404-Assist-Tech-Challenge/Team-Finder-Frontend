@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Card, Avatar } from '@mantine/core';
 
-import RoleCard from '../admin/employeeComponents/RoleCard';
+import RoleCard from './RoleCard';
 
 export default function EmployeeCard({ employee }) {
 
