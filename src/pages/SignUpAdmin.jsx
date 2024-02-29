@@ -41,9 +41,9 @@ export default function SignUpAdminPage() {
             console.log('Your token is:', response.data.token);
 
             const name = response?.data?.name;
-            const token = response?.data?.token;
+            const accessToken = response?.data?.token;
 
-            setAuth({name, email, password, token})
+            setAuth({name, email, password, accessToken})
             navigateTo('/myskills');
         } catch (err) {
             if (!err?.response) {

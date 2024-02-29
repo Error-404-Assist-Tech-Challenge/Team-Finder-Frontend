@@ -18,6 +18,9 @@ import MainPage from './pages/MainPage'
 import requireAuth from './pages/components/requireAuth'
 import RequireAuth from './pages/components/requireAuth';
 import { Notifications } from '@mantine/notifications';
+import Welcome from './pages/Welcome';
+import Missing from './pages/Missing'
+import Unauthorized from './pages/Unauthorized'
 
 export const Context = React.createContext();
 
@@ -31,9 +34,10 @@ export default function App() {
             <Notifications />
                 <Routes>
                     <Route path="/" element={<Layout />}>
+                        <Route path="/" element={<Welcome />} />
                         <Route path="login" element={<LoginPage />} />
                         <Route path="signup" element={<SignUpAdminPage />} />
-
+                        <Route path="unauthorized" element={<Unauthorized />} />
                         <Route element={<RequireAuth />}>
                             <Route path='/myskills' element={<MainPage Content={MySkillsPage} />} />
                             <Route path='/projects' element={<MainPage Content={ProjectsPage} />} />
@@ -43,9 +47,9 @@ export default function App() {
                             <Route path='/mydepartment' element={<MainPage Content={MyDepartment} />} />
                             <Route path='/myprojects' element={<MainPage Content={MyProjects} />} />
                         </Route>
+                        <Route path="*" element={<Missing />} />
                     </Route>
                 </Routes>
-        
             </MantineProvider>
         </Context.Provider>
     )

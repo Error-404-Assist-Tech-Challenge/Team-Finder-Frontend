@@ -34,7 +34,6 @@ export default function MySkillsPage() {
             }
             const data = await response.json();
 
-            console.log(data[0].skill_name);
             setSkills(data);
             setVisible(false);
         } catch (error) {

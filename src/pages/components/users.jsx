@@ -1,12 +1,17 @@
+/* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react"
-import axios from '../../api/axios'
 import EmployeeCard from './employeeCard'
 import { Card } from '@mantine/core';
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import axios from "../../api/axios";
+import useAuth from "../../hooks/useAuth";
 
 const USER_ID = 'aaf86aa9-c868-4f9b-b5a0-178aff826b5a'
 
 const Users = () => {
 
+    const { auth } = useAuth();
+    const axiosPrivate = useAxiosPrivate();
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
@@ -15,7 +20,7 @@ const Users = () => {
 
         const getUsers = async () => {
             try {
-                const response = await axios.get(`/users?user_id=${USER_ID}`, {
+                const response = await axios.get(`users?user_id=${USER_ID}`, {
                     signal: controller.signal
                 });
                 isMounted && setUsers(response.data)
@@ -30,6 +35,27 @@ const Users = () => {
             isMounted = false;
             controller.abort();
         }
+    }, [])
+
+    useEffect(() => {
+        const tryProtected = async () => {
+            try {
+                const response = await axiosPrivate.get('/users/protected', {
+                    // withCredentials: true,
+                    headers: {
+                        'Authorization': `Bearer ${auth.token}`,
+                        'Access-Control-Allow-Headers': '*'
+                    }
+                });
+                console.log(auth.token, 'is valid and unexpired')
+                return response.data.token;
+            } catch (error) {
+                console.error("Error token is invald or expired:", error);
+                throw error;
+            }
+        }
+
+        tryProtected();
     }, [])
 
     return (
