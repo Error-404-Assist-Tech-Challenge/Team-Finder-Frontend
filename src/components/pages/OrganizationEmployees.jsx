@@ -3,7 +3,7 @@ import { Button, Loader } from '@mantine/core';
 import { useHeadroom } from '@mantine/hooks';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Context } from '../../App';
-import Users from './Users';
+import Users from '../employeeComponents/Users';
 import useRefreshToken from '../../hooks/useRefreshToken';
 
 export default function OrganizationEmployeesPage() {
