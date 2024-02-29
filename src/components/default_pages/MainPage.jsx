@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import GenericHeader from './components/header';
+import GenericHeader from './Header';
 import { ScrollArea } from '@mantine/core';
 import { Box, Portal, rem } from '@mantine/core';
 import { useHeadroom } from '@mantine/hooks';
 import React, { useContext, useEffect } from 'react';
-import { Context } from '../App';
-import useAuth from '../hooks/useAuth'
+import { Context } from '../../App';
+import useAuth from '../../hooks/useAuth'
 
 
 export default function MainPage({Content}) {

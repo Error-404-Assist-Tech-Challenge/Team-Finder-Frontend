@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
 import { useHeadroom } from '@mantine/hooks';
 import React, { useContext, useEffect } from 'react';
-import { Context } from '../App';
+import { Context } from '../../App';
 
-export default function MyProjects() {
+export default function MyDepartment() {
 
     const [darkMode, setDarkMode] = useContext(Context);
     const pinned = useHeadroom({ fixedAt: 20 });
@@ -14,7 +14,7 @@ export default function MyProjects() {
 
     return (
         <>
-            <p className='dark:text-darktext text-text text-xl m-[20px] '>My Projects</p>
+            <p className='dark:text-darktext text-text text-xl m-[20px] '>My Department</p>
         </>
     )
 }

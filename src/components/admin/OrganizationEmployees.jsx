@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
 import { Button, Loader } from '@mantine/core';
 import { useHeadroom } from '@mantine/hooks';
-import React, { useContext, useEffect, useState } from 'react';
-import { Context } from '../App';
-import Users from './components/users';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { Context } from '../../App';
+import Users from './Users';
 
 export default function OrganizationEmployeesPage() {
 
@@ -30,8 +30,8 @@ export default function OrganizationEmployeesPage() {
                 <Users />}
                 {!visible &&
                 <Button className='w-[300px] h-[230px] mx-[40px] my-[20px] rounded-xl select-none
-                                bg-accent text-white'>
-                    <h2 className='text-2xl block'>Need more employees?</h2>
+                                bg-accent text-white text-2xl'>
+                    Need more employees
                 </Button>}
             </div>
         </div>

@@ -3,9 +3,9 @@
 import { Container, Title, TextInput, PasswordInput, Button } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
 import { useRef, useState, useEffect } from 'react';
-import useAuth from '../hooks/useAuth'
+import useAuth from '../../hooks/useAuth'
 
-import axios from '../api/axios';
+import axios from '../../api/axios';
 const LOGIN_URL = '/users/login'
 
 export default function LoginPage() {

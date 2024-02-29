@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
-import LevelCircles from './components/skillLevel';
+import LevelCircles from './SkillLevel';
 import { Loader } from '@mantine/core';
 import { useHeadroom, useDisclosure } from '@mantine/hooks';
 import { useState, useEffect } from 'react';
 import { useContext } from 'react';
-import { Context } from '../App';
-import ExperienceCircles from './components/skillExperience';
+import { Context } from '../../App';
+import ExperienceCircles from './SkillExperience';
 import { notifications } from '@mantine/notifications';
 import { Button,rem } from '@mantine/core';
 import { IconCheck } from '@tabler/icons-react';
@@ -34,7 +34,6 @@ export default function MySkillsPage() {
             }
             const data = await response.json();
 
-            console.log(data[0].skill_name);
             setSkills(data);
             setVisible(false);
         } catch (error) {

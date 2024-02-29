@@ -2,8 +2,8 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Container, Title, TextInput, PasswordInput, Button } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
-import axios from '../api/axios';
-import useAuth from '../hooks/useAuth'
+import axios from '../../api/axios';
+import useAuth from '../../hooks/useAuth'
 
 
 const nameRegex = /^[A-Za-z]+(?:\s+[A-Za-z]+)*$/;
@@ -41,9 +41,9 @@ export default function SignUpAdminPage() {
             console.log('Your token is:', response.data.token);
 
             const name = response?.data?.name;
-            const token = response?.data?.token;
+            const accessToken = response?.data?.token;
 
-            setAuth({name, email, password, token})
+            setAuth({name, email, password, accessToken})
             navigateTo('/myskills');
         } catch (err) {
             if (!err?.response) {

@@ -1,9 +1,10 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-unused-vars */
 import { useHeadroom } from '@mantine/hooks';
 import { useContext, useEffect, useState } from 'react';
 import { Table } from '@mantine/core';
-import { Context } from '../App';
-import axios from '../api/axios'
+import { Context } from '../../App';
+import axios from '../../api/axios'
 
 const USER_ID = 'aaf86aa9-c868-4f9b-b5a0-178aff826b5a'
 

@@ -4,20 +4,24 @@ import { MantineProvider } from '@mantine/core';
 import { theme } from './theme';
 import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom'
-import Layout from './pages/Layout'
-import SignUpAdminPage from "./pages/SignUpAdmin";
-import LoginPage from "./pages/Login";
-import MySkillsPage from "./pages/MySkills";
-import ProjectsPage from "./pages/Projects";
-import OrganizationSkillsPage from "./pages/OrganizationSkills";
-import OrganizationEmployeesPage from './pages/OrganizationEmployees';
-import OrganizationDepartmentsPage from './pages/OrganizationDepartments';
-import MyDepartment from './pages/MyDepartment';
-import MyProjects from './pages/MyProjects'
-import MainPage from './pages/MainPage'
-import requireAuth from './pages/components/requireAuth'
-import RequireAuth from './pages/components/requireAuth';
 import { Notifications } from '@mantine/notifications';
+
+import Layout from './components/authentification/Layout';
+import SignUpAdminPage from "./components/authentification/SignUpAdmin";
+import LoginPage from "./components/authentification/Login";
+import MySkillsPage from "./components/employee/MySkills";
+import ProjectsPage from "./components/employee/Projects";
+import OrganizationSkillsPage from "./components/department_manager/OrganizationSkills";
+import OrganizationEmployeesPage from './components/admin/OrganizationEmployees';
+import OrganizationDepartmentsPage from './components/admin/OrganizationDepartments';
+import MyDepartment from './components/department_manager/MyDepartment';
+import MyProjects from './components/project_manager/MyProjects'
+import MainPage from './components/default_pages/MainPage'
+import requireAuth from './components/authentification/RequireAuth'
+import RequireAuth from './components/authentification/RequireAuth';
+import Welcome from './components/default_pages/Welcome';
+import Missing from './components/default_pages/Missing'
+import Unauthorized from './components/default_pages/Unauthorized'
 
 export const Context = React.createContext();
 
@@ -31,9 +35,10 @@ export default function App() {
             <Notifications />
                 <Routes>
                     <Route path="/" element={<Layout />}>
+                        <Route path="/" element={<Welcome />} />
                         <Route path="login" element={<LoginPage />} />
                         <Route path="signup" element={<SignUpAdminPage />} />
-
+                        <Route path="unauthorized" element={<Unauthorized />} />
                         <Route element={<RequireAuth />}>
                             <Route path='/myskills' element={<MainPage Content={MySkillsPage} />} />
                             <Route path='/projects' element={<MainPage Content={ProjectsPage} />} />
@@ -43,9 +48,9 @@ export default function App() {
                             <Route path='/mydepartment' element={<MainPage Content={MyDepartment} />} />
                             <Route path='/myprojects' element={<MainPage Content={MyProjects} />} />
                         </Route>
+                        <Route path="*" element={<Missing />} />
                     </Route>
                 </Routes>
-        
             </MantineProvider>
         </Context.Provider>
     )
