@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import GenericHeader from './Header';
+import GenericHeader from '../layout/Header';
 import { ScrollArea } from '@mantine/core';
 import { Box, Portal, rem } from '@mantine/core';
 import { useHeadroom } from '@mantine/hooks';

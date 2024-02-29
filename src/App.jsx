@@ -6,23 +6,23 @@ import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom'
 import { Notifications } from '@mantine/notifications';
 
-import Layout from './components/authentification/Layout';
-import SignUpAdminPage from "./components/authentification/SignUpAdmin";
-import LoginPage from "./components/authentification/Login";
-import MySkillsPage from "./components/employee/MySkills";
-import ProjectsPage from "./components/employee/Projects";
-import OrganizationSkillsPage from "./components/department_manager/OrganizationSkills";
-import OrganizationEmployeesPage from './components/admin/OrganizationEmployees';
-import OrganizationDepartmentsPage from './components/admin/OrganizationDepartments';
-import MyDepartment from './components/department_manager/MyDepartment';
-import MyProjects from './components/project_manager/MyProjects'
-import MainPage from './components/default_pages/MainPage'
-import requireAuth from './components/authentification/RequireAuth'
-import RequireAuth from './components/authentification/RequireAuth';
-import Welcome from './components/default_pages/Welcome';
-import Missing from './components/default_pages/Missing'
-import Unauthorized from './components/default_pages/Unauthorized'
-import PersistLogin from './components/authentification/PersistLogin';
+import Layout from './components/layout/Layout';
+import SignUpAdminPage from "./components/auth/SignUpAdmin";
+import LoginPage from "./components/auth/Login";
+import MySkillsPage from "./components/pages/MySkills";
+import ProjectsPage from "./components/pages/Projects";
+import OrganizationSkillsPage from "./components/pages/OrganizationSkills";
+import OrganizationEmployeesPage from './components/pages/OrganizationEmployees';
+import OrganizationDepartmentsPage from './components/pages/OrganizationDepartments';
+import MyDepartment from './components/pages/MyDepartment';
+import MyProjects from './components/pages/MyProjects'
+import MainPage from './components/pages/MainPage'
+import requireAuth from './components/auth/RequireAuth'
+import RequireAuth from './components/auth/RequireAuth';
+import Welcome from './components/pages/Welcome';
+import Missing from './components/pages/Missing'
+import Unauthorized from './components/pages/Unauthorized'
+import PersistLogin from './components/auth/PersistLogin';
 
 export const Context = React.createContext();
 

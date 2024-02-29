@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react"
-import EmployeeCard from './EmployeeCard'
+import EmployeeCard from './employeeComponents/EmployeeCard'
 import { Card } from '@mantine/core';
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import axios from "../../api/axios";
@@ -91,7 +91,8 @@ const Users = () => {
                             </Card>
                             <Button className='w-[300px] h-[230px] mx-[40px] my-[20px] rounded-xl select-none
                                                bg-accent text-white text-2xl hover:bg-btn_hover font-bold text-white'
-                                    onClick={()=>refresh()}>
+                                    // onClick={()=>refresh()}
+                                    >
                                 Need more employees
                             </Button>
                         </div>

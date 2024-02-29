@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 import axios from "../api/axios";
 import useAuth from "./useAuth";
-import { axiosPrivate } from "../api/axios";
 
 const useRefreshToken = () => {
     const { auth, setAuth } = useAuth();
