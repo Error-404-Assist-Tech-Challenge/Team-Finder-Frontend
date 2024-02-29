@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-unused-vars */
 import { Container, Title, TextInput, PasswordInput, Button } from '@mantine/core';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useRef, useState, useEffect } from 'react';
 import useAuth from '../../hooks/useAuth'
 
@@ -12,6 +12,8 @@ export default function LoginPage() {
 
     const { setAuth } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/myskills";
 
     const handleSignUp = () => {
         navigate('/signup');
@@ -39,7 +41,7 @@ export default function LoginPage() {
 
             setAuth({name, email, accessToken, refreshToken})
 
-            navigate('/myskills');
+            navigate(from, {replace: true});
         } catch (err) {
             if (!err?.response) {
                 setErrorMessage('No Server Response');

@@ -6,6 +6,7 @@ import { Card } from '@mantine/core';
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import axios from "../../api/axios";
 import useAuth from "../../hooks/useAuth";
+import { useNavigate, useLocation } from 'react-router-dom'
 
 const USER_ID = 'aaf86aa9-c868-4f9b-b5a0-178aff826b5a'
 
@@ -14,6 +15,9 @@ const Users = () => {
     const { auth } = useAuth();
     const axiosPrivate = useAxiosPrivate();
     const [users, setUsers] = useState([]);
+    const navigate = useNavigate();
+    const location = useLocation();
+    
 
     useEffect(() => {
         let isMounted = true;
@@ -26,7 +30,7 @@ const Users = () => {
                 });
                 isMounted && setUsers(response.data)
             } catch (error) {
-                console.log(error);
+                console.log('Error fetching organization members:', error);
             }
         }
 
@@ -52,6 +56,7 @@ const Users = () => {
                 return response.data.accessToken;
             } catch (error) {
                 console.error("Error token is invald or expired:", error);
+                // navigate('/login', {state: {from: location}, replace: true })
                 throw error;
             }
         }
