@@ -11,7 +11,7 @@ export default function EmployeeCard({ employee }) {
     };
 
     return (
-        <Card className="flex w-[300px] h-[230px] bg-[#505A5E] mx-[40px] my-[20px] rounded-xl dark:text-darktext text-text select-none">
+        <Card className="flex w-[300px] h-[230px] bg-[#505A5E] mx-[40px] my-[20px] rounded-xl dark:text-darktext text-text select-none hover:bg-btn_hover font-bold">
             <div className="flex items-center">
                 <Avatar className="m-3 w-[50px] h-[50px] bg-[#E9E5E6]">{getInitials(employee.name)}</Avatar>
                 <div className="flex flex-col">

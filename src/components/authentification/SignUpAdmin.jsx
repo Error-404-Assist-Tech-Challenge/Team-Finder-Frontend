@@ -164,7 +164,7 @@ export default function SignUpAdminPage() {
                     />
                 </div>
                 <div className="flex justify-center">
-                    <Button variant="filled" size="xl" radius="lg" className="bg-[#FF3D2E] mt-[50px]"
+                    <Button variant="filled" size="xl" radius="lg" className="bg-[#FF3D2E]  hover:bg-btn_hover font-bold text-white mt-[50px]"
                         disabled={!validName || !validAddress || !validPassword || !validOrganization || !validAddress}
                         onClick={handleSignUp}>
                         Sign Up
@@ -174,7 +174,7 @@ export default function SignUpAdminPage() {
                     <Title order={4}>
                         Or if you already have an account:
                     </Title>
-                    <Button variant="filled" size="lg" radius="lg" className="bg-[#FF3D2E]"
+                    <Button variant="filled" size="lg" radius="lg" className="bg-[#FF3D2E]  hover:bg-btn_hover font-bold text-white"
                         onClick={handleLogIn}>
                         Log in
                     </Button>

@@ -134,7 +134,7 @@ export default function GenericHeader() {
                                     </div>
                                     <div className="flex justify-between items-center">
                                         <Switch className="pt-2" size="lg" color="dark.4" onLabel={sunIcon} offLabel={moonIcon} onClick={toogleDarkMode} />
-                                        <Button className="bg-[#FF3D2E] mt-2">Log out</Button>
+                                        <Button className="bg-[#FF3D2E] mt-2  hover:bg-btn_hover font-bold text-white">Log out</Button>
                                     </div>
                                 </Popover.Dropdown>
                             </Popover>
