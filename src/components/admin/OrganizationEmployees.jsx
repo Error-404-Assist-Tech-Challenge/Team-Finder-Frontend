@@ -2,8 +2,8 @@
 import { Button, Loader } from '@mantine/core';
 import { useHeadroom } from '@mantine/hooks';
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Context } from '../App';
-import Users from './components/users';
+import { Context } from '../../App';
+import Users from './Users';
 
 export default function OrganizationEmployeesPage() {
 

@@ -4,23 +4,24 @@ import { MantineProvider } from '@mantine/core';
 import { theme } from './theme';
 import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom'
-import Layout from './pages/Layout'
-import SignUpAdminPage from "./pages/SignUpAdmin";
-import LoginPage from "./pages/Login";
-import MySkillsPage from "./pages/MySkills";
-import ProjectsPage from "./pages/Projects";
-import OrganizationSkillsPage from "./pages/OrganizationSkills";
-import OrganizationEmployeesPage from './pages/OrganizationEmployees';
-import OrganizationDepartmentsPage from './pages/OrganizationDepartments';
-import MyDepartment from './pages/MyDepartment';
-import MyProjects from './pages/MyProjects'
-import MainPage from './pages/MainPage'
-import requireAuth from './pages/components/requireAuth'
-import RequireAuth from './pages/components/requireAuth';
 import { Notifications } from '@mantine/notifications';
-import Welcome from './pages/Welcome';
-import Missing from './pages/Missing'
-import Unauthorized from './pages/Unauthorized'
+
+import Layout from './components/authentification/Layout';
+import SignUpAdminPage from "./components/authentification/SignUpAdmin";
+import LoginPage from "./components/authentification/Login";
+import MySkillsPage from "./components/employee/MySkills";
+import ProjectsPage from "./components/employee/Projects";
+import OrganizationSkillsPage from "./components/department_manager/OrganizationSkills";
+import OrganizationEmployeesPage from './components/admin/OrganizationEmployees';
+import OrganizationDepartmentsPage from './components/admin/OrganizationDepartments';
+import MyDepartment from './components/department_manager/MyDepartment';
+import MyProjects from './components/project_manager/MyProjects'
+import MainPage from './components/default_pages/MainPage'
+import requireAuth from './components/authentification/RequireAuth'
+import RequireAuth from './components/authentification/RequireAuth';
+import Welcome from './components/default_pages/Welcome';
+import Missing from './components/default_pages/Missing'
+import Unauthorized from './components/default_pages/Unauthorized'
 
 export const Context = React.createContext();
 

@@ -2,8 +2,8 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Container, Title, TextInput, PasswordInput, Button } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
-import axios from '../api/axios';
-import useAuth from '../hooks/useAuth'
+import axios from '../../api/axios';
+import useAuth from '../../hooks/useAuth'
 
 
 const nameRegex = /^[A-Za-z]+(?:\s+[A-Za-z]+)*$/;

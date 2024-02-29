@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react"
-import EmployeeCard from './employeeCard'
+import EmployeeCard from './EmployeeCard'
 import { Card } from '@mantine/core';
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import axios from "../../api/axios";
