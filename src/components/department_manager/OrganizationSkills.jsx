@@ -1,15 +1,15 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-unused-vars */
 import { useHeadroom } from '@mantine/hooks';
 import { useContext, useEffect, useState } from 'react';
 import { Table } from '@mantine/core';
 import { Context } from '../../App';
-import axios from '../../api/axios'
-
-const USER_ID = 'aaf86aa9-c868-4f9b-b5a0-178aff826b5a'
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 export default function OrganizationSkillsPage() {
 
+    const axiosPrivate = useAxiosPrivate();
     const [darkMode, setDarkMode] = useContext(Context);
     const pinned = useHeadroom({ fixedAt: 20 });
 
@@ -23,9 +23,9 @@ export default function OrganizationSkillsPage() {
         let isMounted = true;
         const controller = new AbortController();
 
-        const getUsers = async () => {
+        const getSkills = async () => {
             try {
-                const response = await axios.get(`/organizations/skills?user_id=${USER_ID}`, {
+                const response = await axiosPrivate.get('organizations/skills', {
                     signal: controller.signal
                 });
                 console.log('Skills:', response.data);
@@ -35,7 +35,7 @@ export default function OrganizationSkillsPage() {
             }
         }
 
-        getUsers();
+        getSkills();
 
         return () => {
             isMounted = false;

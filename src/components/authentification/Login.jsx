@@ -36,8 +36,9 @@ export default function LoginPage() {
             const accessToken = response?.data?.access_token;
             const refreshToken = response?.data?.refresh_token;
 
-            console.log('Your access token is:', accessToken);
-            console.log('Your refresh token is:', refreshToken);
+            console.log(accessToken);
+            // console.log('Your access token is:', accessToken);
+            // console.log('Your refresh token is:', refreshToken);
 
             setAuth({name, email, accessToken, refreshToken})
 
@@ -73,12 +74,12 @@ export default function LoginPage() {
 
     return (
         <div className="flex items-center justify-center min-h-screen min-w-full bg-[#272F32] text-[#272F32] select-none">
-            <Container className="bg-[#505a5e] h-[auto] w-[494px] rounded-[20px]">
-                <Title order={1} className="text-5xl text-select-none text-center py-[50px] text-white">
+            <Container className="bg-[#505a5e] h-[auto] w-[494px] rounded-[20px] p-[30px] text-white">
+                <Title order={1} className="text-5xl text-select-none text-center py-[50px] ">
                     Team Finder
                 </Title>
                 <p ref={errorRef} className={errorMessage ? "errmsg" : "offscreen"}>{errorMessage}</p>
-                <div className="text-xl text-white">
+                <div className="text-xl ">
                     <TextInput
                         label="E-mail Address"
                         placeholder="john.doe@example.com"

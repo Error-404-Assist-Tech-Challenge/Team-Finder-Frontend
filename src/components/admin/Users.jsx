@@ -1,14 +1,12 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import { useState, useEffect } from "react"
-import EmployeeCard from './EmployeeCard'
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Card } from '@mantine/core';
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import axios from "../../api/axios";
-import useAuth from "../../hooks/useAuth";
+import { useState, useEffect } from "react"
 import { useNavigate, useLocation } from 'react-router-dom'
 
-const USER_ID = 'aaf86aa9-c868-4f9b-b5a0-178aff826b5a'
+import EmployeeCard from './EmployeeCard'
+import useAuth from "../../hooks/useAuth"
+import useAxiosPrivate from "../../hooks/useAxiosPrivate"
 
 const Users = () => {
 
@@ -25,12 +23,12 @@ const Users = () => {
 
         const getUsers = async () => {
             try {
-                const response = await axios.get(`users?user_id=${USER_ID}`, {
+                const response = await axiosPrivate.get('organization/users', {
                     signal: controller.signal
                 });
                 isMounted && setUsers(response.data)
             } catch (error) {
-                console.log('Error fetching organization members:', error);
+                console.error('Error fetching organization members:', error);
             }
         }
 
@@ -40,28 +38,6 @@ const Users = () => {
             isMounted = false;
             controller.abort();
         }
-    }, [])
-
-    useEffect(() => {
-        const tryProtected = async () => {
-            try {
-                const response = await axiosPrivate.get('/users/protected', {
-                    // withCredentials: true,
-                    headers: {
-                        'Authorization': `Bearer ${auth.accessToken}`,
-                        'Access-Control-Allow-Headers': '*'
-                    }
-                });
-                console.log(auth.accessToken, 'is valid and unexpired')
-                return response.data.accessToken;
-            } catch (error) {
-                console.error("Error token is invald or expired:", error);
-                // navigate('/login', {state: {from: location}, replace: true })
-                throw error;
-            }
-        }
-
-        tryProtected();
     }, [])
 
     return (

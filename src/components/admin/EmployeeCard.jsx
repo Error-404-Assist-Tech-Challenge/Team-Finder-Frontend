@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Card, Avatar } from '@mantine/core';
-import RoleCard from './RoleCard';
 
+import RoleCard from './RoleCard';
 
 export default function EmployeeCard({ employee }) {
 
@@ -34,6 +34,5 @@ export default function EmployeeCard({ employee }) {
                 }
             </div>
         </Card>
-
     )
 }
