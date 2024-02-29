@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react"
 import EmployeeCard from './EmployeeCard'
@@ -5,6 +6,7 @@ import { Card } from '@mantine/core';
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import axios from "../../api/axios";
 import useAuth from "../../hooks/useAuth";
+import { useNavigate, useLocation } from 'react-router-dom'
 
 const USER_ID = 'aaf86aa9-c868-4f9b-b5a0-178aff826b5a'
 
@@ -13,6 +15,9 @@ const Users = () => {
     const { auth } = useAuth();
     const axiosPrivate = useAxiosPrivate();
     const [users, setUsers] = useState([]);
+    const navigate = useNavigate();
+    const location = useLocation();
+    
 
     useEffect(() => {
         let isMounted = true;
@@ -25,7 +30,7 @@ const Users = () => {
                 });
                 isMounted && setUsers(response.data)
             } catch (error) {
-                console.log(error);
+                console.log('Error fetching organization members:', error);
             }
         }
 
@@ -43,14 +48,15 @@ const Users = () => {
                 const response = await axiosPrivate.get('/users/protected', {
                     // withCredentials: true,
                     headers: {
-                        'Authorization': `Bearer ${auth.token}`,
+                        'Authorization': `Bearer ${auth.accessToken}`,
                         'Access-Control-Allow-Headers': '*'
                     }
                 });
-                console.log(auth.token, 'is valid and unexpired')
-                return response.data.token;
+                console.log(auth.accessToken, 'is valid and unexpired')
+                return response.data.accessToken;
             } catch (error) {
                 console.error("Error token is invald or expired:", error);
+                // navigate('/login', {state: {from: location}, replace: true })
                 throw error;
             }
         }

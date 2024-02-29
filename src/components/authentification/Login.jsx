@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-unused-vars */
 import { Container, Title, TextInput, PasswordInput, Button } from '@mantine/core';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useRef, useState, useEffect } from 'react';
 import useAuth from '../../hooks/useAuth'
 
@@ -12,6 +12,8 @@ export default function LoginPage() {
 
     const { setAuth } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/myskills";
 
     const handleSignUp = () => {
         navigate('/signup');
@@ -29,14 +31,17 @@ export default function LoginPage() {
                     headers: { 'Content-Type': 'application/json' },
                     //withCredentials: true
                 });
-            console.log('Your token is:', response.data.token);
 
             const name = response?.data?.name;
-            const token = response?.data?.token;
+            const accessToken = response?.data?.access_token;
+            const refreshToken = response?.data?.refresh_token;
 
-            setAuth({name, email, password, token})
+            console.log('Your access token is:', accessToken);
+            console.log('Your refresh token is:', refreshToken);
 
-            navigate('/myskills');
+            setAuth({name, email, accessToken, refreshToken})
+
+            navigate(from, {replace: true});
         } catch (err) {
             if (!err?.response) {
                 setErrorMessage('No Server Response');
@@ -68,12 +73,12 @@ export default function LoginPage() {
 
     return (
         <div className="flex items-center justify-center min-h-screen min-w-full bg-[#272F32] text-[#272F32] select-none">
-            <Container className="bg-[#9DBDC6] h-[auto] w-[494px] rounded-[50px]">
-                <Title order={1} className="text-5xl text-select-none text-center py-[50px]">
+            <Container className="bg-[#505a5e] h-[auto] w-[494px] rounded-[20px]">
+                <Title order={1} className="text-5xl text-select-none text-center py-[50px] text-white">
                     Team Finder
                 </Title>
                 <p ref={errorRef} className={errorMessage ? "errmsg" : "offscreen"}>{errorMessage}</p>
-                <div className="text-xl">
+                <div className="text-xl text-white">
                     <TextInput
                         label="E-mail Address"
                         placeholder="john.doe@example.com"
@@ -99,7 +104,7 @@ export default function LoginPage() {
                     </Button>
                 </div>
                 <div className="text-lg flex items-center justify-between px-[20px] py-[50px]">
-                    <Title order={4}>
+                    <Title order={4} className='text-white'>
                         Or if you don't have an account:
                     </Title>
                     <Button variant="filled" size="lg" radius="lg" className="bg-[#FF3D2E]"
