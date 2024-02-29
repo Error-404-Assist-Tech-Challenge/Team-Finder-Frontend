@@ -87,12 +87,12 @@ export default function MySkillsPage() {
 
         // saveSkills();
 
-        // const id = notifications.show({
-        //     title: 'Data saved',
-        //     message: 'Your data has been fetched.',
-        //     icon: <IconCheck style={{ width: rem(35), height: rem(35) }} />,
-        //     color: "teal",
-        // });
+        const id = notifications.show({
+            title: 'Data saved',
+            message: 'Your data has been fetched.',
+            icon: <IconCheck style={{ width: rem(35), height: rem(35) }} />,
+            color: "teal",
+        });
     }
 
     function handleAddSkill() { }
