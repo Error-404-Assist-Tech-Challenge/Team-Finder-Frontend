@@ -52,7 +52,7 @@ export default function MySkillsPage() {
     }, [skills]);
 
     useEffect(() => {
-        const timeout = 400;
+        const timeout = 2000;
         setTimeout(() => {
             setVisible(false);
         }, timeout);

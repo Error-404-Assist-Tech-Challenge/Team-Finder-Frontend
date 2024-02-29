@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react"
 import EmployeeCard from './EmployeeCard'
@@ -43,12 +44,12 @@ const Users = () => {
                 const response = await axiosPrivate.get('/users/protected', {
                     // withCredentials: true,
                     headers: {
-                        'Authorization': `Bearer ${auth.token}`,
+                        'Authorization': `Bearer ${auth.accessToken}`,
                         'Access-Control-Allow-Headers': '*'
                     }
                 });
-                console.log(auth.token, 'is valid and unexpired')
-                return response.data.token;
+                console.log(auth.accessToken, 'is valid and unexpired')
+                return response.data.accessToken;
             } catch (error) {
                 console.error("Error token is invald or expired:", error);
                 throw error;

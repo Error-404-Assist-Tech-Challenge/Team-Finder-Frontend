@@ -4,9 +4,11 @@ import { useHeadroom } from '@mantine/hooks';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Context } from '../../App';
 import Users from './Users';
+import useRefreshToken from '../../hooks/useRefreshToken';
 
 export default function OrganizationEmployeesPage() {
 
+    const refresh = useRefreshToken();
     const [darkMode, setDarkMode] = useContext(Context);
     const pinned = useHeadroom({ fixedAt: 20 });
     const [visible, setVisible] = useState(true);
@@ -30,7 +32,8 @@ export default function OrganizationEmployeesPage() {
                 <Users />}
                 {!visible &&
                 <Button className='w-[300px] h-[230px] mx-[40px] my-[20px] rounded-xl select-none
-                                bg-accent text-white text-2xl'>
+                                bg-accent text-white text-2xl'
+                                onClick={()=>refresh()}>
                     Need more employees
                 </Button>}
             </div>
