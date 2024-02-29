@@ -6,6 +6,9 @@ module.exports = {
     theme: {
       extend: {
         colors: {
+
+          btn_hover:'#91221A',
+
           darkcanvas: '#272F32',
           darkbg: '#DAEAEF',
           darkbg2: '#9DBDC6',

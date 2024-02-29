@@ -11,31 +11,19 @@ export default function OrganizationEmployeesPage() {
     const refresh = useRefreshToken();
     const [darkMode, setDarkMode] = useContext(Context);
     const pinned = useHeadroom({ fixedAt: 20 });
-    const [visible, setVisible] = useState(true);
 
     useEffect(() => {
-        const timeout = 400;
-        setTimeout(() => {
-            setVisible(false);
-        }, timeout);
     }, [darkMode]);
 
     return (
         <div className={`${darkMode && 'dark'}`}>
             <div className='dark:bg-darkcanvas bg-canvas h-screen flex flex-wrap'>
-             {visible && (
-                        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                            <Loader size={30} color="red" />
-                        </div>
-                    )}
-                {!visible &&
-                <Users />}
-                {!visible &&
-                <Button className='w-[300px] h-[230px] mx-[40px] my-[20px] rounded-xl select-none
-                                bg-accent text-white text-2xl'
+                <Users />
+                {/* <Button className='w-[300px] h-[230px] mx-[40px] my-[20px] rounded-xl select-none
+                                bg-accent text-white text-2xl hover:bg-btn_hover font-bold text-white'
                                 onClick={()=>refresh()}>
                     Need more employees
-                </Button>}
+                </Button> */}
             </div>
         </div>
     )

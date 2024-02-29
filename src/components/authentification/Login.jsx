@@ -98,9 +98,9 @@ export default function LoginPage() {
                     />
                 </div>
                 <div className="flex justify-center">
-                    <Button variant="filled" size="xl" radius="lg" className="bg-[#FF3D2E] mt-[50px]"
+                    <Button variant="filled" size="xl" radius="lg" className="bg-[#FF3D2E]  hover:bg-btn_hover text-white font-bold mt-[50px]"
                         disabled={!email || !password}
-                        onClick={handleLogIn}>
+                        onClick={handleLogIn} >
                         Log in
                     </Button>
                 </div>
@@ -108,7 +108,7 @@ export default function LoginPage() {
                     <Title order={4} className='text-white'>
                         Or if you don't have an account:
                     </Title>
-                    <Button variant="filled" size="lg" radius="lg" className="bg-[#FF3D2E]"
+                    <Button variant="filled" size="lg" radius="lg" className="bg-[#FF3D2E]  hover:bg-btn_hover font-bold text-white"
                         onClick={handleSignUp}>
                         Sign up
                     </Button>
