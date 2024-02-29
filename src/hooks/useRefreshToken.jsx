@@ -7,14 +7,9 @@ const useRefreshToken = () => {
     const { auth, setAuth } = useAuth();
 
     const refresh = async () => {
-        console.log("The token I set was: ", auth.refreshToken)
         try {
             const response = await axios.get('/users/refresh_token', {
-                // withCredentials: true,
-                headers: {
-                    'Authorization': `Bearer ${auth.refreshToken}`,
-                    'Access-Control-Allow-Headers': '*'
-                }
+                withCredentials: true,
             });
 
             console.log("New access token:", response.data.access_token);

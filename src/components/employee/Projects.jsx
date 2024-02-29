@@ -14,7 +14,7 @@ export default function ProjectsPage() {
 
     return (
         <>
-            <p className='dark:text-darktext text-text text-xl m-[20px] '>Projects</p>
+            <p className='dark:text-darktext text-text text-xl m-[20px]'>Projects</p>
         </>
     )
 }
