@@ -4,9 +4,7 @@ import { Container, Title, TextInput, PasswordInput, Button } from '@mantine/cor
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useRef, useState, useEffect } from 'react';
 import useAuth from '../../hooks/useAuth'
-
 import axios from '../../api/axios';
-const LOGIN_URL = '/users/login'
 
 export default function LoginPage() {
 
@@ -22,27 +20,29 @@ export default function LoginPage() {
     const handleLogIn = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(LOGIN_URL,
+            const response = await axios.post('users/login',
                 JSON.stringify({
                     email: email,
                     password: password,
                 }),
                 {
-                    headers: { 'Content-Type': 'application/json' },
-                    //withCredentials: true
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Credentials': 'true'
+                    },
+                    withCredentials: true
                 });
 
             const name = response?.data?.name;
             const accessToken = response?.data?.access_token;
-            const refreshToken = response?.data?.refresh_token;
 
-            console.log(accessToken);
-            // console.log('Your access token is:', accessToken);
-            // console.log('Your refresh token is:', refreshToken);
+            // console.log(accessToken);
+            console.log('Your access token is:', accessToken);
 
-            setAuth({name, email, accessToken, refreshToken})
+            setAuth({ name, email, accessToken })
 
-            navigate(from, {replace: true});
+            navigate(from, { replace: true });
         } catch (err) {
             if (!err?.response) {
                 setErrorMessage('No Server Response');
