@@ -131,6 +131,9 @@ export default function GenericHeader() {
                                     <div>
                                         <Text size="s" className="text-center pt-1 " style={{color: darkMode ? 'white' : 'black' }}>{auth.name}</Text>
                                         <Text size="s" className="text-center pt-1 " style={{color: darkMode ? 'white' : 'black' }}>{auth.email}</Text>
+                                        <hr className="mt-[10px]"></hr>
+                                        <Text size="s" className="text-center pt-1 " style={{color: darkMode ? 'white' : 'black' }}>{auth.organization}</Text>
+                                        <Text size="s" className="text-center pt-1 " style={{color: darkMode ? 'white' : 'black' }}>{auth.address}</Text>
                                     </div>
                                     <div className="flex justify-between items-center">
                                         <Switch className="pt-2" size="lg" color="dark.4" onLabel={sunIcon} offLabel={moonIcon} onClick={toogleDarkMode} />

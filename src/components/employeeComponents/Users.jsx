@@ -49,27 +49,28 @@ const Users = () => {
         }
     }, [])
     
-    useEffect(() => {
-        const tryProtected = async () => {
-            try {
-                const response = await axiosPrivate.get('/users/protected', {
-                    // withCredentials: true,
-                    headers: {
-                        'Authorization': `Bearer ${auth.accessToken}`,
-                        'Access-Control-Allow-Headers': '*'
-                    }
-                });
-                console.log(auth.accessToken, 'is valid and unexpired')
-                return response.data.accessToken;
-            } catch (error) {
-                console.error("Error token is invald or expired:", error);
-                // navigate('/login', {state: {from: location}, replace: true })
-                throw error;
-            }
-        }
+    // THIS WAS TO TEST A PROTECTED ENDPOINT USING ACCESS TOKENS
+    // useEffect(() => {
+    //     const tryProtected = async () => {
+    //         try {
+    //             const response = await axiosPrivate.get('/users/protected', {
+    //                 withCredentials: true,
+    //                 headers: {
+    //                     'Authorization': `Bearer ${auth.accessToken}`,
+    //                     'Access-Control-Allow-Headers': '*'
+    //                 }
+    //             });
+    //             console.log(auth.accessToken, 'is valid and unexpired')
+    //             return response.data.accessToken;
+    //         } catch (error) {
+    //             console.error("Error token is invald or expired:", error);
+    //             navigate('/login', {state: {from: location}, replace: true })
+    //             throw error;
+    //         }
+    //     }
 
-        tryProtected();
-    }, [])
+    //     tryProtected();
+    // }, [])
 
     return (
         <>

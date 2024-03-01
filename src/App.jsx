@@ -17,7 +17,6 @@ import OrganizationDepartmentsPage from './components/pages/OrganizationDepartme
 import MyDepartment from './components/pages/MyDepartment';
 import MyProjects from './components/pages/MyProjects'
 import MainPage from './components/pages/MainPage'
-import requireAuth from './components/auth/RequireAuth'
 import RequireAuth from './components/auth/RequireAuth';
 import Welcome from './components/pages/Welcome';
 import Missing from './components/pages/Missing'
