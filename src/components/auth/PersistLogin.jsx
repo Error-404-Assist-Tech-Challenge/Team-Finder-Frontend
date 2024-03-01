@@ -4,11 +4,16 @@ import { Outlet } from "react-router-dom"
 import { useState, useEffect } from "react"
 import useRefreshToken from '../../hooks/useRefreshToken'
 import useAuth from '../../hooks/useAuth'
+import { useContext } from 'react';
+import { Context } from '../../App';
+import { Loader } from '@mantine/core';
 
 const PersistLogin = () => {
     const [isLoading, setIsLoading] = useState(true);
     const refresh = useRefreshToken();
     const { auth } = useAuth();
+
+    const [darkMode, setDarkMode] = useContext(Context);
 
     useEffect(() => {
         const verifyRefreshToken = async () => {
@@ -28,7 +33,13 @@ const PersistLogin = () => {
     return (
         <>
         {isLoading
-            ? <p>Loading...</p>
+            ? <div className={`${darkMode && 'dark'}`}>
+                <div className='dark:bg-darkcanvas bg-canvas h-screen select-none'>
+                    <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                        <Loader size={30} color="red" />
+                    </div>
+                </div>
+              </div>
             : <Outlet/>
             }
         </>
