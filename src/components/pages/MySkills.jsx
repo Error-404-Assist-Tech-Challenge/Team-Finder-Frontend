@@ -1,16 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import LevelCircles from '../skillComponents/SkillLevel';
+import LevelCircles from '../skillComponents/LevelCircles';
 import { Loader } from '@mantine/core';
 import { useHeadroom, useDisclosure } from '@mantine/hooks';
 import { useState, useEffect } from 'react';
 import { useContext } from 'react';
 import { Context } from '../../App';
-import ExperienceCircles from '../skillComponents/SkillExperience';
+import ExperienceCircles from '../skillComponents/ExperienceCircles';
 import { notifications } from '@mantine/notifications';
 import { Button, rem } from '@mantine/core';
 import { IconCheck } from '@tabler/icons-react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import UserSkillCard from '../skillComponents/UserSkillCard';
 
 export default function MySkillsPage() {
 
@@ -38,7 +39,7 @@ export default function MySkillsPage() {
             } finally {
                 isMounted = false;
                 controller.abort();
-                const timeout = 200; 
+                const timeout = 200;
                 setTimeout(() => {
                     setVisible(false);
                 }, timeout);
@@ -79,7 +80,7 @@ export default function MySkillsPage() {
             } catch (error) {
                 console.error('Error saving user skills:', error);
             }
-            finally{
+            finally {
                 const id = notifications.show({
                     title: 'Data saved',
                     message: 'Your data has been fetched.',
@@ -101,6 +102,7 @@ export default function MySkillsPage() {
                         <Loader size={30} color="red" />
                     </div>
                 )}
+                < UserSkillCard />
                 {!visible &&
                     <table>
                         <thead>

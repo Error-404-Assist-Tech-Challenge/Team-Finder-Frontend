@@ -32,15 +32,26 @@ export default function SignUpAdminPage() {
                     hq_address: address,
                 }),
                 {
-                    headers: {'Content-Type': 'application/json'},
-                    //withCredentials: true
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Credentials': 'true'
+                    },
+                    withCredentials: true
                 });
+
             console.log('Your token is:', response.data.access_token);
 
             const name = response?.data?.name;
             const accessToken = response?.data?.access_token;
+            const organization = response?.data?.org_name;
+            const address = response?.data?.hq_address;
+            const roles = [...response.data.roles];
 
-            setAuth({name, email, password, accessToken})
+            console.log('Your access token is:', accessToken);
+
+            setAuth({ name, email, organization, address, roles, accessToken })
+            
             navigateTo('/myskills');
         } catch (err) {
             if (!err?.response) {
