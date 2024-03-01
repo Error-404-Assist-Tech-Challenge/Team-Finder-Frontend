@@ -16,14 +16,22 @@ export default function SignUpAdminPage() {
     const { setAuth } = useAuth();
 
     const navigateTo = useNavigate();
+
     const handleLogIn = () => {
         navigateTo('/login');
     };
+
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            handleSignUp(e);
+        }
+    };
+
     const handleSignUp = async (e) => {
         e.preventDefault();
 
         try {
-            const response = await axios.post('/users/admin',
+            const response = await axios.post('users/admin',
                 JSON.stringify({
                     name: user,
                     email: email,
@@ -40,21 +48,20 @@ export default function SignUpAdminPage() {
                     withCredentials: true
                 });
 
-            console.log('Your token is:', response.data.access_token);
-
             const name = response?.data?.name;
             const accessToken = response?.data?.access_token;
-            const organization = response?.data?.org_name;
-            const address = response?.data?.hq_address;
+            const org_name = response?.data?.org_name;
+            const hq_address = response?.data?.hq_address;
             const roles = [...response.data.roles];
 
             console.log('Your access token is:', accessToken);
 
-            setAuth({ name, email, organization, address, roles, accessToken })
-            
+            setAuth({ name, email, org_name, hq_address, roles, accessToken })
+
             navigateTo('/myskills');
         } catch (err) {
             if (!err?.response) {
+                console.error(err);
                 setErrorMessage('No Server Response');
             } else if (err.response?.status === 409) {
                 setErrorMessage('Email Already Being Used');
@@ -170,6 +177,7 @@ export default function SignUpAdminPage() {
                         error={(!validAddress && address) && "Headquaters Address can only contain letters, digits and certain punctuation"}
                         onChange={(e) => setAddress(e.target.value)}
                         required
+                        onKeyDown={handleKeyPress}
                         onFocus={() => setAddressFocus(true)}
                         onBlur={() => setAddressFocus(false)}
                     />

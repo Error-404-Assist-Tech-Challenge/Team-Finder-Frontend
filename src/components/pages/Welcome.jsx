@@ -1,5 +1,5 @@
-import { Button, Title } from '@mantine/core'
 import { useNavigate } from 'react-router-dom';
+import { Button, Title } from '@mantine/core'
 
 const Welcome = () => {
 

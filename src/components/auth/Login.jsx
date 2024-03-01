@@ -17,6 +17,12 @@ export default function LoginPage() {
         navigate('/signup');
     };
 
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            handleLogIn(e);
+        }
+    };
+
     const handleLogIn = async (e) => {
         e.preventDefault();
         try {
@@ -36,13 +42,13 @@ export default function LoginPage() {
 
             const name = response?.data?.name;
             const accessToken = response?.data?.access_token;
-            const organization = response?.data?.org_name;
-            const address = response?.data?.hq_address;
+            const org_name = response?.data?.org_name;
+            const hq_address = response?.data?.hq_address;
             const roles = [...response.data.roles];
 
             console.log('Your access token is:', accessToken);
 
-            setAuth({ name, email, organization, address, roles, accessToken })
+            setAuth({ name, email, org_name, hq_address, roles, accessToken })
 
             navigate(from, { replace: true });
         } catch (err) {
@@ -97,6 +103,7 @@ export default function LoginPage() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
+                        onKeyDown={handleKeyPress}
                     />
                 </div>
                 <div className="flex justify-center">
