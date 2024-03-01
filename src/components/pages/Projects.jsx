@@ -1,6 +1,8 @@
 /* eslint-disable no-unused-vars */
-import { useHeadroom } from '@mantine/hooks';
+
 import React, { useContext, useEffect } from 'react';
+import { useHeadroom } from '@mantine/hooks';
+
 import { Context } from '../../App';
 
 export default function ProjectsPage() {

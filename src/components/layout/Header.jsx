@@ -1,12 +1,10 @@
-import { Button, Avatar } from '@mantine/core';
-import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
-import { Switch, useMantineTheme, rem, Group, Popover, Text, Modal } from '@mantine/core';
-import { IconSun, IconMoonStars } from '@tabler/icons-react';
-import { Tabs } from '@mantine/core';
+import { useNavigate } from 'react-router-dom';
+import { Switch, useMantineTheme, rem, Group, Popover, Text, Modal, Title, Button, Avatar, Tabs } from '@mantine/core';
 import { useLocalStorage, useDisclosure } from '@mantine/hooks';
+import { IconSun, IconMoonStars, IconBell } from '@tabler/icons-react';
+
 import { Context } from '../../App';
-import { IconBell } from '@tabler/icons-react'
 import useAuth from '../../hooks/useAuth'
 
 
@@ -18,7 +16,7 @@ export default function GenericHeader() {
     const { auth } = useAuth();
     const [Value, setValue] = useLocalStorage({
         defaultValue: '',
-      });
+    });
 
     const [opened, { open, close }] = useDisclosure(false);
 
@@ -89,7 +87,7 @@ export default function GenericHeader() {
                         <div className="flex space-x-2 pt-1">
                             <Tabs color="#FF3D2E" radius="xs" defaultValue="" variant="default" value={Value}>
                                 <Tabs.List>
-                                    <Tabs.Tab onClick={handleMySkills} value="MySkills"  className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-[40px]">
+                                    <Tabs.Tab onClick={handleMySkills} value="MySkills" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-[40px]">
                                         My Skills
                                     </Tabs.Tab>
                                     <Tabs.Tab onClick={handleProjects} color="#FF3D2E" value="Projects" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-[40px]">
@@ -101,7 +99,7 @@ export default function GenericHeader() {
                                     <Tabs.Tab onClick={handleOrganizationDepartments} value="OrganizationDepartments" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-[40px]">
                                         Org. Departments
                                     </Tabs.Tab>
-                                    <Tabs.Tab onClick={handleOrganizationSkills} value="OrganizationSkills"  className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-[40px]">
+                                    <Tabs.Tab onClick={handleOrganizationSkills} value="OrganizationSkills" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-[40px]">
                                         Org. Skills
                                     </Tabs.Tab>
                                     <Tabs.Tab onClick={handleMyDepartment} value="MyDepartment" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-[40px]">
@@ -114,26 +112,39 @@ export default function GenericHeader() {
                             </Tabs>
                         </div>
                         <Group justify="center" className='pr-4 pt-1'>
-                            <Button className='hover:bg-transparent' onClick={open}> 
+                            <Button className='hover:bg-transparent' onClick={open}>
                                 <IconBell
                                     style={{ width: rem(35), height: rem(35), color: darkMode ? 'white' : 'black' }}
                                     stroke={1.5}
                                 />
                             </Button>
-                            <Modal opened={opened} onClose={close} title="Notifications" centered overflow="inside">
-                                        {/* Modal content */}
+
+
+
+                            <Modal opened={opened} onClose={close} title="Notifications" centered overflow="inside" size="md"
+                                sx={() => ({
+                                    backgroundColor: 'red',
+                                })}>
+                                <Title>Hello</Title>
+                                <Title>Hello</Title>
+                                <Title>Hello</Title>
+                                <Title>Hello</Title>
+                                <Title>Hello</Title>
                             </Modal>
+
+
+
                             <Popover width={250} position="bottom" withArrow shadow="md" className="custom-popover">
                                 <Popover.Target>
-                                    <Avatar radius="xl" className="dark:bg-darkcanvas bg-gray-100"/>
+                                    <Avatar radius="xl" className="dark:bg-darkcanvas bg-gray-100" />
                                 </Popover.Target>
-                                <Popover.Dropdown style={{ backgroundColor: darkMode ? 'rgba(217, 221, 222, 0.37)' : 'rgba(237, 241, 242, 1)', border: '0'}}>
+                                <Popover.Dropdown style={{ backgroundColor: darkMode ? 'rgba(217, 221, 222, 0.37)' : 'rgba(237, 241, 242, 1)', border: '0' }}>
                                     <div>
-                                        <Text size="s" className="text-center pt-1 " style={{color: darkMode ? 'white' : 'black' }}>{auth.name}</Text>
-                                        <Text size="s" className="text-center pt-1 " style={{color: darkMode ? 'white' : 'black' }}>{auth.email}</Text>
+                                        <Text size="s" className="text-center pt-1 " style={{ color: darkMode ? 'white' : 'black' }}>{auth.name}</Text>
+                                        <Text size="s" className="text-center pt-1 " style={{ color: darkMode ? 'white' : 'black' }}>{auth.email}</Text>
                                         <hr className="mt-[10px]"></hr>
-                                        <Text size="s" className="text-center pt-1 " style={{color: darkMode ? 'white' : 'black' }}>{auth.org_name}</Text>
-                                        <Text size="s" className="text-center pt-1 " style={{color: darkMode ? 'white' : 'black' }}>{auth.hq_address}</Text>
+                                        <Text size="s" className="text-center pt-1 " style={{ color: darkMode ? 'white' : 'black' }}>{auth.organization}</Text>
+                                        <Text size="s" className="text-center pt-1 " style={{ color: darkMode ? 'white' : 'black' }}>{auth.hq_address}</Text>
                                     </div>
                                     <div className="flex justify-between items-center">
                                         <Switch className="pt-2" size="lg" color="dark.4" onLabel={sunIcon} offLabel={moonIcon} onClick={toogleDarkMode} />

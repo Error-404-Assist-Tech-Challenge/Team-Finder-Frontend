@@ -1,17 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import LevelCircles from '../skillComponents/LevelCircles';
-import { Loader } from '@mantine/core';
-import { useHeadroom, useDisclosure } from '@mantine/hooks';
-import { useState, useEffect } from 'react';
-import { useContext } from 'react';
-import { Context } from '../../App';
-import ExperienceCircles from '../skillComponents/ExperienceCircles';
+
+import { useState, useEffect, useContext } from 'react';
+import { Loader, rem } from '@mantine/core';
+import { useHeadroom, } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
-import { Button, rem } from '@mantine/core';
 import { IconCheck } from '@tabler/icons-react';
-import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+
+import { Context } from '../../App';
+import LevelCircles from '../skillComponents/LevelCircles';
+import ExperienceCircles from '../skillComponents/ExperienceCircles';
 import UserSkillCard from '../skillComponents/UserSkillCard';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 export default function MySkillsPage() {
 
@@ -32,6 +32,7 @@ export default function MySkillsPage() {
                 const response = await axiosPrivate.get('skills/user', {
                     signal: controller.signal
                 });
+                console.log('My Skills:', response.data);
                 isMounted && setSkills(response.data);
                 setVisible(false);
             } catch (error) {

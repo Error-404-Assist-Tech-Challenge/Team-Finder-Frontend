@@ -1,10 +1,11 @@
 /* eslint-disable no-unused-vars */
-import '@mantine/core/styles.css';
-import { MantineProvider } from '@mantine/core';
+
 import { theme } from './theme';
 import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom'
+import { MantineProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
+import '@mantine/core/styles.css';
 
 import Layout from './components/layout/Layout';
 import SignUpAdminPage from "./components/auth/SignUpAdmin";

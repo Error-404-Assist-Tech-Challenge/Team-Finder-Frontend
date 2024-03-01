@@ -1,7 +1,9 @@
 /* eslint-disable no-unused-vars */
+
+import { Card, Image, Badge, Text, Button, Group } from '@mantine/core'
+
 import LevelCircles from './LevelCircles'
 import ExperienceCircles from './ExperienceCircles'
-import { Card, Image, Badge, Text, Button, Group } from '@mantine/core'
 
 export default function UserSkillCard() {
   return (
