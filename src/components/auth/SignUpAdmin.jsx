@@ -21,6 +21,12 @@ export default function SignUpAdminPage() {
         navigateTo('/login');
     };
 
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            handleSignUp(e);
+        }
+    };
+
     const handleSignUp = async (e) => {
         e.preventDefault();
 
@@ -171,6 +177,7 @@ export default function SignUpAdminPage() {
                         error={(!validAddress && address) && "Headquaters Address can only contain letters, digits and certain punctuation"}
                         onChange={(e) => setAddress(e.target.value)}
                         required
+                        onKeyDown={handleKeyPress}
                         onFocus={() => setAddressFocus(true)}
                         onBlur={() => setAddressFocus(false)}
                     />

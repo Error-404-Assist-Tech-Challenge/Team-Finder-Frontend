@@ -25,7 +25,7 @@ export default function OrganizationEmployeesPage() {
 
         const getUsers = async () => {
             try {
-                const response = await axiosPrivate.get('users', {
+                const response = await axiosPrivate.get('organization/users', {
                     signal: controller.signal
                 });
                 console.log('Users:', response.data);

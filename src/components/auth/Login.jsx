@@ -17,6 +17,12 @@ export default function LoginPage() {
         navigate('/signup');
     };
 
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            handleLogIn(e);
+        }
+    };
+
     const handleLogIn = async (e) => {
         e.preventDefault();
         try {
@@ -97,6 +103,7 @@ export default function LoginPage() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
+                        onKeyDown={handleKeyPress}
                     />
                 </div>
                 <div className="flex justify-center">
