@@ -1,9 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-unused-vars */
-import { useHeadroom } from '@mantine/hooks';
+
 import { useContext, useEffect, useState } from 'react';
 import { Table } from '@mantine/core';
+import { useHeadroom } from '@mantine/hooks';
+
 import { Context } from '../../App';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
@@ -31,7 +33,7 @@ export default function OrganizationSkillsPage() {
                 console.log('Skills:', response.data);
                 isMounted && setSkills(response.data);
             } catch (error) {
-                console.log(error);
+                console.error('Error fetching organization skills:', error);
             }
         }
 
