@@ -3,7 +3,6 @@
 
 import React, { useContext, useEffect, useState } from 'react';
 import { Button, Loader, Card } from '@mantine/core';
-
 import { Context } from '../../App';
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import EmployeeCard from '../employeeComponents/EmployeeCard'
@@ -48,7 +47,7 @@ export default function OrganizationEmployeesPage() {
             controller.abort();
         }
     }, [])
-
+    
     return (
         <div className={`${darkMode && 'dark'}`}>
             <div className='dark:bg-darkcanvas bg-canvas h-screen flex flex-wrap'>
