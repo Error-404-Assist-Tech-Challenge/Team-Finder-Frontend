@@ -11,7 +11,6 @@ export default function EmployeeCard({ employee }) {
     const axiosPrivate = useAxiosPrivate();
     const [opened, { open, close }] = useDisclosure(false);
     const [isHovering, setIsHovering] = useState(false);
-    const [selectedRole, selectRole] = useState('');
     const getInitials = (name) => {
         const names = name.split(' ');
         return names.map((name) => name[0]).join('').toUpperCase();
@@ -22,12 +21,13 @@ export default function EmployeeCard({ employee }) {
     }
 
     const assignRole = async (e, role) => {
-
+        console.log('user_id:', employee.id);
+        console.log('role_name:', role);
         try {
-            const response = await axiosPrivate.post('users/admin',
+            const response = await axiosPrivate.post('organizations/roles',
                 JSON.stringify({
                     user_id: employee.id,
-                    role: role,
+                    role_name: role,
                 }),
                 {
                     headers: {
@@ -39,6 +39,8 @@ export default function EmployeeCard({ employee }) {
                 });
 
             console.log(response.data);
+
+            // employee.roles = [...response.data.roles];
 
         } catch (error) {
             console.error(error);
@@ -62,47 +64,47 @@ export default function EmployeeCard({ employee }) {
                 </div>
 
                 <div className="pt-4 flex justify-center">
-                    {!employee.user_roles.length && (<Badge color="gray" size="xl" variant="filled">Employee</Badge>)}
-                    {employee.user_roles.includes("admin") && (<Badge color="gray" size="xl" variant="filled">Organization Admin</Badge>)}
-                    {employee.user_roles.includes("dept_manager") && (<Badge color="gray" size="xl" variant="filled">Department Manager</Badge>)}
-                    {employee.user_roles.includes("proj_manager") && (<Badge color="gray" size="xl" variant="filled">Project Manager</Badge>)}
+                    {!employee.roles.length && (<Badge className="m-[10px]" color="gray" size="xl" variant="filled">Employee</Badge>)}
+                    {employee.roles.includes("admin") && (<Badge className="m-[10px]" color="gray" size="xl" variant="filled">Organization Admin</Badge>)}
+                    {employee.roles.includes("dept_manager") && (<Badge className="m-[10px]" color="gray" size="xl" variant="filled">Department Manager</Badge>)}
+                    {employee.roles.includes("proj_manager") && (<Badge className="m-[10px]" color="gray" size="xl" variant="filled">Project Manager</Badge>)}
                 </div>
 
                 <div className="pt-4 flex flex-col items-center">
-                    {employee.user_roles.includes('admin') && (
+                    {employee.roles.includes('admin') && (
                         <Button className="bg-accent2 text-white font-bold rounded-xl text-lg px-5 m-[10px] w-[300px]"
-                            onClick={() => { removeRole('admin') }}
+                            onClick={() => { removeRole(null, 'admin') }}
                         >Remove Organization Admin</Button>)
                     }
-                    {employee.user_roles.includes('dept_manager') && (
+                    {employee.roles.includes('dept_manager') && (
                         <Button className="bg-accent2 text-white font-bold rounded-xl text-lg px-5 m-[10px] w-[300px]"
-                            onClick={() => { removeRole('dept_manager') }}
+                            onClick={() => { removeRole(null, 'dept_manager') }}
                         >Remove Department Manager</Button>)
                     }
-                    {employee.user_roles.includes('proj_manager') && (
+                    {employee.roles.includes('proj_manager') && (
                         <Button className="bg-accent2 text-white font-bold rounded-xl text-lg px-5 m-[10px] w-[300px]"
-                            onClick={() => { removeRole('proj_manager') }}
+                            onClick={() => { removeRole(null, 'proj_manager') }}
                         >Remove Project Manager</Button>)
                     }
-                    {!employee.user_roles.includes('admin') && (
+                    {!employee.roles.includes('admin') && (
                         <Button className="bg-accent text-white font-bold rounded-xl text-lg px-5 m-[10px] w-[300px]"
-                            onClick={() => { assignRole('dept_manager') }}
+                            onClick={() => { assignRole(null, 'admin') }}
                         >Make Organization Admin</Button>)
                     }
-                    {!employee.user_roles.includes('dept_manager') && (
+                    {!employee.roles.includes('dept_manager') && (
                         <Button className="bg-accent text-white font-bold rounded-xl text-lg px-5 m-[10px] w-[300px]"
-                            onClick={() => { assignRole('dept_manager') }}
+                            onClick={() => { assignRole(null, 'dept_manager') }}
                         >Make Department Manager</Button>)
                     }
-                    {!employee.user_roles.includes('proj_manager') && (
+                    {!employee.roles.includes('proj_manager') && (
                         <Button className="bg-accent text-white font-bold rounded-xl text-lg px-5 m-[10px] w-[300px]"
-                            onClick={() => { assignRole('dept_manager') }}
+                            onClick={() => { assignRole(null, 'proj_manager') }}
                         >Make Project Manager</Button>)
                     }
                 </div>
             </Modal>
 
-            <Card className="flex w-[300px] h-[230px] bg-[#505A5E] mx-[40px] my-[20px] rounded-xl dark:text-darktext text-text select-none font-bold"
+            <Card className="flex w-[300px] h-[300px] bg-[#505A5E] mx-[40px] my-[20px] rounded-xl dark:text-darktext text-text select-none font-bold"
                 onClick={open} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
                 <div className="flex items-center">
                     <Avatar className="m-3 w-[50px] h-[50px] bg-[#E9E5E6]">{getInitials(employee.name)}</Avatar>
@@ -112,17 +114,17 @@ export default function EmployeeCard({ employee }) {
                 </div>
                 <div className='ml-3'>{employee.email}</div>
                 <div className="flex justify-center items-center flex-col text-center h-full">
-                    {!isHovering && !employee.user_roles.length && (
-                        <Badge color="gray" size="xl" variant="filled">Employee</Badge>
+                    {!isHovering && !employee.roles.length && (
+                        <Badge className="m-2" color="gray" size="xl" variant="filled">Employee</Badge>
                     )}
-                    {!isHovering && employee.user_roles.includes("admin") && (
-                        <Badge color="gray" size="xl" variant="filled">Organization Admin</Badge>
+                    {!isHovering && employee.roles.includes("admin") && (
+                        <Badge className="m-2" color="gray" size="xl" variant="filled">Organization Admin</Badge>
                     )}
-                    {!isHovering && employee.user_roles.includes("dept_manager") && (
-                        <Badge color="gray" size="xl" variant="filled">Department Manager</Badge>
+                    {!isHovering && employee.roles.includes("dept_manager") && (
+                        <Badge className="m-2" color="gray" size="xl" variant="filled">Department Manager</Badge>
                     )}
-                    {!isHovering && employee.user_roles.includes("proj_manager") && (
-                        <Badge color="gray" size="xl" variant="filled">Project Manager</Badge>
+                    {!isHovering && employee.roles.includes("proj_manager") && (
+                        <Badge className="m-2" color="gray" size="xl" variant="filled">Project Manager</Badge>
                     )}
 
                     {isHovering && <Text className="text-xl">Click to see more!</Text>}
