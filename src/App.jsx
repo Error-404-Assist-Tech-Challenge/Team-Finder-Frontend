@@ -3,7 +3,7 @@
 import { theme } from './theme';
 import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom'
-import { MantineProvider } from '@mantine/core';
+import { MantineProvider, Overlay } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import '@mantine/core/styles.css';
 
@@ -31,7 +31,7 @@ export const Context = React.createContext();
 export default function App() {
 
     const [darkMode, setDarkMode] = useState(true);
-
+    const [visible, setVisible] = useState(true);
     return (
         <Context.Provider value={[darkMode, setDarkMode]}>
             <MantineProvider theme={theme}>

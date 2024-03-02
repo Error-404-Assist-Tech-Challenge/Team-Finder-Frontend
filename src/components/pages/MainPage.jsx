@@ -19,7 +19,6 @@ export default function MainPage({Content}) {
     useEffect(() => {
 
     }, [darkMode]);
-
     return (
         <>
             <div className={`${darkMode && 'dark'}`}>
@@ -36,7 +35,7 @@ export default function MainPage({Content}) {
                                 transform: `translate3d(0, ${pinned ? 0 : rem(-80)}, 0)`,
                                 transition: 'transform 400ms ease',
                             }}
-                        >
+                            >
                             <GenericHeader />
                         </Box>
                             <div className='dark:bg-darkcanvas bg-canvas h-auto'>
