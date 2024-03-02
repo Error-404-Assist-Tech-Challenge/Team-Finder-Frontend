@@ -8,6 +8,7 @@ import { useHeadroom } from '@mantine/hooks';
 
 import { Context } from '../../App';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import { SkillCard } from '../skillComponents/SkillCard';
 
 export default function OrganizationSkillsPage() {
 
@@ -48,29 +49,10 @@ export default function OrganizationSkillsPage() {
 
     return (
         <div className={`${darkMode && 'dark'}`}>
-            <div className='dark:bg-darkcanvas bg-canvas select-none h-auto'>
-                <Table className="p-[20px]">
-                    <thead>
-                        <tr className="text-xl text-left">
-                            <th className="dark:text-darktext text-text p-[7px]">Category</th>
-                            <th className="dark:text-darktext text-text p-[7px]">Name</th>
-                            <th className="dark:text-darktext text-text p-[7px]">Description</th>
-                            <th className="dark:text-darktext text-text p-[7px]">Author</th>
-                            <th className="dark:text-darktext text-text p-[7px]">Departments</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {skills.map((skill, index) => (
-                            <tr key={index} className="text-left">
-                                <td className="dark:text-darktext text-text px-[10px] py-[7px]">skill.category_id</td>
-                                <td className="dark:text-darktext text-text px-[10px] py-[7px]">{skill.name}</td>
-                                <td className="dark:text-darktext text-text px-[10px] py-[7px]">{skill.description}</td>
-                                <td className="dark:text-darktext text-text px-[10px] py-[7px]">{skill.author_name}</td>
-                                <td className="dark:text-darktext text-text px-[10px] py-[7px]">skill.departments.join(', ')</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </Table>
+            <div className='dark:bg-darkcanvas bg-canvas select-none h-auto py-[30px] flex'>
+                {skills.map((skill, index) => (
+                    <SkillCard key={index} skill={skill}/>
+                ))}
             </div>
             <div className='dark:bg-darkcanvas bg-canvas h-screen'></div>
         </div>

@@ -28,6 +28,11 @@ export default function SignUpAdminPage() {
     };
 
     const handleSignUp = async (e) => {
+
+        if(!validName || !validAddress || !validPassword || !validOrganization || !validAddress) {
+            // gotta check for errors
+        }
+
         e.preventDefault();
 
         try {
