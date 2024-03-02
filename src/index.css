@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 
-*{
+* {
     @apply transition-colors duration-500;
 }
 
@@ -20,7 +20,8 @@
     left: -9999px;
 }
 
-.m-1b7284a3, .m-b5489c3c  {
+.m-1b7284a3,
+.m-b5489c3c {
     background-color: #505A5E;
 }
 
