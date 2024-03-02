@@ -3,7 +3,7 @@
 
 import { useState, useEffect, useContext } from 'react';
 import { Loader, rem, Card, Modal, Button } from '@mantine/core';
-import { useHeadroom, useDisclosure} from '@mantine/hooks';
+import { useHeadroom, useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { IconCheck } from '@tabler/icons-react';
 
@@ -21,7 +21,6 @@ export default function MySkillsPage() {
     const [visible, setVisible] = useState(true);
     const [darkMode, setDarkMode] = useContext(Context);
     const pinned = useHeadroom({ fixedAt: 20 });
-
     const [skills, setSkills] = useState([]);
     const [changed, setChange] = useState(false)
 
@@ -105,15 +104,16 @@ export default function MySkillsPage() {
                         <Loader size={30} color="red" />
                     </div>
                 )}
-                
+
                 {!visible &&
                     <div className="flex flex-wrap">
                         {skills.map((skill, index) => (
-                            <UserSkillCard key={index} name={skill.skill_name} level={skill.level} skills={skills} setSkills={setSkills}/>
+                            <UserSkillCard key={index}
+                                index={index} skills={skills} setSkills={setSkills} />
                         ))}
                     </div>}
 
-                        {/* <tfoot className="">
+                {/* <tfoot className="">
                             <tr>
                                 <td>
                                     <button className="bg-accent text-white hover:bg-btn_hover font-bold px-4 py-2 rounded mx-[60px] my-[20px]" onClick={handleAddSkill}>Add Skill</button>
@@ -128,7 +128,7 @@ export default function MySkillsPage() {
                                 </td>
                             </tr>
                         </tfoot> */}
-                    
+
             </div>
         </div>
     )
