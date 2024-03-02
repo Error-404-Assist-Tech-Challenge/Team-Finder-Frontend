@@ -8,6 +8,8 @@ module.exports = {
         extend: {
             colors: {
 
+                card_modal:'#505A5E', 
+
                 btn_hover: '#91221A',
 
                 darkcanvas: '#272F32',
@@ -23,10 +25,12 @@ module.exports = {
                 text: '#272F32',
 
                 graybg: '#505A5E',
-                accent2: '#91221A'
+                accent2: '#91221A',
+                lightMode: "#ffffff"
             }
         },
     },
     plugins: [],
     darkMode: "class",
+    
 };

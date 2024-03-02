@@ -1,8 +1,12 @@
 /* eslint-disable react/prop-types */
 
 import { Button } from '@mantine/core';
+import { Context } from '../../App';
+import { useContext } from 'react';
 
 export default function ExperienceCircles(props) {
+    
+    const [darkMode, setDarkMode] = useContext(Context);
 
     function upgradeSkill(id) {
         if (props.skills[id].experience < 6) {
@@ -28,7 +32,7 @@ export default function ExperienceCircles(props) {
 
 
     return (
-        <div>
+        <div className={`${darkMode && 'dark'}`}>
             <Button variant="outline" onClick={() => downgradeSkill(props.id)}
                 className={`w-[${props.width}px] h-[${props.width}px] m-[6px] rounded-full p-0 pr-[1px] pb-[1px] text-accent border-accent`}
             >-</Button>

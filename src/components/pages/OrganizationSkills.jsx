@@ -3,7 +3,7 @@
 /* eslint-disable no-unused-vars */
 
 import { useContext, useEffect, useState } from 'react';
-import { Table } from '@mantine/core';
+import { Table, Loader } from '@mantine/core';
 import { useHeadroom } from '@mantine/hooks';
 
 import { Context } from '../../App';
@@ -15,6 +15,8 @@ export default function OrganizationSkillsPage() {
     const axiosPrivate = useAxiosPrivate();
     const [darkMode, setDarkMode] = useContext(Context);
     const pinned = useHeadroom({ fixedAt: 20 });
+
+    const [visible, setVisible] = useState(false);  
 
     useEffect(() => {
 
@@ -36,6 +38,12 @@ export default function OrganizationSkillsPage() {
             } catch (error) {
                 console.error('Error fetching organization skills:', error);
             }
+            finally {
+                const timeout = 200;
+                setTimeout(() => {
+                    setVisible(true);
+                }, timeout);
+            }
         }
 
         getSkills();
@@ -49,12 +57,19 @@ export default function OrganizationSkillsPage() {
 
     return (
         <div className={`${darkMode && 'dark'}`}>
+            {!visible && (
+                    <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                        <Loader size={30} color="red" />
+                    </div>
+                )}
+                {visible && (<>
             <div className='dark:bg-darkcanvas bg-canvas select-none h-auto py-[30px] flex'>
                 {skills.map((skill, index) => (
                     <SkillCard key={index} skill={skill}/>
                 ))}
             </div>
             <div className='dark:bg-darkcanvas bg-canvas h-screen'></div>
+            </>)}
         </div>
     )
 }

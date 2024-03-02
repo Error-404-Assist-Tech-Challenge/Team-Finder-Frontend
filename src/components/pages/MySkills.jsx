@@ -6,10 +6,7 @@ import { Loader, rem, Card, Modal, Button } from '@mantine/core';
 import { useHeadroom, useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { IconCheck } from '@tabler/icons-react';
-
 import { Context } from '../../App';
-import LevelCircles from '../skillComponents/LevelCircles';
-import ExperienceCircles from '../skillComponents/ExperienceCircles';
 import UserSkillCard from '../skillComponents/UserSkillCard';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
@@ -104,7 +101,6 @@ export default function MySkillsPage() {
                         <Loader size={30} color="red" />
                     </div>
                 )}
-
                 {!visible &&
                     <div className="flex flex-wrap">
                         {skills.map((skill, index) => (

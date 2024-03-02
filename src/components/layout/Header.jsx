@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Switch, useMantineTheme, rem, Group, Popover, Text, Modal, Card, Button, Avatar, Tabs, Badge } from '@mantine/core';
 import { useLocalStorage, useDisclosure } from '@mantine/hooks';
@@ -70,8 +70,6 @@ export default function GenericHeader() {
             color={theme.colors.blue[6]}
         />
     );
-
-
     if (role === 'ADMIN') {
         return (
             <div className={`${darkMode && 'dark'}`}>
@@ -82,7 +80,6 @@ export default function GenericHeader() {
                         </div>
                         <p className="text-2xl font-bold text-[#505A5E] md:text-right">Organization Admin Account</p>
                     </div>
-
                     <div className="pl-6 pb-3 flex justify-between items-center">
                         <div className="flex space-x-2 pt-1">
                             <Tabs color="#FF3D2E" radius="xs" defaultValue="" variant="default" value={Value}>
@@ -116,7 +113,7 @@ export default function GenericHeader() {
                                 <IconBell
                                     style={{ width: rem(35), height: rem(35), color: darkMode ? 'white' : 'black' }}
                                     stroke={1.5}
-                                />
+                                    />
                             </Button>
 
                             <Modal opened={opened} onClose={close} centered overflow="inside" className="bg-.m-1b7284a3.m-b5489c3c text-white rounded-modal" withCloseButton={false}>
