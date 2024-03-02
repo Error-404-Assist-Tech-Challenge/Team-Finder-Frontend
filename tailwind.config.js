@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 module.exports = {
     content: [
       "./index.html",
@@ -19,7 +20,9 @@ module.exports = {
           bg: '#9DBDC6',
           bg2: '#DAEAEF',
           accent: '#FF3D2E',
-          text: '#272F32'
+          text: '#272F32',
+
+          graybg: '#505A5E'
         }
       },
     },
