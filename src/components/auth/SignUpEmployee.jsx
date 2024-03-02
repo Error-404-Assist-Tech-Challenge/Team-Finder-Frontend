@@ -1,24 +1,58 @@
 /* eslint-disable no-unused-vars */
 import React, { useRef, useState, useEffect } from 'react';
 import { Container, Title, TextInput, PasswordInput, Button } from '@mantine/core';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from '../../api/axios';
 import useAuth from '../../hooks/useAuth'
 
 const nameRegex = /^[A-Za-z]+(?:\s+[A-Za-z]+)*$/;
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@.]+$/;
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-const organizationRegex = /^[A-Za-z0-9\s\-.,&'()]+$/;
-const addressRegex = /^[A-Za-z0-9\s\-.,&'()]+$/;
 
-export default function SignUpAdminPage() {
+export default function SignUpEmployeePage() {
 
     const { setAuth } = useAuth();
+    const naviage = useNavigate();
+    const { ref_id } = useParams();
 
-    const navigateTo = useNavigate();
+    useEffect(() => {
+        const checkToken = async (e) => {
+
+            console.log('Your reference id is: ', ref_id);
+
+            try {
+                const response = await axios.get(`organizations/verify_signup_token?id=${ref_id}`,
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Access-Control-Allow-Origin': '*',
+                            'Access-Control-Allow-Credentials': 'true'
+                        },
+                        withCredentials: true
+                    });
+
+                console.log(response.data);
+
+                setOrganization(response?.data?.org_name);
+                setAddress(response?.data?.hq_address);
+
+            } catch (err) {
+                if (!err?.response) {
+                    setErrorMessage('No Server Response');
+                } else if (err.response?.status === 401) {
+                    naviage('/invalid');
+                } else {
+                    setErrorMessage('Registration Failed')
+                }
+                console.error(err);
+            }
+        };
+
+        checkToken();
+    }, [])
 
     const handleLogIn = () => {
-        navigateTo('/login');
+        naviage('/login');
     };
 
     const handleKeyPress = (e) => {
@@ -29,37 +63,19 @@ export default function SignUpAdminPage() {
 
     const handleSignUp = async (e) => {
 
-        if (!validName) {
-            setErrorMessage('Invalid Name');
-            return;
-        }
-        if (!validEmail) {
-            setErrorMessage('Invalid E-mail Address');
-            return;
-        }
-        if (!validPassword) {
-            setErrorMessage('Invalid Password');
-            return;
-        }
-        if (!validOrganization) {
-            setErrorMessage('Invalid Organization Name');
-            return;
-        }
-        if (!validAddress) {
-            setErrorMessage('Invalid Headquaters Adress');
-            return;
+        if (!validName || !validEmail || !validPassword) {
+            setErrorMessage('Not valid details')
         }
 
         e.preventDefault();
 
         try {
-            const response = await axios.post('users/admin',
+            const response = await axios.post('users/employee',
                 JSON.stringify({
                     name: user,
                     email: email,
                     password: password,
-                    org_name: organization,
-                    hq_address: address,
+                    token: ref_id
                 }),
                 {
                     headers: {
@@ -80,7 +96,7 @@ export default function SignUpAdminPage() {
 
             setAuth({ name, email, org_name, hq_address, roles, accessToken })
 
-            navigateTo('/myskills');
+            naviage('/myskills');
         } catch (err) {
             if (!err?.response) {
                 console.error(err);
@@ -107,11 +123,7 @@ export default function SignUpAdminPage() {
     const [validPassword, setValidPassword] = useState(false);
     const [passwordFocus, setPasswordFocus] = useState(false);
     const [organization, setOrganization] = useState('');
-    const [validOrganization, setValidOrganization] = useState(false);
-    const [organizationFocus, setOrganizationFocus] = useState(false);
     const [address, setAddress] = useState('');
-    const [validAddress, setValidAddress] = useState(false);
-    const [addressFocus, setAddressFocus] = useState(false);
 
     const [errorMessage, setErrorMessage] = useState('');
 
@@ -132,16 +144,8 @@ export default function SignUpAdminPage() {
     }, [password])
 
     useEffect(() => {
-        setValidOrganization(organizationRegex.test(organization));
-    }, [organization])
-
-    useEffect(() => {
-        setValidAddress(addressRegex.test(address));
-    }, [address])
-
-    useEffect(() => {
         setErrorMessage('');
-    }, [user, email, password, organization, address])
+    }, [user, email, password])
 
     return (
         <div className="flex items-center justify-center min-h-screen min-w-full bg-[#272F32] text-[#272F32] select-none">
@@ -159,7 +163,6 @@ export default function SignUpAdminPage() {
                         error={(!validName && user) && "Name can only contain letters"}
                         onChange={(e) => setUser(e.target.value)}
                         required
-                        onKeyDown={handleKeyPress}
                         onFocus={() => setUserFocus(true)}
                         onBlur={() => setUserFocus(false)}
                     />
@@ -170,7 +173,6 @@ export default function SignUpAdminPage() {
                         error={(!validEmail && email) && "Not a valid email"}
                         onChange={(e) => setEmail(e.target.value)}
                         required
-                        onKeyDown={handleKeyPress}
                         onFocus={() => setEmailFocus(true)}
                         onBlur={() => setEmailFocus(false)}
                     />
@@ -181,36 +183,27 @@ export default function SignUpAdminPage() {
                         error={(!validPassword && password) && "Must have min 8 characters and contain at least a lowercase character, uppercase character, digit, special character (@$!%*?&])"}
                         onChange={(e) => setPassword(e.target.value)}
                         required
-                        onKeyDown={handleKeyPress}
                         onFocus={() => setPasswordFocus(true)}
                         onBlur={() => setPasswordFocus(false)}
                     />
                     <TextInput
                         label="Organization Name"
-                        placeholder="ABC Corporation"
-                        autoComplete='off'
-                        error={(!validOrganization && organization) && "Organization Name can only contain letters, digits and certain punctuation"}
-                        onChange={(e) => setOrganization(e.target.value)}
+                        value={organization}
+                        disabled
                         required
-                        onKeyDown={handleKeyPress}
-                        onFocus={() => setOrganizationFocus(true)}
-                        onBlur={() => setOrganizationFocus(false)}
+
                     />
                     <TextInput
                         label="Headquaters Address"
-                        placeholder="123 Main Street, Cityville, State, 12345"
-                        autoComplete='off'
-                        error={(!validAddress && address) && "Headquaters Address can only contain letters, digits and certain punctuation"}
-                        onChange={(e) => setAddress(e.target.value)}
+                        value={address}
+                        disabled
                         required
-                        onKeyDown={handleKeyPress}
-                        onFocus={() => setAddressFocus(true)}
-                        onBlur={() => setAddressFocus(false)}
+
                     />
                 </div>
                 <div className="flex justify-center">
                     <Button variant="filled" size="xl" radius="lg" className="bg-[#FF3D2E]  hover:bg-btn_hover font-bold text-white mt-[50px]"
-                        disabled={!validName || !validAddress || !validPassword || !validOrganization || !validAddress}
+                        disabled={!validName || !validEmail || !validPassword}
                         onClick={handleSignUp}>
                         Sign Up
                     </Button>

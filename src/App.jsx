@@ -23,6 +23,8 @@ import Welcome from './components/pages/Welcome';
 import Missing from './components/pages/Missing'
 import Unauthorized from './components/pages/Unauthorized'
 import PersistLogin from './components/auth/PersistLogin';
+import SignUpEmployeePage from './components/auth/SignUpEmployee';
+import Invalid from './components/pages/Invalid';
 
 export const Context = React.createContext();
 
@@ -40,7 +42,9 @@ export default function App() {
                         <Route path="/" element={<Welcome />} />
                         <Route path="login" element={<LoginPage />} />
                         <Route path="signup" element={<SignUpAdminPage />} />
+                        <Route path="signup/:ref_id" element={<SignUpEmployeePage />} />
                         <Route path="unauthorized" element={<Unauthorized />} />
+                        <Route path="invalid" element={<Invalid />} />
 
                         <Route element={<PersistLogin />}>
                             <Route element={<RequireAuth />}>
