@@ -1,10 +1,11 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 
 import { Button } from '@mantine/core';
 import { Context } from '../../App';
 import { useContext } from 'react';
 
-export default function LevelCircles(props) {
+export default function LevelCirclesCard(props) {
     const [darkMode, setDarkMode] = useContext(Context);
 
     function upgradeSkill(id) {
