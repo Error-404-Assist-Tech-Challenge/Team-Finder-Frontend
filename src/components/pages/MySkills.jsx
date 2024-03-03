@@ -26,6 +26,10 @@ export default function MySkillsPage() {
     const [selectedSkillLevel, selectSkillLevel] = useState(1);
     const [selectedSkillExperience, selectSkillExperience] = useState(1);
 
+    const [unusedSkills, setUnusedSkills] = useState([]);
+    const [addedSkill, setAddedSkill] = useState('');
+
+    // GET USER SKILL
 
     useEffect(() => {
         let isMounted = true;
@@ -57,6 +61,49 @@ export default function MySkillsPage() {
     }, []);
 
 
+    // GET UNUSED USER SKILLS
+
+    useEffect(() => {
+        let isMounted = true;
+        const controller = new AbortController();
+        const fetchUnusedSkills = async () => {
+            try {
+                const response = await axiosPrivate.get('organizations/skills/unused', {
+                    signal: controller.signal
+                });
+                console.log('My Unused Skills:', response.data);
+                isMounted && setUnusedSkills(response.data);
+            } catch (error) {
+                console.error('Error fetching unused skills:', error);
+            }
+        }
+        fetchUnusedSkills();
+        return () => {
+            isMounted = false;
+            controller.abort();
+        }
+    }, []);
+
+    // Add new skill to user
+    const handleAddSkill = async () => {
+        try {
+            const response = await axiosPrivate.post('skills/user',
+                JSON.stringify({
+                    skill_id: addedSkill,
+                }),
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Credentials': 'true'
+                    },
+                    withCredentials: true
+                });
+            console.log('Response:', response.data);
+        } catch (error) {
+            console.error('Error fetching unused skills:', error);
+        }
+    }
 
     useEffect(() => {
         setChange(true);
@@ -71,7 +118,6 @@ export default function MySkillsPage() {
     // icon: <IconCheck style={{ width: rem(35), height: rem(35) }} />,
     // color: "teal",
 
-    function handleAddSkill() { }
 
     return (
         <div className={`${darkMode && 'dark'}`}>
@@ -87,7 +133,9 @@ export default function MySkillsPage() {
                             <Select
                                 label="Skill"
                                 placeholder="Choose a skill"
-                                data={['React', 'Angular', 'Vue', 'Svelte', 'C++', 'Python', 'C#']}
+                                data={unusedSkills}
+                                value={addedSkill}
+                                onChange={setAddedSkill}
                                 searchable
                                 size="md"
                                 nothingFoundMessage="Skill does not exist..."
@@ -97,7 +145,7 @@ export default function MySkillsPage() {
                         <div className="p-3 flex justify-left text-xl">
                             <p>
                                 <span className="font-bold">Level: </span>
-                                {selectSkill && (
+                                {addedSkill && (
                                     <span>
                                         {selectedSkillLevel == 1 && "You are learning C++"}
                                         {selectedSkillLevel == 2 && "You know C++"}
@@ -106,8 +154,9 @@ export default function MySkillsPage() {
                                         {selectedSkillLevel == 5 && "You can teach C++"}
                                     </span>
                                 )}
-
-
+                                {!addedSkill && (
+                                    <span> Please select a skill! </span>
+                                )}
                             </p>
                         </div>
                         <div className="flex justify-center items-center flex-col text-center">
@@ -116,23 +165,29 @@ export default function MySkillsPage() {
                         <div className="p-3 flex justify-left text-xl">
                             <p>
                                 <span className="font-bold">Experience: </span>
-                                {selectedSkillExperience == 1 &&
-                                    (<span>0-6 months</span>)}
-                                {selectedSkillExperience == 2 &&
-                                    (<span>6-12 months</span>)}
-                                {selectedSkillExperience == 3 &&
-                                    (<span>1-2 years</span>)}
-                                {selectedSkillExperience == 4 &&
-                                    (<span>2-4 years</span>)}
-                                {selectedSkillExperience == 5 &&
-                                    (<span>4-7 years</span>)}
-                                {selectedSkillExperience == 6 &&
-                                    (<span>7+ years</span>)}
+                                {addedSkill && (
+                                    <span>
+                                        {selectedSkillExperience == 1 && "0-6 months"}
+                                        {selectedSkillExperience == 2 && "6-12 months"}
+                                        {selectedSkillExperience == 3 && "1-2 years"}
+                                        {selectedSkillExperience == 4 && "2-4 years"}
+                                        {selectedSkillExperience == 5 && "4-7 years"}
+                                        {selectedSkillExperience == 6 && "7+ years"}
+                                    </span>
+                                )}
+                                {!addedSkill && (
+                                    <span>Please select a skill! </span>
+                                )}
+
                             </p>
                         </div>
                         <div className="flex justify-center items-center flex-col text-center">
                             <ExperienceCirclesSelected selectedSkillExperience={selectedSkillExperience} selectSkillExperience={selectSkillExperience} />
                         </div>
+                        {addedSkill && (<Button className="bg-accent text-white hover:bg-btn_hover font-bold px-4 py-2 rounded mx-[10px] my-[10px] mt-[20px] float-right"
+                            onClick={handleAddSkill}>
+                            Add Skill
+                        </Button>)}
                     </div>
                 </Modal>
                 {!visible &&
