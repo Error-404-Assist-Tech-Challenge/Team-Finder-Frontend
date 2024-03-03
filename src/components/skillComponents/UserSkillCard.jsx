@@ -19,25 +19,52 @@ export default function UserSkillCard(props) {
     const axiosPrivate = useAxiosPrivate();
 
     const handleSave = async () => {
-        try {
-            const response = await axiosPrivate.put('skills/users',
-                JSON.stringify({
-                    skill_id: props.skills[props.index].skill_id,
-                    level: props.skills[props.index].level,
-                    experience: props.skills[props.index].experience
-                }),
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Access-Control-Allow-Origin': '*',
-                        'Access-Control-Allow-Credentials': 'true'
-                    },
-                    withCredentials: true
-                });
-            console.log('Skills:', response.data);
-        } catch (error) {
-            console.error('Error saving my skill:', error);
-        }
+
+        console.log(JSON.stringify({
+            skill_id: props.skills[props.index].skill_id,
+            level: props.skills[props.index].level,
+            experience: props.skills[props.index].experience
+        }))
+
+        // try {
+        //     const response = await axiosPrivate.put('skills/users',
+        //         JSON.stringify({
+        //             skill_id: props.skills[props.index].skill_id,
+        //             level: props.skills[props.index].level,
+        //             experience: props.skills[props.index].experience
+        //         }),
+        //         {
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'Access-Control-Allow-Origin': '*',
+        //                 'Access-Control-Allow-Credentials': 'true'
+        //             },
+        //             withCredentials: true
+        //         });
+        //     console.log('Respons:', response.data);
+        // } catch (error) {
+        //     console.error('Error saving my skill:', error);
+        // }
+    }
+
+    const handleRemove = async () => {
+        // try {
+        //     const response = await axiosPrivate.delete('skills/users',
+        //         JSON.stringify({
+        //             skill_id: props.skills[props.index].skill_id,
+        //         }),
+        //         {
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'Access-Control-Allow-Origin': '*',
+        //                 'Access-Control-Allow-Credentials': 'true'
+        //             },
+        //             withCredentials: true
+        //         });
+        //     console.log('Response:', response.data);
+        // } catch (error) {
+        //     console.error('Error deleting my skill:', error);
+        // }
     }
 
 
@@ -48,7 +75,7 @@ export default function UserSkillCard(props) {
                 <div className="flex flex-wrap">
                     <Modal opened={opened} onClose={close} centered overflow="inside" size={500} className="dark:bg-card_modal text-white select-none" zIndex={1000002}>
                         <div className="flex justify-center">
-                            <h1 className="text-3xl font-bold">{props.skills[props.index].skill_name}</h1>
+                            <h1 className="text-4xl font-bold">{props.skills[props.index].skill_name}</h1>
                         </div>
                         <div className="p-3 flex justify-left">
                             <p className="font-bold">Author</p>
@@ -101,13 +128,16 @@ export default function UserSkillCard(props) {
                             <ExperienceCirclesModal id={props.index} circles={props.skills.level}
                                 skills={props.skills} setSkills={props.setSkills} />
                         </div>
-                        <button className="bg-accent text-white hover:bg-btn_hover font-bold px-4 py-2 rounded mx-[10px] my-[10px] mt-[20px]">
-                            Remove Skill
-                        </button>
-                        <button className="bg-accent text-white hover:bg-btn_hover font-bold px-4 py-2 rounded mx-[10px] my-[10px] mt-[20px] float-right"
-                            onClick={handleSave}>
-                            Save
-                        </button>
+                        <div className="p-[10px]">
+                            <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-4 py-2 rounded mx-[10px] my-[10px] mt-[20px]"
+                                onClick={handleRemove}>
+                                Remove Skill
+                            </Button>
+                            <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-4 py-2 rounded mx-[10px] my-[10px] mt-[20px] float-right"
+                                onClick={handleSave}>
+                                Save
+                            </Button>
+                        </div>
                     </Modal>
 
                     <Card className="flex w-[330px] h-[230px] dark:bg-card_modal mx-[40px] my-[20px] rounded-xl dark:text-darktext text-text select-none font-bold border border-solid border-gray-500"

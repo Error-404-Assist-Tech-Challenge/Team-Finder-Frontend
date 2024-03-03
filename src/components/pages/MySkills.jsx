@@ -60,36 +60,11 @@ export default function MySkillsPage() {
     useEffect(() => {
     }, [darkMode]);
 
-    function handleSave() {
-        setChange(false);
-        const saveSkills = async () => {
-            try {
-                // const response = await fetch(USER_SKILLS_ENDPOINT, {
-                //     method: 'PUT',
-                //     headers: {
-                //         'Content-Type': 'application/json'
-                //     },
-                //     body: JSON.stringify(skills)
-                // });
-                // if (!response.ok) {
-                //     throw new Error('Failed to save user skills');
-                // }
-                // console.log('Skills saved successfully!');
-                setChange(false);
-            } catch (error) {
-                console.error('Error saving user skills:', error);
-            }
-            finally {
-                const id = notifications.show({
-                    title: 'Data saved',
-                    message: 'Your data has been fetched.',
-                    icon: <IconCheck style={{ width: rem(35), height: rem(35) }} />,
-                    color: "teal",
-                });
-            }
-        }
-        saveSkills();
-    }
+    // const id = notifications.show({
+    // title: 'Data saved',
+    // message: 'Your data has been fetched.',
+    // icon: <IconCheck style={{ width: rem(35), height: rem(35) }} />,
+    // color: "teal",
 
     function handleAddSkill() { }
 
@@ -107,24 +82,17 @@ export default function MySkillsPage() {
                             <UserSkillCard key={index}
                                 index={index} skills={skills} setSkills={setSkills} />
                         ))}
+                        <div className="w-[410px] h-[270px] flex justify-center items-center">
+                            <Button variant="outline"
+                                className={`relative w-[100px] h-[100px] m-[6px] rounded-full p-0 text-accent border-accent border-[6px] text-9xl`}>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus w-full h-full" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M12 5l0 14" />
+                                    <path d="M5 12l14 0" />
+                                </svg>
+                            </Button>
+                        </div>
                     </div>}
-
-                {/* <tfoot className="">
-                            <tr>
-                                <td>
-                                    <button className="bg-accent text-white hover:bg-btn_hover font-bold px-4 py-2 rounded mx-[60px] my-[20px]" onClick={handleAddSkill}>Add Skill</button>
-                                </td>
-                                <td style={{ display: 'flex', justifyContent: 'flex-right' }}>
-                                    {changed && (
-                                        <button className="bg-accent text-white  hover:bg-btn_hover font-bold px-4 py-2 rounded mx-[60px] my-[20px]" onClick={handleSave}
-                                        >
-                                            Save
-                                        </button>
-                                    )}
-                                </td>
-                            </tr>
-                        </tfoot> */}
-
             </div>
         </div>
     )
