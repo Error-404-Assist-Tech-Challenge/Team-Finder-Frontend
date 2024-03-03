@@ -25,6 +25,7 @@ import Unauthorized from './components/pages/Unauthorized'
 import PersistLogin from './components/auth/PersistLogin';
 import SignUpEmployeePage from './components/auth/SignUpEmployee';
 import Invalid from './components/pages/Invalid';
+import { ModalsProvider } from '@mantine/modals';
 
 export const Context = React.createContext();
 
@@ -35,6 +36,7 @@ export default function App() {
     return (
         <Context.Provider value={[darkMode, setDarkMode]}>
             <MantineProvider theme={theme}>
+            <ModalsProvider>
                 <Notifications />
                 <Routes>
                     <Route path="/" element={<Layout />}>
@@ -61,6 +63,7 @@ export default function App() {
                         <Route path="*" element={<Missing />} />
                     </Route>
                 </Routes>
+                </ModalsProvider>
             </MantineProvider>
         </Context.Provider>
     )

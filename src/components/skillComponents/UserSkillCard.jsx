@@ -10,21 +10,26 @@ import ExperienceCirclesCard from './ExperienceCirclesCard'
 import ExperienceCirclesModal from './ExperienceCirclesModal'
 import { Context } from '../../App';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import { modals } from '@mantine/modals';
+import { notifications } from '@mantine/notifications';
+import { IconCheck } from '@tabler/icons-react';
 
 export default function UserSkillCard(props) {
 
     const [isHovering, setIsHovering] = useState(false);
     const [darkMode, setDarkMode] = useContext(Context);
     const [opened, { open, close }] = useDisclosure(false);
+    const [confirm, { proceed, cancel}] = useDisclosure(false);
+    
     const axiosPrivate = useAxiosPrivate();
 
     const handleSave = async () => {
-
         console.log(JSON.stringify({
             skill_id: props.skills[props.index].skill_id,
             level: props.skills[props.index].level,
             experience: props.skills[props.index].experience
         }))
+        close();
 
         // try {
         //     const response = await axiosPrivate.put('skills/users',
@@ -47,7 +52,8 @@ export default function UserSkillCard(props) {
         // }
     }
 
-    const handleRemove = async () => {
+     function handleRemove () 
+    {
         // try {
         //     const response = await axiosPrivate.delete('skills/users',
         //         JSON.stringify({
@@ -66,8 +72,17 @@ export default function UserSkillCard(props) {
         //     console.error('Error deleting my skill:', error);
         // }
     }
-
-
+    const openModal = () => modals.openConfirmModal({
+        children: (
+            <Text class="text-white font-bold text-xl mb-[30px] ">
+                Are you sure you want to remove this skill?
+            </Text>
+        ),
+        labels: { confirm: 'Confirm', cancel: 'Cancel' },
+        confirmProps: { color: 'red' },
+        onConfirm: () => {close()},
+        zIndex: 1000003,
+      });
 
     return (
         <>
@@ -92,15 +107,15 @@ export default function UserSkillCard(props) {
                             <p>
                                 <span className="font-bold">Level: </span>
                                 {props.skills[props.index].level == 1 &&
-                                    (<span>You are learning C++</span>)}
+                                    (<span>You are learning {props.skills[props.index].skill_name}</span>)}
                                 {props.skills[props.index].level == 2 &&
-                                    (<span>You know C++</span>)}
+                                    (<span>You know{props.skills[props.index].skill_name}</span>)}
                                 {props.skills[props.index].level == 3 &&
-                                    (<span>You do C++</span>)}
+                                    (<span>You do {props.skills[props.index].skill_name}</span>)}
                                 {props.skills[props.index].level == 4 &&
-                                    (<span>You can help in C++</span>)}
+                                    (<span>You can help in {props.skills[props.index].skill_name}</span>)}
                                 {props.skills[props.index].level == 5 &&
-                                    (<span>You can teach C++</span>)}
+                                    (<span>You can teach {props.skills[props.index].skill_name}</span>)}
                             </p>
                         </div>
                         <div className="flex justify-center items-center flex-col text-center h-full">
@@ -130,15 +145,16 @@ export default function UserSkillCard(props) {
                         </div>
                         <div className="p-[10px]">
                             <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-4 py-2 rounded mx-[10px] my-[10px] mt-[20px]"
-                                onClick={handleRemove}>
+                                onClick={openModal}>
                                 Remove Skill
                             </Button>
                             <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-4 py-2 rounded mx-[10px] my-[10px] mt-[20px] float-right"
                                 onClick={handleSave}>
-                                Save
+                                Request change
                             </Button>
                         </div>
                     </Modal>
+                    
 
                     <Card className="flex w-[330px] h-[230px] dark:bg-card_modal mx-[40px] my-[20px] rounded-xl dark:text-darktext text-text select-none font-bold border border-solid border-gray-500"
                         onClick={open} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>

@@ -49,7 +49,7 @@ export default function EmployeeCard({ employee }) {
 
     return (
         <>
-            <Modal opened={opened} onClose={close} centered overflow="inside" className="bg-graybg text-white select-none">
+            <Modal opened={opened} onClose={close} centered overflow="inside" className="bg-graybg text-white select-none" zIndex={1000002}>
                 <div className="flex items-center">
                     <Avatar className="m-3 w-[75px] h-[75px] bg-[#E9E5E6] bigavatar">{getInitials(employee.name)}</Avatar>
                     <div className="flex flex-col">
