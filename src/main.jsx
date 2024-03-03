@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import '@mantine/notifications/styles.css';
 
+
 import App from './App.jsx'
 import './index.css'
 import { AuthProvider } from './context/AuthProvider.jsx';

@@ -6,6 +6,7 @@ import { Routes, Route } from 'react-router-dom'
 import { MantineProvider, Overlay } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import '@mantine/core/styles.css';
+import '@mantine/notifications/styles.css';
 
 import Layout from './components/layout/Layout';
 import SignUpAdminPage from "./components/auth/SignUpAdmin";
@@ -36,34 +37,34 @@ export default function App() {
     return (
         <Context.Provider value={[darkMode, setDarkMode]}>
             <MantineProvider theme={theme}>
-            <ModalsProvider>
                 <Notifications />
-                <Routes>
-                    <Route path="/" element={<Layout />}>
-                        {/* ANYONE CAN SEE THESE PAGES */}
-                        <Route path="/" element={<Welcome />} />
-                        <Route path="login" element={<LoginPage />} />
-                        <Route path="signup" element={<SignUpAdminPage />} />
-                        <Route path="signup/:ref_id" element={<SignUpEmployeePage />} />
-                        <Route path="unauthorized" element={<Unauthorized />} />
-                        <Route path="invalid" element={<Invalid />} />
+                    <ModalsProvider>
+                        <Routes>
+                            <Route path="/" element={<Layout />}>
+                                {/* ANYONE CAN SEE THESE PAGES */}
+                                <Route path="/" element={<Welcome />} />
+                                <Route path="login" element={<LoginPage />} />
+                                <Route path="signup" element={<SignUpAdminPage />} />
+                                <Route path="signup/:ref_id" element={<SignUpEmployeePage />} />
+                                <Route path="unauthorized" element={<Unauthorized />} />
+                                <Route path="invalid" element={<Invalid />} />
 
-                        <Route element={<PersistLogin />}>
-                            <Route element={<RequireAuth />}>
-                                {/* YOU HAVE TO BE LOGGED IN TO SEE THESE PAGES */}
-                                <Route path='/myskills' element={<MainPage Content={MySkillsPage} />} />
-                                <Route path='/projects' element={<MainPage Content={ProjectsPage} />} />
-                                <Route path='/organizationemployees' element={<MainPage Content={OrganizationEmployeesPage} />} />
-                                <Route path='/organizationdepartments' element={<MainPage Content={OrganizationDepartmentsPage} />} />
-                                <Route path='/organizationskills' element={<MainPage Content={OrganizationSkillsPage} />} />
-                                <Route path='/mydepartment' element={<MainPage Content={MyDepartment} />} />
-                                <Route path='/myprojects' element={<MainPage Content={MyProjects} />} />
+                                <Route element={<PersistLogin />}>
+                                    <Route element={<RequireAuth />}>
+                                        {/* YOU HAVE TO BE LOGGED IN TO SEE THESE PAGES */}
+                                        <Route path='/myskills' element={<MainPage Content={MySkillsPage} />} />
+                                        <Route path='/projects' element={<MainPage Content={ProjectsPage} />} />
+                                        <Route path='/organizationemployees' element={<MainPage Content={OrganizationEmployeesPage} />} />
+                                        <Route path='/organizationdepartments' element={<MainPage Content={OrganizationDepartmentsPage} />} />
+                                        <Route path='/organizationskills' element={<MainPage Content={OrganizationSkillsPage} />} />
+                                        <Route path='/mydepartment' element={<MainPage Content={MyDepartment} />} />
+                                        <Route path='/myprojects' element={<MainPage Content={MyProjects} />} />
+                                    </Route>
+                                </Route>
+                                <Route path="*" element={<Missing />} />
                             </Route>
-                        </Route>
-                        <Route path="*" element={<Missing />} />
-                    </Route>
-                </Routes>
-                </ModalsProvider>
+                        </Routes>
+                    </ModalsProvider>
             </MantineProvider>
         </Context.Provider>
     )

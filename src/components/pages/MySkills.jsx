@@ -4,8 +4,6 @@
 import { useState, useEffect, useContext } from 'react';
 import { Loader, rem, Card, Modal, Button, Select } from '@mantine/core';
 import { useHeadroom, useDisclosure } from '@mantine/hooks';
-import { notifications } from '@mantine/notifications';
-import { IconCheck } from '@tabler/icons-react';
 import { Context } from '../../App';
 import UserSkillCard from '../skillComponents/UserSkillCard';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
@@ -103,6 +101,7 @@ export default function MySkillsPage() {
         } catch (error) {
             console.error('Error fetching unused skills:', error);
         }
+        close();
     }
 
     useEffect(() => {
@@ -111,7 +110,7 @@ export default function MySkillsPage() {
 
     useEffect(() => {
     }, [darkMode]);
-
+    
     // const id = notifications.show({
     // title: 'Data saved',
     // message: 'Your data has been fetched.',
@@ -183,11 +182,11 @@ export default function MySkillsPage() {
                         </div>
                         <div className="flex justify-center items-center flex-col text-center">
                             <ExperienceCirclesSelected selectedSkillExperience={selectedSkillExperience} selectSkillExperience={selectSkillExperience} />
-                        </div>
-                        {addedSkill && (<Button className="bg-accent text-white hover:bg-btn_hover font-bold px-4 py-2 rounded mx-[10px] my-[10px] mt-[20px] float-right"
-                            onClick={handleAddSkill}>
+                        {addedSkill && (<Button className="bg-accent text-white hover:bg-btn_hover font-bold  py-2 rounded mx-[10px] mt-[10px]  float-right"
+                            onClick={handleAddSkill} style={{width: '460px'}}>
                             Add Skill
                         </Button>)}
+                        </div>
                     </div>
                 </Modal>
                 {!visible &&
@@ -198,7 +197,7 @@ export default function MySkillsPage() {
                         ))}
                         <div className="w-[410px] h-[270px] flex justify-center items-center">
                             <Button variant="outline" onClick={open}
-                                className={`relative w-[80px] h-[80px] m-[6px] rounded-full p-0 text-accent border-accent border-[5px]`}>
+                                className={`relative w-[80px] h-[80px] m-[6px] rounded-full p-0 text-accent border-accent border-[5px] hover:text-accent`}>
                                 <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus w-full h-full" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                     <path d="M12 5l0 14" />
