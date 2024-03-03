@@ -35,22 +35,31 @@ export default function ExperienceCirclesCard(props) {
     return (
         <div className={`${darkMode && 'dark'}`}>
             <Button variant="outline" onClick={() => downgradeSkill(props.id)}
-                className={`w-[20px] h-[20px] m-[6px] rounded-full p-0 pr-[1px] pb-[1px] text-accent border-accent`}
-            >-</Button>
+                className={`w-[20px] h-[20px] m-[6px] rounded-full p-0 text-accent border-accent border-2`}>
+                <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-minus w-[12px] h-[12px]" width="24" height="24" viewBox="0 0 24 24" strokeWidth="3" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M5 12l14 0" />
+                </svg>
+            </Button>
 
             {Array.from({ length: filledCircles }).map((_, index) => (
                 <Button key={`filled-${index}`} variant="filled"
-                    className={`w-[20px] h-[20px] m-[6px] rounded-full p-0 pr-[1px] pb-[1px] dark:bg-darktext bg-text`} />
+                    className={`w-[20px] h-[20px] m-[6px] rounded-full p-0 dark:bg-darktext bg-text border-2`} />
             ))}
 
             {Array.from({ length: emptyCircles }).map((_, index) => (
                 <Button key={`empty-${index}`} variant="outline"
-                    className={`w-[20px] h-[20px] m-[6px] rounded-full p-0 pr-[1px] pb-[1px] dark:border-darktext border-text`} />
+                    className={`w-[20px] h-[20px] m-[6px] rounded-full p-0 dark:border-darktext border-text border-2`} />
             ))}
 
             <Button variant="outline" onClick={() => upgradeSkill(props.id)}
-                className={`w-[20px] h-[20px] m-[6px] rounded-full p-0 pr-[1px] pb-[1px] text-accent border-accent`}
-            >+</Button>
+                className={`w-[20px] h-[20px] m-[6px] rounded-full p-0 text-accent border-accent border-2`}>
+                <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus w-[15px] h-[15px]" viewBox="0 0 24 24" strokeWidth="3" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M12 5l0 14" />
+                    <path d="M5 12l14 0" />
+                </svg>
+            </Button>
         </div>
     );
 }
