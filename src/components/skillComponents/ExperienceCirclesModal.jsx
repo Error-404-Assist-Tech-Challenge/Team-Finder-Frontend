@@ -35,7 +35,7 @@ export default function ExperienceCirclesModal(props) {
     return (
         <div className={`${darkMode && 'dark'}`}>
             <Button variant="outline" onClick={() => downgradeSkill(props.id)}
-                className={`w-[35px] h-[35px] m-[6px] rounded-full p-0 text-accent border-accent border-[4px]`}>
+                className={`w-[35px] h-[35px] m-[6px] rounded-full p-0 text-accent border-accent border-[4px] hover:text-accent`}>
                 <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-minus w-[25px] h-[25px]" width="24" height="24" viewBox="0 0 24 24" strokeWidth="3.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                     <path d="M5 12l14 0" />
@@ -53,7 +53,7 @@ export default function ExperienceCirclesModal(props) {
             ))}
 
             <Button variant="outline" onClick={() => upgradeSkill(props.id)}
-                className={`w-[35px] h-[35px] m-[6px] rounded-full p-0 text-accent border-accent border-[4px]`}>
+                className={`w-[35px] h-[35px] m-[6px] rounded-full p-0 text-accent border-accent border-[4px] hover:text-accent`}>
                 <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus w-[30px] h-[30px]" viewBox="0 0 24 24" strokeWidth="3.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                     <path d="M12 5l0 14" />

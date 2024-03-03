@@ -9,7 +9,7 @@ export const SkillCard = ({ skill }) => {
 
     return (
         <div>
-            <Modal opened={opened} onClose={close} centered overflow="inside" className="bg-.m-1b7284a3.m-b5489c3c text-white rounded-modal">
+            <Modal opened={opened} onClose={close} centered overflow="inside" className="bg-.m-1b7284a3.m-b5489c3c text-white rounded-modal" zIndex={1000002}>
                 <div className="flex justify-center">
                     <h1 className="text-3xl font-bold">{skill.name}</h1>
                 </div>
