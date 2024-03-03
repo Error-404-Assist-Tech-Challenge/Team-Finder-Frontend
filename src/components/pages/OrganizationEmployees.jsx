@@ -2,11 +2,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Loader, Card } from '@mantine/core';
+import { Button, Loader, Card, rem } from '@mantine/core';
 
 import { Context } from '../../App';
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import EmployeeCard from '../employeeComponents/EmployeeCard'
+import { notifications } from '@mantine/notifications';
+import { IconCheck } from '@tabler/icons-react';
 
 export default function OrganizationEmployeesPage() {
 
@@ -83,12 +85,19 @@ export default function OrganizationEmployeesPage() {
         }
 
         getSignUpLink();
+        const ild = notifications.show({
+            title: 'Invite link copied',
+            message: 'You can share your link now.',
+            icon: <IconCheck style={{ width: rem(35), height: rem(35) }} />,
+            color: "teal",
+        });
 
         return () => {
             isMounted = false;
             controller.abort();
         }
     }
+
 
 
     // All the user cards + button to generate signup employee link

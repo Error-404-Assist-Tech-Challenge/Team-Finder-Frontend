@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 
-import { Card, Avatar, Modal, Overlay, Button, Text, Title } from '@mantine/core';
+import { Card, Avatar, Modal, Overlay, Button, Text, Title,rem } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import LevelCirclesCard from './LevelCirclesCard'
 import LevelCirclesModal from './LevelCirclesModal'
 import ExperienceCirclesCard from './ExperienceCirclesCard'
@@ -23,14 +23,13 @@ export default function UserSkillCard(props) {
     
     const axiosPrivate = useAxiosPrivate();
 
-    const handleSave = async () => {
+    function handleSave(){
         console.log(JSON.stringify({
             skill_id: props.skills[props.index].skill_id,
             level: props.skills[props.index].level,
             experience: props.skills[props.index].experience
         }))
         close();
-
         // try {
         //     const response = await axiosPrivate.put('skills/users',
         //         JSON.stringify({
@@ -83,6 +82,14 @@ export default function UserSkillCard(props) {
         onConfirm: () => {close()},
         zIndex: 1000003,
       });
+    //   useEffect(() => {
+    //     const ild = notifications.show({
+    //         title: 'Data saved',
+    //         message: 'Your data has been fetched.',
+    //         icon: <IconCheck style={{ width: rem(35), height: rem(35) }} />,
+    //         color: "teal",
+    //     });
+    // }, [showNot]);
 
     return (
         <>
@@ -153,8 +160,7 @@ export default function UserSkillCard(props) {
                                 Request change
                             </Button>
                         </div>
-                    </Modal>
-                    
+                    </Modal>                 
 
                     <Card className="flex w-[330px] h-[230px] dark:bg-card_modal mx-[40px] my-[20px] rounded-xl dark:text-darktext text-text select-none font-bold border border-solid border-gray-500"
                         onClick={open} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
