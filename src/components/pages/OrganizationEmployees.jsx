@@ -31,7 +31,8 @@ export default function OrganizationEmployeesPage() {
         const getUsers = async () => {
             try {
                 const response = await axiosPrivate.get('organization/users', {
-                    signal: controller.signal
+                    signal: controller.signal,
+                    withCredentials: true
                 });
                 console.log('Users:', response.data);
                 isMounted && setUsers(response.data)

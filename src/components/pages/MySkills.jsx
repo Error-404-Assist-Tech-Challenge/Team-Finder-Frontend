@@ -20,12 +20,13 @@ export default function MySkillsPage() {
     const [skills, setSkills] = useState([]);
     const [changed, setChange] = useState(false)
 
-    const [selectedSkill, selectSkill] = useState('');
     const [selectedSkillLevel, selectSkillLevel] = useState(1);
     const [selectedSkillExperience, selectSkillExperience] = useState(1);
 
     const [unusedSkills, setUnusedSkills] = useState([]);
     const [addedSkill, setAddedSkill] = useState('');
+
+    const language = unusedSkills.find(lang => lang.value === addedSkill);
 
     // GET USER SKILL
 
@@ -83,6 +84,7 @@ export default function MySkillsPage() {
     }, []);
 
     // Add new skill to user
+
     const handleAddSkill = async () => {
         try {
             const response = await axiosPrivate.post('skills/user',
@@ -104,7 +106,6 @@ export default function MySkillsPage() {
         close();
     }
 
-
     useEffect(() => {
         setChange(true);
     }, [skills]);
@@ -117,7 +118,6 @@ export default function MySkillsPage() {
     // message: 'Your data has been fetched.',
     // icon: <IconCheck style={{ width: rem(35), height: rem(35) }} />,
     // color: "teal",
-
 
     return (
         <div className={`${darkMode && 'dark'}`}>
@@ -147,11 +147,11 @@ export default function MySkillsPage() {
                                 <span className="font-bold">Level: </span>
                                 {addedSkill && (
                                     <span>
-                                        {selectedSkillLevel == 1 && "You are learning C++"}
-                                        {selectedSkillLevel == 2 && "You know C++"}
-                                        {selectedSkillLevel == 3 && "You do C++"}
-                                        {selectedSkillLevel == 4 && "You can help in C++"}
-                                        {selectedSkillLevel == 5 && "You can teach C++"}
+                                        {selectedSkillLevel == 1 && `You are learning ${language.label}`}
+                                        {selectedSkillLevel == 2 && `You know ${language.label}`}
+                                        {selectedSkillLevel == 3 && `You do ${language.label}`}
+                                        {selectedSkillLevel == 4 && `You can help in ${language.label}`}
+                                        {selectedSkillLevel == 5 && `You can teach ${language.label}`}
                                     </span>
                                 )}
                                 {!addedSkill && (
