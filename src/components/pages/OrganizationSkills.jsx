@@ -16,7 +16,7 @@ export default function OrganizationSkillsPage() {
     const [darkMode, setDarkMode] = useContext(Context);
     const pinned = useHeadroom({ fixedAt: 20 });
 
-    const [visible, setVisible] = useState(false);  
+    const [visible, setVisible] = useState(false);
 
     useEffect(() => {
 
@@ -31,7 +31,8 @@ export default function OrganizationSkillsPage() {
         const getSkills = async () => {
             try {
                 const response = await axiosPrivate.get('organizations/skills', {
-                    signal: controller.signal
+                    signal: controller.signal,
+                    withCredentials: true
                 });
                 console.log('Skills:', response.data);
                 isMounted && setSkills(response.data);
@@ -58,17 +59,17 @@ export default function OrganizationSkillsPage() {
     return (
         <div className={`${darkMode && 'dark'}`}>
             {!visible && (
-                    <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                        <Loader size={30} color="red" />
-                    </div>
-                )}
-                {visible && (<>
-            <div className='dark:bg-darkcanvas bg-canvas select-none h-auto py-[30px] flex'>
-                {skills.map((skill, index) => (
-                    <SkillCard key={index} skill={skill}/>
-                ))}
-            </div>
-            <div className='dark:bg-darkcanvas bg-canvas h-screen'></div>
+                <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                    <Loader size={30} color="red" />
+                </div>
+            )}
+            {visible && (<>
+                <div className='dark:bg-darkcanvas bg-canvas select-none h-auto py-[30px] flex'>
+                    {skills.map((skill, index) => (
+                        <SkillCard key={index} skill={skill} />
+                    ))}
+                </div>
+                <div className='dark:bg-darkcanvas bg-canvas h-screen'></div>
             </>)}
         </div>
     )

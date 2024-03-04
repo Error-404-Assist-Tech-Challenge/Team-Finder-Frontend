@@ -4,6 +4,7 @@ import { Card, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Modal, Button, Title, TextInput, Textarea } from '@mantine/core';
 import { useState, useEffect } from 'react'
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 export const SkillCard = ({ skill }) => {
 
@@ -13,6 +14,7 @@ export const SkillCard = ({ skill }) => {
 
     const [name, setName] = useState(`${skill.name}`);
     const [description, setDescription] = useState(`${skill.description}`);
+    const axiosPrivate = useAxiosPrivate();
 
     const handleEdit = () => {
         setIsEditing(true);
@@ -21,8 +23,48 @@ export const SkillCard = ({ skill }) => {
     const handleSave = () => {
         skill.name = name;
         skill.description = description;
+
+        console.log(JSON.stringify({
+            skill_id: name,
+            dept_id: skill.dept_id,
+            category_id: skill.category_id,
+            org_id: skill.org_id,
+            name: skill.name,
+            description: skill.description,
+            author_id: skill.author_id,
+            created_at: skill.created_at
+        }))
+
+        // const updateSkill = async () => {
+        //     try {
+        //         const response = await axiosPrivate.put('organizations/skills',
+        //             JSON.stringify({
+        //                 skill_id: name,
+        //                 dept_id: skill.dept_id,
+        //                 category_id: skill.category_id,
+        //                 org_id: skill.org_id,
+        //                 name: skill.name,
+        //                 description: skill.description,
+        //                 author_id: skill.author_id,
+        //                 created_at: skill.created_at
+        //             }),
+        //             {
+        //                 headers: {
+        //                     'Content-Type': 'application/json',
+        //                     'Access-Control-Allow-Origin': '*',
+        //                     'Access-Control-Allow-Credentials': 'true'
+        //                 },
+        //                 withCredentials: true
+        //             });
+        //         console.log('Response:', response.data);
+        //     } catch (error) {
+        //         console.error('Error fetching unused skills:', error);
+        //     }
+        // }
+
         setIsEditing(false);
     };
+
 
     return (
         <div>

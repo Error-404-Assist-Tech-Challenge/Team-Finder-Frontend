@@ -54,22 +54,19 @@ export default function UserSkillCard(props) {
     // Remove user skill
 
     const handleRemoveSkill = async () => {
-        console.log(JSON.stringify({
-            skill_id: props.skills[props.index].skill_id,
-        }))
         try {
-            const response = await axiosPrivate.delete('skills/user',
-                JSON.stringify({
-                    skill_id: props.skills[props.index].skill_id,
-                }),
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Access-Control-Allow-Origin': '*',
-                        'Access-Control-Allow-Credentials': 'true'
-                    },
-                    withCredentials: true
-                });
+            const skillId = props.skills[props.index].skill_id;
+            const response = await axiosPrivate.delete('skills/user', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Credentials': 'true'
+                },
+                data: {
+                    skill_id: skillId
+                },
+                withCredentials: true
+            });
             console.log('Response:', response.data);
         } catch (error) {
             console.error('Error deleting user skills:', error);

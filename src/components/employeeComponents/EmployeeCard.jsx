@@ -63,11 +63,11 @@ export default function EmployeeCard({ employee }) {
                     <p className="ml-8 text-lg font-bold">Roles:</p>
                 </div>
 
-                <div className="pt-4 flex justify-center">
-                    {!employee.roles.length && (<Badge className="m-[10px]" color="gray" size="xl" variant="filled">Employee</Badge>)}
-                    {employee.roles.includes("admin") && (<Badge className="m-[10px]" color="gray" size="xl" variant="filled">Organization Admin</Badge>)}
-                    {employee.roles.includes("dept_manager") && (<Badge className="m-[10px]" color="gray" size="xl" variant="filled">Department Manager</Badge>)}
-                    {employee.roles.includes("proj_manager") && (<Badge className="m-[10px]" color="gray" size="xl" variant="filled">Project Manager</Badge>)}
+                <div className="flex justify-center items-center flex-col text-center h-full">
+                    {!employee.roles.length && (<Badge className="m-2" color="gray" size="xl" variant="filled">Employee</Badge>)}
+                    {employee.roles.includes("admin") && (<Badge className="m-2" color="gray" size="xl" variant="filled">Organization Admin</Badge>)}
+                    {employee.roles.includes("dept_manager") && (<Badge className="m-2" color="gray" size="xl" variant="filled">Department Manager</Badge>)}
+                    {employee.roles.includes("proj_manager") && (<Badge className="m-2" color="gray" size="xl" variant="filled">Project Manager</Badge>)}
                 </div>
 
                 <div className="pt-4 flex flex-col items-center">
@@ -104,7 +104,7 @@ export default function EmployeeCard({ employee }) {
                 </div>
             </Modal>
 
-            <Card className="flex w-[300px] h-[300px] bg-[#505A5E] mx-[40px] my-[20px] rounded-xl dark:text-darktext text-text select-none font-bold"
+            <Card className="flex w-[300px] h-[300px] bg-[#505A5E] mx-[40px] my-[20px] rounded-xl text-white select-none font-bold"
                 onClick={open} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
                 <div className="flex items-center">
                     <Avatar className="m-3 w-[50px] h-[50px] bg-[#E9E5E6]">{getInitials(employee.name)}</Avatar>
