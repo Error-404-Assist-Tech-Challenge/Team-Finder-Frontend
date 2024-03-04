@@ -1,6 +1,6 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Switch, useMantineTheme, rem, Group, Popover, Text, Modal, Card, Button, Avatar, Tabs, Badge } from '@mantine/core';
+import { Switch, useMantineTheme, rem, Group, Popover, Text, Modal, Button, Avatar, Tabs } from '@mantine/core';
 import { useLocalStorage, useDisclosure } from '@mantine/hooks';
 import { IconSun, IconMoonStars, IconBell } from '@tabler/icons-react';
 import { PieChart, Pie, Legend, Tooltip, } from 'recharts';
