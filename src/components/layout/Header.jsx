@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Switch, useMantineTheme, rem, Group, Popover, Text, Modal, Card, Button, Avatar, Tabs, Badge } from '@mantine/core';
 import { useLocalStorage, useDisclosure } from '@mantine/hooks';
 import { IconSun, IconMoonStars, IconBell } from '@tabler/icons-react';
+import { PieChart, Pie, Legend, Tooltip, } from 'recharts';
+import React, { PureComponent } from 'react';
 
 import { Context } from '../../App';
 import useAuth from '../../hooks/useAuth'
@@ -70,6 +72,21 @@ export default function GenericHeader() {
             color={theme.colors.blue[6]}
         />
     );
+    const data_Python = [
+        { name: 'Level 1', value: 4 },
+        { name: 'Level 2', value: 30 },
+        { name: 'Level 3', value: 3 },
+        { name: 'Level 4', value: 2 },
+        { name: 'Level 5', value: 1 },
+      ];
+      const data02 = [
+        { name: 'Group A', value: 2400 },
+        { name: 'Group B', value: 4567 },
+        { name: 'Group C', value: 1398 },
+        { name: 'Group D', value: 9800 },
+        { name: 'Group E', value: 3908 },
+        { name: 'Group F', value: 4800 },
+      ];
     if (role === 'ADMIN') {
         return (
             <div className={`${darkMode && 'dark'}`}>
@@ -116,7 +133,7 @@ export default function GenericHeader() {
                                     />
                             </Button>
 
-                            <Modal opened={opened} onClose={close} centered overflow="inside" className="bg-.m-1b7284a3.m-b5489c3c text-white rounded-modal" withCloseButton={false}>
+                            <Modal opened={opened} onClose={close} centered overflow="inside" className="bg-.m-1b7284a3.m-b5489c3c text-white rounded-modal" withCloseButton={false} zIndex={1000003}>
                                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                                     <h1 style={{ fontSize: '2rem', fontWeight: 'bold' }}>Python</h1>
                                 </div>
@@ -139,6 +156,12 @@ export default function GenericHeader() {
                                 <div className="pt-4"  style={{ display: 'flex', justifyContent: 'right' }}>
                                     <Button className="bg-accent text-white hover:bg-btn_hover font-bold rounded ">Edit skill</Button>
                                 </div>
+                                
+                                <PieChart width={400} height={300}>
+                                    <Pie data={data_Python} dataKey="value" cx="50%" cy="50%" outerRadius={60} fill="#8884d8" />
+                                    <Pie data={data02} dataKey="value" cx="50%" cy="50%" innerRadius={70} outerRadius={90} fill="#82ca9d" label />
+                                </PieChart>
+
                             </Modal>
 
 
