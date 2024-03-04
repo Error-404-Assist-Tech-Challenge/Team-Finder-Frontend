@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 
-import { Card, Avatar, Modal, Overlay, Button, Text, Title,rem } from '@mantine/core';
+import { Card, Avatar, Modal, Overlay, Button, Text, Title, rem } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useState, useContext, useEffect } from 'react';
 import LevelCirclesCard from './LevelCirclesCard'
@@ -19,11 +19,11 @@ export default function UserSkillCard(props) {
     const [isHovering, setIsHovering] = useState(false);
     const [darkMode, setDarkMode] = useContext(Context);
     const [opened, { open, close }] = useDisclosure(false);
-    const [confirm, { proceed, cancel}] = useDisclosure(false);
-    
+    const [confirm, { proceed, cancel }] = useDisclosure(false);
+
     const axiosPrivate = useAxiosPrivate();
 
-    function handleSave(){
+    function handleSave() {
         console.log(JSON.stringify({
             skill_id: props.skills[props.index].skill_id,
             level: props.skills[props.index].level,
@@ -51,37 +51,44 @@ export default function UserSkillCard(props) {
         // }
     }
 
-     function handleRemove () 
-    {
-        // try {
-        //     const response = await axiosPrivate.delete('skills/users',
-        //         JSON.stringify({
-        //             skill_id: props.skills[props.index].skill_id,
-        //         }),
-        //         {
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //                 'Access-Control-Allow-Origin': '*',
-        //                 'Access-Control-Allow-Credentials': 'true'
-        //             },
-        //             withCredentials: true
-        //         });
-        //     console.log('Response:', response.data);
-        // } catch (error) {
-        //     console.error('Error deleting my skill:', error);
-        // }
+    // Remove user skill
+
+    const handleRemoveSkill = async () => {
+        console.log(JSON.stringify({
+            skill_id: props.skills[props.index].skill_id,
+        }))
+        try {
+            const response = await axiosPrivate.delete('skills/user',
+                JSON.stringify({
+                    skill_id: props.skills[props.index].skill_id,
+                }),
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Credentials': 'true'
+                    },
+                    withCredentials: true
+                });
+            console.log('Response:', response.data);
+        } catch (error) {
+            console.error('Error deleting user skills:', error);
+        }
+        close();
     }
+
+
     const openModal = () => modals.openConfirmModal({
         children: (
-            <Text class="text-white font-bold text-xl mb-[30px] ">
+            <Text className="text-white font-bold text-xl mb-[30px] ">
                 Are you sure you want to remove this skill?
             </Text>
         ),
         labels: { confirm: 'Confirm', cancel: 'Cancel' },
         confirmProps: { color: 'red' },
-        onConfirm: () => {close()},
+        onConfirm: () => { handleRemoveSkill() },
         zIndex: 1000003,
-      });
+    });
     //   useEffect(() => {
     //     const ild = notifications.show({
     //         title: 'Data saved',
@@ -160,9 +167,9 @@ export default function UserSkillCard(props) {
                                 Request change
                             </Button>
                         </div>
-                    </Modal>                 
+                    </Modal>
 
-                    <Card className="flex w-[330px] h-[230px] dark:bg-card_modal mx-[40px] my-[20px] rounded-xl dark:text-darktext text-text select-none font-bold border border-solid border-gray-500"
+                    <Card className="flex w-[330px] h-[230px] dark:bg-card_modal mx-[40px] my-[20px] rounded-xl dark:text-darktext text-text select-none font-bold"
                         onClick={open} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
                         <Card.Section className="dark:bg-[#495256]">
                             <Title className="p-4 flex justify-center">
