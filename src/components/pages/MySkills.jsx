@@ -36,7 +36,8 @@ export default function MySkillsPage() {
         const fetchUserSkills = async () => {
             try {
                 const response = await axiosPrivate.get('skills/user', {
-                    signal: controller.signal
+                    signal: controller.signal,
+                    withCredentials: true
                 });
                 console.log('My Skills:', response.data);
                 isMounted && setSkills(response.data);
@@ -46,10 +47,6 @@ export default function MySkillsPage() {
             } finally {
                 isMounted = false;
                 controller.abort();
-                const timeout = 200;
-                setTimeout(() => {
-                    setVisible(false);
-                }, timeout);
             }
         }
         fetchUserSkills();
@@ -72,6 +69,7 @@ export default function MySkillsPage() {
                 });
                 console.log('My Unused Skills:', response.data);
                 isMounted && setUnusedSkills(response.data);
+                setVisible(false);
             } catch (error) {
                 console.error('Error fetching unused skills:', error);
             }

@@ -2,7 +2,7 @@
 
 import React, { useContext, useEffect, useState } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
-import { Button, Modal, TextInput } from '@mantine/core';
+import { Button, Modal, TextInput, Loader } from '@mantine/core';
 import { useHeadroom, useDisclosure } from '@mantine/hooks';
 import { Context } from '../../App';
 import DepartmentCard from '../departmentComponents/DepartmentCard';
@@ -16,6 +16,7 @@ export default function OrganizationDepartmentsPage() {
     const [opened, { open, close }] = useDisclosure(false);
     const [departmentName, setDepartmentName] = useState('');
     const [departmentManagers, setDepartmentManagers] = useState([]);
+    const [visible, setVisible] = useState(true);
 
     // GET DEPARTMENTS 
 
@@ -30,6 +31,7 @@ export default function OrganizationDepartmentsPage() {
                 });
                 console.log('Departments:', response.data);
                 isMounted && setDepartments(response.data);
+                setVisible(false);
 
             } catch (error) {
                 console.error('Error fetching departments:', error);
@@ -116,7 +118,11 @@ export default function OrganizationDepartmentsPage() {
         <>
             <div className={`${darkMode && 'dark'}`}>
                 <div className='dark:bg-darkcanvas bg-canvas h-auto select-none'>
-
+                    {visible && (
+                        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                            <Loader size={30} color="red" />
+                        </div>
+                    )}
                     <Modal opened={opened} onClose={close} centered overflow="inside" size={500} className="dark:bg-card_modal text-white select-none" zIndex={1000002}>
                         <TextInput
                             label="Department Name"
@@ -132,25 +138,26 @@ export default function OrganizationDepartmentsPage() {
                                 Create Department
                             </Button>)}
                     </Modal>
-
-                    <div className="flex flex-wrap justify-centerbg-darkcanvas">
-                        <div className='bg-darkcanvas select-none h-auto py-[30px] flex flex-wrap'>
-                            {departments.map((department, index) => (
-                                <DepartmentCard key={index} manager={department.manager_name} manager_id={department.manager_id} name={department.name} members={department.department_members}
-                                    id={department.id} departmentManagers={departmentManagers} setDepartmentManagers={setDepartmentManagers} />
-                            ))}
-                            <div className="w-[200px] h-[224px] flex justify-center items-center">
-                                <Button variant="outline" onClick={open}
-                                    className={`relative w-[80px] h-[80px] m-[6px] rounded-full p-0 text-accent border-accent border-[5px] hover:text-accent`}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus w-full h-full" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M12 5l0 14" />
-                                        <path d="M5 12l14 0" />
-                                    </svg>
-                                </Button>
+                    {!visible && (
+                        <div className="flex flex-wrap justify-centerbg-darkcanvas">
+                            <div className='bg-darkcanvas select-none h-auto py-[30px] flex flex-wrap'>
+                                {departments.map((department, index) => (
+                                    <DepartmentCard key={index} manager={department.manager_name} manager_id={department.manager_id} name={department.name} members={department.department_members}
+                                        id={department.id} departmentManagers={departmentManagers} setDepartmentManagers={setDepartmentManagers} />
+                                ))}
+                                <div className="w-[200px] h-[224px] flex justify-center items-center">
+                                    <Button variant="outline" onClick={open}
+                                        className={`relative w-[80px] h-[80px] m-[6px] rounded-full p-0 text-accent border-accent border-[5px] hover:text-accent`}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus w-full h-full" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M12 5l0 14" />
+                                            <path d="M5 12l14 0" />
+                                        </svg>
+                                    </Button>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    )}
                 </div>
             </div>
         </>

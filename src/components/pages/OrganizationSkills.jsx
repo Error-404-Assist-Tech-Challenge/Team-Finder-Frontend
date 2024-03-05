@@ -16,7 +16,7 @@ export default function OrganizationSkillsPage() {
     const [darkMode, setDarkMode] = useContext(Context);
     const pinned = useHeadroom({ fixedAt: 20 });
 
-    const [visible, setVisible] = useState(false);
+    const [visible, setVisible] = useState(true);
 
     useEffect(() => {
 
@@ -36,14 +36,9 @@ export default function OrganizationSkillsPage() {
                 });
                 console.log('Skills:', response.data);
                 isMounted && setSkills(response.data);
+                setVisible(false);
             } catch (error) {
                 console.error('Error fetching organization skills:', error);
-            }
-            finally {
-                const timeout = 200;
-                setTimeout(() => {
-                    setVisible(true);
-                }, timeout);
             }
         }
 
@@ -58,12 +53,12 @@ export default function OrganizationSkillsPage() {
 
     return (
         <div className={`${darkMode && 'dark'}`}>
-            {!visible && (
+            {visible && (
                 <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                     <Loader size={30} color="red" />
                 </div>
             )}
-            {visible && (<>
+            {!visible && (<>
                 <div className='bg-darkcanvas select-none h-auto py-[30px] flex'>
                     {skills.map((skill, index) => (
                         <SkillCard key={index} skill={skill} />
