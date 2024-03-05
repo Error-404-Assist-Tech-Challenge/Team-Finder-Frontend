@@ -101,7 +101,7 @@ export default function MySkillsPage() {
                     withCredentials: true
                 });
             console.log('Response:', response.data);
-            window.location.reload();
+            
         } catch (error) {
             console.error('Error fetching unused skills:', error);
         }

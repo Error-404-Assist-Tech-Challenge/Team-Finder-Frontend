@@ -35,11 +35,11 @@ export default function DepartmentCard(props) {
 
     const updatedDepartment = async () => {
 
-        // console.log(JSON.stringify({
-        //     dept_id: props.id,
-        //     name: departmentName,
-        //     manager_id: departmentManager
-        // }))
+        console.log(JSON.stringify({
+            dept_id: props.id,
+            name: departmentName,
+            manager_id: departmentManager
+        }))
 
         // try {
         //     const response = await axiosPrivate.put('organizations/skills',
