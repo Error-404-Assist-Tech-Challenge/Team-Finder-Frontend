@@ -8,7 +8,7 @@ import { Button, Modal, Select } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Context } from '../../App';
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import DepartmentEmployee from '../employeeComponents/DepartmentEmployee';
+import DepartmentEmployee from '../departmentComponents/DepartmentEmployee';
 
 export default function OrganizationEmployeesPage() {
 

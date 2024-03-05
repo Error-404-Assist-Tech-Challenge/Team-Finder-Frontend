@@ -26,7 +26,7 @@ export default function OrganizationDepartmentsPage() {
             try {
                 const response = await axiosPrivate.get('departments', {
                     signal: controller.signal,
-                    // withCredentials: true
+                    withCredentials: true
                 });
                 console.log('Departments:', response.data);
                 isMounted && setDepartments(response.data);
@@ -98,17 +98,11 @@ export default function OrganizationDepartmentsPage() {
                     withCredentials: true
                 });
             console.log('Response:', response.data);
-            
+
         } catch (error) {
             console.error('Error fetching unused skills:', error);
         }
         close();
-    }
-
-    const handleRemoveDepartment = async () => {
-
-
-        
     }
 
 
@@ -137,7 +131,8 @@ export default function OrganizationDepartmentsPage() {
                         <div className='bg-darkcanvas select-none h-auto py-[30px] flex flex-wrap'>
                             {departments.map((department, index) => (
                                 <DepartmentCard key={index} manager={department.manager_name} manager_id={department.manager_id} name={department.name} members={department.department_members}
-                                    id={department.id} departmentManagers={departmentManagers} setDepartmentManagers={setDepartmentManagers} />
+                                    id={department.id} departmentManagers={departmentManagers} setDepartmentManagers={setDepartmentManagers}
+                                    departments={departments} setDepartments={setDepartments} />
                             ))}
                             <div className="w-[200px] h-[224px] flex justify-center items-center">
                                 <Button variant="outline" onClick={open}
