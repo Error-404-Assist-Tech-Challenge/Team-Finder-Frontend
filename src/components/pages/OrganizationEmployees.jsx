@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { randomId } from '@mantine/hooks';
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Loader, Card, rem } from '@mantine/core';
+import { Button, Loader, Card, rem, Badge, TextInput, Title } from '@mantine/core';
 import { Context } from '../../App';
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import EmployeeCard from '../employeeComponents/EmployeeCard'
@@ -122,11 +122,16 @@ export default function OrganizationEmployeesPage() {
                                         <h2 className='text-2xl block'>You have no employees</h2>
                                     </Card>
                                 )}
-                                <Button className='h-[230px] mx-[40px] my-[20px] rounded-xl select-none bg-accent text-white text-2xl hover:bg-btn_hover font-bold text-white'
+                                <Button className='h-[230px] w-[550px] mx-[40px] my-[20px] rounded-xl bg-accent text-white text-2xl hover:bg-btn_hover font-bold text-white'
                                     onClick={handleSignUpLink}>
                                     Generate Employee URL link
-                                    {generatedLink && 
-                                    (<p>{`${generatedLink}`}</p>)}
+                                    <div className="w-[550px]">
+                                        {generatedLink &&
+                                            (<TextInput
+                                                size="lg"
+                                                disabled
+                                                value={generatedLink} />)}
+                                    </div>
                                 </Button>
                             </div>
                         </>
