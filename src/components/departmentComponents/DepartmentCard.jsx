@@ -29,28 +29,32 @@ export default function DepartmentCard(props) {
     }
 
     const handleSave = () => {
-        updatedDepartment();
+        updateDepartment();
         setIsEditing(false);
     }
 
     const getManagerName = (managerId) => {
         const manager = updatedDepartmentManagers.find(user => user.value === managerId);
-        return manager ? manager.label : 'Unknown';
+        return manager ? manager.label : 'Recently removed';
     };
 
-    const updateDepartment = (departmentId, newName, newManagerId) => {
+    const updateDepartmentInState = (departmentId, newName, newManagerId) => {
 
-        const departmentManagersWithAdded = [...props.departmentManagers, { value: props.manager_id, label: props.manager }]
-        props.setDepartmentManagers(departmentManagersWithAdded);
-
-        const departmentManagersWithRemoved = props.departmentManagers.filter(user => user.value !== newManagerId)
-        props.setDepartmentManagers(departmentManagersWithAdded);
+        if (props.manager) {
+            const departmentManagersWithOldManager = [...props.departmentManagers, { value: props.manager_id, label: props.manager }];
+            const departmentManagersWithoutNewManager = departmentManagersWithOldManager.filter(user => user.value !== newManagerId);
+            props.setDepartmentManagers(departmentManagersWithoutNewManager);
+        }
+        else {
+            const departmentManagersWithoutNewManager = props.departmentManagers.filter(user => user.value !== newManagerId)
+            props.setDepartmentManagers(departmentManagersWithoutNewManager);
+        }
 
         const newManagerName = getManagerName(newManagerId);
 
         const updatedDepartments = props.departments.map(department => {
             if (department.id === departmentId) {
-                return { ...department, name: newName, manager_name: newManagerName };
+                return { ...department, name: newName, manager_name: newManagerName, manager_id: newManagerId };
             }
             return department;
         });
@@ -59,7 +63,7 @@ export default function DepartmentCard(props) {
     };
 
 
-    const updatedDepartment = async () => {
+    const updateDepartment = async () => {
 
         // console.log(JSON.stringify({
         //     dept_id: props.id,
@@ -85,7 +89,7 @@ export default function DepartmentCard(props) {
 
             console.log('Response:', response.data);
 
-            updateDepartment(props.id, departmentName, departmentManager);
+            updateDepartmentInState(props.id, departmentName, departmentManager);
 
         } catch (error) {
             console.error('Error updating department:', error);
@@ -94,32 +98,32 @@ export default function DepartmentCard(props) {
         close();
     }
 
-    const deleteDepartment = (idToDelete) => {
+    const deleteDepartmentFromState = (idToDelete) => {
         const updatedDepartments = props.departments.filter(dept => dept.id !== idToDelete);
         props.setDepartments(updatedDepartments);
     };
 
-    const handleRemoveDepartment = async () => {
+    const deleteDepartment = async () => {
         const departmendId = props.id;
-        // try {
-        //     const response = await axiosPrivate.delete('skills/user', {
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //             'Access-Control-Allow-Origin': '*',
-        //             'Access-Control-Allow-Credentials': 'true'
-        //         },
-        //         data: {
-        //             dept_id: departmendId
-        //         },
-        //         withCredentials: true
-        //     });
-        //     console.log('Response:', response.data);
+        try {
+            const response = await axiosPrivate.delete('departments', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Credentials': 'true'
+                },
+                data: {
+                    dept_id: departmendId
+                },
+                withCredentials: true
+            });
+            console.log('Response:', response.data);
+            deleteDepartmentFromState(departmendId);
 
-        // } catch (error) {
-        //     console.error('Error deleting user skills:', error);
-        // }
 
-        deleteDepartment(departmendId);
+        } catch (error) {
+            console.error('Error deleting user skills:', error);
+        }
         close();
     }
 
@@ -188,7 +192,7 @@ export default function DepartmentCard(props) {
                                 className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] rounded  float-left" onClick={handleSave}>
                                 Save
                             </Button>)}
-                            <Button className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] rounded float-right" onClick={handleRemoveDepartment}>
+                            <Button className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] rounded float-right" onClick={deleteDepartment}>
                                 Remove Department
                             </Button>
                         </div>

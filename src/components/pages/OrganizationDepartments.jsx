@@ -62,8 +62,9 @@ export default function OrganizationDepartmentsPage() {
                     withCredentials: true
                 });
                 console.log('Department Managers:', response.data);
-                isMounted && setDepartmentManagers(response.data);
-
+                if (isMounted) {
+                    setDepartmentManagers(response.data);
+                }
             } catch (error) {
                 console.error('Error fetching departments:', error);
             }
@@ -80,10 +81,13 @@ export default function OrganizationDepartmentsPage() {
     }, []);
 
 
-
     useEffect(() => {
 
     }, [darkMode]);
+
+    const addDepartmentInState = () => {
+
+    }
 
     const handleAddDepartment = async () => {
         try {
@@ -101,9 +105,14 @@ export default function OrganizationDepartmentsPage() {
                 });
             console.log('Response:', response.data);
 
+            addDepartmentInState();
+
         } catch (error) {
             console.error('Error fetching unused skills:', error);
         }
+
+
+
         close();
     }
 
@@ -137,8 +146,10 @@ export default function OrganizationDepartmentsPage() {
                         <div className="flex flex-wrap justify-centerbg-darkcanvas">
                             <div className='bg-darkcanvas select-none h-auto py-[30px] flex flex-wrap'>
                                 {departments.map((department, index) => (
-                                    <DepartmentCard key={index} manager={department.manager_name} manager_id={department.manager_id} name={department.name} members={department.department_members}
-                                        id={department.id} departmentManagers={departmentManagers} setDepartmentManagers={setDepartmentManagers} />
+                                    <DepartmentCard key={index}
+                                        id={department.id} manager={department.manager_name} manager_id={department.manager_id} name={department.name} members={department.department_members}
+                                        departmentManagers={departmentManagers} setDepartmentManagers={setDepartmentManagers}
+                                        departments={departments} setDepartments={setDepartments} />
                                 ))}
                                 <div className="w-[200px] h-[224px] flex justify-center items-center">
                                     <Button variant="outline" onClick={open}

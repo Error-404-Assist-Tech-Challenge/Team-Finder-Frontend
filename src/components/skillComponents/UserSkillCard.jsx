@@ -68,7 +68,7 @@ export default function UserSkillCard(props) {
                 withCredentials: true
             });
             console.log('Response:', response.data);
-            
+
         } catch (error) {
             console.error('Error deleting user skills:', error);
         }
@@ -121,7 +121,7 @@ export default function UserSkillCard(props) {
                                 {props.skills[props.index].level == 1 &&
                                     (<span>You are learning {props.skills[props.index].skill_name}</span>)}
                                 {props.skills[props.index].level == 2 &&
-                                    (<span>You know{props.skills[props.index].skill_name}</span>)}
+                                    (<span>You know {props.skills[props.index].skill_name}</span>)}
                                 {props.skills[props.index].level == 3 &&
                                     (<span>You do {props.skills[props.index].skill_name}</span>)}
                                 {props.skills[props.index].level == 4 &&
