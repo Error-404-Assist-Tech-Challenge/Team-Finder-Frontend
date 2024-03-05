@@ -1,79 +1,37 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 
-import { Card, Avatar, Modal, Badge, Button, Text, Title } from '@mantine/core';
+import { Card, Avatar, Modal, Button, Text, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import React, { useContext, useEffect, useState } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
-import { MultiSelect } from '@mantine/core';
 
 export default function DepartmentEmployee(props) {
 
     const axiosPrivate = useAxiosPrivate();
     const [opened, { open, close }] = useDisclosure(false);
     const [isHovering, setIsHovering] = useState(false);
-    const [avalaible, setAvalaible] = useState([]);
-    const [visible, setVisible] = useState(false);
-    const list = []
+    
 
     const getInitials = (name) => {
         const names = name.split(' ');
         return names.map((name) => name[0]).join('').toUpperCase();
     };
-
-    // Function that gets all the avalaible members
-
-    useEffect(() => {
-        let isMounted = true;
-        const controller = new AbortController();
-
-        const getAvalaibleMembers = async () => {
-            try {
-                const response = await axiosPrivate.get('departments/members/available', {
-                    signal: controller.signal,
-                    withCredentials: true
-                });
-                console.log('Avalaible employees:', response.data);
-                isMounted && setAvalaible(response.data)
-                console.log({avalaible})
-            } catch (error) {
-                console.error('Error fetching members without department:', error);
-            }
-            finally {
-                const timeout = 200;
-                setTimeout(() => {
-                    setVisible(true);
-                }, timeout);
-            }
-        }
-
-        getAvalaibleMembers();
-
-        return () => {
-            isMounted = false;
-            controller.abort();
-        }
-    }, [])
-
-    for(let i = 0; i < avalaible.length; i = i + 1)
-        list[i] = avalaible[i].name
     
     return (
         <>
             <Modal opened={opened} onClose={close} centered overflow="inside" className="bg-graybg text-white select-none" zIndex={1000002} closeOnClickOutside={false}>
-                <MultiSelect
-                    label="Your favorite libraries"
-                    placeholder="Pick value"
-                    data={list}
-                    searchable
-                    nothingFoundMessage="Nothing found..."
-                    comboboxProps={{ zIndex: 1000000000 }}
-                    clearable/>
-                    <div className="flex justify-center">
-                        <Button className="bg-accent text-white hover:bg-btn_hover font-bold py-2 rounded mx-auto mt-10" onClick={close}>
-                                        Add Employees
-                        </Button>
-                    </div>
+                <h1 className="flex justify-center text-lg font-bold" style={{ whiteSpace: 'pre' }}>
+                    Are you sure you want to remove this employee?
+                </h1>
+                <div className="p-[10px]">
+                    <Button className="bg-light-grey hover:bg-transparent text-white font-bold px-4 py-2 rounded mx-[10px] my-[10px] mt-[20px] border-white" onClick={close}>
+                        Cancel
+                    </Button>
+                    <Button className="bg-btn_hover text-white hover:bg-accent font-bold px-4 py-2 rounded mx-[10px] my-[10px] mt-[20px] float-right">
+                        Confirm
+                    </Button>
+                </div>
             </Modal>
 
             <Card className="flex w-[240px] h-[120px] bg-[#505A5E] mx-[40px] my-[20px] rounded-xl text-white select-none font-bold"
@@ -86,7 +44,7 @@ export default function DepartmentEmployee(props) {
                                 <div className="text-xl font-bold">{props.name}</div>
                             </div>
                         </>}
-                    {isHovering && <Text className="text-xl">Click to see more!</Text>}
+                    {isHovering && <Text className="text-xl ">REMOVE</Text>}
                 </div>
             </Card>
         </>
