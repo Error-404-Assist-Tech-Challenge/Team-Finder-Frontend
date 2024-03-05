@@ -68,6 +68,7 @@ export default function UserSkillCard(props) {
                 withCredentials: true
             });
             console.log('Response:', response.data);
+            window.location.reload();
         } catch (error) {
             console.error('Error deleting user skills:', error);
         }
