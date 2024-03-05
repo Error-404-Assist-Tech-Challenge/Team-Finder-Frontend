@@ -3,8 +3,8 @@
 /* eslint-disable no-unused-vars */
 
 import { useContext, useEffect, useState } from 'react';
-import { Table, Loader, Button, Divider } from '@mantine/core';
-import { useHeadroom } from '@mantine/hooks';
+import { Table, Loader, Button, Divider, Modal } from '@mantine/core';
+import { useHeadroom, useDisclosure } from '@mantine/hooks';
 
 import { Context } from '../../App';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
@@ -16,6 +16,7 @@ export default function OrganizationSkillsPage() {
     const [darkMode, setDarkMode] = useContext(Context);
     const pinned = useHeadroom({ fixedAt: 20 });
 
+    const [opened, {open, close}] = useDisclosure(false);
     const [visible, setVisible] = useState(true);
 
     useEffect(() => {
@@ -78,9 +79,12 @@ export default function OrganizationSkillsPage() {
                     </div>
                     <div className="w-1/3 flex flex-wrap">
                         <Divider orientation="vertical" />
-                        
+                    
                     </div>
                 </div>
+                <Modal opened={opened} onClose={close} centered overflow="inside" className="bg-graybg text-white select-none" zIndex={1000002}>
+                    add org skills
+                </Modal>
             </>)}
 
         </div>

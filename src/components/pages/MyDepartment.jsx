@@ -96,7 +96,6 @@ export default function OrganizationEmployeesPage() {
         try {
             const response = await axiosPrivate.post('departments/members',
                 JSON.stringify({
-                    dept_id: members[0].dept_id,
                     user_id: addedEmployee,
                 }),
                 {
