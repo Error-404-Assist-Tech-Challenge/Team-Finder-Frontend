@@ -5,7 +5,7 @@ import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { Button } from '@mantine/core';
 import { useHeadroom } from '@mantine/hooks';
 import { Context } from '../../App';
-import DepartmentCard from '../skillComponents/DepartmentCard';
+import DepartmentCard from '../departmentComponents/DepartmentCard';
 
 export default function OrganizationDepartmentsPage() {
 
@@ -19,9 +19,10 @@ export default function OrganizationDepartmentsPage() {
         let isMounted = true;
         const controller = new AbortController();
         const fetchDepartments = async () => {
-          try {
+            try {
                 const response = await axiosPrivate.get('departments', {
-                    signal: controller.signal
+                    signal: controller.signal,
+                    // withCredentials: true
                 });
                 console.log('Departments:', response.data);
                 isMounted && setDepartments(response.data);
@@ -49,10 +50,12 @@ export default function OrganizationDepartmentsPage() {
         <>
             <div className={`${darkMode && 'dark'}`}>
                 <div className='dark:bg-darkcanvas bg-canvas h-auto select-none'>
-                    <div className="flex flex-wrap">
-                        {departments.map((department, index) => (
-                            <DepartmentCard  key={index} leader={department.manager_name} name={department.name} members={department.department_members}/>
-                        ))}    
+                    <div className="flex flex-wrap bg-darkcanvas">
+                        <div className='bg-darkcanvas select-none h-auto py-[30px] flex'>
+                            {departments.map((department, index) => (
+                                <DepartmentCard key={index} leader={department.manager_name} name={department.name} members={department.department_members} />
+                            ))}
+                        </div>
                         <div className="w-[200px] h-[270px] flex justify-center items-center">
                             <Button variant="outline"
                                 className={`relative w-[80px] h-[80px] m-[6px] rounded-full p-0 text-accent border-accent border-[5px] hover:text-accent`}>
