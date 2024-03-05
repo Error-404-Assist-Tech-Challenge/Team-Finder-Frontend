@@ -3,7 +3,7 @@
 
 import React, { useContext, useEffect, useState } from 'react';
 import { Button, Loader, Card, rem } from '@mantine/core';
-
+import { Pagination, Text } from '@mantine/core';
 import { Context } from '../../App';
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import EmployeeCard from '../employeeComponents/EmployeeCard'
@@ -101,12 +101,14 @@ export default function OrganizationEmployeesPage() {
     }
 
 
-
+    const items = Object.keys(users).map(user_id => (
+        <EmployeeCard key={user_id} employee={users[user_id]} />
+    ))
     // All the user cards + button to generate signup employee link
-
+    const [activePage, setPage] = useState(1);
     return (
         <div className={`${darkMode && 'dark'}`}>
-            <div className='dark:bg-darkcanvas bg-canvas h-screen flex flex-wrap'>
+           <div className='dark:bg-darkcanvas bg-canvas h-screen flex flex-wrap'>
                 {!visible && (
                     <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                         <Loader size={30} color="red" />
@@ -132,6 +134,8 @@ export default function OrganizationEmployeesPage() {
                     </>
                 )}
             </div>
+            {items}
+            <Pagination total={2} value={activePage} onChange={setPage} mt="sm" />
         </div>
     )
 }

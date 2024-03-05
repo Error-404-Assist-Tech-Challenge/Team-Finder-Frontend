@@ -1,10 +1,26 @@
 /* eslint-disable no-unused-vars */
-
-import React, { useContext, useEffect } from 'react';
+import { Pagination, Text } from '@mantine/core';
+import React, { useContext, useEffect, useState } from 'react';
 import { useHeadroom } from '@mantine/hooks';
-
+import { randomId } from '@mantine/hooks';
 import { Context } from '../../App';
 
+function chunk(array, size) {
+    if (!array.length) {
+      return [];
+    }
+    const head = array.slice(0, size);
+    const tail = array.slice(size);
+    return [head, ...chunk(tail, size)];
+  }
+  
+  const data = chunk(
+    Array(30)
+      .fill(0)
+      .map((_, index) => ({ id: index, name: randomId() })),
+    5
+  );
+  
 export default function MyProjects() {
 
     const [darkMode, setDarkMode] = useContext(Context);
@@ -13,10 +29,17 @@ export default function MyProjects() {
     useEffect(() => {
 
     }, [darkMode]);
+    const [activePage, setPage] = useState(1);
+    const items = data[activePage - 1].map((item) => (
+        <Text key={item.id}>
+        id: {item.id}, name: {item.name}
+        </Text>
+    ));
 
     return (
         <>
-            <p className='dark:text-darktext text-text text-xl m-[20px] '>My Projects</p>
+            {items}
+            <Pagination total={data.length} value={activePage} onChange={setPage} mt="sm" />
         </>
     )
 }
