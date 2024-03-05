@@ -98,12 +98,20 @@ export default function OrganizationDepartmentsPage() {
                     withCredentials: true
                 });
             console.log('Response:', response.data);
-            window.location.reload();
+            
         } catch (error) {
             console.error('Error fetching unused skills:', error);
         }
         close();
     }
+
+    const handleRemoveDepartment = async () => {
+
+
+        
+    }
+
+
     return (
         <>
             <div className={`${darkMode && 'dark'}`}>
