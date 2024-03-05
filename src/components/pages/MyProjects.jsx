@@ -18,7 +18,7 @@ function chunk(array, size) {
     Array(30)
       .fill(0)
       .map((_, index) => ({ id: index, name: randomId() })),
-    5
+    10
   );
   
 export default function MyProjects() {
@@ -32,7 +32,7 @@ export default function MyProjects() {
     const [activePage, setPage] = useState(1);
     const items = data[activePage - 1].map((item) => (
         <Text key={item.id}>
-        id: {item.id}, name: {item.name}
+        
         </Text>
     ));
 

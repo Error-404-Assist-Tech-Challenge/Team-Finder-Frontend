@@ -25,13 +25,13 @@ export default function OrganizationEmployeesPage() {
     }, [darkMode]);
 
 
-    // Function that gets all the users from the organization
+    // Function that gets all the members from department
 
     useEffect(() => {
         let isMounted = true;
         const controller = new AbortController();
 
-        const getUsers = async () => {
+        const getDepartmentMembers = async () => {
             try {
                 const response = await axiosPrivate.get('departments/members', {
                     signal: controller.signal,
@@ -40,7 +40,7 @@ export default function OrganizationEmployeesPage() {
                 console.log('Department members:', response.data);
                 isMounted && setMembers(response.data)
             } catch (error) {
-                console.error('Error fetching organization members:', error);
+                console.error('Error fetching department members:', error);
             }
             finally {
                 const timeout = 200;
@@ -50,13 +50,14 @@ export default function OrganizationEmployeesPage() {
             }
         }
 
-        getUsers();
+        getDepartmentMembers();
 
         return () => {
             isMounted = false;
             controller.abort();
         }
     }, [])
+
     
    // All the user cards + button to generate signup employee link
 
