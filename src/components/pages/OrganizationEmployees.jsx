@@ -65,7 +65,8 @@ export default function OrganizationEmployeesPage() {
         const getSignUpLink = async () => {
             try {
                 const response = await axiosPrivate.post('organizations/signup_token', {
-                    signal: controller.signal
+                    signal: controller.signal,
+                    withCredentials: true
                 });
 
                 const id = response.data.id;
