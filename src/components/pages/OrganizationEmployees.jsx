@@ -17,7 +17,7 @@ export default function OrganizationEmployeesPage() {
     const [darkMode, setDarkMode] = useContext(Context);
     const axiosPrivate = useAxiosPrivate();
     const [users, setUsers] = useState([]);
-    const [visible, setVisible] = useState(false);
+    const [visible, setVisible] = useState(true);
     const [generatedLink, generateLink] = useState('');
     useEffect(() => {
     }, [darkMode]);
@@ -37,14 +37,9 @@ export default function OrganizationEmployeesPage() {
                 });
                 console.log('Users:', response.data);
                 isMounted && setUsers(response.data)
+                setVisible(false);
             } catch (error) {
                 console.error('Error fetching organization members:', error);
-            }
-            finally {
-                const timeout = 200;
-                setTimeout(() => {
-                    setVisible(true);
-                }, timeout);
             }
         }
 
@@ -110,12 +105,12 @@ export default function OrganizationEmployeesPage() {
         <>
             <div className={`${darkMode && 'dark'}`}>
                 <div className='dark:bg-darkcanvas bg-canvas h-screen flex flex-wrap'>
-                    {!visible && (
+                    {visible && (
                         <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                             <Loader size={30} color="red" />
                         </div>
                     )}
-                    {visible && (
+                    {!visible && (
                         <>
                             <div className='flex flex-wrap gap-6'>
                                 {Object.keys(users).length > 0 ? (

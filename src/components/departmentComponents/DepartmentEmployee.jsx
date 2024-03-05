@@ -11,7 +11,7 @@ export default function DepartmentEmployee(props) {
     const axiosPrivate = useAxiosPrivate();
     const [opened, { open, close }] = useDisclosure(false);
     const [isHovering, setIsHovering] = useState(false);
-    
+
 
     const getInitials = (name) => {
         const names = name.split(' ');
@@ -36,7 +36,7 @@ export default function DepartmentEmployee(props) {
 
             <Card className="flex w-[240px] h-[120px] bg-[#505A5E] mx-[40px] my-[20px] rounded-xl text-white select-none font-bold"
                 onClick={open} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-                <div className="flex items-center justify-center h-full">
+                <div className="flex items-center justify-left h-full">
                     {!isHovering &&
                         <>                    
                             <Avatar className="m-3 w-16 h-16 bg-[#E9E5E6]">{getInitials(props.name)}</Avatar>

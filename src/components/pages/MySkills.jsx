@@ -47,10 +47,6 @@ export default function MySkillsPage() {
             } finally {
                 isMounted = false;
                 controller.abort();
-                const timeout = 200;
-                setTimeout(() => {
-                    setVisible(false);
-                }, timeout);
             }
         }
         fetchUserSkills();
@@ -73,6 +69,7 @@ export default function MySkillsPage() {
                 });
                 console.log('My Unused Skills:', response.data);
                 isMounted && setUnusedSkills(response.data);
+                setVisible(false);
             } catch (error) {
                 console.error('Error fetching unused skills:', error);
             }

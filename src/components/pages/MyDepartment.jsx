@@ -4,11 +4,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Modal, Select } from '@mantine/core';
+import { Button, Modal, Select, Loader } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Context } from '../../App';
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import DepartmentEmployee from '../employeeComponents/DepartmentEmployee';
+import DepartmentEmployee from '../departmentComponents/DepartmentEmployee';
 
 export default function OrganizationEmployeesPage() {
 
@@ -16,14 +16,13 @@ export default function OrganizationEmployeesPage() {
 
     const [darkMode, setDarkMode] = useContext(Context);
     const axiosPrivate = useAxiosPrivate();
-    const [visible, setVisible] = useState(false);
-
+    const [visible, setVisible] = useState(true);
     const [members, setMembers] = useState([]);
     const [addedEmployee, setAddedEmployee] = useState('');
     const [opened, { open, close }] = useDisclosure(false);
     const [avalaible, setAvalaible] = useState([]);
 
-    const list = []
+    const employeeList = []
 
     useEffect(() => {
     }, [darkMode]);
@@ -43,19 +42,14 @@ export default function OrganizationEmployeesPage() {
                 });
                 console.log('Department members:', response.data);
                 isMounted && setMembers(response.data)
+                setVisible(false);
             } catch (error) {
                 console.error('Error fetching department members:', error);
             }
-            finally {
-                const timeout = 200;
-                setTimeout(() => {
-                    setVisible(true);
-                }, timeout);
-            }
         }
-
+        
         getDepartmentMembers();
-
+        
         return () => {
             isMounted = false;
             controller.abort();
@@ -67,7 +61,7 @@ export default function OrganizationEmployeesPage() {
     useEffect(() => {
         let isMounted = true;
         const controller = new AbortController();
-
+        
         const getAvalaibleMembers = async () => {
             try {
                 const response = await axiosPrivate.get('departments/members/available', {
@@ -77,32 +71,25 @@ export default function OrganizationEmployeesPage() {
                 console.log('Avalaible employees:', response.data);
                 isMounted && setAvalaible(response.data)
                 console.log({ avalaible })
+                setVisible(false);
             } catch (error) {
                 console.error('Error fetching members without department:', error);
             }
-            finally {
-                const timeout = 200;
-                setTimeout(() => {
-                    setVisible(true);
-                }, timeout);
-            }
         }
-
+        
         getAvalaibleMembers();
-
+        
         return () => {
             isMounted = false;
             controller.abort();
         }
     }, [])
-
     for (let i = 0; i < avalaible.length; i++) {
-        list[i] = {
+        employeeList[i] = {
             value: avalaible[i].id,
             label: avalaible[i].name
         };
     }
-
     // Add new employee to department
 
     const handleAddEmployee = async () => {
@@ -131,23 +118,32 @@ export default function OrganizationEmployeesPage() {
     return (
         <div className={`${darkMode && 'dark'}`}>
             <div className='dark:bg-darkcanvas bg-canvas h-screen flex flex-wrap'>
-                {members.map((member, index) => (
-                    <DepartmentEmployee key={index} name={member.user_name} />
-                ))}
-                <Button variant="outline" onClick={open}
-                    className={`relative w-[80px] h-[80px] m-[38px] rounded-full p-0 text-accent border-accent border-[5px] hover:text-accent`}>
-                    <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus w-full h-full" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M12 5l0 14" />
-                        <path d="M5 12l14 0" />
-                    </svg>
-                </Button>
+                {visible && (
+                        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                            <Loader size={30} color="red" />
+                        </div>
+                    )}
+                {!visible && (
+                    <>
+                        {members.map((member, index) => (
+                            <DepartmentEmployee key={index} name={member.user_name} />
+                        ))}
+                        <Button variant="outline" onClick={open}
+                            className={`relative w-[80px] h-[80px] m-[38px] rounded-full p-0 text-accent border-accent border-[5px] hover:text-accent`}>
+                            <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus w-full h-full" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M12 5l0 14" />
+                                <path d="M5 12l14 0" />
+                            </svg>
+                        </Button>
+                    </>  
+                )}
             </div>
             <Modal opened={opened} onClose={close} centered overflow="inside" className="bg-graybg text-white select-none" zIndex={1000002} closeOnClickOutside={false}>
                 <Select
                     label="Avalaible employees for your department:"
                     placeholder="Pick employee"
-                    data={list}
+                    data={employeeList}
                     value={addedEmployee}
                     onChange={setAddedEmployee}
                     searchable
