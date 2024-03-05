@@ -17,7 +17,30 @@ export default function EmployeeCard({ employee }) {
     };
 
     const removeRole = async (e, role) => {
+        console.log('user_id:', employee.id);
+        console.log('role_name:', role);
+        try {
+            const response = await axiosPrivate.delete('organizations/roles', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Credentials': 'true'
+                },
+                data: {
+                    user_id: employee.id,
+                    role_name: role,
+                },
+                withCredentials: true
+            });
 
+            console.log(response.data);
+            window.location.reload();
+
+        } catch (error) {
+            console.error(error);
+        }
+
+        close();
     }
 
     const assignRole = async (e, role) => {
@@ -39,12 +62,14 @@ export default function EmployeeCard({ employee }) {
                 });
 
             console.log(response.data);
-
+            window.location.reload();
             // employee.roles = [...response.data.roles];
 
         } catch (error) {
             console.error(error);
         }
+
+        close();
     }
 
     return (

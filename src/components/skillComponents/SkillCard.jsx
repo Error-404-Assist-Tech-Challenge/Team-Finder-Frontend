@@ -99,10 +99,12 @@ export const SkillCard = ({ skill }) => {
                     <p><span className="font-bold">Departments</span>: {skill.dept_name.join(', ')}</p>
                 </div>
                 <div className="pt-4 flex justify-left">
-                    {!isEditing && (<Button className="bg-accent text-white hover:bg-btn_hover font-bold rounded" onClick={handleEdit}>
+                    {!isEditing && (<Button
+                    className="bg-accent text-white hover:bg-btn_hover font-bold rounded" onClick={handleEdit}>
                         Edit skill
                     </Button>)}
-                    {isEditing && (<Button className="bg-accent text-white hover:bg-btn_hover font-bold rounded" onClick={handleSave}>
+                    {isEditing && (<Button 
+                    className="bg-accent text-white hover:bg-btn_hover font-bold rounded" onClick={handleSave}>
                         Save
                     </Button>)}
                 </div>
