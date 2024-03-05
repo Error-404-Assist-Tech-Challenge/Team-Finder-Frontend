@@ -27,7 +27,7 @@ export default function OrganizationDepartmentsPage() {
             try {
                 const response = await axiosPrivate.get('departments', {
                     signal: controller.signal,
-                    // withCredentials: true
+                    withCredentials: true
                 });
                 console.log('Departments:', response.data);
                 isMounted && setDepartments(response.data);
@@ -100,17 +100,11 @@ export default function OrganizationDepartmentsPage() {
                     withCredentials: true
                 });
             console.log('Response:', response.data);
-            
+
         } catch (error) {
             console.error('Error fetching unused skills:', error);
         }
         close();
-    }
-
-    const handleRemoveDepartment = async () => {
-
-
-        
     }
 
 
@@ -138,6 +132,7 @@ export default function OrganizationDepartmentsPage() {
                                 Create Department
                             </Button>)}
                     </Modal>
+
                     {!visible && (
                         <div className="flex flex-wrap justify-centerbg-darkcanvas">
                             <div className='bg-darkcanvas select-none h-auto py-[30px] flex flex-wrap'>

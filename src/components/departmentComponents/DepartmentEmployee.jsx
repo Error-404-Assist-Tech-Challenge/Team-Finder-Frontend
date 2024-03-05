@@ -44,7 +44,7 @@ export default function DepartmentEmployee(props) {
                                 <div className="text-xl font-bold">{props.name}</div>
                             </div>
                         </>}
-                    {isHovering && <Text className="text-xl ">REMOVE</Text>}
+                    {isHovering && <Text className="text-xl font-bold">Remove</Text>}
                 </div>
             </Card>
         </>

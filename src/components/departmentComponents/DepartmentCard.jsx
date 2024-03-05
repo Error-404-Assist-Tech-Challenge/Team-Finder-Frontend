@@ -33,13 +33,39 @@ export default function DepartmentCard(props) {
         setIsEditing(false);
     }
 
+    const getManagerName = (managerId) => {
+        const manager = updatedDepartmentManagers.find(user => user.value === managerId);
+        return manager ? manager.label : 'Unknown';
+    };
+
+    const updateDepartment = (departmentId, newName, newManagerId) => {
+
+        const departmentManagersWithAdded = [...props.departmentManagers, { value: props.manager_id, label: props.manager }]
+        props.setDepartmentManagers(departmentManagersWithAdded);
+
+        const departmentManagersWithRemoved = props.departmentManagers.filter(user => user.value !== newManagerId)
+        props.setDepartmentManagers(departmentManagersWithAdded);
+
+        const newManagerName = getManagerName(newManagerId);
+
+        const updatedDepartments = props.departments.map(department => {
+            if (department.id === departmentId) {
+                return { ...department, name: newName, manager_name: newManagerName };
+            }
+            return department;
+        });
+
+        props.setDepartments(updatedDepartments);
+    };
+
+
     const updatedDepartment = async () => {
 
-        console.log(JSON.stringify({
-            dept_id: props.id,
-            name: departmentName,
-            manager_id: departmentManager
-        }))
+        // console.log(JSON.stringify({
+        //     dept_id: props.id,
+        //     name: departmentName,
+        //     manager_id: departmentManager
+        // }))
 
         try {
             const response = await axiosPrivate.put('departments',
@@ -56,10 +82,45 @@ export default function DepartmentCard(props) {
                     },
                     withCredentials: true
                 });
+
             console.log('Response:', response.data);
+
+            updateDepartment(props.id, departmentName, departmentManager);
+
         } catch (error) {
             console.error('Error updating department:', error);
         }
+
+        close();
+    }
+
+    const deleteDepartment = (idToDelete) => {
+        const updatedDepartments = props.departments.filter(dept => dept.id !== idToDelete);
+        props.setDepartments(updatedDepartments);
+    };
+
+    const handleRemoveDepartment = async () => {
+        const departmendId = props.id;
+        // try {
+        //     const response = await axiosPrivate.delete('skills/user', {
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //             'Access-Control-Allow-Origin': '*',
+        //             'Access-Control-Allow-Credentials': 'true'
+        //         },
+        //         data: {
+        //             dept_id: departmendId
+        //         },
+        //         withCredentials: true
+        //     });
+        //     console.log('Response:', response.data);
+
+        // } catch (error) {
+        //     console.error('Error deleting user skills:', error);
+        // }
+
+        deleteDepartment(departmendId);
+        close();
     }
 
 
@@ -127,7 +188,7 @@ export default function DepartmentCard(props) {
                                 className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] rounded  float-left" onClick={handleSave}>
                                 Save
                             </Button>)}
-                            <Button className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] rounded float-right">
+                            <Button className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] rounded float-right" onClick={handleRemoveDepartment}>
                                 Remove Department
                             </Button>
                         </div>
