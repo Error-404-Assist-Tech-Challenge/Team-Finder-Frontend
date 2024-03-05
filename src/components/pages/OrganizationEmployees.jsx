@@ -127,9 +127,11 @@ export default function OrganizationEmployeesPage() {
                                         <h2 className='text-2xl block'>You have no employees</h2>
                                     </Card>
                                 )}
-                                <Button className='w-[300px] h-[230px] mx-[40px] my-[20px] rounded-xl select-none bg-accent text-white text-2xl hover:bg-btn_hover font-bold text-white'
+                                <Button className='h-[230px] mx-[40px] my-[20px] rounded-xl select-none bg-accent text-white text-2xl hover:bg-btn_hover font-bold text-white'
                                     onClick={handleSignUpLink}>
                                     Generate Employee URL link
+                                    {generatedLink && 
+                                    (<p>{`${generatedLink}`}</p>)}
                                 </Button>
                             </div>
                         </>
