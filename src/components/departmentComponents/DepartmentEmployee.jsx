@@ -12,6 +12,29 @@ export default function DepartmentEmployee(props) {
     const [opened, { open, close }] = useDisclosure(false);
     const [isHovering, setIsHovering] = useState(false);
 
+// Remove user skill
+
+    const handleRemoveMember = async () => {
+        try {
+            const userId = props.user_id;
+            const response = await axiosPrivate.delete('departments/members', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Credentials': 'true'
+                },
+                data: {
+                    user_id: userId
+                },
+                withCredentials: true
+        });
+        console.log('Response:', response.data);
+        
+    } catch (error) {
+        console.error('Error deleting department member:', error);
+    }
+    close();
+}
 
     const getInitials = (name) => {
         const names = name.split(' ');
@@ -28,7 +51,7 @@ export default function DepartmentEmployee(props) {
                     <Button className="bg-light-grey hover:bg-transparent text-white font-bold px-4 py-2 rounded mx-[10px] my-[10px] mt-[20px] border-white" onClick={close}>
                         Cancel
                     </Button>
-                    <Button className="bg-btn_hover text-white hover:bg-accent font-bold px-4 py-2 rounded mx-[10px] my-[10px] mt-[20px] float-right">
+                    <Button className="bg-btn_hover text-white hover:bg-accent font-bold px-4 py-2 rounded mx-[10px] my-[10px] mt-[20px] float-right" onClick={handleRemoveMember}>
                         Confirm
                     </Button>
                 </div>

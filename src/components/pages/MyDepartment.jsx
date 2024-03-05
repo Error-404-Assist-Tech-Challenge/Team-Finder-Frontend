@@ -126,7 +126,7 @@ export default function OrganizationEmployeesPage() {
                 {!visible && (
                     <>
                         {members.map((member, index) => (
-                            <DepartmentEmployee key={index} name={member.user_name} />
+                            <DepartmentEmployee key={index} name={member.user_name} user_id={member.user_id}/>
                         ))}
                         <Button variant="outline" onClick={open}
                             className={`relative w-[80px] h-[80px] m-[38px] rounded-full p-0 text-accent border-accent border-[5px] hover:text-accent`}>
@@ -141,7 +141,7 @@ export default function OrganizationEmployeesPage() {
             </div>
             <Modal opened={opened} onClose={close} centered overflow="inside" className="bg-graybg text-white select-none" zIndex={1000002} closeOnClickOutside={false}>
                 <Select
-                    label="Avalaible employees for your department:"
+                    label="Unassigned employees:"
                     placeholder="Pick employee"
                     data={employeeList}
                     value={addedEmployee}
