@@ -4,7 +4,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Modal, MultiSelect } from '@mantine/core';
+import { Button, Modal, Select } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Context } from '../../App';
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
@@ -16,10 +16,10 @@ export default function OrganizationEmployeesPage() {
 
     const [darkMode, setDarkMode] = useContext(Context);
     const axiosPrivate = useAxiosPrivate();
-    const [members, setMembers] = useState([]);
     const [visible, setVisible] = useState(false);
-
-    const [addedEmployee, setAddedEmployee] = useState([]);
+    
+    const [members, setMembers] = useState([]);
+    const [addedEmployee, setAddedEmployee] = useState('');
     const [opened, { open, close }] = useDisclosure(false);
     const [avalaible, setAvalaible] = useState([]);
     
@@ -53,21 +53,21 @@ export default function OrganizationEmployeesPage() {
                 }, timeout);
             }
         }
-
+        
         getDepartmentMembers();
-
+        
         return () => {
             isMounted = false;
             controller.abort();
         }
     }, [])
-
-     // Function that gets all the avalaible members
-
-     useEffect(() => {
+    
+    // Function that gets all the avalaible members
+    
+    useEffect(() => {
         let isMounted = true;
         const controller = new AbortController();
-
+        
         const getAvalaibleMembers = async () => {
             try {
                 const response = await axiosPrivate.get('departments/members/available', {
@@ -87,19 +87,45 @@ export default function OrganizationEmployeesPage() {
                 }, timeout);
             }
         }
-
+        
         getAvalaibleMembers();
-
+        
         return () => {
             isMounted = false;
             controller.abort();
         }
     }, [])
-
-    for(let i = 0; i < avalaible.length; i = i + 1)
-        list[i] = avalaible[i].name
-
     
+    for (let i = 0; i < avalaible.length; i++) {
+        list[i] = {
+            value: avalaible[i].id,
+            label: avalaible[i].name
+        };
+    }
+    
+    // Add new employee to department
+
+    const handleAddEmployee = async () => {
+        try {
+            const response = await axiosPrivate.post('departments/members',
+                JSON.stringify({
+                    dept_id: members[0].dept_id,
+                    user_id: addedEmployee,
+                }),
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Credentials': 'true'
+                    },
+                    withCredentials: true
+                });
+            console.log('Response:', response.data);
+        } catch (error) {
+            console.error('Error adding employees:', error);
+        }
+        close();
+    }
    // All the user cards + button to generate signup employee link
 
     return (
@@ -118,7 +144,7 @@ export default function OrganizationEmployeesPage() {
                 </Button>
             </div>
             <Modal opened={opened} onClose={close} centered overflow="inside" className="bg-graybg text-white select-none" zIndex={1000002} closeOnClickOutside={false}>       
-            <MultiSelect
+                <Select
                     label="Avalaible employees for your department:"
                     placeholder="Pick employee"
                     data={list}
@@ -129,12 +155,11 @@ export default function OrganizationEmployeesPage() {
                     comboboxProps={{ zIndex: 1000000000 }}
                     clearable/>
                     <div className="flex justify-center">
-                        <Button className="bg-accent text-white hover:bg-btn_hover font-bold py-2 rounded mx-auto mt-10" onClick={close}>
+                        <Button className="bg-accent text-white hover:bg-btn_hover font-bold py-2 rounded mx-auto mt-10" onClick={handleAddEmployee}>
                                         Add Employees
                         </Button>
                     </div>
             </Modal>
-            <p>{addedEmployee}</p>  
         </div>
     )
 }
