@@ -35,31 +35,31 @@ export default function DepartmentCard(props) {
 
     const updatedDepartment = async () => {
 
-        // console.log(JSON.stringify({
-        //     dept_id: props.id,
-        //     name: departmentName,
-        //     manager_id: departmentManager
-        // }))
+        console.log(JSON.stringify({
+            dept_id: props.id,
+            name: departmentName,
+            manager_id: departmentManager
+        }))
 
-        // try {
-        //     const response = await axiosPrivate.put('organizations/skills',
-        //         JSON.stringify({
-        //             dept_id: props.id,
-        //             name: departmentName,
-        //             manager_id: departmentManager
-        //         }),
-        //         {
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //                 'Access-Control-Allow-Origin': '*',
-        //                 'Access-Control-Allow-Credentials': 'true'
-        //             },
-        //             withCredentials: true
-        //         });
-        //     console.log('Response:', response.data);
-        // } catch (error) {
-        //     console.error('Error updating department:', error);
-        // }
+        try {
+            const response = await axiosPrivate.put('departments',
+                JSON.stringify({
+                    dept_id: props.id,
+                    name: departmentName,
+                    manager_id: departmentManager
+                }),
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Credentials': 'true'
+                    },
+                    withCredentials: true
+                });
+            console.log('Response:', response.data);
+        } catch (error) {
+            console.error('Error updating department:', error);
+        }
     }
 
 
@@ -90,7 +90,7 @@ export default function DepartmentCard(props) {
                             {isEditing && <div>
                                 <Select
                                     allowDeselect={true}
-                                    placeholder="Choose a manager"
+                                    placeholder="No manager"
                                     data={updatedDepartmentManagers}
                                     value={departmentManager}
                                     onChange={setDepartmentManager}

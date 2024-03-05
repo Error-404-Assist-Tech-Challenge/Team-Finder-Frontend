@@ -6,7 +6,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { useState } from 'react'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
-export default function EmployeeCard({ employee }) {
+export default function EmployeeCard({ employee, setUsers }) {
 
     const axiosPrivate = useAxiosPrivate();
     const [opened, { open, close }] = useDisclosure(false);
@@ -14,6 +14,30 @@ export default function EmployeeCard({ employee }) {
     const getInitials = (name) => {
         const names = name.split(' ');
         return names.map((name) => name[0]).join('').toUpperCase();
+    };
+
+    const removeRoleFromUser = (userId, roleToRemove) => {
+        setUsers(prevUsers => {
+            return prevUsers.map(user => {
+                if (user.id === userId) {
+                    user.roles = user.roles.filter(role => role !== roleToRemove);
+                }
+                return user;
+            });
+        });
+    };
+
+    const addRoleToUser = (userId, roleToAdd) => {
+        setUsers(prevUsers => {
+            return prevUsers.map(user => {
+                if (user.id === userId) {
+                    if (!user.roles.includes(roleToAdd)) {
+                        user.roles = [...user.roles, roleToAdd];
+                    }
+                }
+                return user;
+            });
+        });
     };
 
     const removeRole = async (e, role) => {
@@ -34,7 +58,8 @@ export default function EmployeeCard({ employee }) {
             });
 
             console.log(response.data);
-            window.location.reload();
+
+            removeRoleFromUser(employee.id, role);
 
         } catch (error) {
             console.error(error);
@@ -62,8 +87,8 @@ export default function EmployeeCard({ employee }) {
                 });
 
             console.log(response.data);
-            window.location.reload();
-            // employee.roles = [...response.data.roles];
+
+            addRoleToUser(employee.id, role);
 
         } catch (error) {
             console.error(error);

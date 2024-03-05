@@ -17,12 +17,11 @@ export default function OrganizationEmployeesPage() {
     const [darkMode, setDarkMode] = useContext(Context);
     const axiosPrivate = useAxiosPrivate();
     const [visible, setVisible] = useState(false);
-    
     const [members, setMembers] = useState([]);
     const [addedEmployee, setAddedEmployee] = useState('');
     const [opened, { open, close }] = useDisclosure(false);
     const [avalaible, setAvalaible] = useState([]);
-    
+
     const list = []
 
     useEffect(() => {
@@ -61,9 +60,9 @@ export default function OrganizationEmployeesPage() {
             controller.abort();
         }
     }, [])
-    
+
     // Function that gets all the avalaible members
-    
+
     useEffect(() => {
         let isMounted = true;
         const controller = new AbortController();
@@ -76,7 +75,7 @@ export default function OrganizationEmployeesPage() {
                 });
                 console.log('Avalaible employees:', response.data);
                 isMounted && setAvalaible(response.data)
-                console.log({avalaible})
+                console.log({ avalaible })
             } catch (error) {
                 console.error('Error fetching members without department:', error);
             }
@@ -95,14 +94,12 @@ export default function OrganizationEmployeesPage() {
             controller.abort();
         }
     }, [])
-    
     for (let i = 0; i < avalaible.length; i++) {
         list[i] = {
             value: avalaible[i].id,
             label: avalaible[i].name
         };
     }
-    
     // Add new employee to department
 
     const handleAddEmployee = async () => {
@@ -126,24 +123,24 @@ export default function OrganizationEmployeesPage() {
         }
         close();
     }
-   // All the user cards + button to generate signup employee link
+    // All the user cards + button to generate signup employee link
 
     return (
         <div className={`${darkMode && 'dark'}`}>
             <div className='dark:bg-darkcanvas bg-canvas h-screen flex flex-wrap'>
                 {members.map((member, index) => (
-                                <DepartmentEmployee key={index} name={member.user_name}/>
-                            ))}
+                    <DepartmentEmployee key={index} name={member.user_name} />
+                ))}
                 <Button variant="outline" onClick={open}
-                        className={`relative w-[80px] h-[80px] m-[38px] rounded-full p-0 text-accent border-accent border-[5px] hover:text-accent`}>
-                        <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus w-full h-full" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M12 5l0 14" />
-                            <path d="M5 12l14 0" />
-                        </svg>
+                    className={`relative w-[80px] h-[80px] m-[38px] rounded-full p-0 text-accent border-accent border-[5px] hover:text-accent`}>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus w-full h-full" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M12 5l0 14" />
+                        <path d="M5 12l14 0" />
+                    </svg>
                 </Button>
             </div>
-            <Modal opened={opened} onClose={close} centered overflow="inside" className="bg-graybg text-white select-none" zIndex={1000002} closeOnClickOutside={false}>       
+            <Modal opened={opened} onClose={close} centered overflow="inside" className="bg-graybg text-white select-none" zIndex={1000002} closeOnClickOutside={false}>
                 <Select
                     label="Avalaible employees for your department:"
                     placeholder="Pick employee"
@@ -153,12 +150,12 @@ export default function OrganizationEmployeesPage() {
                     searchable
                     nothingFoundMessage="No employees avalaible..."
                     comboboxProps={{ zIndex: 1000000000 }}
-                    clearable/>
-                    <div className="flex justify-center">
-                        <Button className="bg-accent text-white hover:bg-btn_hover font-bold py-2 rounded mx-auto mt-10" onClick={handleAddEmployee}>
-                                        Add Employees
-                        </Button>
-                    </div>
+                    clearable />
+                <div className="flex justify-center">
+                    <Button className="bg-accent text-white hover:bg-btn_hover font-bold py-2 rounded mx-auto mt-10" onClick={handleAddEmployee}>
+                        Add Employees
+                    </Button>
+                </div>
             </Modal>
         </div>
     )
