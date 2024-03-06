@@ -11,6 +11,7 @@ export default function EmployeeCard({ employee, setUsers }) {
     const axiosPrivate = useAxiosPrivate();
     const [opened, { open, close }] = useDisclosure(false);
     const [isHovering, setIsHovering] = useState(false);
+
     const getInitials = (name) => {
         const names = name.split(' ');
         return names.map((name) => name[0]).join('').toUpperCase();
@@ -139,7 +140,9 @@ export default function EmployeeCard({ employee, setUsers }) {
                         <div className="text-xl font-bold">{employee.name}</div>
                     </div>
                 </div>
-                <div className='ml-3'>{employee.email}</div>
+                <div className='ml-3'>
+                    <div style={{ wordWrap: 'break-word' }}>{employee.email}</div>
+                </div>
                 <div className="flex justify-center items-center flex-col text-center h-full">
                     {!isHovering && !employee.roles.length && (
                         <Badge className="m-2" color="gray" size="xl" variant="filled">Employee</Badge>

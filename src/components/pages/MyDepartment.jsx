@@ -4,7 +4,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Modal, Select, Loader } from '@mantine/core';
+import { Button, Modal, Select, Loader, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Context } from '../../App';
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
@@ -47,9 +47,9 @@ export default function OrganizationEmployeesPage() {
                 console.error('Error fetching department members:', error);
             }
         }
-        
+
         getDepartmentMembers();
-        
+
         return () => {
             isMounted = false;
             controller.abort();
@@ -61,7 +61,7 @@ export default function OrganizationEmployeesPage() {
     useEffect(() => {
         let isMounted = true;
         const controller = new AbortController();
-        
+
         const getAvalaibleMembers = async () => {
             try {
                 const response = await axiosPrivate.get('departments/members/available', {
@@ -76,9 +76,9 @@ export default function OrganizationEmployeesPage() {
                 console.error('Error fetching members without department:', error);
             }
         }
-        
+
         getAvalaibleMembers();
-        
+
         return () => {
             isMounted = false;
             controller.abort();
@@ -112,20 +112,44 @@ export default function OrganizationEmployeesPage() {
         }
         close();
     }
+
     // All the user cards + button to generate signup employee link
 
     return (
         <div className={`${darkMode && 'dark'}`}>
             <div className='dark:bg-darkcanvas bg-canvas h-screen flex flex-wrap'>
+                <Modal opened={opened} onClose={close} centered overflow="inside" className="bg-graybg text-white select-none" zIndex={1000002} closeOnClickOutside={false}>
+                    <div className="flex justify-center">
+                        <Title className="pb-[40px]">Add Employee</Title>
+                    </div>
+                    <Select
+                        label="Unassigned employees:"
+                        placeholder="Pick employee"
+                        data={employeeList}
+                        value={addedEmployee}
+                        onChange={setAddedEmployee}
+                        searchable
+                        size="lg"
+                        nothingFoundMessage="No employees avalaible..."
+                        comboboxProps={{ zIndex: 1000000000 }}
+                        clearable />
+                    <div className="flex justify-center">
+                        {addedEmployee && (<Button onClick={handleAddEmployee}
+                            className="bg-accent text-white hover:bg-btn_hover font-bold px-4 py-2 rounded mx-[10px] my-[20px] mt-[40px] ">
+                            Add Employee To Your Department
+                        </Button>)}
+                    </div>
+                </Modal>
+
                 {visible && (
-                        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                            <Loader size={30} color="red" />
-                        </div>
-                    )}
+                    <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                        <Loader size={30} color="red" />
+                    </div>
+                )}
                 {!visible && (
                     <>
                         {members.map((member, index) => (
-                            <DepartmentEmployee key={index} name={member.user_name} user_id={member.user_id}/>
+                            <DepartmentEmployee key={index} name={member.user_name} user_id={member.user_id} />
                         ))}
                         <Button variant="outline" onClick={open}
                             className={`relative w-[80px] h-[80px] m-[38px] rounded-full p-0 text-accent border-accent border-[5px] hover:text-accent`}>
@@ -135,26 +159,9 @@ export default function OrganizationEmployeesPage() {
                                 <path d="M5 12l14 0" />
                             </svg>
                         </Button>
-                    </>  
+                    </>
                 )}
             </div>
-            <Modal opened={opened} onClose={close} centered overflow="inside" className="bg-graybg text-white select-none" zIndex={1000002} closeOnClickOutside={false}>
-                <Select
-                    label="Unassigned employees:"
-                    placeholder="Pick employee"
-                    data={employeeList}
-                    value={addedEmployee}
-                    onChange={setAddedEmployee}
-                    searchable
-                    nothingFoundMessage="No employees avalaible..."
-                    comboboxProps={{ zIndex: 1000000000 }}
-                    clearable />
-                <div className="flex justify-center">
-                    <Button className="bg-accent text-white hover:bg-btn_hover font-bold py-2 rounded mx-auto mt-10" onClick={handleAddEmployee}>
-                        Add Employees
-                    </Button>
-                </div>
-            </Modal>
         </div>
     )
 }
