@@ -86,7 +86,7 @@ export default function OrganizationSkillsPage() {
                     placeholder='Skill category name...'
                     size="lg" />
                 <Button className="bg-accent text-white hover:bg-btn_hover font-bold  py-2 rounded mx-[10px] mt-[10px]  float-right"
-                     style={{ width: '460px' }}>
+                    style={{ width: '460px' }}>
                     Add Skill Category
                 </Button>
             </Modal>
@@ -131,9 +131,6 @@ export default function OrganizationSkillsPage() {
                         </div>
                     </div>
                 </div>
-                <Modal opened={opened} onClose={close} centered overflow="inside" className="bg-graybg text-white select-none" zIndex={1000002}>
-                    add org skills
-                </Modal>
             </>)}
         </section>
     )
