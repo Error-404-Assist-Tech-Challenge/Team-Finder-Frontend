@@ -43,9 +43,6 @@ export default function MainPage({Content}) {
                                 <Content />
 
                             </div>
-                        <div className={`${darkMode && 'dark'}`}>
-                            <div className='dark:bg-darkcanvas bg-canvas h-screen'></div>
-                        </div>
                     </Portal>
                 </ScrollArea>
             </div>
