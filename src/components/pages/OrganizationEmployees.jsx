@@ -18,6 +18,7 @@ export default function OrganizationEmployeesPage() {
     const axiosPrivate = useAxiosPrivate();
     const [users, setUsers] = useState([]);
     const [visible, setVisible] = useState(true);
+    
     const [currentPage, setCurrentPage] = useState(1);
     const [postPerPage, setPostPerPage] = useState(9);
     
@@ -75,7 +76,7 @@ export default function OrganizationEmployeesPage() {
                     )}
                 </div>
                 <div className='dark:bg-darkcanvas bg-canvas flex justify-center items-center'>
-                    <PaginationComp totalPosts={users.length} postsPerPage={postPerPage} setCurrentPage={setCurrentPage}/>
+                    <PaginationComp totalPosts={users.length} postsPerPage={postPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
                 </div>
             </div>
         </>
