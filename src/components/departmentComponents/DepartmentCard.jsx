@@ -33,44 +33,7 @@ export default function DepartmentCard(props) {
         setIsEditing(false);
     }
 
-    const getManagerName = (managerId) => {
-        const manager = updatedDepartmentManagers.find(user => user.value === managerId);
-        return manager ? manager.label : 'Recently removed';
-    };
-
-    const updateDepartmentInState = (departmentId, newName, newManagerId) => {
-
-        if (props.manager) {
-            const departmentManagersWithOldManager = [...props.departmentManagers, { value: props.manager_id, label: props.manager }];
-            const departmentManagersWithoutNewManager = departmentManagersWithOldManager.filter(user => user.value !== newManagerId);
-            props.setDepartmentManagers(departmentManagersWithoutNewManager);
-        }
-        else {
-            const departmentManagersWithoutNewManager = props.departmentManagers.filter(user => user.value !== newManagerId)
-            props.setDepartmentManagers(departmentManagersWithoutNewManager);
-        }
-
-        const newManagerName = getManagerName(newManagerId);
-
-        const updatedDepartments = props.departments.map(department => {
-            if (department.id === departmentId) {
-                return { ...department, name: newName, manager_name: newManagerName, manager_id: newManagerId };
-            }
-            return department;
-        });
-
-        props.setDepartments(updatedDepartments);
-    };
-
-
     const updateDepartment = async () => {
-
-        // console.log(JSON.stringify({
-        //     dept_id: props.id,
-        //     name: departmentName,
-        //     manager_id: departmentManager
-        // }))
-
         try {
             const response = await axiosPrivate.put('departments',
                 JSON.stringify({
@@ -89,7 +52,17 @@ export default function DepartmentCard(props) {
 
             console.log('Response:', response.data);
 
-            updateDepartmentInState(props.id, departmentName, departmentManager);
+            props.setDepartments(response.data);
+
+            if (props.manager) {
+                const departmentManagersWithOldManager = [...props.departmentManagers, { value: props.manager_id, label: props.manager }];
+                const departmentManagersWithoutNewManager = departmentManagersWithOldManager.filter(user => user.value !== departmentManager);
+                props.setDepartmentManagers(departmentManagersWithoutNewManager);
+            }
+            else {
+                const departmentManagersWithoutNewManager = props.departmentManagers.filter(user => user.value !== departmentManager)
+                props.setDepartmentManagers(departmentManagersWithoutNewManager);
+            }
 
         } catch (error) {
             console.error('Error updating department:', error);
@@ -97,11 +70,6 @@ export default function DepartmentCard(props) {
 
         close();
     }
-
-    const deleteDepartmentFromState = (idToDelete) => {
-        const updatedDepartments = props.departments.filter(dept => dept.id !== idToDelete);
-        props.setDepartments(updatedDepartments);
-    };
 
     const deleteDepartment = async () => {
         const departmendId = props.id;
@@ -117,9 +85,10 @@ export default function DepartmentCard(props) {
                 },
                 withCredentials: true
             });
-            console.log('Response:', response.data);
-            deleteDepartmentFromState(departmendId);
 
+            console.log('Response:', response.data);
+
+            props.setDepartments(response.data);
 
         } catch (error) {
             console.error('Error deleting user skills:', error);

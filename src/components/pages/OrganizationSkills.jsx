@@ -3,26 +3,27 @@
 /* eslint-disable no-unused-vars */
 
 import { useContext, useEffect, useState } from 'react';
-import { Table, Loader, Button, Divider } from '@mantine/core';
-import { useHeadroom } from '@mantine/hooks';
+import { Table, Loader, Button, Divider, Modal, TextInput, Title } from '@mantine/core';
+import { useHeadroom, useDisclosure } from '@mantine/hooks';
 
 import { Context } from '../../App';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { SkillCard } from '../skillComponents/SkillCard';
+import { SkillCategoryCard } from '../skillComponents/SkillCategoryCard';
 
 export default function OrganizationSkillsPage() {
 
     const axiosPrivate = useAxiosPrivate();
     const [darkMode, setDarkMode] = useContext(Context);
     const pinned = useHeadroom({ fixedAt: 20 });
-
     const [visible, setVisible] = useState(true);
+    const [skills, setSkills] = useState([]);
+    const [skillCategories, setSkillCategories] = useState([])
+    const [openedSkills, { open: openSkills, close: closeSkills }] = useDisclosure(false);
+    const [openedCategories, { open: openCategories, close: closeCategories }] = useDisclosure(false);
 
     useEffect(() => {
-
     }, [darkMode]);
-
-    const [skills, setSkills] = useState([]);
 
     useEffect(() => {
         let isMounted = true;
@@ -50,9 +51,46 @@ export default function OrganizationSkillsPage() {
         }
     }, [])
 
+    useEffect(() => {
+        let isMounted = true;
+        const controller = new AbortController();
+
+        const getSkillCategories = async () => {
+            try {
+                const response = await axiosPrivate.get('skills/categories', {
+                    signal: controller.signal,
+                    withCredentials: true
+                });
+                console.log('Skill Categories:', response.data);
+                isMounted && setSkillCategories(response.data);
+            } catch (error) {
+                console.error('Error fetching organization skill categories:', error);
+            }
+        }
+
+        getSkillCategories();
+
+        return () => {
+            isMounted = false;
+            controller.abort();
+        }
+    }, [])
+
 
     return (
-        <div className={`${darkMode && 'dark'}`}>
+        <section className={`${darkMode && 'dark'}`}>
+            <Modal opened={openedCategories} onClose={closeCategories} centered overflow="inside" size={500} className="dark:bg-card_modal text-white select-none" zIndex={1000002}>
+                <Title className="pb-[30px] items-center">Create Skill Category</Title>
+                <TextInput
+                    label="Skill Category Name"
+                    placeholder='Skill category name...'
+                    size="lg" />
+                <Button className="bg-accent text-white hover:bg-btn_hover font-bold  py-2 rounded mx-[10px] mt-[10px]  float-right"
+                     style={{ width: '460px' }}>
+                    Add Skill Category
+                </Button>
+            </Modal>
+
             {visible && (
                 <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                     <Loader size={30} color="red" />
@@ -78,11 +116,22 @@ export default function OrganizationSkillsPage() {
                     </div>
                     <div className="w-1/3 flex flex-wrap">
                         <Divider orientation="vertical" />
-                        
+                        {skillCategories.map((category, index) => (
+                            <SkillCategoryCard key={index} name={category.label} id={category.value} />
+                        ))}
+                        <div className="w-[200px] h-[66px] flex justify-center items-center">
+                            <Button variant="outline" onClick={openCategories}
+                                className={`relative w-[60px] h-[60px] m-[6px] rounded-full p-0 text-accent border-accent border-[4px] hover:text-accent`}>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus w-full h-full" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M12 5l0 14" />
+                                    <path d="M5 12l14 0" />
+                                </svg>
+                            </Button>
+                        </div>
                     </div>
                 </div>
             </>)}
-
-        </div>
+        </section>
     )
 }
