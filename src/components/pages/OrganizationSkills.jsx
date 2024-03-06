@@ -131,6 +131,9 @@ export default function OrganizationSkillsPage() {
                         </div>
                     </div>
                 </div>
+                <Modal opened={opened} onClose={close} centered overflow="inside" className="bg-graybg text-white select-none" zIndex={1000002}>
+                    add org skills
+                </Modal>
             </>)}
         </section>
     )
