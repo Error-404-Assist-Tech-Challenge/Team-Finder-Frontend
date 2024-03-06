@@ -19,36 +19,36 @@ export default function UserSkillCard(props) {
     const [isHovering, setIsHovering] = useState(false);
     const [darkMode, setDarkMode] = useContext(Context);
     const [opened, { open, close }] = useDisclosure(false);
-    const [confirm, { proceed, cancel }] = useDisclosure(false);
+
+    const [currentLevel, setCurrentLevel] = useState(props.skills[props.index].level)
+    const [currentExperience, setCurrentExperience] = useState(props.skills[props.index].experience)
 
     const axiosPrivate = useAxiosPrivate();
 
-    function handleSave() {
-        console.log(JSON.stringify({
-            skill_id: props.skills[props.index].skill_id,
-            level: props.skills[props.index].level,
-            experience: props.skills[props.index].experience
-        }))
+    const handleSave = async () => {
+        try {
+            const response = await axiosPrivate.put('skills/user',
+                JSON.stringify({
+                    skill_id: props.skills[props.index].skill_id,
+                    level: currentLevel,
+                    experience: currentExperience
+                }),
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Credentials': 'true'
+                    },
+                    withCredentials: true
+                });
+
+            console.log('Response:', response.data);
+
+            props.setSkills(response.data);
+        } catch (error) {
+            console.error('Error saving my skill:', error);
+        }
         close();
-        // try {
-        //     const response = await axiosPrivate.put('skills/users',
-        //         JSON.stringify({
-        //             skill_id: props.skills[props.index].skill_id,
-        //             level: props.skills[props.index].level,
-        //             experience: props.skills[props.index].experience
-        //         }),
-        //         {
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //                 'Access-Control-Allow-Origin': '*',
-        //                 'Access-Control-Allow-Credentials': 'true'
-        //             },
-        //             withCredentials: true
-        //         });
-        //     console.log('Respons:', response.data);
-        // } catch (error) {
-        //     console.error('Error saving my skill:', error);
-        // }
     }
 
     // Remove user skill
@@ -56,6 +56,7 @@ export default function UserSkillCard(props) {
     const handleRemoveSkill = async () => {
         try {
             const skillId = props.skills[props.index].skill_id;
+            const skillName = props.skills[props.index].skill_name;
             const response = await axiosPrivate.delete('skills/user', {
                 headers: {
                     'Content-Type': 'application/json',
@@ -69,9 +70,15 @@ export default function UserSkillCard(props) {
             });
             console.log('Response:', response.data);
 
+            props.setSkills(response.data);
+
+            const newUnusedSkills = [...props.unusedSkills, { label: skillName, value: skillId }];
+            props.setUnusedSkills(newUnusedSkills)
+
         } catch (error) {
             console.error('Error deleting user skills:', error);
         }
+
         close();
     }
 
@@ -87,14 +94,6 @@ export default function UserSkillCard(props) {
         onConfirm: () => { handleRemoveSkill() },
         zIndex: 1000003,
     });
-    //   useEffect(() => {
-    //     const ild = notifications.show({
-    //         title: 'Data saved',
-    //         message: 'Your data has been fetched.',
-    //         icon: <IconCheck style={{ width: rem(35), height: rem(35) }} />,
-    //         color: "teal",
-    //     });
-    // }, [showNot]);
 
     return (
         <>
@@ -131,8 +130,7 @@ export default function UserSkillCard(props) {
                             </p>
                         </div>
                         <div className="flex justify-center items-center flex-col text-center h-full">
-                            <LevelCirclesModal id={props.index} circles={props.skills.level}
-                                skills={props.skills} setSkills={props.setSkills} />
+                            <LevelCirclesModal id={props.index} setCurrentLevel={setCurrentLevel} currentLevel={currentLevel} />
                         </div>
                         <div className="p-3 flex justify-left text-xl">
                             <p>
@@ -152,8 +150,7 @@ export default function UserSkillCard(props) {
                             </p>
                         </div>
                         <div className="flex justify-center items-center flex-col text-center h-full">
-                            <ExperienceCirclesModal id={props.index} circles={props.skills.level}
-                                skills={props.skills} setSkills={props.setSkills} />
+                            <ExperienceCirclesModal id={props.index} setCurrentExperience={setCurrentExperience} currentExperience={currentExperience} />
                         </div>
                         <div className="p-[10px]">
                             <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-4 py-2 rounded mx-[10px] my-[10px] mt-[20px]"
@@ -162,7 +159,7 @@ export default function UserSkillCard(props) {
                             </Button>
                             <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-4 py-2 rounded mx-[10px] my-[10px] mt-[20px] float-right"
                                 onClick={handleSave}>
-                                Request change
+                                Save (Request)
                             </Button>
                         </div>
                     </Modal>

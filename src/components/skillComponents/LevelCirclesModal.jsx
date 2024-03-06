@@ -8,29 +8,25 @@ import { useContext } from 'react';
 export default function LevelCirclesCard(props) {
     const [darkMode, setDarkMode] = useContext(Context);
 
-    function upgradeSkill(id) {
-        if (props.skills[id].level < 5) {
-            const updatedSkills = [...props.skills];
-            updatedSkills[id].level++;
-            props.setSkills(updatedSkills);
-            return updatedSkills;
+    function upgradeSkill() {
+        if (props.currentLevel < 5) {
+            const updatedLevel = props.currentLevel + 1;
+            props.setCurrentLevel(updatedLevel);
         }
     }
 
-    function downgradeSkill(id) {
-        if (props.skills[id].level > 1) {
-            const updatedSkills = [...props.skills];
-            updatedSkills[id].level--;
-            props.setSkills(updatedSkills);
-            return updatedSkills;
+    function downgradeSkill() {
+        if (props.currentLevel > 1) {
+            const updatedLevel = props.currentLevel - 1;
+            props.setCurrentLevel(updatedLevel);
         }
     }
 
-    const filledCircles = Math.min(props.skills[props.id].level, 5);
+    const filledCircles = Math.min(props.currentLevel, 5);
     const emptyCircles = Math.max(5 - filledCircles, 0);
     return (
         <div className={`${darkMode && 'dark'}`}>
-            <Button variant="outline" onClick={() => downgradeSkill(props.id)}
+            <Button variant="outline" onClick={downgradeSkill}
                 className={`w-[35px] h-[35px] m-[6px] rounded-full p-0 text-accent border-accent border-[4px] hover:text-accent`}>
                 <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-minus w-[25px] h-[25px]" width="24" height="24" viewBox="0 0 24 24" strokeWidth="3.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -48,7 +44,7 @@ export default function LevelCirclesCard(props) {
                     className={`w-[35px] h-[35px] m-[6px] rounded-full p-0 dark:border-darktext border-text border-[3px]`} />
             ))}
 
-            <Button variant="outline" onClick={() => upgradeSkill(props.id)}
+            <Button variant="outline" onClick={upgradeSkill}
                 className={`w-[35px] h-[35px] m-[6px] rounded-full p-0 text-accent border-accent border-[4px] hover:text-accent`}>
                 <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus w-[30px] h-[30px]" viewBox="0 0 24 24" strokeWidth="3.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />

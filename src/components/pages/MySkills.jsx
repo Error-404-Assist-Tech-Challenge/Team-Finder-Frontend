@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 
 import { useState, useEffect, useContext } from 'react';
-import { Loader, rem, Card, Modal, Button, Select } from '@mantine/core';
+import { Loader, rem, Card, Modal, Button, Select, Title } from '@mantine/core';
 import { useHeadroom, useDisclosure } from '@mantine/hooks';
 import { Context } from '../../App';
 import UserSkillCard from '../skillComponents/UserSkillCard';
@@ -17,8 +17,9 @@ export default function MySkillsPage() {
     const [visible, setVisible] = useState(true);
     const [darkMode, setDarkMode] = useContext(Context);
     const pinned = useHeadroom({ fixedAt: 20 });
-    const [skills, setSkills] = useState([]);
     const [changed, setChange] = useState(false)
+
+    const [skills, setSkills] = useState([]);
 
     const [selectedSkillLevel, selectSkillLevel] = useState(1);
     const [selectedSkillExperience, selectSkillExperience] = useState(1);
@@ -27,6 +28,10 @@ export default function MySkillsPage() {
     const [addedSkill, setAddedSkill] = useState('');
 
     const language = unusedSkills.find(lang => lang.value === addedSkill);
+
+    useEffect(() => {
+        console.log('language', language);
+    }, [language])
 
     // GET USER SKILL
 
@@ -39,8 +44,11 @@ export default function MySkillsPage() {
                     signal: controller.signal,
                     withCredentials: true
                 });
+
                 console.log('My Skills:', response.data);
-                isMounted && setSkills(response.data);
+
+                isMounted && setSkills(response.data)
+
                 setVisible(false);
             } catch (error) {
                 console.error('Error fetching user skills:', error);
@@ -74,7 +82,9 @@ export default function MySkillsPage() {
                 console.error('Error fetching unused skills:', error);
             }
         }
+
         fetchUnusedSkills();
+
         return () => {
             isMounted = false;
             controller.abort();
@@ -88,6 +98,8 @@ export default function MySkillsPage() {
             const response = await axiosPrivate.post('skills/user',
                 JSON.stringify({
                     skill_id: addedSkill,
+                    level: selectedSkillLevel,
+                    experience: selectedSkillExperience
                 }),
                 {
                     headers: {
@@ -97,8 +109,16 @@ export default function MySkillsPage() {
                     },
                     withCredentials: true
                 });
+
             console.log('Response:', response.data);
-            
+
+            setSkills(response.data);
+
+            const newUnusedSkills = unusedSkills.filter(skill => skill.value !== addedSkill);
+            setUnusedSkills(newUnusedSkills);
+
+            setAddedSkill('')
+
         } catch (error) {
             console.error('Error fetching unused skills:', error);
         }
@@ -112,12 +132,6 @@ export default function MySkillsPage() {
     useEffect(() => {
     }, [darkMode]);
 
-    // const id = notifications.show({
-    // title: 'Data saved',
-    // message: 'Your data has been fetched.',
-    // icon: <IconCheck style={{ width: rem(35), height: rem(35) }} />,
-    // color: "teal",
-
     return (
         <div className={`${darkMode && 'dark'}`}>
             <div className='dark:bg-darkcanvas bg-canvas h-auto select-none'>
@@ -127,7 +141,10 @@ export default function MySkillsPage() {
                     </div>
                 )}
                 <Modal opened={opened} onClose={close} centered overflow="inside" size={500} className="dark:bg-card_modal text-white select-none" zIndex={1000002}>
-                    <div className="flex flex-col space-y-4 h-[400px]">
+                    <div className="flex flex-col space-y-4 ">
+                        <div className="flex flex-col justify-center items-center">
+                            <Title className="pb-[30px]">Add Skill</Title>
+                        </div>
                         <div>
                             <Select
                                 label="Skill"
@@ -180,9 +197,9 @@ export default function MySkillsPage() {
 
                             </p>
                         </div>
-                        <div className="flex justify-center items-center flex-col text-center">
+                        <div className="flex justify-center items-center flex-col text-center pb-[20px]">
                             <ExperienceCirclesSelected selectedSkillExperience={selectedSkillExperience} selectSkillExperience={selectSkillExperience} />
-                            {addedSkill && (<Button className="bg-accent text-white hover:bg-btn_hover font-bold  py-2 rounded mx-[10px] mt-[10px]  float-right"
+                            {addedSkill && (<Button className="bg-accent text-white hover:bg-btn_hover font-bold  py-2 rounded mx-[10px] mt-[30px] mb-[10px] float-right"
                                 onClick={handleAddSkill} style={{ width: '460px' }}>
                                 Add Skill
                             </Button>)}
@@ -193,7 +210,7 @@ export default function MySkillsPage() {
                     <div className="flex flex-wrap">
                         {skills.map((skill, index) => (
                             <UserSkillCard key={index}
-                                index={index} skills={skills} setSkills={setSkills} />
+                                index={index} skills={skills} setSkills={setSkills} unusedSkills={unusedSkills} setUnusedSkills={setUnusedSkills} />
                         ))}
                         <div className="w-[200px] h-[270px] flex justify-center items-center">
                             <Button variant="outline" onClick={open}
