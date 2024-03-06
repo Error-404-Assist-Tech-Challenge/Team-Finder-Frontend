@@ -24,10 +24,11 @@
 .m-b5489c3c {
     background-color: #6d6f77;
 }
+
 .m-347db0ec {
     text-transform: initial;
 }
 
-/* .m-104cd71f {
-    font-size: x-large;
-} */
+.root {
+    --notifications-container-width: calc(40rem * var(--mantine-scale));
+}

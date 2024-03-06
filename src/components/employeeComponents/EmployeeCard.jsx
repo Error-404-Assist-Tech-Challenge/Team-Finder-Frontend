@@ -16,30 +16,6 @@ export default function EmployeeCard({ employee, setUsers }) {
         return names.map((name) => name[0]).join('').toUpperCase();
     };
 
-    const removeRoleFromUser = (userId, roleToRemove) => {
-        setUsers(prevUsers => {
-            return prevUsers.map(user => {
-                if (user.id === userId) {
-                    user.roles = user.roles.filter(role => role !== roleToRemove);
-                }
-                return user;
-            });
-        });
-    };
-
-    const addRoleToUser = (userId, roleToAdd) => {
-        setUsers(prevUsers => {
-            return prevUsers.map(user => {
-                if (user.id === userId) {
-                    if (!user.roles.includes(roleToAdd)) {
-                        user.roles = [...user.roles, roleToAdd];
-                    }
-                }
-                return user;
-            });
-        });
-    };
-
     const removeRole = async (e, role) => {
         console.log('user_id:', employee.id);
         console.log('role_name:', role);
@@ -59,7 +35,7 @@ export default function EmployeeCard({ employee, setUsers }) {
 
             console.log(response.data);
 
-            removeRoleFromUser(employee.id, role);
+            setUsers(response.data);
 
         } catch (error) {
             console.error(error);
@@ -88,7 +64,8 @@ export default function EmployeeCard({ employee, setUsers }) {
 
             console.log(response.data);
 
-            addRoleToUser(employee.id, role);
+            setUsers(response.data);
+
 
         } catch (error) {
             console.error(error);
