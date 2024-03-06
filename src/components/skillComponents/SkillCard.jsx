@@ -100,11 +100,11 @@ export const SkillCard = ({ skill }) => {
                 </div>
                 <div className="pt-4 flex justify-left">
                     {!isEditing && (<Button
-                    className="bg-accent text-white hover:bg-btn_hover font-bold rounded" onClick={handleEdit}>
+                        className="bg-accent text-white hover:bg-btn_hover font-bold rounded" onClick={handleEdit}>
                         Edit skill
                     </Button>)}
-                    {isEditing && (<Button 
-                    className="bg-accent text-white hover:bg-btn_hover font-bold rounded" onClick={handleSave}>
+                    {isEditing && (<Button
+                        className="bg-accent text-white hover:bg-btn_hover font-bold rounded" onClick={handleSave}>
                         Save
                     </Button>)}
                 </div>

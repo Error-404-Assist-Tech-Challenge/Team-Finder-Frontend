@@ -2,7 +2,7 @@
 
 import React, { useContext, useEffect, useState } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
-import { Button, Modal, TextInput, Loader } from '@mantine/core';
+import { Button, Modal, TextInput, Loader, Title } from '@mantine/core';
 import { useHeadroom, useDisclosure } from '@mantine/hooks';
 import { Context } from '../../App';
 import DepartmentCard from '../departmentComponents/DepartmentCard';
@@ -81,13 +81,7 @@ export default function OrganizationDepartmentsPage() {
     }, []);
 
 
-    useEffect(() => {
-
-    }, [darkMode]);
-
-    const addDepartmentInState = () => {
-
-    }
+    // ADD DEPARTMENT
 
     const handleAddDepartment = async () => {
         try {
@@ -103,18 +97,21 @@ export default function OrganizationDepartmentsPage() {
                     },
                     withCredentials: true
                 });
+
             console.log('Response:', response.data);
 
-            addDepartmentInState();
+            setDepartments(response.data);
 
         } catch (error) {
             console.error('Error fetching unused skills:', error);
         }
 
-
-
         close();
     }
+
+    useEffect(() => {
+
+    }, [darkMode]);
 
 
     return (
@@ -127,6 +124,7 @@ export default function OrganizationDepartmentsPage() {
                         </div>
                     )}
                     <Modal opened={opened} onClose={close} centered overflow="inside" size={500} className="dark:bg-card_modal text-white select-none" zIndex={1000002}>
+                        <Title className="pb-[30px] items-center">Create Department</Title>
                         <TextInput
                             label="Department Name"
                             placeholder="Department name"

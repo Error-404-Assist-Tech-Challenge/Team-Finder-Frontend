@@ -79,18 +79,18 @@ export default function OrganizationEmployeesPage() {
 
                 isMounted && generateLink(urlWithId)
 
+                const ild = notifications.show({
+                    title: 'Employee Sign Up Link copied to clipboard',
+                    message: `${urlWithId}`,
+                    icon: <IconCheck style={{ width: rem(35), height: rem(35) }} />,
+                    color: "teal",
+                });
             } catch (error) {
                 console.error('Error fetching organization members:', error);
             }
         }
 
         getSignUpLink();
-        const ild = notifications.show({
-            title: 'Invite link copied',
-            message: 'You can share your link now.',
-            icon: <IconCheck style={{ width: rem(35), height: rem(35) }} />,
-            color: "teal",
-        });
 
         return () => {
             isMounted = false;
@@ -99,7 +99,6 @@ export default function OrganizationEmployeesPage() {
     }
 
     // All the user cards + button to generate signup employee link
-
 
     return (
         <>
@@ -122,17 +121,16 @@ export default function OrganizationEmployeesPage() {
                                         <h2 className='text-2xl block'>You have no employees</h2>
                                     </Card>
                                 )}
-                                <Button className='h-[230px] w-[550px] mx-[40px] my-[20px] rounded-xl bg-accent text-white text-2xl hover:bg-btn_hover font-bold text-white'
-                                    onClick={handleSignUpLink}>
-                                    Generate Employee URL link
-                                    <div className="w-[550px]">
-                                        {generatedLink &&
-                                            (<TextInput
-                                                size="lg"
-                                                disabled
-                                                value={generatedLink} />)}
-                                    </div>
-                                </Button>
+                                <div className="flex justify-center items-center h-[340px] ml-[40px]">
+                                    <Button variant="outline" onClick={handleSignUpLink}
+                                        className={`relative w-[80px] h-[80px] m-[6px] rounded-full p-0 text-accent border-accent border-[5px] hover:text-accent`}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus w-full h-full" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M12 5l0 14" />
+                                            <path d="M5 12l14 0" />
+                                        </svg>
+                                    </Button>
+                                </div>
                             </div>
                         </>
                     )}
