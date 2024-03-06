@@ -124,7 +124,9 @@ export default function OrganizationDepartmentsPage() {
                         </div>
                     )}
                     <Modal opened={opened} onClose={close} centered overflow="inside" size={500} className="dark:bg-card_modal text-white select-none" zIndex={1000002}>
-                        <Title className="pb-[30px] items-center">Create Department</Title>
+                        <div className="flex justify-center">
+                            <Title className="pb-[30px]">Create Department</Title>
+                        </div>
                         <TextInput
                             label="Department Name"
                             placeholder="Department name"

@@ -2,69 +2,82 @@
 /* eslint-disable react/prop-types */
 import { Card, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { Modal, Button, Title, TextInput, Textarea } from '@mantine/core';
+import { Modal, Button, Title, TextInput, Textarea, Select } from '@mantine/core';
 import { useState, useEffect } from 'react'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
-export const SkillCard = ({ skill }) => {
+export const SkillCard = ({ skill, skillCategories, setSkills }) => {
 
     const [opened, { open, close }] = useDisclosure(false);
     const [isHovering, setIsHovering] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
+    const axiosPrivate = useAxiosPrivate();
 
     const [name, setName] = useState(`${skill.name}`);
     const [description, setDescription] = useState(`${skill.description}`);
-    const axiosPrivate = useAxiosPrivate();
+    const [category, setCategory] = useState('');
 
     const handleEdit = () => {
         setIsEditing(true);
     };
 
     const handleSave = () => {
-        skill.name = name;
-        skill.description = description;
-
-        console.log(JSON.stringify({
-            skill_id: name,
-            dept_id: skill.dept_id,
-            category_id: skill.category_id,
-            org_id: skill.org_id,
-            name: skill.name,
-            description: skill.description,
-            author_id: skill.author_id,
-            created_at: skill.created_at
-        }))
-
-        // const updateSkill = async () => {
-        //     try {
-        //         const response = await axiosPrivate.put('organizations/skills',
-        //             JSON.stringify({
-        //                 skill_id: name,
-        //                 dept_id: skill.dept_id,
-        //                 category_id: skill.category_id,
-        //                 org_id: skill.org_id,
-        //                 name: skill.name,
-        //                 description: skill.description,
-        //                 author_id: skill.author_id,
-        //                 created_at: skill.created_at
-        //             }),
-        //             {
-        //                 headers: {
-        //                     'Content-Type': 'application/json',
-        //                     'Access-Control-Allow-Origin': '*',
-        //                     'Access-Control-Allow-Credentials': 'true'
-        //                 },
-        //                 withCredentials: true
-        //             });
-        //         console.log('Response:', response.data);
-        //     } catch (error) {
-        //         console.error('Error fetching unused skills:', error);
-        //     }
-        // }
-
+        updateSkill();
         setIsEditing(false);
     };
 
+    const updateSkill = async () => {
+        try {
+            const response = await axiosPrivate.put('organizations/skills',
+                JSON.stringify({
+                    skill_id: skill.id,
+                    category_id: category,
+                    name: name,
+                    description: description,
+                }),
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Credentials': 'true'
+                    },
+                    withCredentials: true
+                });
+
+            console.log('Response:', response.data);
+
+            setSkills(response.data);
+
+        } catch (error) {
+            console.error('Error fetching updating skill:', error);
+        }
+
+        close();
+    }
+
+    const deleteSkill = async () => {
+        try {
+            const response = await axiosPrivate.delete('organizations/skills', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Credentials': 'true'
+                },
+                data: {
+                    id: skill.id
+                },
+                withCredentials: true
+            });
+
+            console.log('Response:', response.data);
+
+            setSkills(response.data);
+
+        } catch (error) {
+            console.error('Error deleting skill:', error);
+        }
+        close();
+    }
 
     return (
         <div>
@@ -93,20 +106,35 @@ export const SkillCard = ({ skill }) => {
                     />}
                 </div>
                 <div className="pt-4 flex justify-left">
-                    <p><span className="font-bold">Category</span>: {skill.category_name}</p>
+                    <p className="font-bold mr-1">Category: </p>
+                    {!isEditing && (<p>{skill.category_name}</p>)}
+                    {isEditing && (<Select
+                        allowDeselect={false}
+                        placeholder="Select a category"
+                        data={skillCategories}
+                        value={category}
+                        onChange={setCategory}
+                        searchable
+                        size="md"
+                        nothingFoundMessage="Category does not exist..."
+                        comboboxProps={{ zIndex: 1000000000 }}
+                        className="" />)}
                 </div>
                 <div className="pt-4 flex justify-left">
                     <p><span className="font-bold">Departments</span>: {skill.dept_name.join(', ')}</p>
                 </div>
-                <div className="pt-4 flex justify-left">
+                <div className="pt-4">
                     {!isEditing && (<Button
-                        className="bg-accent text-white hover:bg-btn_hover font-bold rounded" onClick={handleEdit}>
+                        className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] rounded  float-left" onClick={handleEdit}>
                         Edit skill
                     </Button>)}
                     {isEditing && (<Button
-                        className="bg-accent text-white hover:bg-btn_hover font-bold rounded" onClick={handleSave}>
+                        className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] rounded  float-left" onClick={handleSave}>
                         Save
                     </Button>)}
+                    <Button className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] rounded float-right" onClick={deleteSkill}>
+                        Remove Skill
+                    </Button>
                 </div>
             </Modal>
 
