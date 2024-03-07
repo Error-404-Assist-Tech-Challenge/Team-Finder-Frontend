@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 
-import { Card, Avatar, Modal, Button, Text, Title, Badge } from '@mantine/core';
+import { Card, Avatar, Modal, Button, Text, Loader, Badge } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import React, { useContext, useEffect, useState } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
@@ -29,6 +29,8 @@ export default function DepartmentEmployee(props) {
     // Remove user skill
 
     const handleRemoveMember = async () => {
+        props.setVisible(true);
+        close();
         try {
             const userId = props.user_id;
             const response = await axiosPrivate.delete('departments/members', {
@@ -50,7 +52,7 @@ export default function DepartmentEmployee(props) {
         } catch (error) {
             console.error('Error deleting department member:', error);
         }
-        close();
+        props.setVisible(false)
     }
 
     const getInitials = (name) => {
@@ -75,11 +77,17 @@ export default function DepartmentEmployee(props) {
                 ))}
                 <div>
                     <Button className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] rounded float-right" onClick={handleRemoveMember}>
-                        Remove Skill
+                        Remove Employee
                     </Button>
                 </div>
             </Modal>
 
+            {props.visible && (
+                        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                            <Loader size={30} color="red" />
+                        </div>
+                    )}
+            {!props.visible && (
             <Card className="flex w-[240px] h-[120px] bg-[#505A5E] mx-[40px] my-[20px] rounded-xl text-white select-none font-bold"
                 onClick={open} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
                 <div className="flex items-center justify-left h-full">
@@ -92,7 +100,7 @@ export default function DepartmentEmployee(props) {
                         </>}
                     {isHovering && <Text className="text-lg font-bold">Click to see more</Text>}
                 </div>
-            </Card>
+            </Card>)}
         </>
     )
 }

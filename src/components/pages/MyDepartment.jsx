@@ -23,7 +23,7 @@ export default function MyDepartmentPage() {
     const [opened, { open, close }] = useDisclosure(false);
 
     const [unusedSkills, setUnusedSkills] = useState([]);
-    const [addedSkill, setAddedSkill] = useState('');
+    const [addedSkill, setAddedSkill] = useState('');   
 
     const [currentPage, setCurrentPage] = useState(1);
     const [postPerPage, setPostPerPage] = useState(14);
@@ -106,7 +106,6 @@ export default function MyDepartmentPage() {
                             <MyDepartmentComp members={currentPosts} setMembers={setMembers}/>
                         </div>
                     </>
-                    
                 )}
             </div>
             <div className='dark:bg-darkcanvas bg-canvas flex justify-center items-center'>
