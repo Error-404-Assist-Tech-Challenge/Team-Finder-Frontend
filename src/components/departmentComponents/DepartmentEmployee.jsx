@@ -83,7 +83,7 @@ export default function DepartmentEmployee(props) {
                                 <div className="text-xl font-bold">{props.name}</div>
                             </div>
                         </>}
-                    {isHovering && <Text className="text-xl font-bold">Remove</Text>}
+                    {isHovering && <Text className="text-lg font-bold">Click to see more</Text>}
                 </div>
             </Card>
         </>
