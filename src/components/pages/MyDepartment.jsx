@@ -8,9 +8,10 @@ import { Button, Modal, Select, Loader, Title, Box } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Context } from '../../App';
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import DepartmentEmployee from '../departmentComponents/DepartmentEmployee';
+import PaginationComp from '../pageComponents/Pagination';
+import MyDepartmentComp from '../pageComponents/MyDepartmentComp';
 
-export default function OrganizationEmployeesPage() {
+export default function MyDepartmentPage() {
 
     // Initialization
 
@@ -19,12 +20,17 @@ export default function OrganizationEmployeesPage() {
     const [visible, setVisible] = useState(true);
     const [members, setMembers] = useState([]);
     const [departmentName, setDepartmentName] = useState('');
-    const [addedEmployee, setAddedEmployee] = useState('');
     const [opened, { open, close }] = useDisclosure(false);
-    const [avalaible, setAvalaible] = useState([]);
 
+    const [unusedSkills, setUnusedSkills] = useState([]);
+    const [addedSkill, setAddedSkill] = useState('');
 
-    const employeeList = []
+    const [currentPage, setCurrentPage] = useState(1);
+    const [postPerPage, setPostPerPage] = useState(14);
+    const lastPostIndex = currentPage * postPerPage;
+    const firstPostIndex = lastPostIndex - postPerPage;
+    const currentPosts =  members.slice(firstPostIndex, lastPostIndex);
+    
 
     useEffect(() => {
     }, [darkMode]);
@@ -45,8 +51,6 @@ export default function OrganizationEmployeesPage() {
                     setDepartmentName(response.data.name);
                     getDepartmentMembers();
                 }
-
-                setVisible(false);
             } catch (error) {
                 if (error?.response == 409)
                     console.error('You have no department');
@@ -80,98 +84,11 @@ export default function OrganizationEmployeesPage() {
     }
 
 
-    // Function that gets all the avalaible members
-
-    useEffect(() => {
-        let isMounted = true;
-        const controller = new AbortController();
-
-        const getAvalaibleMembers = async () => {
-            try {
-                const response = await axiosPrivate.get('departments/members/available', {
-                    signal: controller.signal,
-                    withCredentials: true
-                });
-                console.log('Avalaible employees:', response.data);
-                isMounted && setAvalaible(response.data)
-                console.log({ avalaible })
-                setVisible(false);
-            } catch (error) {
-                console.error('Error fetching members without department:', error);
-            }
-        }
-
-        getAvalaibleMembers();
-
-        return () => {
-            isMounted = false;
-            controller.abort();
-        }
-    }, [])
-    for (let i = 0; i < avalaible.length; i++) {
-        employeeList[i] = {
-            value: avalaible[i].id,
-            label: avalaible[i].name
-        };
-    }
-
-    // Add new employee to department
-
-    const handleAddEmployee = async () => {
-        try {
-            const response = await axiosPrivate.post('departments/members',
-                JSON.stringify({
-                    user_id: addedEmployee,
-                }),
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Access-Control-Allow-Origin': '*',
-                        'Access-Control-Allow-Credentials': 'true'
-                    },
-                    withCredentials: true
-                });
-
-            console.log('Response:', response.data);
-
-            setMembers(response.data)
-
-            setAddedEmployee('');
-
-        } catch (error) {
-            console.error('Error adding employees:', error);
-        }
-        close();
-    }
-
     // All the user cards + button to generate signup employee link
 
     return (
         <div className={`${darkMode && 'dark'}`}>
-            <div className='dark:bg-darkcanvas bg-canvas h-screen'>
-                <Modal opened={opened} onClose={close} centered overflow="inside" className="bg-graybg text-white select-none" zIndex={1000002} closeOnClickOutside={false}>
-                    <div className="flex justify-center">
-                        <Title className="pb-[40px]">Add Employee</Title>
-                    </div>
-                    <Select
-                        label="Unassigned employees:"
-                        placeholder="Pick employee"
-                        data={employeeList}
-                        value={addedEmployee}
-                        onChange={setAddedEmployee}
-                        searchable
-                        size="lg"
-                        allowDeselect={false}
-                        nothingFoundMessage="No employees avalaible..."
-                        comboboxProps={{ zIndex: 1000000000 }} />
-                    <div className="flex justify-center">
-                        {addedEmployee && (<Button onClick={handleAddEmployee}
-                            className="bg-accent text-white hover:bg-btn_hover font-bold px-4 py-2 rounded mx-[10px] my-[20px] mt-[40px] ">
-                            Add Employee To Your Department
-                        </Button>)}
-                    </div>
-                </Modal>
-
+            <div className='dark:bg-darkcanvas bg-canvas h-auto min-h-screen select-none'>
                 {visible && (
                     <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                         <Loader size={30} color="red" />
@@ -179,33 +96,21 @@ export default function OrganizationEmployeesPage() {
                 )}
                 {!visible && (
                     <>
-                        <div className="flex">
-                            <div className="w-3/4 h-screen">
-                                <div className="flex justify-center text-white p-9 select-none">
-                                    {departmentName && (<Title className="text-4xl">{departmentName} Department</Title>)}
-                                    {!departmentName && (<Title className="text-4xl">You have no department</Title>)}
-                                </div>
-                                <div className="flex flex-wrap">
-
-                                    {members.map((member, index) => (
-                                        <DepartmentEmployee key={index} name={member.name} user_id={member.user_id} setMembers={setMembers} />
-                                    ))}
-                                    <Button variant="outline" onClick={open}
-                                        className={`relative w-[80px] h-[80px] m-[38px] rounded-full p-0 text-accent border-accent border-[5px] hover:text-accent`}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus w-full h-full" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M12 5l0 14" />
-                                            <path d="M5 12l14 0" />
-                                        </svg>
-                                    </Button>
-                                </div>
+                        <div className="flex flex-col">
+                            <div className="flex justify-center text-white p-9 select-none">
+                                {departmentName && (<Title className="text-4xl">{departmentName} Department</Title>)}
+                                {!departmentName && (<Title className="text-4xl">You have no department</Title>)}
                             </div>
-                                <Box className="w-1/4 h-screen" bg="red.5" my="xl" component="a" href="/">
-                                    My component
-                                </Box>
+                        </div>
+                        <div className="flex flex-wrap">
+                            <MyDepartmentComp members={currentPosts} setMembers={setMembers}/>
                         </div>
                     </>
+                    
                 )}
+            </div>
+            <div className='dark:bg-darkcanvas bg-canvas flex justify-center items-center'>
+                <PaginationComp totalPosts={members.length} postsPerPage={postPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
             </div>
         </div >
     )

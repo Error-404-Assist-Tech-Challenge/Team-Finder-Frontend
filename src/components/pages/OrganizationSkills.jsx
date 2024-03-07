@@ -102,8 +102,8 @@ export default function OrganizationSkillsPage() {
             <div className='dark:bg-darkcanvas bg-canvas h-auto min-h-screen select-none'>
                 {visible && (
                     <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                    <Loader size={30} color="red" />
-                </div>
+                        <Loader size={30} color="red" />
+                    </div>
                 )}
                 {!visible && (<>
                     <div className='bg-darkcanvas select-none h-auto min-h-screen w-full py-[30px] flex'>
