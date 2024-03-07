@@ -1,11 +1,11 @@
-import {Card, Button, rem} from '@mantine/core';
+import { Card, Button, rem } from '@mantine/core';
 import EmployeeCard from '../employeeComponents/EmployeeCard';
 import React, { useState } from 'react';
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { IconCheck } from '@tabler/icons-react';
 import { notifications } from '@mantine/notifications';
 
-export default function OrganizationEmployeesComp({users, setUsers}) {
+export default function OrganizationEmployeesComp({ users, setUsers }) {
 
     const [generatedLink, generateLink] = useState('');
     const axiosPrivate = useAxiosPrivate();
@@ -59,7 +59,7 @@ export default function OrganizationEmployeesComp({users, setUsers}) {
     }
 
 
-    return(
+    return (
         <>
             {Object.keys(users).length > 0 ? (
                 Object.keys(users).map(user_id => (
