@@ -13,13 +13,6 @@ export default function ProposalCard({ proposal, setProposals }) {
     const axiosPrivate = useAxiosPrivate();
 
     const handleResponse = async (proposal_response) => {
-        console.log(
-            JSON.stringify({
-                user_id: proposal.user_id,
-                skill_id: proposal.skill_id,
-                proposal: proposal_response
-            }))
-
         try {
             const response = await axiosPrivate.put('skills/proposal',
                 JSON.stringify({

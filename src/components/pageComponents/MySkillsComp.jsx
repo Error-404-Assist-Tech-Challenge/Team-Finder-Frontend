@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 
@@ -68,12 +69,12 @@ export default function MySkillsComp({skills, setSkills, unusedSkills, setUnused
 
     return (
         <div>
-            <div className="flex flex-wrap">
+            <div className="flex flex-wrap justify-center">
                 {skills.map((skill, index) => (
                     <UserSkillCard key={index}
                         index={index} skills={skills} setSkills={setSkills} unusedSkills={unusedSkills} setUnusedSkills={setUnusedSkills} />
                 ))}
-                <div className="w-[200px] h-[270px] flex justify-center items-center">
+                <div className="w-[410px] h-[270px] flex justify-center items-center">
                     <Button variant="outline" onClick={open}
                         className={`relative w-[80px] h-[80px] m-[6px] rounded-full p-0 text-accent border-accent border-[5px] hover:text-accent`}>
                         <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus w-full h-full" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">

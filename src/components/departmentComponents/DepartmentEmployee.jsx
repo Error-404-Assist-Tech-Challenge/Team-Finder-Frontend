@@ -83,24 +83,26 @@ export default function DepartmentEmployee(props) {
             </Modal>
 
             {props.visible && (
-                        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                            <Loader size={30} color="red" />
-                        </div>
-                    )}
-            {!props.visible && (
-            <Card className="flex w-[240px] h-[120px] bg-[#505A5E] mx-[40px] my-[20px] rounded-xl text-white select-none font-bold"
-                onClick={open} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-                <div className="flex items-center justify-left h-full">
-                    {!isHovering &&
-                        <>
-                            <Avatar className="m-3 w-16 h-16 bg-[#E9E5E6]">{getInitials(props.name)}</Avatar>
-                            <div className="flex flex-col">
-                                <div className="text-xl font-bold">{props.name}</div>
-                            </div>
-                        </>}
-                    {isHovering && <Text className="text-lg font-bold">Click to see more</Text>}
+                <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                    <Loader size={30} color="red" />
                 </div>
-            </Card>)}
+            )}
+            {!props.visible && (
+                <Card className="flex w-[300px] h-[120px] bg-[#505A5E] mx-[40px] my-[20px] rounded-xl text-white select-none font-bold"
+                    onClick={open} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+                    <div className="flex items-center justify-left h-full">
+                        {!isHovering &&
+                            <>
+                                <div className="w-[75px] h-[75px] m-3">
+                                    <Avatar className="w-[75px] h-[75px] bg-[#E9E5E6]">{getInitials(props.name)}</Avatar>
+                                </div>
+                                <div className="flex flex-col">
+                                    <div className="text-xl font-bold">{props.name}</div>
+                                </div>
+                            </>}
+                        {isHovering && <Text className="text-lg font-bold">Click to see more</Text>}
+                    </div>
+                </Card>)}
         </>
     )
 }

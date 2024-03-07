@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 
 /* eslint-disable no-unused-vars */
@@ -9,7 +10,7 @@ import { useDisclosure } from '@mantine/hooks';
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import DepartmentEmployee from '../departmentComponents/DepartmentEmployee';
 
-export default function MyDepartmentComp({members, setMembers,}) {
+export default function MyDepartmentComp({ members, setMembers, }) {
 
     // Initialization
     const axiosPrivate = useAxiosPrivate();
@@ -64,22 +65,22 @@ export default function MyDepartmentComp({members, setMembers,}) {
         setVisible(true)
         try {
             const response = await axiosPrivate.post('departments/members',
-            JSON.stringify({
-                user_id: addedEmployee,
-            }),
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Credentials': 'true'
-                },
-                withCredentials: true
-            });
-            
+                JSON.stringify({
+                    user_id: addedEmployee,
+                }),
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Credentials': 'true'
+                    },
+                    withCredentials: true
+                });
+
             console.log('Response:', response.data);
-            
+
             setMembers(response.data)
-            
+
             setAddedEmployee('');
         } catch (error) {
             console.error('Error adding employees:', error);
@@ -115,25 +116,27 @@ export default function MyDepartmentComp({members, setMembers,}) {
                 </div>
             </Modal>
             {visible && (
-                        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                            <Loader size={30} color="red" />
-                        </div>
-                    )}
+                <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                    <Loader size={30} color="red" />
+                </div>
+            )}
             {!visible && (
                 <div className="flex">
                     <div className=" h-auto min-h-screen">
                         <div className="flex flex-wrap">
                             {members.map((member, index) => (
-                                <DepartmentEmployee key={index} name={member.name} user_id={member.user_id} setMembers={setMembers} visible={visible} setVisible={setVisible}/>
+                                <DepartmentEmployee key={index} name={member.name} user_id={member.user_id} setMembers={setMembers} visible={visible} setVisible={setVisible} />
                             ))}
-                            <Button variant="outline" onClick={open}
-                                className={`relative w-[80px] h-[80px] m-[38px] rounded-full p-0 text-accent border-accent border-[5px] hover:text-accent`}>
-                                <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus w-full h-full" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <path d="M12 5l0 14" />
-                                    <path d="M5 12l14 0" />
-                                </svg>
-                            </Button>
+                            <div className="w-[380px] h-[160px] flex justify-center">
+                                <Button variant="outline" onClick={open}
+                                    className={`relative w-[80px] h-[80px] m-[38px] rounded-full p-0 text-accent border-accent border-[5px] hover:text-accent`}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus w-full h-full" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M12 5l0 14" />
+                                        <path d="M5 12l14 0" />
+                                    </svg>
+                                </Button>
+                            </div>
                         </div>
                     </div>
                 </div>
