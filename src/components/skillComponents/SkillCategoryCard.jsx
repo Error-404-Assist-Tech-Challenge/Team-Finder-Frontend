@@ -7,7 +7,8 @@ import { useDisclosure } from '@mantine/hooks';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 
-export const SkillCategoryCard = ({ name, id, setSkillCategories }) => {
+export const SkillCategoryCard = ({ name, id, setSkillCategories, visible, setVisible }) => {
+
     const [isHovering, setIsHovering] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [categoryName, setCategoryName] = useState(name)
@@ -25,6 +26,8 @@ export const SkillCategoryCard = ({ name, id, setSkillCategories }) => {
     }
 
     const updateCategory = async () => {
+        close();
+        setVisible(true)
         try {
             const response = await axiosPrivate.put('skills/categories',
                 JSON.stringify({
@@ -47,11 +50,12 @@ export const SkillCategoryCard = ({ name, id, setSkillCategories }) => {
         } catch (error) {
             console.error('Error updating department:', error);
         }
-
-        close();
+        setVisible(false);
     }
 
     const deleteCategory = async () => {
+        close();
+        setVisible(true)
         try {
             const response = await axiosPrivate.delete('skills/categories', {
                 headers: {
@@ -72,7 +76,7 @@ export const SkillCategoryCard = ({ name, id, setSkillCategories }) => {
         } catch (error) {
             console.error('Error deleting user skills:', error);
         }
-        close();
+        setVisible(false);
     }
 
     return (

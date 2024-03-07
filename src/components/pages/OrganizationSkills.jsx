@@ -3,13 +3,10 @@
 /* eslint-disable no-unused-vars */
 
 import { useContext, useEffect, useState } from 'react';
-import { Table, Loader, Button, Divider, Modal, TextInput, Title, Textarea, Select } from '@mantine/core';
+import { Loader, Divider} from '@mantine/core';
 import { useHeadroom, useDisclosure } from '@mantine/hooks';
-
 import { Context } from '../../App';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
-import { SkillCard } from '../skillComponents/SkillCard';
-import { SkillCategoryCard } from '../skillComponents/SkillCategoryCard';
 import OrganizationSkillsComp from '../pageComponents/OrganizationSkillsComp';
 import PaginationComp from '../pageComponents/Pagination';
 import OrganizationCategoriesComp from '../pageComponents/OrganizationCategoriesComp';
@@ -20,12 +17,10 @@ export default function OrganizationSkillsPage() {
     const [darkMode, setDarkMode] = useContext(Context);
     const pinned = useHeadroom({ fixedAt: 20 });
     const [visible, setVisible] = useState(true);
+    const [visibleLoad, setVisibleLoad] = useState(false);
 
     const [skills, setSkills] = useState([]);
     const [skillCategories, setSkillCategories] = useState([])
-
-    const [openedCategories, { open: openCategories, close: closeCategories }] = useDisclosure(false);
-    const [categoryName, setCategoryName] = useState('')
 
     const [currentPage, setCurrentPage] = useState(1);
     const [postPerPage, setPostPerPage] = useState(6);
@@ -116,15 +111,21 @@ export default function OrganizationSkillsPage() {
                             </div>
                         </div>
                         <Divider orientation="vertical" />
-                        <div className='flex flex-col w-2/5'>
-                            <div className=" flex flex-wrap justify-center">
-                                <OrganizationCategoriesComp skillCategories={currentPostsCatego} setSkillCategories={setSkillCategories} />
-                            </div>
-                            <div className='dark:bg-darkcanvas bg-canvas flex justify-center items-center mt-auto'>
-                                <PaginationComp totalPosts={skillCategories.length} postsPerPage={postPerPageCatego} currentPage={currentPageCatego} setCurrentPage={setCurrentPageCatego} />
-                            </div>
+                        <div className='flex flex-col w-2/5 items-center justify-center'>
+                            {visibleLoad && (
+                                <div className=''>
+                                    <Loader size={30} color="red" />
+                                </div>
+                            )}
+                            {!visibleLoad && (<>
+                                <div className=" flex flex-wrap justify-center">
+                                    <OrganizationCategoriesComp skillCategories={currentPostsCatego} setSkillCategories={setSkillCategories} visible={visibleLoad} setVisible={setVisibleLoad} />
+                                </div>
+                                <div className='dark:bg-darkcanvas bg-canvas flex justify-center items-center mt-auto'>
+                                    <PaginationComp totalPosts={skillCategories.length} postsPerPage={postPerPageCatego} currentPage={currentPageCatego} setCurrentPage={setCurrentPageCatego} />
+                                </div></>)}
                         </div>
-                    </div>
+                    </div>  
                 </>)}
             </div>
         </section>
