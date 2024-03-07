@@ -11,7 +11,7 @@ import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { SkillCard } from '../skillComponents/SkillCard';
 import { SkillCategoryCard } from '../skillComponents/SkillCategoryCard';
 
-export default function OrganizationCategoriesComp({ name, id, skillCategories, setSkillCategories}) {
+export default function OrganizationCategoriesComp({ name, id, skillCategories, setSkillCategories, visible, setVisible}) {
 
     const axiosPrivate = useAxiosPrivate();
 
@@ -19,6 +19,8 @@ export default function OrganizationCategoriesComp({ name, id, skillCategories, 
     const [categoryName, setCategoryName] = useState('')    
 
     const handleAddCategory = async () => {
+        closeCategories();
+        setVisible(true);
         try {
             const response = await axiosPrivate.post('skills/categories',
                 JSON.stringify({
@@ -40,8 +42,7 @@ export default function OrganizationCategoriesComp({ name, id, skillCategories, 
         } catch (error) {
             console.error('Error fetching unused skills:', error);
         }
-
-        closeCategories();
+        setVisible(false);
     }
 
 
@@ -73,7 +74,7 @@ export default function OrganizationCategoriesComp({ name, id, skillCategories, 
                 <Title>Skill Categories</Title>
             </div>
             {skillCategories.map((category, index) => (
-                <SkillCategoryCard key={index} name={category.label} id={category.value} setSkillCategories={setSkillCategories} />
+                <SkillCategoryCard key={index} name={category.label} id={category.value} setSkillCategories={setSkillCategories} visible={visible} setVisible={setVisible} />
             ))}
             <div className="w-[200px] h-[66px] ml-[30px] mt-[20px] flex justify-center items-center">
                 <Button variant="outline" onClick={openCategories}

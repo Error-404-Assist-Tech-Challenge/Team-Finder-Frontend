@@ -2,14 +2,12 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-unused-vars */
 
-import { useContext, useEffect, useState } from 'react';
-import { Table, Loader, Button, Divider, Modal, TextInput, Title, Textarea, Select } from '@mantine/core';
-import { useHeadroom, useDisclosure } from '@mantine/hooks';
-
-import { Context } from '../../App';
+import { useState } from 'react';
+import { Loader, Button, Divider, Modal, TextInput, Title, Textarea, Select } from '@mantine/core';
+import {  useDisclosure } from '@mantine/hooks';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { SkillCard } from '../skillComponents/SkillCard';
-import { SkillCategoryCard } from '../skillComponents/SkillCategoryCard';
+
 
 export default function   OrganizationSkillsComp({skills, skillCategories, setSkills,}) {
 
@@ -107,7 +105,7 @@ export default function   OrganizationSkillsComp({skills, skillCategories, setSk
                 <>
                     <div className='flex flex-wrap justify-center'>
                         {skills.map((skill, index) => (
-                            <SkillCard key={index} skill={skill} skillCategories={skillCategories} setSkills={setSkills} />
+                            <SkillCard key={index} skill={skill} skillCategories={skillCategories} setSkills={setSkills} visible={visible} setVisible={setVisible} />
                         ))}
                         <div className='dark:bg-darkcanvas bg-darkcanvas'>
                             <div className="w-[320px] h-[224px] flex justify-center items-center">

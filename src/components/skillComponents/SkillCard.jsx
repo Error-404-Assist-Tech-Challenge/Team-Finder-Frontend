@@ -3,10 +3,10 @@
 import { Card, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Modal, Button, Title, TextInput, Textarea, Select } from '@mantine/core';
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
-export const SkillCard = ({ skill, skillCategories, setSkills }) => {
+export const SkillCard = ({ skill, skillCategories, setSkills, visible, setVisible }) => {
 
     const [opened, { open, close }] = useDisclosure(false);
     const [isHovering, setIsHovering] = useState(false);
@@ -27,6 +27,8 @@ export const SkillCard = ({ skill, skillCategories, setSkills }) => {
     };
 
     const updateSkill = async () => {
+        close();
+        setVisible(true);
         try {
             const response = await axiosPrivate.put('organizations/skills',
                 JSON.stringify({
@@ -51,11 +53,12 @@ export const SkillCard = ({ skill, skillCategories, setSkills }) => {
         } catch (error) {
             console.error('Error fetching updating skill:', error);
         }
-
-        close();
+        setVisible(false)
     }
 
     const deleteSkill = async () => {
+        close();
+        setVisible(true);
         try {
             const response = await axiosPrivate.delete('organizations/skills', {
                 headers: {
@@ -76,7 +79,7 @@ export const SkillCard = ({ skill, skillCategories, setSkills }) => {
         } catch (error) {
             console.error('Error deleting skill:', error);
         }
-        close();
+        setVisible(false)
     }
 
     return (
