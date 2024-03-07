@@ -71,7 +71,7 @@ export default function OrganizationEmployeesComp({users, setUsers}) {
                 </Card>
             )}
             <div className='flex flex-wrap gap-6'>                 
-                <div className="flex justify-center items-center h-[340px] ml-[40px]">
+                <div className="flex justify-center items-center h-[340px] w-[380px]">
                     <Button variant="outline" onClick={handleSignUpLink}
                         className={`relative w-[80px] h-[80px] m-[6px] rounded-full p-0 text-accent border-accent border-[5px] hover:text-accent`}>
                         <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus w-full h-full" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">

@@ -63,7 +63,7 @@ export default function OrganizationEmployeesPage() {
     return (
         <>
             <div className={`${darkMode && 'dark'}`}>
-                <div className='dark:bg-darkcanvas bg-canvas h-auto min-h-screen flex flex-wrap'>
+                <div className='dark:bg-darkcanvas bg-canvas h-auto min-h-screen flex flex-wrap justify-center'>
                     {visible && (
                         <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                             <Loader size={30} color="red" />
