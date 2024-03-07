@@ -23,7 +23,7 @@ export default function OrganizationSkillsPage() {
     const [skillCategories, setSkillCategories] = useState([])
 
     const [currentPage, setCurrentPage] = useState(1);
-    const [postPerPage, setPostPerPage] = useState(6);
+    const [postPerPage, setPostPerPage] = useState(9);
 
     const lastPostIndex = currentPage * postPerPage;
     const firstPostIndex = lastPostIndex - postPerPage;
