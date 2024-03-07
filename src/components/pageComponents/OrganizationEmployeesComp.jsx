@@ -70,7 +70,7 @@ export default function OrganizationEmployeesComp({ users, setUsers }) {
                     <h2 className='text-2xl block'>You have no employees</h2>
                 </Card>
             )}
-            <div className='flex flex-wrap gap-6'>
+            <div className='flex flex-wrap gap-6'>                 
                 <div className="flex justify-center items-center h-[340px] w-[380px]">
                     <Button variant="outline" onClick={handleSignUpLink}
                         className={`relative w-[80px] h-[80px] m-[6px] rounded-full p-0 text-accent border-accent border-[5px] hover:text-accent`}>
