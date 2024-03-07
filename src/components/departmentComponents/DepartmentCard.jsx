@@ -140,7 +140,7 @@ export default function DepartmentCard(props) {
                                 <p><span className="font-bold text-2">Members: </span>
                                     {Object.keys(props.members).map((key, index) => (
                                         <span key={index}>
-                                            {props.members[key].user_name}
+                                            {props.members[key].name}
                                             {index !== Object.keys(props.members).length - 1 ? ', ' : ''}
                                         </span>
                                     ))}
