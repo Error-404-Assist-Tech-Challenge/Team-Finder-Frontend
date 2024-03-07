@@ -104,6 +104,10 @@ export default function OrganizationSkillsPage() {
 
             setSkills(response.data);
 
+            setSkillName('');
+            setSkillDescription('');
+            setSkillCategory('');
+
         } catch (error) {
             console.error('Error fetching unused skills:', error);
         }

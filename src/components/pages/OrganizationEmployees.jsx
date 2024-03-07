@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { randomId } from '@mantine/hooks';
 import React, { useContext, useEffect, useState } from 'react';
-import {Loader} from '@mantine/core';
+import { Loader } from '@mantine/core';
 import { Context } from '../../App';
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import OrganizationEmployeesComp from '../pageComponents/OrganizationEmployeesComp';
@@ -18,13 +18,13 @@ export default function OrganizationEmployeesPage() {
     const axiosPrivate = useAxiosPrivate();
     const [users, setUsers] = useState([]);
     const [visible, setVisible] = useState(true);
-    
+
     const [currentPage, setCurrentPage] = useState(1);
-    const [postPerPage, setPostPerPage] = useState(9);
-    
+    const [postPerPage, setPostPerPage] = useState(7);
+
     const lastPostIndex = currentPage * postPerPage;
     const firstPostIndex = lastPostIndex - postPerPage;
-    const currentPosts =  users.slice(firstPostIndex, lastPostIndex);
+    const currentPosts = users.slice(firstPostIndex, lastPostIndex);
 
     useEffect(() => {
     }, [darkMode]);
@@ -63,7 +63,7 @@ export default function OrganizationEmployeesPage() {
     return (
         <>
             <div className={`${darkMode && 'dark'}`}>
-                <div className='dark:bg-darkcanvas bg-canvas h-auto min-h-screen flex flex-wrap'>
+                <div className='dark:bg-darkcanvas bg-canvas h-auto min-h-screen flex flex-wrap justify-center'>
                     {visible && (
                         <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                             <Loader size={30} color="red" />
@@ -71,12 +71,12 @@ export default function OrganizationEmployeesPage() {
                     )}
                     {!visible && (
                         <>
-                            <OrganizationEmployeesComp users={currentPosts} setUsers={setUsers}/>
+                            <OrganizationEmployeesComp users={currentPosts} setUsers={setUsers} />
                         </>
                     )}
                 </div>
                 <div className='dark:bg-darkcanvas bg-canvas flex justify-center items-center'>
-                    <PaginationComp totalPosts={users.length} postsPerPage={postPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
+                    <PaginationComp totalPosts={users.length} postsPerPage={postPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage} />
                 </div>
             </div>
         </>
