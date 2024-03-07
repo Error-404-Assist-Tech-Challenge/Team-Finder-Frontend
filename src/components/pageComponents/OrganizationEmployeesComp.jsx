@@ -1,11 +1,11 @@
-import {Card, Button, rem} from '@mantine/core';
+import { Card, Button, rem } from '@mantine/core';
 import EmployeeCard from '../employeeComponents/EmployeeCard';
 import React, { useState } from 'react';
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { IconCheck } from '@tabler/icons-react';
 import { notifications } from '@mantine/notifications';
 
-export default function OrganizationEmployeesComp({users, setUsers}) {
+export default function OrganizationEmployeesComp({ users, setUsers }) {
 
     const [generatedLink, generateLink] = useState('');
     const axiosPrivate = useAxiosPrivate();
@@ -59,7 +59,7 @@ export default function OrganizationEmployeesComp({users, setUsers}) {
     }
 
 
-    return(
+    return (
         <>
             {Object.keys(users).length > 0 ? (
                 Object.keys(users).map(user_id => (
@@ -70,8 +70,8 @@ export default function OrganizationEmployeesComp({users, setUsers}) {
                     <h2 className='text-2xl block'>You have no employees</h2>
                 </Card>
             )}
-            <div className='flex flex-wrap gap-6'>                 
-                <div className="flex justify-center items-center h-[340px] ml-[40px]">
+            <div className='flex flex-wrap gap-6'>
+                <div className="flex justify-center items-center h-[340px] w-[380px]">
                     <Button variant="outline" onClick={handleSignUpLink}
                         className={`relative w-[80px] h-[80px] m-[6px] rounded-full p-0 text-accent border-accent border-[5px] hover:text-accent`}>
                         <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus w-full h-full" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
