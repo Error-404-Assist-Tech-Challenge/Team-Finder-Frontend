@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 const Unauthorized = () => {
 
     const navigate = useNavigate();
+    const goBack = () => navigate(-1);
 
     return (
         <article className="bg-darkcanvas h-screen flex flex-col items-center justify-center">
@@ -12,7 +13,7 @@ const Unauthorized = () => {
             </Title>
             <div className="flex space-x">
                 <Button variant="filled" size="xl" radius="lg" className="bg-accent mx-[50px]"
-                    onClick={() => navigate('/login')}>
+                    onClick={goBack}>
                     Go back
                 </Button>
             </div>

@@ -22,7 +22,7 @@ export default function OrganizationDepartmentsPage() {
     const [postPerPage, setPostPerPage] = useState(9);
     const lastPostIndex = currentPage * postPerPage;
     const firstPostIndex = lastPostIndex - postPerPage;
-    const currentPosts =  departments.slice(firstPostIndex, lastPostIndex);
+    const currentPosts = departments.slice(firstPostIndex, lastPostIndex);
 
     // GET DEPARTMENTS 
 
@@ -54,8 +54,6 @@ export default function OrganizationDepartmentsPage() {
         }
     }, []);
 
-
-
     // GET DEPARTMENT MANAGERS
 
     useEffect(() => {
@@ -86,9 +84,6 @@ export default function OrganizationDepartmentsPage() {
         }
     }, []);
 
-
-    
-
     useEffect(() => {
 
     }, [darkMode]);
@@ -106,14 +101,14 @@ export default function OrganizationDepartmentsPage() {
                     {!visible && (
                         <div className="flex flex-wrap justify-centerbg-darkcanvas">
                             <div className='bg-darkcanvas select-none h-auto py-[30px] flex flex-wrap'>
-                                    <OrganizationDepartmentsComp departmentManagers={departmentManagers} setDepartmentManagers={setDepartmentManagers}
-                                                                 departments={departments} setDepartments={setDepartments} />
+                                <OrganizationDepartmentsComp departmentManagers={departmentManagers} setDepartmentManagers={setDepartmentManagers}
+                                    departments={departments} setDepartments={setDepartments} />
                             </div>
                         </div>
                     )}
                 </div>
                 <div className='dark:bg-darkcanvas bg-canvas flex justify-center items-center'>
-                    <PaginationComp totalPosts={departments.length} postsPerPage={postPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
+                    <PaginationComp totalPosts={departments.length} postsPerPage={postPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage} />
                 </div>
             </div>
         </>

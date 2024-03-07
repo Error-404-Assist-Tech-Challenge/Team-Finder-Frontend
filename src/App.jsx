@@ -38,34 +38,45 @@ export default function App() {
         <Context.Provider value={[darkMode, setDarkMode]}>
             <MantineProvider theme={theme}>
                 <Notifications />
-                    <ModalsProvider>
-                        <Routes>
-                            <Route path="/" element={<Layout />}>
-                                {/* ANYONE CAN SEE THESE PAGES */}
-                                <Route path="/" element={<Welcome />} />
-                                <Route path="login" element={<LoginPage />} />
-                                <Route path="signup" element={<SignUpAdminPage />} />
-                                <Route path="signup/:ref_id" element={<SignUpEmployeePage />} />
-                                <Route path="unauthorized" element={<Unauthorized />} />
-                                <Route path="invalid" element={<Invalid />} />
+                <ModalsProvider>
+                    <Routes>
+                        <Route path="/" element={<Layout />}>
+                            {/* ANYONE CAN SEE THESE PAGES */}
+                            <Route path="/" element={<Welcome />} />
+                            <Route path="login" element={<LoginPage />} />
+                            <Route path="signup" element={<SignUpAdminPage />} />
+                            <Route path="signup/:ref_id" element={<SignUpEmployeePage />} />
+                            <Route path="unauthorized" element={<Unauthorized />} />
+                            <Route path="invalid" element={<Invalid />} />
 
-                                <Route element={<PersistLogin />}>
-                                    <Route element={<RequireAuth />}>
-                                        {/* YOU HAVE TO BE LOGGED IN TO SEE THESE PAGES */}
-                                        <Route path='/myskills' element={<MainPage Content={MySkillsPage} />} />
-                                        <Route path='/projects' element={<MainPage Content={ProjectsPage} />} />
-                                        <Route path='/organizationemployees' element={<MainPage Content={OrganizationEmployeesPage} />} />
-                                        <Route path='/organizationdepartments' element={<MainPage Content={OrganizationDepartmentsPage} />} />
-                                        <Route path='/organizationskills' element={<MainPage Content={OrganizationSkillsPage} />} />
-                                        <Route path='/mydepartment' element={<MainPage Content={MyDepartment} />} />
-                                        <Route path='/myprojects' element={<MainPage Content={MyProjects} />} />
-                                    </Route>
+                            <Route element={<PersistLogin />}>
+
+                                <Route element={<RequireAuth allowedRoles={[]} />}>
+                                    {/* YOU HAVE TO BE LOGGED IN TO SEE THESE PAGES */}
+                                    <Route path='/myskills' element={<MainPage Content={MySkillsPage} />} />
+                                    <Route path='/projects' element={<MainPage Content={ProjectsPage} />} />
                                 </Route>
-                                <Route path="*" element={<Missing />} />
+
+                                <Route element={<RequireAuth allowedRoles={["admin"]} />}>
+                                    <Route path='/organizationemployees' element={<MainPage Content={OrganizationEmployeesPage} />} />
+                                    <Route path='/organizationdepartments' element={<MainPage Content={OrganizationDepartmentsPage} />} />
+                                </Route>
+
+                                <Route element={<RequireAuth allowedRoles={["dept_manager"]} />}>
+                                    <Route path='/organizationskills' element={<MainPage Content={OrganizationSkillsPage} />} />
+                                    <Route path='/mydepartment' element={<MainPage Content={MyDepartment} />} />
+                                </Route>
+
+                                <Route element={<RequireAuth allowedRoles={["proj_manager"]} />}>
+                                    <Route path='/myprojects' element={<MainPage Content={MyProjects} />} />
+                                </Route>
+
                             </Route>
-                        </Routes>
-                    </ModalsProvider>
+                            <Route path="*" element={<Missing />} />
+                        </Route>
+                    </Routes>
+                </ModalsProvider>
             </MantineProvider>
-        </Context.Provider>
+        </Context.Provider >
     )
 }

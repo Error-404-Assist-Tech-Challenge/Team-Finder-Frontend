@@ -4,7 +4,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Modal, Select, Loader, Title } from '@mantine/core';
+import { Button, Modal, Select, Loader, Title, Box } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Context } from '../../App';
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
@@ -18,43 +18,67 @@ export default function OrganizationEmployeesPage() {
     const axiosPrivate = useAxiosPrivate();
     const [visible, setVisible] = useState(true);
     const [members, setMembers] = useState([]);
+    const [departmentName, setDepartmentName] = useState('');
     const [addedEmployee, setAddedEmployee] = useState('');
     const [opened, { open, close }] = useDisclosure(false);
     const [avalaible, setAvalaible] = useState([]);
+
 
     const employeeList = []
 
     useEffect(() => {
     }, [darkMode]);
 
-
-    // Function that gets all the members from department
-
     useEffect(() => {
         let isMounted = true;
         const controller = new AbortController();
 
-        const getDepartmentMembers = async () => {
+        const getDepartmentName = async () => {
             try {
-                const response = await axiosPrivate.get('departments/members', {
+                const response = await axiosPrivate.get('departments/managed', {
                     signal: controller.signal,
                     withCredentials: true
                 });
-                console.log('Department members:', response.data);
-                isMounted && setMembers(response.data)
+                console.log('Department name:', response.data);
+
+                if (isMounted) {
+                    setDepartmentName(response.data.name);
+                    getDepartmentMembers();
+                }
+
                 setVisible(false);
             } catch (error) {
-                console.error('Error fetching department members:', error);
+                if (error?.response == 409)
+                    console.error('You have no department');
+                else
+                    console.error('Error fetching department members:', error);
             }
         }
 
-        getDepartmentMembers();
+        getDepartmentName();
 
         return () => {
             isMounted = false;
             controller.abort();
         }
     }, [])
+
+
+    // Function that gets all the members from department
+
+    const getDepartmentMembers = async () => {
+        try {
+            const response = await axiosPrivate.get('departments/members', {
+                withCredentials: true
+            });
+            console.log('Department members:', response.data);
+            setMembers(response.data)
+            setVisible(false);
+        } catch (error) {
+            console.error('Error fetching department members:', error);
+        }
+    }
+
 
     // Function that gets all the avalaible members
 
@@ -90,6 +114,7 @@ export default function OrganizationEmployeesPage() {
             label: avalaible[i].name
         };
     }
+
     // Add new employee to department
 
     const handleAddEmployee = async () => {
@@ -106,7 +131,13 @@ export default function OrganizationEmployeesPage() {
                     },
                     withCredentials: true
                 });
+
             console.log('Response:', response.data);
+
+            setMembers(response.data)
+
+            setAddedEmployee('');
+
         } catch (error) {
             console.error('Error adding employees:', error);
         }
@@ -117,7 +148,7 @@ export default function OrganizationEmployeesPage() {
 
     return (
         <div className={`${darkMode && 'dark'}`}>
-            <div className='dark:bg-darkcanvas bg-canvas h-screen flex flex-wrap'>
+            <div className='dark:bg-darkcanvas bg-canvas h-screen'>
                 <Modal opened={opened} onClose={close} centered overflow="inside" className="bg-graybg text-white select-none" zIndex={1000002} closeOnClickOutside={false}>
                     <div className="flex justify-center">
                         <Title className="pb-[40px]">Add Employee</Title>
@@ -130,9 +161,9 @@ export default function OrganizationEmployeesPage() {
                         onChange={setAddedEmployee}
                         searchable
                         size="lg"
+                        allowDeselect={false}
                         nothingFoundMessage="No employees avalaible..."
-                        comboboxProps={{ zIndex: 1000000000 }}
-                        clearable />
+                        comboboxProps={{ zIndex: 1000000000 }} />
                     <div className="flex justify-center">
                         {addedEmployee && (<Button onClick={handleAddEmployee}
                             className="bg-accent text-white hover:bg-btn_hover font-bold px-4 py-2 rounded mx-[10px] my-[20px] mt-[40px] ">
@@ -148,20 +179,34 @@ export default function OrganizationEmployeesPage() {
                 )}
                 {!visible && (
                     <>
-                        {members.map((member, index) => (
-                            <DepartmentEmployee key={index} name={member.user_name} user_id={member.user_id} />
-                        ))}
-                        <Button variant="outline" onClick={open}
-                            className={`relative w-[80px] h-[80px] m-[38px] rounded-full p-0 text-accent border-accent border-[5px] hover:text-accent`}>
-                            <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus w-full h-full" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path d="M12 5l0 14" />
-                                <path d="M5 12l14 0" />
-                            </svg>
-                        </Button>
+                        <div className="flex">
+                            <div className="w-3/4 h-screen">
+                                <div className="flex justify-center text-white p-9 select-none">
+                                    {departmentName && (<Title className="text-4xl">{departmentName} Department</Title>)}
+                                    {!departmentName && (<Title className="text-4xl">You have no department</Title>)}
+                                </div>
+                                <div className="flex flex-wrap">
+
+                                    {members.map((member, index) => (
+                                        <DepartmentEmployee key={index} name={member.name} user_id={member.user_id} setMembers={setMembers} />
+                                    ))}
+                                    <Button variant="outline" onClick={open}
+                                        className={`relative w-[80px] h-[80px] m-[38px] rounded-full p-0 text-accent border-accent border-[5px] hover:text-accent`}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus w-full h-full" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M12 5l0 14" />
+                                            <path d="M5 12l14 0" />
+                                        </svg>
+                                    </Button>
+                                </div>
+                            </div>
+                                <Box className="w-1/4 h-screen" bg="red.5" my="xl" component="a" href="/">
+                                    My component
+                                </Box>
+                        </div>
                     </>
                 )}
             </div>
-        </div>
+        </div >
     )
 }

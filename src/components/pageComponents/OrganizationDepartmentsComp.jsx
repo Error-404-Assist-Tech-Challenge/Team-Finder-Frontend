@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 
 import React from 'react';
@@ -7,8 +8,8 @@ import { Button, Modal, TextInput, Loader, Title } from '@mantine/core';
 import { useHeadroom, useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
 
-export default function OrganizationDepartmentsComp({departmentManagers, setDepartmentManagers, departments, setDepartments}) {
-    
+export default function OrganizationDepartmentsComp({ departmentManagers, setDepartmentManagers, departments, setDepartments }) {
+
     const axiosPrivate = useAxiosPrivate();
     const [opened, { open, close }] = useDisclosure(false);
     const [departmentName, setDepartmentName] = useState('');
@@ -41,7 +42,7 @@ export default function OrganizationDepartmentsComp({departmentManagers, setDepa
         close();
     }
 
-   
+
     return (
         <>
             <div className="flex flex-wrap justify-centerbg-darkcanvas">
@@ -64,23 +65,23 @@ export default function OrganizationDepartmentsComp({departmentManagers, setDepa
                     </div>
                 </div>
                 <Modal opened={opened} onClose={close} centered overflow="inside" size={500} className="dark:bg-card_modal text-white select-none" zIndex={1000002}>
-                        <div className="flex justify-center">
-                            <Title className="pb-[30px]">Create Department</Title>
-                        </div>
-                        <TextInput
-                            label="Department Name"
-                            placeholder="Department name"
-                            size="lg"
-                            value={departmentName}
-                            onChange={(event) => setDepartmentName(event.currentTarget.value)}
-                            className=" py-[30px]"
-                        />
-                        {departmentName &&
-                            (<Button onClick={handleAddDepartment}
-                                className="bg-accent text-white hover:bg-btn_hover font-bold px-4 py-2 rounded mx-[10px] my-[10px] mt-[20px]">
-                                Create Department
-                            </Button>)}
-                    </Modal>
+                    <div className="flex justify-center">
+                        <Title className="pb-[30px]">Create Department</Title>
+                    </div>
+                    <TextInput
+                        label="Department Name"
+                        placeholder="Department name"
+                        size="lg"
+                        value={departmentName}
+                        onChange={(event) => setDepartmentName(event.currentTarget.value)}
+                        className=" py-[30px]"
+                    />
+                    {departmentName &&
+                        (<Button onClick={handleAddDepartment}
+                            className="bg-accent text-white hover:bg-btn_hover font-bold px-4 py-2 rounded mx-[10px] my-[10px] mt-[20px]">
+                            Create Department
+                        </Button>)}
+                </Modal>
             </div>
 
         </>

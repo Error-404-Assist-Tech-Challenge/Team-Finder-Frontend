@@ -50,6 +50,8 @@ export default function LoginPage() {
 
             setAuth({ name, email, org_name, hq_address, roles, accessToken })
 
+            console.log(roles);
+
             navigate(from, { replace: true });
         } catch (err) {
             if (!err?.response) {
