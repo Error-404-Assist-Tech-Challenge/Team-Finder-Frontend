@@ -42,7 +42,10 @@ export default function DepartmentEmployee(props) {
                 },
                 withCredentials: true
             });
+
             console.log('Response:', response.data);
+
+            props.setMembers(response.data)
 
         } catch (error) {
             console.error('Error deleting department member:', error);
@@ -70,7 +73,11 @@ export default function DepartmentEmployee(props) {
                 {skills.map((skill, index) => (
                     <Badge key={index} className="m-2" color="gray" size="xl" variant="filled">{skill}</Badge>
                 ))}
-
+                <div>
+                    <Button className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] rounded float-right" onClick={handleRemoveMember}>
+                        Remove Skill
+                    </Button>
+                </div>
             </Modal>
 
             <Card className="flex w-[240px] h-[120px] bg-[#505A5E] mx-[40px] my-[20px] rounded-xl text-white select-none font-bold"

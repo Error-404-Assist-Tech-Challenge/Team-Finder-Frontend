@@ -133,8 +133,8 @@ export default function OrganizationEmployeesPage() {
                 });
 
             console.log('Response:', response.data);
-            setMembers(response.data)
 
+            setMembers(response.data)
 
         } catch (error) {
             console.error('Error adding employees:', error);
@@ -177,14 +177,14 @@ export default function OrganizationEmployeesPage() {
                 )}
                 {!visible && (
                     <>
-                        <div className="flex justify-center text-white">
-                            {departmentName && (<Title>{departmentName} Department</Title>)}
-                            {!departmentName && (<Title>You have no department</Title>)}
+                        <div className="flex justify-center text-white p-9 select-none">
+                            {departmentName && (<Title className="text-4xl">{departmentName} Department</Title>)}
+                            {!departmentName && (<Title className="text-4xl">You have no department</Title>)}
                         </div>
                         <div className="flex flex-wrap">
 
                             {members.map((member, index) => (
-                                <DepartmentEmployee key={index} name={member.name} user_id={member.user_id} />
+                                <DepartmentEmployee key={index} name={member.name} user_id={member.user_id} setMembers={setMembers} />
                             ))}
                             <Button variant="outline" onClick={open}
                                 className={`relative w-[80px] h-[80px] m-[38px] rounded-full p-0 text-accent border-accent border-[5px] hover:text-accent`}>
@@ -195,7 +195,6 @@ export default function OrganizationEmployeesPage() {
                                 </svg>
                             </Button>
                         </div>
-
                     </>
                 )}
             </div>
