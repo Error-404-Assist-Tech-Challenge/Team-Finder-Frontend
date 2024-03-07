@@ -17,6 +17,8 @@ export default function MyDepartmentComp({members, setMembers,}) {
     const [avalaible, setAvalaible] = useState([]);
     const [addedEmployee, setAddedEmployee] = useState('');
 
+    const [visible, setVisible] = useState(false);
+
     const employeeList = []
 
 
@@ -35,7 +37,6 @@ export default function MyDepartmentComp({members, setMembers,}) {
                 console.log('Avalaible employees:', response.data);
                 isMounted && setAvalaible(response.data)
                 console.log({ avalaible })
-                setVisible(false);
             } catch (error) {
                 console.error('Error fetching members without department:', error);
             }
@@ -59,30 +60,31 @@ export default function MyDepartmentComp({members, setMembers,}) {
     // Add new employee to department
 
     const handleAddEmployee = async () => {
+        close();
+        setVisible(true)
         try {
             const response = await axiosPrivate.post('departments/members',
-                JSON.stringify({
-                    user_id: addedEmployee,
-                }),
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Access-Control-Allow-Origin': '*',
-                        'Access-Control-Allow-Credentials': 'true'
-                    },
-                    withCredentials: true
-                });
-
+            JSON.stringify({
+                user_id: addedEmployee,
+            }),
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Credentials': 'true'
+                },
+                withCredentials: true
+            });
+            
             console.log('Response:', response.data);
-
+            
             setMembers(response.data)
-
+            
             setAddedEmployee('');
-
         } catch (error) {
             console.error('Error adding employees:', error);
         }
-        close();
+        setVisible(false)
     }
 
 
@@ -112,23 +114,30 @@ export default function MyDepartmentComp({members, setMembers,}) {
                     </Button>)}
                 </div>
             </Modal>
-            <div className="flex">
-                <div className=" h-auto min-h-screen">
-                    <div className="flex flex-wrap">
-                        {members.map((member, index) => (
-                            <DepartmentEmployee key={index} name={member.name} user_id={member.user_id} setMembers={setMembers} />
-                        ))}
-                        <Button variant="outline" onClick={open}
-                            className={`relative w-[80px] h-[80px] m-[38px] rounded-full p-0 text-accent border-accent border-[5px] hover:text-accent`}>
-                            <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus w-full h-full" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path d="M12 5l0 14" />
-                                <path d="M5 12l14 0" />
-                            </svg>
-                        </Button>
+            {visible && (
+                        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                            <Loader size={30} color="red" />
+                        </div>
+                    )}
+            {!visible && (
+                <div className="flex">
+                    <div className=" h-auto min-h-screen">
+                        <div className="flex flex-wrap">
+                            {members.map((member, index) => (
+                                <DepartmentEmployee key={index} name={member.name} user_id={member.user_id} setMembers={setMembers} visible={visible} setVisible={setVisible}/>
+                            ))}
+                            <Button variant="outline" onClick={open}
+                                className={`relative w-[80px] h-[80px] m-[38px] rounded-full p-0 text-accent border-accent border-[5px] hover:text-accent`}>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus w-full h-full" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M12 5l0 14" />
+                                    <path d="M5 12l14 0" />
+                                </svg>
+                            </Button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            )}
         </div>
     )
 }

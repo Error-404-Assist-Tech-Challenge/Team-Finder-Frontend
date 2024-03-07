@@ -19,8 +19,11 @@ export default function   OrganizationSkillsComp({skills, skillCategories, setSk
     const [skillName, setSkillName] = useState('')
     const [skillDescription, setSkillDescription] = useState('')
     const [skillCategory, setSkillCategory] = useState('')
-
+    const [visible, setVisible] = useState(false);
+    
     const handleAddSkill = async () => {
+        closeSkills();
+        setVisible(true);
         try {
             const response = await axiosPrivate.post('organizations/skills',
                 JSON.stringify({
@@ -48,8 +51,7 @@ export default function   OrganizationSkillsComp({skills, skillCategories, setSk
         } catch (error) {
             console.error('Error fetching unused skills:', error);
         }
-
-        closeSkills();
+        setVisible(false)
     }
 
 
@@ -96,21 +98,32 @@ export default function   OrganizationSkillsComp({skills, skillCategories, setSk
             <div className="w-full flex justify-center text-white pb-5" size="2xl">
                 <Title>Skills</Title>
             </div>
-            {skills.map((skill, index) => (
-                <SkillCard key={index} skill={skill} skillCategories={skillCategories} setSkills={setSkills} />
-            ))}
-            <div className='dark:bg-darkcanvas bg-darkcanvas'>
-                <div className="w-[320px] h-[224px] flex justify-center items-center">
-                    <Button variant="outline" onClick={openSkills}
-                        className={`relative w-[80px] h-[80px] m-[6px] rounded-full p-0 text-accent border-accent border-[5px] hover:text-accent`}>
-                        <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus w-full h-full" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M12 5l0 14" />
-                            <path d="M5 12l14 0" />
-                        </svg>
-                    </Button>
-                </div>
-            </div>
+            {visible && (
+                    <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3/5">
+                        <Loader size={30} color="red" />
+                    </div>
+                )}
+            {!visible && (
+                <>
+                    <div className='flex flex-wrap justify-center'>
+                        {skills.map((skill, index) => (
+                            <SkillCard key={index} skill={skill} skillCategories={skillCategories} setSkills={setSkills} />
+                        ))}
+                        <div className='dark:bg-darkcanvas bg-darkcanvas'>
+                            <div className="w-[320px] h-[224px] flex justify-center items-center">
+                                <Button variant="outline" onClick={openSkills}
+                                    className={`relative w-[80px] h-[80px] m-[6px] rounded-full p-0 text-accent border-accent border-[5px] hover:text-accent`}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus w-full h-full" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M12 5l0 14" />
+                                        <path d="M5 12l14 0" />
+                                    </svg>
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+                </>
+            )}
         </>
     )
 }

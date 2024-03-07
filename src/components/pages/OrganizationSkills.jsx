@@ -28,7 +28,7 @@ export default function OrganizationSkillsPage() {
     const [categoryName, setCategoryName] = useState('')
 
     const [currentPage, setCurrentPage] = useState(1);
-    const [postPerPage, setPostPerPage] = useState(3);
+    const [postPerPage, setPostPerPage] = useState(6);
 
     const lastPostIndex = currentPage * postPerPage;
     const firstPostIndex = lastPostIndex - postPerPage;
@@ -107,11 +107,11 @@ export default function OrganizationSkillsPage() {
                 )}
                 {!visible && (<>
                     <div className='bg-darkcanvas select-none h-auto min-h-screen w-full py-[30px] flex'>
-                        <div className='flex flex-col w-3/5'>
-                            <div className='w-3/5 flex flex-wrap justify-center w-full'>
+                        <div className='flex flex-wrap justify-center w-3/5'>
+                            <div>
                                 <OrganizationSkillsComp skills={currentPosts} skillCategories={skillCategories} setSkills={setSkills} />
                             </div>
-                            <div className='dark:bg-darkcanvas bg-canvas flex justify-center items-center'>
+                            <div className='dark:bg-darkcanvas bg-canvas flex justify-center items-center mt-auto w-3/5'>
                                 <PaginationComp totalPosts={skills.length} postsPerPage={postPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage} />
                             </div>
                         </div>
@@ -120,10 +120,9 @@ export default function OrganizationSkillsPage() {
                             <div className=" flex flex-wrap justify-center">
                                 <OrganizationCategoriesComp skillCategories={currentPostsCatego} setSkillCategories={setSkillCategories} />
                             </div>
-                                <div className='dark:bg-darkcanvas bg-canvas flex justify-center items-center'>
-                                    <PaginationComp totalPosts={skillCategories.length} postsPerPage={postPerPageCatego} currentPage={currentPageCatego} setCurrentPage={setCurrentPageCatego} />
-                                </div>
-                            
+                            <div className='dark:bg-darkcanvas bg-canvas flex justify-center items-center mt-auto'>
+                                <PaginationComp totalPosts={skillCategories.length} postsPerPage={postPerPageCatego} currentPage={currentPageCatego} setCurrentPage={setCurrentPageCatego} />
+                            </div>
                         </div>
                     </div>
                 </>)}
