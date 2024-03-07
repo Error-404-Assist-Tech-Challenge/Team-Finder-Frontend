@@ -34,6 +34,8 @@ export default function DepartmentCard(props) {
     }
 
     const updateDepartment = async () => {
+        close();
+        props.setVisible(true);
         try {
             const response = await axiosPrivate.put('departments',
                 JSON.stringify({
@@ -67,11 +69,12 @@ export default function DepartmentCard(props) {
         } catch (error) {
             console.error('Error updating department:', error);
         }
-
-        close();
+        props.setVisible(false);
     }
 
     const deleteDepartment = async () => {
+        close();
+        props.setVisible(true);
         const departmendId = props.id;
         try {
             const response = await axiosPrivate.delete('departments', {
@@ -93,7 +96,7 @@ export default function DepartmentCard(props) {
         } catch (error) {
             console.error('Error deleting user skills:', error);
         }
-        close();
+        props.setVisible(false);
     }
 
 

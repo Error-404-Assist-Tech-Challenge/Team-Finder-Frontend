@@ -8,11 +8,12 @@ import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 
 
-export default function ProposalCard({ proposal, setProposals }) {
+export default function ProposalCard({ proposal, setProposals, visible, setVisible }) {
 
     const axiosPrivate = useAxiosPrivate();
 
     const handleResponse = async (proposal_response) => {
+        setVisible(true);
         try {
             const response = await axiosPrivate.put('skills/proposal',
                 JSON.stringify({
@@ -36,6 +37,7 @@ export default function ProposalCard({ proposal, setProposals }) {
         } catch (error) {
             console.error('Error fetching updating skill:', error);
         }
+        setVisible(false);
     }
 
     return (

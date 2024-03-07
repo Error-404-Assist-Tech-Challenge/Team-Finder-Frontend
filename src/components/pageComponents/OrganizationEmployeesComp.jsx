@@ -5,7 +5,7 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { IconCheck } from '@tabler/icons-react';
 import { notifications } from '@mantine/notifications';
 
-export default function OrganizationEmployeesComp({ users, setUsers }) {
+export default function OrganizationEmployeesComp({ users, setUsers, visible, setVisible }) {
 
     const [generatedLink, generateLink] = useState('');
     const axiosPrivate = useAxiosPrivate();
@@ -63,7 +63,7 @@ export default function OrganizationEmployeesComp({ users, setUsers }) {
         <>
             {Object.keys(users).length > 0 ? (
                 Object.keys(users).map(user_id => (
-                    <EmployeeCard key={user_id} employee={users[user_id]} setUsers={setUsers} />
+                    <EmployeeCard key={user_id} employee={users[user_id]} setUsers={setUsers} visible={visible} setVisible={setVisible} />
                 ))
             ) : (
                 <Card className='w-[300px] h-[230px] bg-accent mx-[40px] my-[20px] rounded-xl dark:text-darktext text-text select-none flex justify-center items-center'>
