@@ -4,7 +4,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Modal, Select, Loader, Title, Box } from '@mantine/core';
+import { Button, Modal, Select, Loader, Title, Drawer } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Context } from '../../App';
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
@@ -22,6 +22,7 @@ export default function OrganizationEmployeesPage() {
     const [addedEmployee, setAddedEmployee] = useState('');
     const [opened, { open, close }] = useDisclosure(false);
     const [avalaible, setAvalaible] = useState([]);
+    const [openedDrawer, { open: openDrawer, close: closeDrawer }] = useDisclosure(false);
 
 
     const employeeList = []
@@ -149,6 +150,10 @@ export default function OrganizationEmployeesPage() {
     return (
         <div className={`${darkMode && 'dark'}`}>
             <div className='dark:bg-darkcanvas bg-canvas h-screen'>
+                <Drawer offset={8} radius="md" opened={openedDrawer} onClose={closeDrawer} title="Requests" position="right">
+                    {/* Drawer content */}
+                </Drawer>
+
                 <Modal opened={opened} onClose={close} centered overflow="inside" className="bg-graybg text-white select-none" zIndex={1000002} closeOnClickOutside={false}>
                     <div className="flex justify-center">
                         <Title className="pb-[40px]">Add Employee</Title>
@@ -179,30 +184,29 @@ export default function OrganizationEmployeesPage() {
                 )}
                 {!visible && (
                     <>
-                        <div className="flex">
-                            <div className="w-3/4 h-screen">
-                                <div className="flex justify-center text-white p-9 select-none">
-                                    {departmentName && (<Title className="text-4xl">{departmentName} Department</Title>)}
-                                    {!departmentName && (<Title className="text-4xl">You have no department</Title>)}
-                                </div>
-                                <div className="flex flex-wrap">
+                        <div className="flex justify-center text-white p-9 select-none">
+                            {departmentName && (<Title className="text-4xl">{departmentName} Department</Title>)}
+                            {!departmentName && (<Title className="text-4xl">You have no department</Title>)}
+                        </div>
+                        <div className="flex flex-wrap">
 
-                                    {members.map((member, index) => (
-                                        <DepartmentEmployee key={index} name={member.name} user_id={member.user_id} setMembers={setMembers} />
-                                    ))}
-                                    <Button variant="outline" onClick={open}
-                                        className={`relative w-[80px] h-[80px] m-[38px] rounded-full p-0 text-accent border-accent border-[5px] hover:text-accent`}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus w-full h-full" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M12 5l0 14" />
-                                            <path d="M5 12l14 0" />
-                                        </svg>
-                                    </Button>
-                                </div>
-                            </div>
-                                <Box className="w-1/4 h-screen" bg="red.5" my="xl" component="a" href="/">
-                                    My component
-                                </Box>
+                            {members.map((member, index) => (
+                                <DepartmentEmployee key={index} name={member.name} user_id={member.user_id} setMembers={setMembers} />
+                            ))}
+                            <Button variant="outline" onClick={open}
+                                className={`relative w-[80px] h-[80px] m-[38px] rounded-full p-0 text-accent border-accent border-[5px] hover:text-accent`}>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus w-full h-full" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M12 5l0 14" />
+                                    <path d="M5 12l14 0" />
+                                </svg>
+                            </Button>
+                        </div>
+
+                        <div className="fixed bottom-9 right-9">
+                            <Button size="lg" className="bg-accent text-white font-bold py-2 px-4 text-lg rounded" onClick={openDrawer}>
+                                Department Requests
+                            </Button>
                         </div>
                     </>
                 )}
