@@ -5,12 +5,14 @@ import { Card, Avatar, Modal, Badge, Button, Text, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useState } from 'react'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import useAuth from '../../hooks/useAuth';
 
 export default function EmployeeCard({ employee, setUsers }) {
 
     const axiosPrivate = useAxiosPrivate();
     const [opened, { open, close }] = useDisclosure(false);
     const [isHovering, setIsHovering] = useState(false);
+    const { auth } = useAuth();
 
     const getInitials = (name) => {
         const names = name.split(' ');
@@ -37,6 +39,9 @@ export default function EmployeeCard({ employee, setUsers }) {
             console.log(response.data);
 
             setUsers(response.data);
+
+            if (employee.email == auth.email)
+                window.location.reload();
 
         } catch (error) {
             console.error(error);
@@ -67,6 +72,8 @@ export default function EmployeeCard({ employee, setUsers }) {
 
             setUsers(response.data);
 
+            if (employee.email == auth.email)
+                window.location.reload();
 
         } catch (error) {
             console.error(error);
