@@ -1,15 +1,16 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-unused-vars */
 
 import { useState } from 'react';
-import { Loader, Button, Divider, Modal, TextInput, Title, Textarea, Select } from '@mantine/core';
-import {  useDisclosure } from '@mantine/hooks';
+import { Loader, Button, Checkbox, Modal, TextInput, Title, Textarea, Select } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { SkillCard } from '../skillComponents/SkillCard';
 
 
-export default function   OrganizationSkillsComp({skills, skillCategories, setSkills,}) {
+export default function OrganizationSkillsComp({ skills, skillCategories, setSkills, }) {
 
     const axiosPrivate = useAxiosPrivate();
 
@@ -18,7 +19,7 @@ export default function   OrganizationSkillsComp({skills, skillCategories, setSk
     const [skillDescription, setSkillDescription] = useState('')
     const [skillCategory, setSkillCategory] = useState('')
     const [visible, setVisible] = useState(false);
-    
+
     const handleAddSkill = async () => {
         closeSkills();
         setVisible(true);
@@ -96,11 +97,12 @@ export default function   OrganizationSkillsComp({skills, skillCategories, setSk
             <div className="w-full flex justify-center text-white pb-5" size="2xl">
                 <Title>Skills</Title>
             </div>
+            <Checkbox className="text-white" label="Only show my skills" />
             {visible && (
-                    <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3/5">
-                        <Loader size={30} color="red" />
-                    </div>
-                )}
+                <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3/5">
+                    <Loader size={30} color="red" />
+                </div>
+            )}
             {!visible && (
                 <>
                     <div className='flex flex-wrap justify-center'>

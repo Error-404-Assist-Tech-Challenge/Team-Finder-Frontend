@@ -30,13 +30,9 @@ export default function MySkillsPage() {
     const [postPerPage, setPostPerPage] = useState(9);
     const lastPostIndex = currentPage * postPerPage;
     const firstPostIndex = lastPostIndex - postPerPage;
-    const currentPosts =  skills.slice(firstPostIndex, lastPostIndex);
+    const currentPosts = skills.slice(firstPostIndex, lastPostIndex);
 
     const language = unusedSkills.find(lang => lang.value === addedSkill);
-
-    useEffect(() => {
-        console.log('language', language);
-    }, [language])
 
     // GET USER SKILL
 
@@ -47,6 +43,11 @@ export default function MySkillsPage() {
             try {
                 const response = await axiosPrivate.get('skills/user', {
                     signal: controller.signal,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Credentials': 'true'
+                    },
                     withCredentials: true
                 });
 
@@ -78,7 +79,13 @@ export default function MySkillsPage() {
         const fetchUnusedSkills = async () => {
             try {
                 const response = await axiosPrivate.get('organizations/skills/unused', {
-                    signal: controller.signal
+                    signal: controller.signal,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Credentials': 'true'
+                    },
+                    withCredentials: true
                 });
                 console.log('My Unused Skills:', response.data);
                 isMounted && setUnusedSkills(response.data);
@@ -111,14 +118,14 @@ export default function MySkillsPage() {
                         <Loader size={30} color="red" />
                     </div>
                 )}
-                
+
                 {!visible &&
                     <div className="flex flex-wrap">
                             <MySkillsComp  skills={currentPosts} setSkills={setSkills} unusedSkills={unusedSkills} setUnusedSkills={setUnusedSkills} visible={visible} setVisible={setVisible} />
                     </div>}
             </div>
             <div className='dark:bg-darkcanvas bg-canvas flex justify-center items-center'>
-                <PaginationComp totalPosts={skills.length} postsPerPage={postPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
+                <PaginationComp totalPosts={skills.length} postsPerPage={postPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage} />
             </div>
         </div>
     )

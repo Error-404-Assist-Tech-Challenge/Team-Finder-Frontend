@@ -79,6 +79,11 @@ export default function MyDepartmentPage() {
         try {
             const response = await axiosPrivate.get('skills/proposal', {
                 // signal: controller.signal,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Credentials': 'true'
+                },
                 withCredentials: true
             });
             
@@ -110,6 +115,11 @@ export default function MyDepartmentPage() {
     const getDepartmentMembers = async () => {
         try {
             const response = await axiosPrivate.get('departments/members', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Credentials': 'true'
+                },
                 withCredentials: true
             });
             console.log('Department members:', response.data);

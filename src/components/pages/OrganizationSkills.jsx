@@ -3,7 +3,7 @@
 /* eslint-disable no-unused-vars */
 
 import { useContext, useEffect, useState } from 'react';
-import { Loader, Divider} from '@mantine/core';
+import { Loader, Divider } from '@mantine/core';
 import { useHeadroom, useDisclosure } from '@mantine/hooks';
 import { Context } from '../../App';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
@@ -29,7 +29,7 @@ export default function OrganizationSkillsPage() {
     const firstPostIndex = lastPostIndex - postPerPage;
     const currentPosts = skills.slice(firstPostIndex, lastPostIndex);
 
-    
+
     const [currentPageCatego, setCurrentPageCatego] = useState(1);
     const [postPerPageCatego, setPostPerPageVatego] = useState(17);
 
@@ -93,7 +93,7 @@ export default function OrganizationSkillsPage() {
     }, [])
 
     return (
-        <section className={`${darkMode && 'dark'}`}> 
+        <section className={`${darkMode && 'dark'}`}>
             <div className='dark:bg-darkcanvas bg-canvas h-auto min-h-screen select-none'>
                 {visible && (
                     <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
@@ -125,7 +125,7 @@ export default function OrganizationSkillsPage() {
                                     <PaginationComp totalPosts={skillCategories.length} postsPerPage={postPerPageCatego} currentPage={currentPageCatego} setCurrentPage={setCurrentPageCatego} />
                                 </div></>)}
                         </div>
-                    </div>  
+                    </div>
                 </>)}
             </div>
         </section>
