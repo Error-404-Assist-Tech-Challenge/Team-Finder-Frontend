@@ -158,14 +158,14 @@ export default function DepartmentCard(props) {
                         <div className="p-[10px]">
                             {!isEditing && (<Button
                                 className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] rounded float-left" onClick={handleEdit}>
-                                Edit skill
+                                Edit department
                             </Button>)}
                             {isEditing && (<Button
                                 className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] rounded  float-left" onClick={handleSave}>
                                 Save
                             </Button>)}
                             <Button className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] rounded float-right" onClick={deleteDepartment}>
-                                Remove Department
+                                Remove department
                             </Button>
                         </div>
                     </Modal>
