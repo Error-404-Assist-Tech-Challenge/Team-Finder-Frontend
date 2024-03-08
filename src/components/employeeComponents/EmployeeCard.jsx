@@ -141,7 +141,7 @@ export default function EmployeeCard({ employee, setUsers, visible, setVisible }
                 </div>
             </Modal>
 
-            <Card className="flex w-[300px] h-[300px] bg-[#505A5E] mx-[40px] my-[20px] rounded-xl text-white select-none font-bold"
+            <Card className="flex w-[300px] h-[300px] bg-[#505A5E] mx-[40px] my-[40px] rounded-xl text-white select-none font-bold"
                 onClick={open} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
                 <div className="flex items-center">
                     <Avatar className="m-3 w-[50px] h-[50px] bg-[#E9E5E6]">{getInitials(employee.name)}</Avatar>

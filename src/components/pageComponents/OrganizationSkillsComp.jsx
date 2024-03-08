@@ -116,7 +116,7 @@ export default function OrganizationSkillsComp({ skills, skillCategories, setSki
             </div>
 
             <div className="flex items-center justify-between my-5 w-full">
-                <div className="w-1/3 flex justify-left">
+                <div className="w-1/3 flex justify-center">
                     <Checkbox className="text-white mx-10" label="Skills in my department" size="xl"
                         checked={departmentFilter}
                         onChange={(event) => setDepartmentFilter(event.currentTarget.checked)} />
@@ -133,7 +133,7 @@ export default function OrganizationSkillsComp({ skills, skillCategories, setSki
                         comboboxProps={{ zIndex: 1000000000 }}
                         className="mx-5" />
                 </div>
-                <div className="w-1/3 flex justify-left">
+                <div className="w-1/3 flex justify-center">
                     <Checkbox className="text-white mx-10" label="Skills created by me" size="xl"
                         checked={authorFilter}
                         onChange={(event) => setAuthorFilter(event.currentTarget.checked)} />
