@@ -8,7 +8,7 @@ import { Button, Modal, TextInput, Loader, Title } from '@mantine/core';
 import { useHeadroom, useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
 
-export default function OrganizationDepartmentsComp({ departmentManagers, setDepartmentManagers, departments, setDepartments }) {
+export default function OrganizationDepartmentsComp({ departmentManagers, setDepartmentManagers, departments, setDepartments, visible, setVisible }) {
 
     const axiosPrivate = useAxiosPrivate();
     const [opened, { open, close }] = useDisclosure(false);
@@ -17,6 +17,8 @@ export default function OrganizationDepartmentsComp({ departmentManagers, setDep
     // ADD DEPARTMENT
 
     const handleAddDepartment = async () => {
+        close();
+        setVisible(true);
         try {
             const response = await axiosPrivate.post('departments',
                 JSON.stringify({
@@ -38,8 +40,7 @@ export default function OrganizationDepartmentsComp({ departmentManagers, setDep
         } catch (error) {
             console.error('Error fetching unused skills:', error);
         }
-
-        close();
+        setVisible(false);
     }
 
 
@@ -51,7 +52,7 @@ export default function OrganizationDepartmentsComp({ departmentManagers, setDep
                         <DepartmentCard key={index}
                             id={department.id} manager={department.manager_name} manager_id={department.manager_id} name={department.name} members={department.department_members}
                             departmentManagers={departmentManagers} setDepartmentManagers={setDepartmentManagers}
-                            departments={departments} setDepartments={setDepartments} />
+                            departments={departments} setDepartments={setDepartments} visible={visible} setVisible={setVisible}/>
                     ))}
                     <div className="w-[200px] h-[224px] flex justify-center items-center">
                         <Button variant="outline" onClick={open}

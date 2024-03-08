@@ -71,7 +71,7 @@ export default function OrganizationEmployeesPage() {
                     )}
                     {!visible && (
                         <>
-                            <OrganizationEmployeesComp users={currentPosts} setUsers={setUsers} />
+                            <OrganizationEmployeesComp users={currentPosts} setUsers={setUsers} visible={visible} setVisible={setVisible} />
                         </>
                     )}
                 </div>

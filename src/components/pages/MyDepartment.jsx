@@ -19,6 +19,7 @@ export default function MyDepartmentPage() {
     const [darkMode, setDarkMode] = useContext(Context);
     const axiosPrivate = useAxiosPrivate();
     const [visible, setVisible] = useState(true);
+    const [visibleLoad, setVisibleLoad] = useState(true);
     const [members, setMembers] = useState([]);
     const [departmentName, setDepartmentName] = useState('');
     const [proposals, setProposals] = useState([])
@@ -69,12 +70,12 @@ export default function MyDepartmentPage() {
         }
     }, [])
 
-
     // useEffect(() => {
     //     let isMounted = true;
     //     const controller = new AbortController();
 
     const getProposals = async () => {
+        setVisibleLoad(true);
         try {
             const response = await axiosPrivate.get('skills/proposal', {
                 // signal: controller.signal,
@@ -85,19 +86,20 @@ export default function MyDepartmentPage() {
                 },
                 withCredentials: true
             });
-
+            
             console.log('Propasals:', response.data);
-
+            
             // isMounted && setProposals(response.data)
-
+            
             setProposals(response.data)
-
+            
         } catch (error) {
             if (error?.response == 409)
-                console.error('You have no department');
-            else
-                console.error('Error fetching department members:', error);
+            console.error('You have no department');
+        else
+        console.error('Error fetching department members:', error);
         }
+        setVisibleLoad(false);
     }
 
     //     getProposals();
@@ -145,9 +147,15 @@ export default function MyDepartmentPage() {
                                 <Title className="text-4xl">Requests</Title>
                             </div>
                             <div className="flex flex-wrap justify-center">
-                                {proposals.map((proposal, index) => (
-                                    <ProposalCard key={index} proposal={proposal} setProposals={setProposals} />
-                                ))}
+                                {visibleLoad && (
+                                    <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                                        <Loader size={30} color="red" />
+                                    </div>
+                                )}
+                                {!visibleLoad && (<>
+                                    {proposals.map((proposal, index) => (
+                                        <ProposalCard key={index} proposal={proposal} setProposals={setProposals} visible={visibleLoad} setVisible={setVisibleLoad}/>
+                                    ))}</>)}
                             </div>
                         </Drawer>
                         <div className="flex flex-col">

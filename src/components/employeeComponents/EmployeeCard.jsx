@@ -7,7 +7,7 @@ import { useState } from 'react'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import useAuth from '../../hooks/useAuth';
 
-export default function EmployeeCard({ employee, setUsers }) {
+export default function EmployeeCard({ employee, setUsers, visible, setVisible }) {
 
     const axiosPrivate = useAxiosPrivate();
     const [opened, { open, close }] = useDisclosure(false);
@@ -20,6 +20,8 @@ export default function EmployeeCard({ employee, setUsers }) {
     };
 
     const removeRole = async (e, role) => {
+        close();
+        setVisible(true);
         console.log('user_id:', employee.id);
         console.log('role_name:', role);
         try {
@@ -46,11 +48,12 @@ export default function EmployeeCard({ employee, setUsers }) {
         } catch (error) {
             console.error(error);
         }
-
-        close();
+        setVisible(false);
     }
 
     const assignRole = async (e, role) => {
+        close();
+        setVisible(true);
         console.log('user_id:', employee.id);
         console.log('role_name:', role);
         try {
@@ -78,8 +81,7 @@ export default function EmployeeCard({ employee, setUsers }) {
         } catch (error) {
             console.error(error);
         }
-
-        close();
+        setVisible(false);
     }
 
     return (
