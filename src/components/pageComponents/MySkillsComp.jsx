@@ -3,38 +3,41 @@
 /* eslint-disable no-unused-vars */
 
 import UserSkillCard from '../skillComponents/UserSkillCard';
-import { Button, Modal, Title, Select } from '@mantine/core';
+import { Button, Modal, Title, Select, rem } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
 import LevelCirclesSelected from '../skillComponents/LevelCirclesSelected';
 import ExperienceCirclesSelected from '../skillComponents/ExperienceCirclesSelected';
 import { useEffect } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import { IconCheck } from '@tabler/icons-react';
+import { notifications } from '@mantine/notifications';
 
 
-export default function MySkillsComp({skills, setSkills, unusedSkills, setUnusedSkills}) {
-
+export default function MySkillsComp({skills, setSkills, unusedSkills, setUnusedSkills, visible, setVisible}) {
+    
     const axiosPrivate = useAxiosPrivate();
-
+    
     const [opened, { open, close }] = useDisclosure(false);
     const [addedSkill, setAddedSkill] = useState(''); 
     const [selectedSkillLevel, selectSkillLevel] = useState(1);
     const [selectedSkillExperience, selectSkillExperience] = useState(1);
     const language = unusedSkills.find(lang => lang.value === addedSkill);
     const [changed, setChange] = useState(false)
+    const [notification, setNotification] = useState(false);
 
     useEffect(() => {
         console.log('language', language);
     }, [language])
-
+    
     useEffect(() => {
         setChange(true);
     }, [skills]);
-
-
-    // Add new skill to user
-
+    
+    // Add new skill porposal to user
+    
     const handleAddSkill = async () => {
+        close();
         try {
             const response = await axiosPrivate.post('skills/user',
                 JSON.stringify({
@@ -59,11 +62,15 @@ export default function MySkillsComp({skills, setSkills, unusedSkills, setUnused
             setUnusedSkills(newUnusedSkills);
 
             setAddedSkill('')
-
         } catch (error) {
             console.error('Error fetching unused skills:', error);
         }
-        close();
+        const ild = notifications.show({
+            title: 'Skill update proposal saved',
+            message: 'Wait for your department manager approval.',
+            icon: <IconCheck style={{ width: rem(35), height: rem(35) }} />,
+            color: "teal",
+            style: { width: 455 },})
     }
 
 
@@ -72,7 +79,7 @@ export default function MySkillsComp({skills, setSkills, unusedSkills, setUnused
             <div className="flex flex-wrap justify-center">
                 {skills.map((skill, index) => (
                     <UserSkillCard key={index}
-                        index={index} skills={skills} setSkills={setSkills} unusedSkills={unusedSkills} setUnusedSkills={setUnusedSkills} />
+                        index={index} skills={skills} setSkills={setSkills} unusedSkills={unusedSkills} setUnusedSkills={setUnusedSkills} visible={visible} setVisible={setVisible} />
                 ))}
                 <div className="w-[410px] h-[270px] flex justify-center items-center">
                     <Button variant="outline" onClick={open}

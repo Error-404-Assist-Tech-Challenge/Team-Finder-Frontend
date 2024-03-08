@@ -26,6 +26,8 @@ export default function UserSkillCard(props) {
     const axiosPrivate = useAxiosPrivate();
 
     const handleSave = async () => {
+        close();
+        props.setVisible(true);
         try {
             const response = await axiosPrivate.put('skills/user',
                 JSON.stringify({
@@ -48,12 +50,14 @@ export default function UserSkillCard(props) {
         } catch (error) {
             console.error('Error saving my skill:', error);
         }
-        close();
+        props.setVisible(false);
     }
 
     // Remove user skill
 
     const handleRemoveSkill = async () => {
+        close();
+        props.setVisible(true);
         try {
             const skillId = props.skills[props.index].skill_id;
             const skillName = props.skills[props.index].skill_name;
@@ -78,8 +82,7 @@ export default function UserSkillCard(props) {
         } catch (error) {
             console.error('Error deleting user skills:', error);
         }
-
-        close();
+        props.setVisible(false);
     }
 
 
