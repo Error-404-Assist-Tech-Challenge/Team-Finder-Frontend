@@ -43,11 +43,12 @@ export const SkillCard = ({ skill, skillCategories, setSkills, visible, setVisib
 
             console.log('Response:', response.data);
 
-            // setSkills(response.data);
+            setSkills(response.data);
 
         } catch (error) {
             console.error('Error adding skill to department:', error);
         }
+        close();
     }
 
     const handleRemoveDepartment = async () => {
@@ -59,18 +60,19 @@ export const SkillCard = ({ skill, skillCategories, setSkills, visible, setVisib
                     'Access-Control-Allow-Credentials': 'true'
                 },
                 data: {
-                    id: skill.id
+                    skill_id: skill.id
                 },
                 withCredentials: true
             });
 
             console.log('Response:', response.data);
 
-            // setSkills(response.data);
+            setSkills(response.data);
 
         } catch (error) {
             console.error('Error removing skill from department:', error);
         }
+        close();
     }
 
     const updateSkill = async () => {
@@ -173,21 +175,20 @@ export const SkillCard = ({ skill, skillCategories, setSkills, visible, setVisib
                 <div className="pt-4 flex justify-left">
                     <p><span className="font-bold">Departments</span>: {skill.dept_name.join(', ')}</p>
                 </div>
-                {/* {skill.author_id == } */}
-                <div className="pt-4 px-5 flex  my-[20px]">
-                    <div className="w-1/4 flex justify-center">
+                <div className="pt-4 flex my-[20px]">
+                    <div className="w-[80px]">
                         {skill.is_authored && !isEditing && (<Button
-                            className="bg-accent text-white hover:bg-btn_hover font-bold rounded" onClick={handleEdit}>
-                            Edit skill
+                            className="w-[80px] bg-accent text-white hover:bg-btn_hover font-bold rounded" onClick={handleEdit}>
+                            Edit
                         </Button>)}
 
                         {skill.is_authored && isEditing && (<Button
-                            className="bg-accent text-white hover:bg-btn_hover font-bold rounded" onClick={handleSave}>
+                            className="w-[80px] bg-accent text-white hover:bg-btn_hover font-bold rounded" onClick={handleSave}>
                             Save
                         </Button>)}
                     </div>
 
-                    <div className="w-2/4 flex justify-center">
+                    <div className="w-full flex justify-center">
                         {skill.is_department_managed && (<Button
                             className="bg-accent text-white hover:bg-btn_hover font-bold rounded" onClick={handleRemoveDepartment}>
                             Remove skill from my dept.
@@ -198,9 +199,9 @@ export const SkillCard = ({ skill, skillCategories, setSkills, visible, setVisib
                         </Button>)}
                     </div>
 
-                    <div className="w-1/4 flex justify-center">
-                        {skill.is_authored && (<Button className="bg-accent text-white hover:bg-btn_hover font-bold rounded" onClick={deleteSkill}>
-                            Remove Skill
+                    <div className="w-[80px]">
+                        {skill.is_authored && (<Button className="w-[80px] bg-accent text-white hover:bg-btn_hover font-bold rounded" onClick={deleteSkill}>
+                            Delete
                         </Button>)}
                     </div>
                 </div>
