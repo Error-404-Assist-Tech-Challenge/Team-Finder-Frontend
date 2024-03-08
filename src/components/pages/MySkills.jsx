@@ -114,7 +114,7 @@ export default function MySkillsPage() {
                 
                 {!visible &&
                     <div className="flex flex-wrap">
-                            <MySkillsComp  skills={currentPosts} setSkills={setSkills} unusedSkills={unusedSkills} setUnusedSkills={setUnusedSkills} />
+                            <MySkillsComp  skills={currentPosts} setSkills={setSkills} unusedSkills={unusedSkills} setUnusedSkills={setUnusedSkills} visible={visible} setVisible={setVisible} />
                     </div>}
             </div>
             <div className='dark:bg-darkcanvas bg-canvas flex justify-center items-center'>

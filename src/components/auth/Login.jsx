@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-unused-vars */
-import { Container, Title, TextInput, PasswordInput, Button } from '@mantine/core';
+import { Container, Title, TextInput, PasswordInput, Button, Loader } from '@mantine/core';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useRef, useState, useEffect } from 'react';
 import useAuth from '../../hooks/useAuth'
@@ -12,6 +12,7 @@ export default function LoginPage() {
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || "/myskills";
+    const [visible, setVisible] = useState(false);
 
     const handleSignUp = () => {
         navigate('/signup');
@@ -24,6 +25,7 @@ export default function LoginPage() {
     };
 
     const handleLogIn = async (e) => {
+        setVisible(true);
         e.preventDefault();
         try {
             const response = await axios.post('users/login',
@@ -54,6 +56,7 @@ export default function LoginPage() {
 
             navigate(from, { replace: true });
         } catch (err) {
+            setVisible(false);
             if (!err?.response) {
                 setErrorMessage('No Server Response');
             } else if (err.response?.status === 409) {
@@ -84,6 +87,12 @@ export default function LoginPage() {
 
     return (
         <div className="flex items-center justify-center min-h-screen min-w-full bg-[#272F32] text-[#272F32] select-none">
+            {visible && (
+                    <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                        <Loader size={30} color="red" />
+                    </div>
+                )}
+            {!visible && (
             <Container className="bg-[#505a5e] h-[auto] w-[494px] rounded-[20px] p-[30px] text-white">
                 <Title order={1} className="text-5xl text-select-none text-center py-[50px] ">
                     Team Finder
@@ -124,7 +133,7 @@ export default function LoginPage() {
                         Sign up
                     </Button>
                 </div>
-            </Container>
+            </Container>)}
         </div>
     )
 }

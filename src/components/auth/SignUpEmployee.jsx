@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useRef, useState, useEffect } from 'react';
-import { Container, Title, TextInput, PasswordInput, Button } from '@mantine/core';
+import { Container, Title, TextInput, PasswordInput, Button, Loader } from '@mantine/core';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from '../../api/axios';
 import useAuth from '../../hooks/useAuth'
@@ -14,10 +14,10 @@ export default function SignUpEmployeePage() {
     const { setAuth } = useAuth();
     const naviage = useNavigate();
     const { ref_id } = useParams();
+    const [visible, setVisible] = useState(false);
 
     useEffect(() => {
         const checkToken = async (e) => {
-
             console.log('Your reference id is: ', ref_id);
 
             try {
@@ -70,6 +70,7 @@ export default function SignUpEmployeePage() {
         e.preventDefault();
 
         try {
+            setVisible(true);
             const response = await axios.post('users/employee',
                 JSON.stringify({
                     name: user,
@@ -98,6 +99,7 @@ export default function SignUpEmployeePage() {
 
             naviage('/myskills');
         } catch (err) {
+            setVisible(false);
             if (!err?.response) {
                 console.error(err);
                 setErrorMessage('No Server Response');
@@ -149,6 +151,12 @@ export default function SignUpEmployeePage() {
 
     return (
         <div className="flex items-center justify-center min-h-screen min-w-full bg-[#272F32] text-[#272F32] select-none">
+            {visible && (
+                    <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                        <Loader size={30} color="red" />
+                    </div>
+                )}
+            {!visible && (
             <Container className="bg-[#505a5e] h-[auto] w-[494px] rounded-[20px] text-white px-[30px]">
                 <Title order={1} className="text-5xl text-select-none text-center py-[50px]">
                     Team Finder
@@ -217,7 +225,7 @@ export default function SignUpEmployeePage() {
                         Log in
                     </Button>
                 </div>
-            </Container>
+            </Container>)}
         </div>
     )
 }
