@@ -126,7 +126,8 @@ export const SkillCard = ({ skill, skillCategories, setSkills, visible, setVisib
                 <div className="pt-4 flex justify-left">
                     <p><span className="font-bold">Departments</span>: {skill.dept_name.join(', ')}</p>
                 </div>
-                <div className="pt-4">
+                {/* {skill.author_id == } */}
+                <div className="pt-4 px-5">
                     {!isEditing && (<Button
                         className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] rounded  float-left" onClick={handleEdit}>
                         Edit skill
@@ -148,10 +149,10 @@ export const SkillCard = ({ skill, skillCategories, setSkills, visible, setVisib
                         {skill.name}
                     </Title>
                 </Card.Section>
-                <div className="p-4">
-                    <Text className="text-[16px]">
-                        {!isHovering && skill.dept_name && `Departments: ${skill.dept_name.join(', ')}`}
-                        {!isHovering && !skill.dept_name.length && "Not used in any departments"}
+                <div className="p-4 flex justify-center items-center h-full">
+                    <Text className="text-[22px]">
+                        {!isHovering && skill.category_name && `${skill.category_name}`}
+                        {!isHovering && !skill.category_name && "Doesn't have skill category"}
                         {isHovering && <Text className="text-xl">Click to see more!</Text>}
                     </Text>
                 </div>
