@@ -5,6 +5,7 @@ import { useLocalStorage, useDisclosure } from '@mantine/hooks';
 import { IconSun, IconMoonStars, IconBell } from '@tabler/icons-react';
 import { PieChart, Pie, Legend, Tooltip, } from 'recharts';
 import React, { PureComponent } from 'react';
+import useLogout from '../../hooks/useLogout';
 
 import { Context } from '../../App';
 import useAuth from '../../hooks/useAuth'
@@ -12,6 +13,14 @@ import useAuth from '../../hooks/useAuth'
 export default function GenericHeader() {
 
     const { auth } = useAuth();
+    const logout = useLogout();
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        navigate('/');
+        await logout();
+    }
+
     const [Value, setValue] = useLocalStorage({
         defaultValue: '',
     });
@@ -23,34 +32,33 @@ export default function GenericHeader() {
         setDarkMode(!darkMode);
     }
 
-    const navigateTo = useNavigate();
     const handleMySkills = () => {
         setValue('MySkills')
-        navigateTo('/myskills');
+        navigate('/myskills');
     };
     const handleProjects = () => {
         setValue('Projects')
-        navigateTo('/projects');
+        navigate('/projects');
     };
     const handleOrganizationEmployees = () => {
         setValue('OrganizationEmployees');
-        navigateTo('/organizationemployees');
+        navigate('/organizationemployees');
     };
     const handleOrganizationDepartments = () => {
         setValue('OrganizationDepartments');
-        navigateTo('/organizationdepartments');
+        navigate('/organizationdepartments');
     };
     const handleOrganizationSkills = () => {
         setValue('OrganizationSkills')
-        navigateTo('/organizationskills');
+        navigate('/organizationskills');
     };
     const handleMyDepartment = () => {
         setValue('MyDepartment')
-        navigateTo('/mydepartment');
+        navigate('/mydepartment');
     };
     const handleMyProjects = () => {
         setValue('MyProjects')
-        navigateTo('/myprojects');
+        navigate('/myprojects');
     };
 
     const theme = useMantineTheme();
@@ -205,7 +213,7 @@ export default function GenericHeader() {
                                 </div>
                                 <div className="flex justify-between items-center">
                                     <Switch className="pt-2" size="lg" color="dark.4" onLabel={sunIcon} offLabel={moonIcon} onClick={toogleDarkMode} />
-                                    <Button className="bg-[#FF3D2E] mt-2  hover:bg-btn_hover font-bold text-white">Log out</Button>
+                                    <Button className="bg-[#FF3D2E] mt-2  hover:bg-btn_hover font-bold text-white" onClick={handleLogout}>Log out</Button>
                                 </div>
                             </Popover.Dropdown>
                         </Popover>

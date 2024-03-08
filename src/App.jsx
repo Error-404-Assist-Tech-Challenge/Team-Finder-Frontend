@@ -76,7 +76,7 @@ export default function App() {
                         </Route>
                     </Routes>
                 </ModalsProvider>
-            </MantineProvider>
+            </MantineProvider >
         </Context.Provider >
     )
 }
