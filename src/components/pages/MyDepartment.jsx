@@ -86,18 +86,18 @@ export default function MyDepartmentPage() {
                 },
                 withCredentials: true
             });
-            
+
             console.log('Propasals:', response.data);
-            
+
             // isMounted && setProposals(response.data)
-            
+
             setProposals(response.data)
-            
+
         } catch (error) {
             if (error?.response == 409)
-            console.error('You have no department');
-        else
-        console.error('Error fetching department members:', error);
+                console.error('You have no department');
+            else
+                console.error('Error fetching department members:', error);
         }
         setVisibleLoad(false);
     }
@@ -154,7 +154,7 @@ export default function MyDepartmentPage() {
                                 )}
                                 {!visibleLoad && (<>
                                     {proposals.map((proposal, index) => (
-                                        <ProposalCard key={index} proposal={proposal} setProposals={setProposals} visible={visibleLoad} setVisible={setVisibleLoad}/>
+                                        <ProposalCard key={index} proposal={proposal} setProposals={setProposals} visible={visibleLoad} setVisible={setVisibleLoad} />
                                     ))}</>)}
                             </div>
                         </Drawer>
