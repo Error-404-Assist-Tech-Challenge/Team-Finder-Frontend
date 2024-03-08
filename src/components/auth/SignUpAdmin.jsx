@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useRef, useState, useEffect } from 'react';
-import { Container, Title, TextInput, PasswordInput, Button } from '@mantine/core';
+import { Container, Title, TextInput, PasswordInput, Button, Loader } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
 import axios from '../../api/axios';
 import useAuth from '../../hooks/useAuth'
@@ -12,15 +12,38 @@ const organizationRegex = /^[A-Za-z0-9\s\-.,&'()]+$/;
 const addressRegex = /^[A-Za-z0-9\s\-.,&'()]+$/;
 
 export default function SignUpAdminPage() {
+    
+    const userRef = useRef();
+    const errorRef = useRef();
+    
+    const [user, setUser] = useState('');
+    const [validName, setValidName] = useState(false);
+    const [userFocus, setUserFocus] = useState(false);
+    const [email, setEmail] = useState('');
+    const [validEmail, setValidEmail] = useState(false);
+    const [emailFocus, setEmailFocus] = useState(false);
+    const [password, setPassword] = useState('');
+    const [validPassword, setValidPassword] = useState(false);
+    const [passwordFocus, setPasswordFocus] = useState(false);
+    const [organization, setOrganization] = useState('');
+    const [validOrganization, setValidOrganization] = useState(false);
+    const [organizationFocus, setOrganizationFocus] = useState(false);
+    const [address, setAddress] = useState('');
+    const [validAddress, setValidAddress] = useState(false);
+    const [addressFocus, setAddressFocus] = useState(false);
+    
+    const [errorMessage, setErrorMessage] = useState('');
+    
+    const [visible, setVisible] = useState(false);
 
     const { setAuth } = useAuth();
-
+    
     const navigateTo = useNavigate();
-
+    
     const handleLogIn = () => {
         navigateTo('/login');
     };
-
+    
     const handleKeyPress = (e) => {
         if (e.key === 'Enter') {
             handleSignUp(e);
@@ -28,7 +51,7 @@ export default function SignUpAdminPage() {
     };
 
     const handleSignUp = async (e) => {
-
+        setVisible(true);
         if (!validName) {
             setErrorMessage('Invalid Name');
             return;
@@ -82,6 +105,7 @@ export default function SignUpAdminPage() {
 
             navigateTo('/myskills');
         } catch (err) {
+            setVisible(false);
             if (!err?.response) {
                 console.error(err);
                 setErrorMessage('No Server Response');
@@ -94,26 +118,6 @@ export default function SignUpAdminPage() {
         }
     };
 
-    const userRef = useRef();
-    const errorRef = useRef();
-
-    const [user, setUser] = useState('');
-    const [validName, setValidName] = useState(false);
-    const [userFocus, setUserFocus] = useState(false);
-    const [email, setEmail] = useState('');
-    const [validEmail, setValidEmail] = useState(false);
-    const [emailFocus, setEmailFocus] = useState(false);
-    const [password, setPassword] = useState('');
-    const [validPassword, setValidPassword] = useState(false);
-    const [passwordFocus, setPasswordFocus] = useState(false);
-    const [organization, setOrganization] = useState('');
-    const [validOrganization, setValidOrganization] = useState(false);
-    const [organizationFocus, setOrganizationFocus] = useState(false);
-    const [address, setAddress] = useState('');
-    const [validAddress, setValidAddress] = useState(false);
-    const [addressFocus, setAddressFocus] = useState(false);
-
-    const [errorMessage, setErrorMessage] = useState('');
 
     useEffect(() => {
         if (userRef.current) {
@@ -145,6 +149,12 @@ export default function SignUpAdminPage() {
 
     return (
         <div className="flex items-center justify-center min-h-screen min-w-full bg-[#272F32] text-[#272F32] select-none">
+             {visible && (
+                    <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                        <Loader size={30} color="red" />
+                    </div>
+                )}
+            {!visible && (
             <Container className="bg-[#505a5e] h-[auto] w-[494px] rounded-[20px] text-white px-[30px]">
                 <Title order={1} className="text-5xl text-select-none text-center py-[50px]">
                     Team Finder
@@ -224,7 +234,7 @@ export default function SignUpAdminPage() {
                         Log in
                     </Button>
                 </div>
-            </Container>
+            </Container>)}
         </div>
     )
 }
