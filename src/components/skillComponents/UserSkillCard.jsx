@@ -25,6 +25,12 @@ export default function UserSkillCard(props) {
 
     const axiosPrivate = useAxiosPrivate();
 
+    const handleOpen = () => {
+        setCurrentLevel(props.skills[props.index].level);
+        setCurrentExperience(props.skills[props.index].experience)
+        open();
+    }
+
     const handleSave = async () => {
         close();
         props.setVisible(true);
@@ -168,7 +174,7 @@ export default function UserSkillCard(props) {
                     </Modal>
 
                     <Card className="flex w-[330px] h-[230px] dark:bg-card_modal mx-[40px] my-[20px] rounded-xl dark:text-darktext text-text select-none font-bold"
-                        onClick={open} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+                        onClick={handleOpen} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
                         <Card.Section className="dark:bg-[#495256]">
                             <Title className="p-4 flex justify-center">
                                 {props.skills[props.index].skill_name}

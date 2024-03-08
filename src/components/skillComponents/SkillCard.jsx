@@ -26,6 +26,53 @@ export const SkillCard = ({ skill, skillCategories, setSkills, visible, setVisib
         setIsEditing(false);
     };
 
+    const handleAddDepartment = async () => {
+        try {
+            const response = await axiosPrivate.post('skills/department',
+                JSON.stringify({
+                    skill_id: skill.id,
+                }),
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Credentials': 'true'
+                    },
+                    withCredentials: true
+                });
+
+            console.log('Response:', response.data);
+
+            // setSkills(response.data);
+
+        } catch (error) {
+            console.error('Error adding skill to department:', error);
+        }
+    }
+
+    const handleRemoveDepartment = async () => {
+        try {
+            const response = await axiosPrivate.delete('skills/department', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Credentials': 'true'
+                },
+                data: {
+                    id: skill.id
+                },
+                withCredentials: true
+            });
+
+            console.log('Response:', response.data);
+
+            // setSkills(response.data);
+
+        } catch (error) {
+            console.error('Error removing skill from department:', error);
+        }
+    }
+
     const updateSkill = async () => {
         close();
         setVisible(true);
@@ -84,7 +131,7 @@ export const SkillCard = ({ skill, skillCategories, setSkills, visible, setVisib
 
     return (
         <div>
-            <Modal opened={opened} onClose={close} centered overflow="inside" className="bg-.m-1b7284a3.m-b5489c3c text-white rounded-modal select-none" zIndex={1000002}>
+            <Modal opened={opened} onClose={close} centered overflow="inside" size="md" className="bg-.m-1b7284a3.m-b5489c3c text-white rounded-modal select-none" zIndex={1000002}>
                 <div className="flex justify-center justify-center h-[50px]">
                     {!isEditing && <h1 className="text-3xl font-bold">{skill.name}</h1>}
                     {isEditing && <TextInput
@@ -127,18 +174,35 @@ export const SkillCard = ({ skill, skillCategories, setSkills, visible, setVisib
                     <p><span className="font-bold">Departments</span>: {skill.dept_name.join(', ')}</p>
                 </div>
                 {/* {skill.author_id == } */}
-                <div className="pt-4 px-5">
-                    {!isEditing && (<Button
-                        className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] rounded  float-left" onClick={handleEdit}>
-                        Edit skill
-                    </Button>)}
-                    {isEditing && (<Button
-                        className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] rounded  float-left" onClick={handleSave}>
-                        Save
-                    </Button>)}
-                    <Button className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] rounded float-right" onClick={deleteSkill}>
-                        Remove Skill
-                    </Button>
+                <div className="pt-4 px-5 flex  my-[20px]">
+                    <div className="w-1/4 flex justify-center">
+                        {skill.is_authored && !isEditing && (<Button
+                            className="bg-accent text-white hover:bg-btn_hover font-bold rounded" onClick={handleEdit}>
+                            Edit skill
+                        </Button>)}
+
+                        {skill.is_authored && isEditing && (<Button
+                            className="bg-accent text-white hover:bg-btn_hover font-bold rounded" onClick={handleSave}>
+                            Save
+                        </Button>)}
+                    </div>
+
+                    <div className="w-2/4 flex justify-center">
+                        {skill.is_department_managed && (<Button
+                            className="bg-accent text-white hover:bg-btn_hover font-bold rounded" onClick={handleRemoveDepartment}>
+                            Remove skill from my dept.
+                        </Button>)}
+                        {!skill.is_department_managed && (<Button
+                            className="bg-accent text-white hover:bg-btn_hover font-bold rounded" onClick={handleAddDepartment}>
+                            Add skill to my dept.
+                        </Button>)}
+                    </div>
+
+                    <div className="w-1/4 flex justify-center">
+                        {skill.is_authored && (<Button className="bg-accent text-white hover:bg-btn_hover font-bold rounded" onClick={deleteSkill}>
+                            Remove Skill
+                        </Button>)}
+                    </div>
                 </div>
             </Modal>
 

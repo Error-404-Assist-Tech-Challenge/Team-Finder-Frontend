@@ -104,7 +104,7 @@ export default function DepartmentCard(props) {
         <>
             <div className={`${darkMode && 'dark'}`}>
                 <div className="flex flex-wrap">
-                    <Modal opened={opened} onClose={close} centered overflow="inside" size={500} className="dark:bg-card_modal text-white select-none" zIndex={1000002}>
+                    <Modal opened={opened} onClose={() => { setIsEditing(false); close(); }} centered overflow="inside" size={500} className="dark:bg-card_modal text-white select-none" zIndex={1000002}>
                         <div className="flex justify-center">
                             {!isEditing && (<h1 className="text-4xl font-bold mb-[30px]">{props.name} Department</h1>)}
                             {isEditing && (

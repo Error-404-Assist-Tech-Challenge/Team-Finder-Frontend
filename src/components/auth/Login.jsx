@@ -88,52 +88,52 @@ export default function LoginPage() {
     return (
         <div className="flex items-center justify-center min-h-screen min-w-full bg-[#272F32] text-[#272F32] select-none">
             {visible && (
-                    <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                        <Loader size={30} color="red" />
-                    </div>
-                )}
+                <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                    <Loader size={30} color="red" />
+                </div>
+            )}
             {!visible && (
-            <Container className="bg-[#505a5e] h-[auto] w-[494px] rounded-[20px] p-[30px] text-white">
-                <Title order={1} className="text-5xl text-select-none text-center py-[50px] ">
-                    Team Finder
-                </Title>
-                <p ref={errorRef} className={errorMessage ? "errmsg" : "offscreen"}>{errorMessage}</p>
-                <div className="text-xl ">
-                    <TextInput
-                        label="E-mail Address"
-                        placeholder="john.doe@example.com"
-                        ref={userRef}
-                        value={email}
-                        autoComplete='off'
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                    <PasswordInput
-                        label="Password"
-                        placeholder="Pa$$w0rd123"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        onKeyDown={handleKeyPress}
-                    />
-                </div>
-                <div className="flex justify-center">
-                    <Button variant="filled" size="xl" radius="lg" className="bg-[#FF3D2E]  hover:bg-btn_hover text-white font-bold mt-[50px]"
-                        disabled={!email || !password}
-                        onClick={handleLogIn} >
-                        Log in
-                    </Button>
-                </div>
-                <div className="text-lg flex items-center justify-between px-[20px] py-[50px]">
-                    <Title order={4} className='text-white'>
-                        Or if you don't have an account:
+                <Container className="bg-[#505a5e] h-[auto] w-[494px] rounded-[20px] p-[30px] text-white">
+                    <Title order={1} className="text-5xl text-select-none text-center py-[50px] ">
+                        Team Finder
                     </Title>
-                    <Button variant="filled" size="lg" radius="lg" className="bg-[#FF3D2E]  hover:bg-btn_hover font-bold text-white"
-                        onClick={handleSignUp}>
-                        Sign up
-                    </Button>
-                </div>
-            </Container>)}
+                    <p ref={errorRef} className={errorMessage ? "errmsg" : "offscreen"}>{errorMessage}</p>
+                    <div className="text-xl ">
+                        <TextInput
+                            label="E-mail Address"
+                            placeholder="john.doe@example.com"
+                            ref={userRef}
+                            value={email}
+                            autoComplete='off'
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                        <PasswordInput
+                            label="Password"
+                            placeholder="Pa$$w0rd123"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                            onKeyDown={handleKeyPress}
+                        />
+                    </div>
+                    <div className="flex justify-center">
+                        <Button variant="filled" size="xl" radius="lg" className="bg-[#FF3D2E]  hover:bg-btn_hover text-white font-bold mt-[50px]"
+                            disabled={!email || !password}
+                            onClick={handleLogIn} >
+                            Log in
+                        </Button>
+                    </div>
+                    <div className="text-lg flex items-center justify-between px-[20px] py-[50px]">
+                        <Title order={4} className='text-white'>
+                            Or if you don't have an account:
+                        </Title>
+                        <Button variant="filled" size="lg" radius="lg" className="bg-[#FF3D2E]  hover:bg-btn_hover font-bold text-white"
+                            onClick={handleSignUp}>
+                            Sign up
+                        </Button>
+                    </div>
+                </Container>)}
         </div>
     )
 }
