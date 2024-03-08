@@ -14,12 +14,12 @@ import { IconCheck } from '@tabler/icons-react';
 import { notifications } from '@mantine/notifications';
 
 
-export default function MySkillsComp({skills, setSkills, unusedSkills, setUnusedSkills, visible, setVisible}) {
-    
+export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnusedSkills, visible, setVisible }) {
+
     const axiosPrivate = useAxiosPrivate();
-    
+
     const [opened, { open, close }] = useDisclosure(false);
-    const [addedSkill, setAddedSkill] = useState(''); 
+    const [addedSkill, setAddedSkill] = useState('');
     const [selectedSkillLevel, selectSkillLevel] = useState(1);
     const [selectedSkillExperience, selectSkillExperience] = useState(1);
     const language = unusedSkills.find(lang => lang.value === addedSkill);
@@ -27,15 +27,11 @@ export default function MySkillsComp({skills, setSkills, unusedSkills, setUnused
     const [notification, setNotification] = useState(false);
 
     useEffect(() => {
-        console.log('language', language);
-    }, [language])
-    
-    useEffect(() => {
         setChange(true);
     }, [skills]);
-    
+
     // Add new skill porposal to user
-    
+
     const handleAddSkill = async () => {
         close();
         try {
@@ -70,7 +66,8 @@ export default function MySkillsComp({skills, setSkills, unusedSkills, setUnused
             message: 'Wait for your department manager approval.',
             icon: <IconCheck style={{ width: rem(35), height: rem(35) }} />,
             color: "teal",
-            style: { width: 455 },})
+            style: { width: 455 },
+        })
     }
 
 
@@ -159,6 +156,6 @@ export default function MySkillsComp({skills, setSkills, unusedSkills, setUnused
                 </Modal>
             </div>
         </div>
-        
+
     )
 }

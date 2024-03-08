@@ -55,8 +55,10 @@ export default function MyDepartmentPage() {
                     getDepartmentMembers();
                 }
             } catch (error) {
-                if (error?.response == 409)
+                if (error?.response.status === 409) {
+                    setVisible(false);
                     console.error('You have no department');
+                }
                 else
                     console.error('Error fetching department members:', error);
             }
@@ -70,15 +72,10 @@ export default function MyDepartmentPage() {
         }
     }, [])
 
-    // useEffect(() => {
-    //     let isMounted = true;
-    //     const controller = new AbortController();
-
     const getProposals = async () => {
         setVisibleLoad(true);
         try {
             const response = await axiosPrivate.get('skills/proposal', {
-                // signal: controller.signal,
                 headers: {
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*',
@@ -88,8 +85,6 @@ export default function MyDepartmentPage() {
             });
 
             console.log('Propasals:', response.data);
-
-            // isMounted && setProposals(response.data)
 
             setProposals(response.data)
 
@@ -101,16 +96,6 @@ export default function MyDepartmentPage() {
         }
         setVisibleLoad(false);
     }
-
-    //     getProposals();
-
-    //     return () => {
-    //         isMounted = false;
-    //         controller.abort();
-    //     }
-    // }, [])
-
-    // Function that gets all the members from department
 
     const getDepartmentMembers = async () => {
         try {
@@ -158,20 +143,28 @@ export default function MyDepartmentPage() {
                                     ))}</>)}
                             </div>
                         </Drawer>
-                        <div className="flex flex-col">
+                        {departmentName && (
+                            <>
+                                <div className="flex flex-col">
+                                    <div className="flex justify-center text-white p-9 select-none">
+                                        <Title className="text-4xl">{departmentName} Department</Title>
+                                    </div>
+                                </div>
+                                <div className="flex flex-wrap">
+                                    <MyDepartmentComp members={currentPosts} setMembers={setMembers} />
+                                </div>
+                                <div className="fixed bottom-9 right-9">
+                                    <Button size="lg" className="bg-accent text-white font-bold py-2 px-4 text-lg rounded" onClick={() => { getProposals(); openDrawer(); }}>
+                                        Department Requests
+                                    </Button>
+                                </div>
+                            </>)}
+
+                        {!departmentName && (<div className="flex flex-col">
                             <div className="flex justify-center text-white p-9 select-none">
-                                {departmentName && (<Title className="text-4xl">{departmentName} Department</Title>)}
-                                {!departmentName && (<Title className="text-4xl">You have no department</Title>)}
+                                <Title className="text-4xl">You have no department</Title>
                             </div>
-                        </div>
-                        <div className="flex flex-wrap">
-                            <MyDepartmentComp members={currentPosts} setMembers={setMembers} />
-                        </div>
-                        <div className="fixed bottom-9 right-9">
-                            <Button size="lg" className="bg-accent text-white font-bold py-2 px-4 text-lg rounded" onClick={() => { getProposals(); openDrawer(); }}>
-                                Department Requests
-                            </Button>
-                        </div>
+                        </div>)}
                     </>
                 )}
             </div>
