@@ -31,7 +31,7 @@ export default function MainPage({Content}) {
                                 left: 0,
                                 right: 0,
                                 height: rem(60),
-                                zIndex: 1000000,
+                                zIndex: 200,
                                 transform: `translate3d(0, ${pinned ? 0 : rem(-80)}, 0)`,
                                 transition: 'transform 400ms ease',
                             }}

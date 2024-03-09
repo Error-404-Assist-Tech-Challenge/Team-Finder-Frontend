@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Card, Badge, Title, Modal, Divider, Button } from '@mantine/core';
+import { Card, Badge, Title, Modal, Divider } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
 

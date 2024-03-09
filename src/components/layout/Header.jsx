@@ -166,7 +166,7 @@ export default function GenericHeader() {
                             />
                         </Button>
 
-                        <Modal opened={opened} onClose={close} centered overflow="inside" className="bg-.m-1b7284a3.m-b5489c3c text-white rounded-modal" withCloseButton={false} zIndex={1000003}>
+                        <Modal opened={opened} onClose={close} centered overflow="inside" className="bg-.m-1b7284a3.m-b5489c3c text-white rounded-modal" withCloseButton={false} zIndex={300}>
                             <div style={{ display: 'flex', justifyContent: 'center' }}>
                                 <h1 style={{ fontSize: '2rem', fontWeight: 'bold' }}>Python</h1>
                             </div>
