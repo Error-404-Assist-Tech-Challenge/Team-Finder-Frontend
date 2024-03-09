@@ -141,10 +141,10 @@ export default function GenericHeader() {
                                         Org. Departments
                                     </Tabs.Tab>)}
 
-                                {auth?.roles.includes("dept_manager") &&
-                                    (<Tabs.Tab onClick={handleOrganizationSkills} value="OrganizationSkills" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-[40px]">
-                                        Org. Skills
-                                    </Tabs.Tab>)}
+
+                                <Tabs.Tab onClick={handleOrganizationSkills} value="OrganizationSkills" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-[40px]">
+                                    Org. Skills
+                                </Tabs.Tab>
 
                                 {auth?.roles.includes("dept_manager") &&
                                     (<Tabs.Tab onClick={handleMyDepartment} value="MyDepartment" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-[40px]">
