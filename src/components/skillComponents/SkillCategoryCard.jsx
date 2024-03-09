@@ -81,38 +81,28 @@ export const SkillCategoryCard = ({ name, id, setSkillCategories, visible, setVi
 
     return (
         <>
-            <Modal opened={opened} onClose={close} centered overflow="inside" size="sm" className="dark:bg-card_modal text-white select-none" zIndex={1000002}>
-                <div className="flex justify-center">
-                    {!isEditing && (<h1 className="text-4xl font-bold mb-[30px]">{name}</h1>)}
+            <div className="w-full rounded-lg bg-white p-4 my-2 select-none">
+                {!isEditing && (
+                    <Title className="text-[24px] h-[52px] text-darkcanvas pb-5 text-center">{name}</Title>
+                )}
+                {isEditing && (
+                    <TextInput
+                        className="h-[52px]"
+                        size="lg"
+                        value={categoryName}
+                        onChange={(event) => setCategoryName(event.currentTarget.value)}
+                    />
+                )}
+                <div className="flex justify-between">
+                    {!isEditing && (
+                        <Button className="w-[170px] mr-[5px] bg-accent mt-[10px] text-[18px]" onClick={handleEdit}>Edit</Button>
+                    )}
                     {isEditing && (
-                        <>
-                            <TextInput
-                                placeholder="Category name"
-                                value={categoryName}
-                                onChange={(event) => setCategoryName(event.currentTarget.value)}
-                                size="lg" />
-                        </>)
-                    }
+                        <Button className="w-[170px] mr-[5px] bg-accent mt-[10px] text-[18px]" onClick={handleSave}>Save</Button>
+                    )}
+                    <Button className="w-[170px] ml-[5px] bg-accent mt-[10px] text-[18px]" onClick={deleteCategory}>Remove</Button>
                 </div>
-                <div className="p-[10px]">
-                    {!isEditing && (<Button
-                        className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] rounded float-left" onClick={handleEdit}>
-                        Edit skill
-                    </Button>)}
-                    {isEditing && (<Button
-                        className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] rounded  float-left" onClick={handleSave}>
-                        Save
-                    </Button>)}
-                    <Button className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] rounded float-right" onClick={deleteCategory}>
-                        Remove Department
-                    </Button>
-                </div>
-            </Modal>
-            <Card variant="filled" onClick={open} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}
-                className="flex flex-wrap justify-center items-center min-w-[200px] h-[66px] dark:bg-card_modal ml-[30px] mt-[20px] rounded-xl dark:text-darktext text-text select-none font-bold">
-                {!isHovering && (<Text className="text-xl">{name}</Text>)}
-                {isHovering && <Text className="text-lg">Click to see more!</Text>}
-            </Card >
+            </div >
         </>
     )
 }

@@ -111,10 +111,6 @@ export default function OrganizationSkillsComp({ skills, skillCategories, setSki
                         Create Skill
                     </Button>)}
             </Modal>
-            <div className="w-full flex justify-center text-white pb-5" >
-                <Title size="45">Skills</Title>
-            </div>
-
             <div className="flex items-center justify-between my-5 w-full">
                 <div className="w-1/3 flex justify-center">
                     <Checkbox className="text-white mx-10" label="Skills in my department" size="xl"
