@@ -113,25 +113,25 @@ export default function EmployeeCard({ isAdminOnly, employee, setUsers, visible,
                             onClick={() => { removeRole(null, 'admin') }} disabled={isAdminOnly}
                         >{isAdminOnly ? "Only Admin: Cannot Remove" : "Remove Organization Admin"}</Button>)
                     }
-                    {employee.roles.includes('dept_manager') && (
-                        <Button className="bg-accent2 text-white font-bold rounded-xl text-lg px-5 m-[10px] w-[300px] hover:bg-accent"
-                            onClick={() => { removeRole(null, 'dept_manager') }}
-                        >Remove Department Manager</Button>)
-                    }
-                    {employee.roles.includes('proj_manager') && (
-                        <Button className="bg-accent2 text-white font-bold rounded-xl text-lg px-5 m-[10px] w-[300px] hover:bg-accent"
-                            onClick={() => { removeRole(null, 'proj_manager') }}
-                        >Remove Project Manager</Button>)
-                    }
                     {!employee.roles.includes('admin') && (
                         <Button className="bg-accent text-white font-bold rounded-xl text-lg px-5 m-[10px] w-[300px] hover:bg-accent2"
                             onClick={() => { assignRole(null, 'admin') }}
                         >Make Organization Admin</Button>)
                     }
+                    {employee.roles.includes('dept_manager') && (
+                        <Button className="bg-accent2 text-white font-bold rounded-xl text-lg px-5 m-[10px] w-[300px] hover:bg-accent"
+                            onClick={() => { removeRole(null, 'dept_manager') }}
+                        >Remove Department Manager</Button>)
+                    }
                     {!employee.roles.includes('dept_manager') && (
                         <Button className="bg-accent text-white font-bold rounded-xl text-lg px-5 m-[10px] w-[300px] hover:bg-accent2"
                             onClick={() => { assignRole(null, 'dept_manager') }}
                         >Make Department Manager</Button>)
+                    }
+                    {employee.roles.includes('proj_manager') && (
+                        <Button className="bg-accent2 text-white font-bold rounded-xl text-lg px-5 m-[10px] w-[300px] hover:bg-accent"
+                            onClick={() => { removeRole(null, 'proj_manager') }}
+                        >Remove Project Manager</Button>)
                     }
                     {!employee.roles.includes('proj_manager') && (
                         <Button className="bg-accent text-white font-bold rounded-xl text-lg px-5 m-[10px] w-[300px] hover:bg-accent2"
