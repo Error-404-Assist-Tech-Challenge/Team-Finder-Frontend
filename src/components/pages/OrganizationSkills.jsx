@@ -11,8 +11,11 @@ import OrganizationSkillsComp from '../pageComponents/OrganizationSkillsComp';
 import PaginationComp from '../pageComponents/Pagination';
 import { SkillCategoryCard } from '../skillComponents/SkillCategoryCard';
 import OrganizationCategoriesComp from '../pageComponents/OrganizationCategoriesComp';
+import useAuth from '../../hooks/useAuth';
 
 export default function OrganizationSkillsPage() {
+
+    const { auth } = useAuth();
 
     const axiosPrivate = useAxiosPrivate();
     const [darkMode, setDarkMode] = useContext(Context);
@@ -150,7 +153,7 @@ export default function OrganizationSkillsPage() {
                             <OrganizationSkillsComp skills={currentPosts} skillCategories={skillCategories} setSkills={setSkills} />
                         </div>
                         <div className='dark:bg-darkcanvas bg-canvas flex justify-center items-center mt-auto w-3/5'>
-                            <PaginationComp totalPosts={skills.length} postsPerPage={postPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage} drawer={false}/>
+                            <PaginationComp totalPosts={skills.length} postsPerPage={postPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage} drawer={false} />
                         </div>
                     </div>
                     <Divider orientation="vertical" />
@@ -208,11 +211,13 @@ export default function OrganizationSkillsPage() {
                             </>
                         )}
                     </Drawer>
-                    <div className="fixed bottom-9 right-9">
-                        <Button size="lg" className="bg-accent text-white font-bold py-2 px-4 text-lg rounded" onClick={() => { /*getSkillCategories();*/ open(); }}>
-                            Skill Categories
-                        </Button>
-                    </div>
+                    {auth?.roles.includes("dept_manager") && (
+                        <div className="fixed bottom-9 right-9">
+                            <Button size="lg" className="bg-accent text-white font-bold py-2 px-4 text-lg rounded" onClick={() => { /*getSkillCategories();*/ open(); }}>
+                                Skill Categories
+                            </Button>
+                        </div>
+                    )}
                 </>)}
             </div>
         </section >

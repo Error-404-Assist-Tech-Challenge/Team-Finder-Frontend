@@ -55,6 +55,7 @@ export default function App() {
                                     {/* YOU HAVE TO BE LOGGED IN TO SEE THESE PAGES */}
                                     <Route path='/myskills' element={<MainPage Content={MySkillsPage} />} />
                                     <Route path='/projects' element={<MainPage Content={ProjectsPage} />} />
+                                    <Route path='/organizationskills' element={<MainPage Content={OrganizationSkillsPage} />} />
                                 </Route>
 
                                 <Route element={<RequireAuth allowedRoles={["admin"]} />}>
@@ -63,7 +64,6 @@ export default function App() {
                                 </Route>
 
                                 <Route element={<RequireAuth allowedRoles={["dept_manager"]} />}>
-                                    <Route path='/organizationskills' element={<MainPage Content={OrganizationSkillsPage} />} />
                                     <Route path='/mydepartment' element={<MainPage Content={MyDepartment} />} />
                                 </Route>
 

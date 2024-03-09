@@ -5,8 +5,11 @@ import { useDisclosure } from '@mantine/hooks';
 import { Modal, Button, Title, TextInput, Textarea, Select } from '@mantine/core';
 import { useState } from 'react'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import useAuth from '../../hooks/useAuth';
 
 export const SkillCard = ({ skill, skillCategories, setSkills, visible, setVisible }) => {
+
+    const { auth } = useAuth();
 
     const [opened, { open, close }] = useDisclosure(false);
     const [isHovering, setIsHovering] = useState(false);
@@ -172,39 +175,41 @@ export const SkillCard = ({ skill, skillCategories, setSkills, visible, setVisib
                         comboboxProps={{ zIndex: 1000000000 }}
                         className="" />)}
                 </div>
-                <div className="pt-4 flex justify-left">
+                <div className="pt-4 flex justify-left mb-[10px]">
                     <p><span className="font-bold">Departments</span>: {skill.dept_name.join(', ')}</p>
                 </div>
-                <div className="pt-4 flex my-[20px]">
-                    <div className="w-[80px]">
-                        {skill.is_authored && !isEditing && (<Button
-                            className="w-[80px] bg-accent text-white hover:bg-btn_hover font-bold rounded" onClick={handleEdit}>
-                            Edit
-                        </Button>)}
+                {auth?.roles.includes("dept_manager") && (
+                    <div className="pt-4 flex my-[10px]">
+                        <div className="w-[80px]">
+                            {skill.is_authored && !isEditing && (<Button
+                                className="w-[80px] bg-accent text-white hover:bg-btn_hover font-bold rounded" onClick={handleEdit}>
+                                Edit
+                            </Button>)}
 
-                        {skill.is_authored && isEditing && (<Button
-                            className="w-[80px] bg-accent text-white hover:bg-btn_hover font-bold rounded" onClick={handleSave}>
-                            Save
-                        </Button>)}
-                    </div>
+                            {skill.is_authored && isEditing && (<Button
+                                className="w-[80px] bg-accent text-white hover:bg-btn_hover font-bold rounded" onClick={handleSave}>
+                                Save
+                            </Button>)}
+                        </div>
 
-                    <div className="w-full flex justify-center">
-                        {skill.is_department_managed && (<Button
-                            className="bg-accent text-white hover:bg-btn_hover font-bold rounded" onClick={handleRemoveDepartment}>
-                            Remove skill from my dept.
-                        </Button>)}
-                        {!skill.is_department_managed && (<Button
-                            className="bg-accent text-white hover:bg-btn_hover font-bold rounded" onClick={handleAddDepartment}>
-                            Add skill to my dept.
-                        </Button>)}
-                    </div>
+                        <div className="w-full flex justify-center">
+                            {skill.is_department_managed && (<Button
+                                className="bg-accent text-white hover:bg-btn_hover font-bold rounded" onClick={handleRemoveDepartment}>
+                                Remove skill from my dept.
+                            </Button>)}
+                            {!skill.is_department_managed && (<Button
+                                className="bg-accent text-white hover:bg-btn_hover font-bold rounded" onClick={handleAddDepartment}>
+                                Add skill to my dept.
+                            </Button>)}
+                        </div>
 
-                    <div className="w-[80px]">
-                        {skill.is_authored && (<Button className="w-[80px] bg-accent text-white hover:bg-btn_hover font-bold rounded" onClick={deleteSkill}>
-                            Delete
-                        </Button>)}
+                        <div className="w-[80px]">
+                            {skill.is_authored && (<Button className="w-[80px] bg-accent text-white hover:bg-btn_hover font-bold rounded" onClick={deleteSkill}>
+                                Delete
+                            </Button>)}
+                        </div>
                     </div>
-                </div>
+                )}
             </Modal>
 
             <Card variant="filled" onClick={open} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}
