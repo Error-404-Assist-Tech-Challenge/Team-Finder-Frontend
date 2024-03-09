@@ -36,7 +36,7 @@ export default function OrganizationSkillsComp({ skills, skillCategories, setSki
                     name: skillName,
                     description: skillDescription,
                     category_id: skillCategory,
-                    x: includeMyDepartment
+                    assign_department: includeMyDepartment
                 }),
                 {
                     headers: {

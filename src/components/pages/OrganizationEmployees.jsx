@@ -28,10 +28,10 @@ export default function OrganizationEmployeesPage() {
     const lastPostIndex = currentPage * postPerPage;
     const firstPostIndex = lastPostIndex - postPerPage;
     const currentPosts = users.slice(firstPostIndex, lastPostIndex);
-    
+
     // Pagination for Drawer
     const [currentPagetRole, setCurrentPagetRole] = useState(1);
-    const [postPerPagetRole, setPostPerPagetRole] = useState(6);
+    const [postPerPagetRole, setPostPerPagetRole] = useState(4);
     const lastPostIndextRole = currentPagetRole * postPerPagetRole;
     const firstPostIndextRole = lastPostIndextRole - postPerPagetRole;
     const currentPoststRole = teamRoles.slice(firstPostIndextRole, lastPostIndextRole);
@@ -149,9 +149,9 @@ export default function OrganizationEmployeesPage() {
                         {!visible && (
                             <>
                                 <Drawer offset={8} radius="md" opened={opened} onClose={close} position="right" zIndex="1000000">
-                                    <TeamRolesComp teamRoles={currentPoststRole} setTeamRoles={setTeamRoles} visible={visible} setVisible={setVisible}/>
+                                    <TeamRolesComp teamRoles={currentPoststRole} setTeamRoles={setTeamRoles} visible={visible} setVisible={setVisible} />
                                     <div className='flex justify-center items-center'>
-                                        <PaginationComp totalPosts={teamRoles.length} postsPerPage={postPerPagetRole} currentPage={currentPagetRole} setCurrentPage={setCurrentPagetRole} drawer={true}/>
+                                        <PaginationComp totalPosts={teamRoles.length} postsPerPage={postPerPagetRole} currentPage={currentPagetRole} setCurrentPage={setCurrentPagetRole} drawer={true} />
                                     </div>
                                 </Drawer>
                                 <OrganizationEmployeesComp users={currentPosts} isAdminOnly={isAdminOnly} setUsers={setUsers} visible={visible} setVisible={setVisible} />
@@ -164,7 +164,7 @@ export default function OrganizationEmployeesPage() {
                         )}
                     </div>
                     <div className='dark:bg-darkcanvas bg-canvas flex justify-center items-center'>
-                        <PaginationComp totalPosts={users.length} postsPerPage={postPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage} drawer={false}/>
+                        <PaginationComp totalPosts={users.length} postsPerPage={postPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage} drawer={false} />
                     </div>
                 </div>
             </div >

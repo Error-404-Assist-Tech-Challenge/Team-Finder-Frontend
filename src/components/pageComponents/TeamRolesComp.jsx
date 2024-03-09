@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { randomId, useDisclosure } from '@mantine/hooks';
@@ -10,7 +11,7 @@ import PaginationComp from '../pageComponents/Pagination';
 import TeamRoleCard from '../employeeComponents/TeamRoleCard';
 
 
-export default function TeamRolesComp({teamRoles, setTeamRoles, visible, setVisible}) {
+export default function TeamRolesComp({ teamRoles, setTeamRoles, visible, setVisible }) {
 
     // Initialization
 
@@ -58,7 +59,7 @@ export default function TeamRolesComp({teamRoles, setTeamRoles, visible, setVisi
     return (
         <>
             <div className={`${darkMode && 'dark'}`}>
-                <div className='bg-[#6d6f77] h-auto min-h-screen'>
+                <div className='bg-[#6d6f77] h-auto'>
                     <div className="flex flex-wrap justify-center">
                         {visible && (
                             <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
