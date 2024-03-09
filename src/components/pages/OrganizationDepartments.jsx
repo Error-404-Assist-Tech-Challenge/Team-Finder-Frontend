@@ -108,7 +108,7 @@ export default function OrganizationDepartmentsPage() {
                     )}
                 </div>
                 <div className='dark:bg-darkcanvas bg-canvas flex justify-center items-center'>
-                    <PaginationComp totalPosts={departments.length} postsPerPage={postPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+                    <PaginationComp totalPosts={departments.length} postsPerPage={postPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage} drawer={false}/>
                 </div>
             </div>
         </>

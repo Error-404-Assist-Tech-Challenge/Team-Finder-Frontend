@@ -8,6 +8,7 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import OrganizationEmployeesComp from '../pageComponents/OrganizationEmployeesComp';
 import PaginationComp from '../pageComponents/Pagination';
 import TeamRoleCard from '../employeeComponents/TeamRoleCard';
+import TeamRolesComp from '../pageComponents/TeamRolesComp';
 
 
 export default function OrganizationEmployeesPage() {
@@ -19,14 +20,21 @@ export default function OrganizationEmployeesPage() {
     const [users, setUsers] = useState([]);
     const [teamRoles, setTeamRoles] = useState([]);
     const [visible, setVisible] = useState(true);
+    const [opened, { open, close }] = useDisclosure(false);
 
-
+    // Pagination for Org Employees 
     const [currentPage, setCurrentPage] = useState(1);
     const [postPerPage, setPostPerPage] = useState(7);
-    const [opened, { open, close }] = useDisclosure(false);
     const lastPostIndex = currentPage * postPerPage;
     const firstPostIndex = lastPostIndex - postPerPage;
     const currentPosts = users.slice(firstPostIndex, lastPostIndex);
+    
+    // Pagination for Drawer
+    const [currentPagetRole, setCurrentPagetRole] = useState(1);
+    const [postPerPagetRole, setPostPerPagetRole] = useState(6);
+    const lastPostIndextRole = currentPagetRole * postPerPagetRole;
+    const firstPostIndextRole = lastPostIndextRole - postPerPagetRole;
+    const currentPoststRole = teamRoles.slice(firstPostIndextRole, lastPostIndextRole);
 
     useEffect(() => {
     }, [darkMode]);
@@ -135,39 +143,9 @@ export default function OrganizationEmployeesPage() {
                         {!visible && (
                             <>
                                 <Drawer offset={8} radius="md" opened={opened} onClose={close} position="right" zIndex="1000000">
-                                    <div className="flex justify-center text-white pb-9 select-none">
-                                        <Title className="text-4xl">Team Roles</Title>
-                                    </div>
-                                    <div className="flex flex-wrap justify-center">
-                                        {teamRoles.map(role => (
-                                            <TeamRoleCard key={role.role_id} id={role.id} name={role.name} setTeamRoles={setTeamRoles} />
-                                        ))}
-                                        <div className="w-full h-[128px] rounded-lg bg-white p-4 my-2 select-none flex items-center justify-center">
-                                            {!isAdding && (
-                                                <Button variant="outline" onClick={() => setIsAdding(true)}
-                                                    className={`relative w-[60px] h-[60px] m-[6px] rounded-full p-0 text-accent border-accent border-[5px] hover:text-accent`}>
-                                                    <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus w-full h-full" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                        <path d="M12 5l0 14" />
-                                                        <path d="M5 12l14 0" />
-                                                    </svg>
-                                                </Button>
-                                            )}
-                                            {isAdding && (
-                                                <div>
-                                                    <TextInput
-                                                        placeholder="Team role name..."
-                                                        className="h-[52px]"
-                                                        size="lg"
-                                                        value={roleName}
-                                                        onChange={(event) => setRoleName(event.currentTarget.value)}
-                                                    />
-                                                    <Button className="w-[240px] mr-[5px] bg-accent mt-[10px] text-[18px]" onClick={handleAddRole}>
-                                                        Add Team Role
-                                                    </Button>
-                                                </div>
-                                            )}
-                                        </div>
+                                    <TeamRolesComp teamRoles={currentPoststRole} setTeamRoles={setTeamRoles} visible={visible} setVisible={setVisible}/>
+                                    <div className='flex justify-center items-center'>
+                                        <PaginationComp totalPosts={teamRoles.length} postsPerPage={postPerPagetRole} currentPage={currentPagetRole} setCurrentPage={setCurrentPagetRole} drawer={true}/>
                                     </div>
                                 </Drawer>
                                 <OrganizationEmployeesComp users={currentPosts} setUsers={setUsers} visible={visible} setVisible={setVisible} />
@@ -180,7 +158,7 @@ export default function OrganizationEmployeesPage() {
                         )}
                     </div>
                     <div className='dark:bg-darkcanvas bg-canvas flex justify-center items-center'>
-                        <PaginationComp totalPosts={users.length} postsPerPage={postPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+                        <PaginationComp totalPosts={users.length} postsPerPage={postPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage} drawer={false}/>
                     </div>
                 </div>
             </div >
