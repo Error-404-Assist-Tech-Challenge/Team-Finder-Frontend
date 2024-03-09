@@ -36,7 +36,7 @@ export default function OrganizationSkillsPage() {
     const currentPosts = skills.slice(firstPostIndex, lastPostIndex);
 
     const [currentPageCatego, setCurrentPageCatego] = useState(1);
-    const [postPerPageCatego, setPostPerPageVatego] = useState(17);
+    const [postPerPageCatego, setPostPerPageVatego] = useState(5);
 
     const lastPostIndexCatego = currentPageCatego * postPerPageCatego;
     const firstPostIndexCatego = lastPostIndexCatego - postPerPageCatego;
@@ -139,6 +139,7 @@ export default function OrganizationSkillsPage() {
     }
 
 
+
     return (
         <section className={`${darkMode && 'dark'}`}>
             <div className='dark:bg-darkcanvas bg-canvas h-auto min-h-screen select-none'>
@@ -158,58 +159,12 @@ export default function OrganizationSkillsPage() {
                     </div>
                     <Divider orientation="vertical" />
                     <Drawer offset={8} radius="md" opened={opened} onClose={close} position="right" zIndex="1000000">
-                        {visibleLoad && (
-                            < div className='flex flex-col w-2/5 items-center justify-center'>
-                                <Loader size={30} color="red" />
-                            </div>
-                        )}
-                        {!visibleLoad && (
-                            <>
-                                {/* Am scos astea ca sa refac new design in drawer */}
-
-                                {/* <div className=" flex flex-wrap justify-center">
-                                        <OrganizationCategoriesComp skillCategories={currentPostsCatego} setSkillCategories={setSkillCategories} visible={visibleLoad} setVisible={setVisibleLoad} />
-                                        </div>
-                                        <div className='dark:bg-darkcanvas bg-canvas flex justify-center items-center mt-auto'>
-                                        <PaginationComp totalPosts={skillCategories.length} postsPerPage={postPerPageCatego} currentPage={currentPageCatego} setCurrentPage={setCurrentPageCatego} />
-                                    </div> */}
-
-                                <div className="flex justify-center text-white pb-9 select-none">
-                                    <Title className="text-4xl">Skill Categories</Title>
-                                </div>
-                                <div className="flex flex-wrap justify-center">
-                                    {skillCategories.map((category, index) => (
-                                        <SkillCategoryCard key={index} name={category.label} id={category.value} setSkillCategories={setSkillCategories} visible={visible} setVisible={setVisible} />
-                                    ))}
-                                </div>
-                                <div className="w-full h-[128px] rounded-lg bg-white p-4 my-2 select-none flex items-center justify-center">
-                                    {!isAdding && (
-                                        <Button variant="outline" onClick={() => setIsAdding(true)}
-                                            className={`relative w-[60px] h-[60px] m-[6px] rounded-full p-0 text-accent border-accent border-[5px] hover:text-accent`}>
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus w-full h-full" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path d="M12 5l0 14" />
-                                                <path d="M5 12l14 0" />
-                                            </svg>
-                                        </Button>
-                                    )}
-                                    {isAdding && (
-                                        <div>
-                                            <TextInput
-                                                placeholder="Skill category name..."
-                                                className="h-[52px]"
-                                                size="lg"
-                                                value={categoryName}
-                                                onChange={(event) => setCategoryName(event.currentTarget.value)}
-                                            />
-                                            <Button className="w-[240px] mr-[5px] bg-accent mt-[10px] text-[18px]" onClick={handleAddCategory}>
-                                                Add Skill Category
-                                            </Button>
-                                        </div>
-                                    )}
-                                </div>
-                            </>
-                        )}
+                        <OrganizationCategoriesComp skillCategories={currentPostsCatego} setSkillCategories={setSkillCategories} 
+                                                    visibleLoad={visibleLoad} setVisibleLoad={setVisibleLoad} visible={visible} setVisible={setVisible} />
+                        <div className='flex justify-center items-center'>
+                                        <PaginationComp totalPosts={skillCategories.length} postsPerPage={postPerPageCatego} 
+                                                        currentPage={currentPageCatego} setCurrentPage={setCurrentPageCatego} drawer={true} />
+                        </div>
                     </Drawer>
                     {auth?.roles.includes("dept_manager") && (
                         <div className="fixed bottom-9 right-9">
