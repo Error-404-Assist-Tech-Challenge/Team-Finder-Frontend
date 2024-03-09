@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import { Card, Button, rem } from '@mantine/core';
 import EmployeeCard from '../employeeComponents/EmployeeCard';
 import React, { useState } from 'react';
@@ -5,7 +7,7 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { IconCheck } from '@tabler/icons-react';
 import { notifications } from '@mantine/notifications';
 
-export default function OrganizationEmployeesComp({ users, setUsers, visible, setVisible }) {
+export default function OrganizationEmployeesComp({ isAdminOnly, users, setUsers, visible, setVisible }) {
 
     const [generatedLink, generateLink] = useState('');
     const axiosPrivate = useAxiosPrivate();
@@ -63,14 +65,14 @@ export default function OrganizationEmployeesComp({ users, setUsers, visible, se
         <>
             {Object.keys(users).length > 0 ? (
                 Object.keys(users).map(user_id => (
-                    <EmployeeCard key={user_id} employee={users[user_id]} setUsers={setUsers} visible={visible} setVisible={setVisible} />
+                    <EmployeeCard key={user_id} isAdminOnly={isAdminOnly} employee={users[user_id]} setUsers={setUsers} visible={visible} setVisible={setVisible} />
                 ))
             ) : (
                 <Card className='w-[300px] h-[230px] bg-accent mx-[40px] my-[20px] rounded-xl dark:text-darktext text-text select-none flex justify-center items-center'>
                     <h2 className='text-2xl block'>You have no employees</h2>
                 </Card>
             )}
-            <div className='flex flex-wrap gap-6'>                 
+            <div className='flex flex-wrap gap-6'>
                 <div className="flex justify-center items-center h-[340px] w-[380px]">
                     <Button variant="outline" onClick={handleSignUpLink}
                         className={`relative w-[80px] h-[80px] m-[6px] rounded-full p-0 text-accent border-accent border-[5px] hover:text-accent`}>

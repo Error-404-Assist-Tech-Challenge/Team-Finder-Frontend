@@ -28,6 +28,8 @@ export default function OrganizationEmployeesPage() {
     const firstPostIndex = lastPostIndex - postPerPage;
     const currentPosts = users.slice(firstPostIndex, lastPostIndex);
 
+    const isAdminOnly = users.filter(user => user.roles.includes('admin')).length === 1;
+
     useEffect(() => {
     }, [darkMode]);
 
@@ -73,9 +75,13 @@ export default function OrganizationEmployeesPage() {
                     signal: controller.signal,
                     withCredentials: true
                 });
+
                 console.log('Users:', response.data);
+
                 isMounted && setUsers(response.data)
+
                 setVisible(false);
+
             } catch (error) {
                 console.error('Error fetching organization members:', error);
             }
@@ -170,7 +176,7 @@ export default function OrganizationEmployeesPage() {
                                         </div>
                                     </div>
                                 </Drawer>
-                                <OrganizationEmployeesComp users={currentPosts} setUsers={setUsers} visible={visible} setVisible={setVisible} />
+                                <OrganizationEmployeesComp users={currentPosts} isAdminOnly={isAdminOnly} setUsers={setUsers} visible={visible} setVisible={setVisible} />
                                 <div className="fixed bottom-9 right-9">
                                     <Button size="lg" className="bg-accent text-white font-bold py-2 px-4 text-lg rounded" onClick={() => { /*getTeamRoles();*/ open(); }}>
                                         Team Roles

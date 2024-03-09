@@ -17,7 +17,7 @@ export default function OrganizationCategoriesComp({ name, id, skillCategories, 
     const axiosPrivate = useAxiosPrivate();
 
     const [openedCategories, { open: openCategories, close: closeCategories }] = useDisclosure(false);
-    const [categoryName, setCategoryName] = useState('')    
+    const [categoryName, setCategoryName] = useState('')
 
     const handleAddCategory = async () => {
         closeCategories();
