@@ -17,34 +17,6 @@ export default function OrganizationCategoriesComp({ name, id, skillCategories, 
     const axiosPrivate = useAxiosPrivate();
 
     const [openedCategories, { open: openCategories, close: closeCategories }] = useDisclosure(false);
-    const [categoryName, setCategoryName] = useState('')    
-
-    const handleAddCategory = async () => {
-        closeCategories();
-        setVisible(true);
-        try {
-            const response = await axiosPrivate.post('skills/categories',
-                JSON.stringify({
-                    name: categoryName
-                }),
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Access-Control-Allow-Origin': '*',
-                        'Access-Control-Allow-Credentials': 'true'
-                    },
-                    withCredentials: true
-                });
-
-            console.log('Response:', response.data);
-
-            setSkillCategories(response.data);
-
-        } catch (error) {
-            console.error('Error fetching unused skills:', error);
-        }
-        setVisible(false);
-    }
 
 
     return (
