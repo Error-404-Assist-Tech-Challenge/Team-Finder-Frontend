@@ -150,7 +150,7 @@ export default function OrganizationSkillsPage() {
                             <OrganizationSkillsComp skills={currentPosts} skillCategories={skillCategories} setSkills={setSkills} />
                         </div>
                         <div className='dark:bg-darkcanvas bg-canvas flex justify-center items-center mt-auto w-3/5'>
-                            <PaginationComp totalPosts={skills.length} postsPerPage={postPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+                            <PaginationComp totalPosts={skills.length} postsPerPage={postPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage} drawer={false}/>
                         </div>
                     </div>
                     <Divider orientation="vertical" />

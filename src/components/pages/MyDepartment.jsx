@@ -169,7 +169,7 @@ export default function MyDepartmentPage() {
                 )}
             </div>
             <div className='dark:bg-darkcanvas bg-canvas flex justify-center items-center'>
-                <PaginationComp totalPosts={members.length} postsPerPage={postPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+                <PaginationComp totalPosts={members.length} postsPerPage={postPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage} drawer={false} />
             </div>
         </div >
     )

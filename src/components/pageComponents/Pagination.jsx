@@ -2,7 +2,7 @@
 import { Button } from "@mantine/core";
 import React from "react";
 
-export default function PaginationComp({totalPosts, postsPerPage, currentPage, setCurrentPage}){
+export default function PaginationComp({totalPosts, postsPerPage, currentPage, setCurrentPage, drawer}){
 
     let pages = [];
     for(let i = 1; i <= Math.ceil(totalPosts / postsPerPage); i++)
@@ -12,18 +12,34 @@ export default function PaginationComp({totalPosts, postsPerPage, currentPage, s
 
     return(
         <div className="flex justify-center space-x-2 mt-4 mb-6">
-            <div className='pagination'>
-            {
-                pages.map((page, index) => (
-                    <button
-                        key={index}
-                        className={page == currentPage ? "active" : ""}
-                        onClick={() => setCurrentPage(page)}>
-                        {page}
-                    </button>
-                ))
-            }
-            </div>
+            {!drawer &&(
+                <div className='pagination'>
+                {
+                    pages.map((page, index) => (
+                        <button
+                            key={index}
+                            className={page == currentPage ? "active" : ""}
+                            onClick={() => setCurrentPage(page)}>
+                            {page}
+                        </button>
+                    ))
+                }
+                </div>
+            )}
+            {drawer &&(
+                <div className='pagination_drawer'>
+                {
+                    pages.map((page, index) => (
+                        <button
+                            key={index}
+                            className={page == currentPage ? "active" : ""}
+                            onClick={() => setCurrentPage(page)}>
+                            {page}
+                        </button>
+                    ))
+                }
+                </div>
+            )}
         </div>
     )
 }
