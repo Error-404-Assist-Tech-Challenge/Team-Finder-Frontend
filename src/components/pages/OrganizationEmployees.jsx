@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { randomId, useDisclosure } from '@mantine/hooks';
 import React, { useContext, useEffect, useState } from 'react';
-import { Loader, Drawer, Title, Button } from '@mantine/core';
+import { Loader, Drawer, Title, Button, TextInput } from '@mantine/core';
 import { Context } from '../../App';
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import OrganizationEmployeesComp from '../pageComponents/OrganizationEmployeesComp';
@@ -20,9 +20,10 @@ export default function OrganizationEmployeesPage() {
     const [teamRoles, setTeamRoles] = useState([]);
     const [visible, setVisible] = useState(true);
 
+
     const [currentPage, setCurrentPage] = useState(1);
     const [postPerPage, setPostPerPage] = useState(7);
-    const [opened, { open, close }] = useDisclosure(true); // false
+    const [opened, { open, close }] = useDisclosure(false);
     const lastPostIndex = currentPage * postPerPage;
     const firstPostIndex = lastPostIndex - postPerPage;
     const currentPosts = users.slice(firstPostIndex, lastPostIndex);
@@ -60,7 +61,6 @@ export default function OrganizationEmployeesPage() {
         }
     }, [])
 
-
     // Function that gets all the users from the organization
 
     useEffect(() => {
@@ -89,6 +89,37 @@ export default function OrganizationEmployeesPage() {
         }
     }, [])
 
+    // Adds new team role
+
+    const [isAdding, setIsAdding] = useState(false)
+    const [roleName, setRoleName] = useState('')
+
+    const handleAddRole = async () => {
+        try {
+            const response = await axiosPrivate.post('organizations/team_roles',
+                JSON.stringify({
+                    name: roleName
+                }),
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Credentials': 'true'
+                    },
+                    withCredentials: true
+                });
+
+            console.log('Response:', response.data);
+
+            setTeamRoles(response.data);
+
+        } catch (error) {
+            console.error('Error fetching unused skills:', error);
+        }
+        setIsAdding(false)
+        setRoleName('')
+    }
+
     // All the user cards + button to generate signup employee link
 
     return (
@@ -111,15 +142,31 @@ export default function OrganizationEmployeesPage() {
                                         {teamRoles.map(role => (
                                             <TeamRoleCard key={role.role_id} id={role.id} name={role.name} setTeamRoles={setTeamRoles} />
                                         ))}
-                                        <div className="w-full select-none h-[128px] flex justify-center items-center">
-                                            <Button variant="outline"
-                                                className={`relative w-[60px] h-[60px] m-[6px] rounded-full p-0 text-accent border-accent border-[5px] hover:text-accent`}>
-                                                <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus w-full h-full" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                    <path d="M12 5l0 14" />
-                                                    <path d="M5 12l14 0" />
-                                                </svg>
-                                            </Button>
+                                        <div className="w-full h-[128px] rounded-lg bg-white p-4 my-2 select-none flex items-center justify-center">
+                                            {!isAdding && (
+                                                <Button variant="outline" onClick={() => setIsAdding(true)}
+                                                    className={`relative w-[60px] h-[60px] m-[6px] rounded-full p-0 text-accent border-accent border-[5px] hover:text-accent`}>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus w-full h-full" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                        <path d="M12 5l0 14" />
+                                                        <path d="M5 12l14 0" />
+                                                    </svg>
+                                                </Button>
+                                            )}
+                                            {isAdding && (
+                                                <div>
+                                                    <TextInput
+                                                        placeholder="Team role name..."
+                                                        className="h-[52px]"
+                                                        size="lg"
+                                                        value={roleName}
+                                                        onChange={(event) => setRoleName(event.currentTarget.value)}
+                                                    />
+                                                    <Button className="w-[240px] mr-[5px] bg-accent mt-[10px] text-[18px]" onClick={handleAddRole}>
+                                                        Add Team Role
+                                                    </Button>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </Drawer>

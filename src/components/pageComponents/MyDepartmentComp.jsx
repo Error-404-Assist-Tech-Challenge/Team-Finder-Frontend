@@ -37,7 +37,6 @@ export default function MyDepartmentComp({ members, setMembers, }) {
                 });
                 console.log('Avalaible employees:', response.data);
                 isMounted && setAvalaible(response.data)
-                console.log({ avalaible })
             } catch (error) {
                 console.error('Error fetching members without department:', error);
             }
