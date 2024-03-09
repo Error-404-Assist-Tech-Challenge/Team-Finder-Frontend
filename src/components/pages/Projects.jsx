@@ -8,6 +8,7 @@ import ProjectCard from '../projectComponents/ProjectCard';
 import { Button, Modal, Title, TextInput, Textarea, Select, MultiSelect } from '@mantine/core';
 import { DatePickerInput } from '@mantine/dates';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import RoleSelect from '../projectComponents/RoleSelect';
 
 export default function ProjectsPage() {
 
@@ -16,7 +17,10 @@ export default function ProjectsPage() {
     const pinned = useHeadroom({ fixedAt: 20 });
     const [opened, { open, close }] = useDisclosure(false);
     const [skills, setSkills] = useState([])
+
     const [roles, setRoles] = useState([])
+    const [teamRoles, setTeamRoles] = useState([]) // FOR SELECT
+    const [projectRoles, setProjectRoles] = useState([]) // FOR SELECT
 
     useEffect(() => {
 
@@ -64,7 +68,16 @@ export default function ProjectsPage() {
                     withCredentials: true
                 });
                 console.log('Roles:', response.data);
-                isMounted && setRoles(response.data);
+                if (isMounted) {
+                    setRoles(response.data);
+
+                    const newRoles = response.data.map(role => ({
+                        role_id: role.value,
+                        count: 1
+                    }));
+
+                    setTeamRoles(newRoles);
+                }
             } catch (error) {
                 console.error('Error fetching roles:', error);
             }
@@ -151,18 +164,31 @@ export default function ProjectsPage() {
         }
     ];
 
+
     const handleAddProject = async () => {
 
         const startDate =
             projectPeriod == 'Fixed'
-                ? projectDates[0]
-                : projectStartDate
+                ? `${projectDates[0].getFullYear()}-${String(projectDates[0].getMonth() + 1).padStart(2, '0')}-${String(projectDates[0].getDate()).padStart(2, '0')}`
+                : `${projectStartDate.getFullYear()}-${String(projectStartDate.getMonth() + 1).padStart(2, '0')}-${String(projectStartDate.getDate()).padStart(2, '0')}`
         const deadlineDate =
             projectPeriod == 'Fixed'
-                ? projectDates[1]
+                ? `${projectDates[1].getFullYear()}-${String(projectDates[1].getMonth() + 1).padStart(2, '0')}-${String(projectDates[1].getDate()).padStart(2, '0')}`
                 : ''
+
+        console.log(JSON.stringify({
+            name: projectName,
+            period: projectPeriod,
+            start_date: startDate,
+            deadline_date: deadlineDate,
+            status: projectStatus,
+            description: projectDescription,
+            tech_stack: projectTech,
+            team_roles: projectRoles
+        }),)
+
         try {
-            const response = await axiosPrivate.post('skills/categories',
+            const response = await axiosPrivate.post('/project',
                 JSON.stringify({
                     name: projectName,
                     period: projectPeriod,
@@ -171,7 +197,7 @@ export default function ProjectsPage() {
                     status: projectStatus,
                     description: projectDescription,
                     tech_stack: projectTech,
-                    // team_roles: 
+                    team_roles: projectRoles
                 }),
                 {
                     headers: {
@@ -195,11 +221,9 @@ export default function ProjectsPage() {
     const [projectPeriod, setProjectPeriod] = useState('')
     const [projectStartDate, setProjectStartDate] = useState(null);
     const [projectDates, setProjectDates] = useState([null, null]);
-    const [projectStatus, setProjectStatus] = useState([null, null]);
+    const [projectStatus, setProjectStatus] = useState([null]);
     const [projectDescription, setProjectDescription] = useState('')
     const [projectTech, setProjectTech] = useState([])
-    const [projectRoles, setProjectRoles] = useState([])
-
 
     return (
         <div className={`${darkMode && 'dark'}`}>
@@ -228,6 +252,7 @@ export default function ProjectsPage() {
                     />
                     {projectPeriod != 'Fixed' && (
                         <DatePickerInput
+                            valueFormat="YYYY-MM-DD"
                             label="Pick a Start Date"
                             placeholder="Pick a start date"
                             value={projectStartDate}
@@ -237,6 +262,7 @@ export default function ProjectsPage() {
                     )}
                     {projectPeriod == 'Fixed' && (
                         <DatePickerInput
+                            valueFormat="YYYY-MM-DD"
                             label="Pick a Start and Deadline Date"
                             placeholder="Pick a start and deadline date"
                             type="range"
@@ -274,9 +300,14 @@ export default function ProjectsPage() {
                         nothingFoundMessage="Technology does not exist..."
                         className="py-[5px]"
                     />
+                    <RoleSelect
+                        roles={roles}
+                        teamRoles={teamRoles}
+                        setTeamRoles={setTeamRoles}
+                        projectRoles={projectRoles}
+                        setProjectRoles={setProjectRoles} />
 
-
-                    {projectName && projectPeriod && projectStartDate && (projectPeriod != 'Fixed' || projectDates[1]) && projectStatus && projectDescription && projectTech && projectRoles && (
+                    {projectName && projectPeriod && (projectStartDate || projectDates[0]) && (projectPeriod == 'Ongoing' || projectDates[1]) && projectStatus && projectDescription && projectTech && projectRoles && (
                         <div className="flex justify-center">
                             <Button
                                 size="lg" onClick={handleAddProject}
