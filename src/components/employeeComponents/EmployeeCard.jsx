@@ -7,7 +7,7 @@ import { useState } from 'react'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import useAuth from '../../hooks/useAuth';
 
-export default function EmployeeCard({ employee, setUsers, visible, setVisible }) {
+export default function EmployeeCard({ isAdminOnly, employee, setUsers, visible, setVisible }) {
 
     const axiosPrivate = useAxiosPrivate();
     const [opened, { open, close }] = useDisclosure(false);
@@ -109,29 +109,29 @@ export default function EmployeeCard({ employee, setUsers, visible, setVisible }
 
                 <div className="pt-4 flex flex-col items-center">
                     {employee.roles.includes('admin') && (
-                        <Button className="bg-accent2 text-white font-bold rounded-xl text-lg px-5 m-[10px] w-[300px] hover:bg-accent2"
-                            onClick={() => { removeRole(null, 'admin') }}
-                        >Remove Organization Admin</Button>)
-                    }
-                    {employee.roles.includes('dept_manager') && (
-                        <Button className="bg-accent2 text-white font-bold rounded-xl text-lg px-5 m-[10px] w-[300px] hover:bg-accent2"
-                            onClick={() => { removeRole(null, 'dept_manager') }}
-                        >Remove Department Manager</Button>)
-                    }
-                    {employee.roles.includes('proj_manager') && (
-                        <Button className="bg-accent2 text-white font-bold rounded-xl text-lg px-5 m-[10px] w-[300px] hover:bg-accent2"
-                            onClick={() => { removeRole(null, 'proj_manager') }}
-                        >Remove Project Manager</Button>)
+                        <Button className={`bg-${isAdminOnly ? "[#868e96]" : "accent2"} text-white font-bold rounded-xl text-lg px-5 m-[10px] w-[300px] hover:bg-${isAdminOnly ? "[#868e96]" : "accent"}`}
+                            onClick={() => { removeRole(null, 'admin') }} disabled={isAdminOnly}
+                        >{isAdminOnly ? "Only Admin: Cannot Remove" : "Remove Organization Admin"}</Button>)
                     }
                     {!employee.roles.includes('admin') && (
                         <Button className="bg-accent text-white font-bold rounded-xl text-lg px-5 m-[10px] w-[300px] hover:bg-accent2"
                             onClick={() => { assignRole(null, 'admin') }}
                         >Make Organization Admin</Button>)
                     }
+                    {employee.roles.includes('dept_manager') && (
+                        <Button className="bg-accent2 text-white font-bold rounded-xl text-lg px-5 m-[10px] w-[300px] hover:bg-accent"
+                            onClick={() => { removeRole(null, 'dept_manager') }}
+                        >Remove Department Manager</Button>)
+                    }
                     {!employee.roles.includes('dept_manager') && (
                         <Button className="bg-accent text-white font-bold rounded-xl text-lg px-5 m-[10px] w-[300px] hover:bg-accent2"
                             onClick={() => { assignRole(null, 'dept_manager') }}
                         >Make Department Manager</Button>)
+                    }
+                    {employee.roles.includes('proj_manager') && (
+                        <Button className="bg-accent2 text-white font-bold rounded-xl text-lg px-5 m-[10px] w-[300px] hover:bg-accent"
+                            onClick={() => { removeRole(null, 'proj_manager') }}
+                        >Remove Project Manager</Button>)
                     }
                     {!employee.roles.includes('proj_manager') && (
                         <Button className="bg-accent text-white font-bold rounded-xl text-lg px-5 m-[10px] w-[300px] hover:bg-accent2"
