@@ -122,11 +122,11 @@ export default function MyDepartmentComp({ members, setMembers, }) {
             {!visible && (
                 <div className="flex">
                     <div className=" h-auto min-h-screen">
-                        <div className="flex flex-wrap">
+                        <div className="flex flex-wrap ">
                             {members.map((member, index) => (
                                 <DepartmentEmployee key={index} name={member.name} user_id={member.user_id} setMembers={setMembers} visible={visible} setVisible={setVisible} skills={member.skills} />
                             ))}
-                            <div className="w-[380px] h-[160px] flex justify-center">
+                            <div className="w-[380px] h-[160px] flex justify-center ">
                                 <Button variant="outline" onClick={open}
                                     className={`relative w-[80px] h-[80px] m-[38px] rounded-full p-0 text-accent border-accent border-[5px] hover:text-accent`}>
                                     <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus w-full h-full" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
