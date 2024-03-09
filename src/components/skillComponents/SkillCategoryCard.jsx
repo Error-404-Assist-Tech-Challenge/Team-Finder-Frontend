@@ -27,7 +27,6 @@ export const SkillCategoryCard = ({ name, id, setSkillCategories, visible, setVi
 
     const updateCategory = async () => {
         close();
-        setVisible(true)
         try {
             const response = await axiosPrivate.put('skills/categories',
                 JSON.stringify({
@@ -50,12 +49,11 @@ export const SkillCategoryCard = ({ name, id, setSkillCategories, visible, setVi
         } catch (error) {
             console.error('Error updating department:', error);
         }
-        setVisible(false);
+        window.location.reload();
     }
 
     const deleteCategory = async () => {
         close();
-        setVisible(true)
         try {
             const response = await axiosPrivate.delete('skills/categories', {
                 headers: {
@@ -76,7 +74,7 @@ export const SkillCategoryCard = ({ name, id, setSkillCategories, visible, setVi
         } catch (error) {
             console.error('Error deleting user skills:', error);
         }
-        setVisible(false);
+        window.location.reload();
     }
 
     return (

@@ -176,7 +176,12 @@ export const SkillCard = ({ skill, skillCategories, setSkills, visible, setVisib
                         className="" />)}
                 </div>
                 <div className="pt-4 flex justify-left mb-[10px]">
-                    <p><span className="font-bold">Departments</span>: {skill.dept_name.join(', ')}</p>
+                    {skill.dept_name.length != 0 && (
+                        <p><span className="font-bold">Departments</span>: {skill.dept_name.join(', ')}</p>
+                    )}
+                    {skill.dept_name.length == 0 && (
+                        <p className="font-bold">Not used in any departments</p>
+                    )}
                 </div>
                 {auth?.roles.includes("dept_manager") && (
                     <div className="pt-4 flex my-[10px]">
