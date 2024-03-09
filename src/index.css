@@ -90,3 +90,16 @@
     background: #272F32;
     color: #ffffff;
 }
+
+
+.m-6fa5e2aa {
+    background-color: white;
+}
+
+.m-396ce5cb:where([data-weekend]) {
+    color: black;
+}
+
+.m-396ce5cb:where([data-selected]) {
+    color: #FF3D2E;
+}
