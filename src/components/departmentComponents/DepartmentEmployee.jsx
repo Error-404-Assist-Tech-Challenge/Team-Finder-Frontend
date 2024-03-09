@@ -72,7 +72,7 @@ export default function DepartmentEmployee(props) {
                 <div className="pt-4 flex justify-start">
                     <p className="p-4 text-xl font-bold">{props.name}'s Skills:</p>
                 </div>
-                {skills.map((skill, index) => (
+                {props.skills.map((skill, index) => (
                     <Badge key={index} className="m-2" color="gray" size="xl" variant="filled">{skill}</Badge>
                 ))}
                 <div>
