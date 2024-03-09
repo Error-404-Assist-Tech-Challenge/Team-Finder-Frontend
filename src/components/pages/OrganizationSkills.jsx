@@ -19,7 +19,7 @@ export default function OrganizationSkillsPage() {
     const pinned = useHeadroom({ fixedAt: 20 });
     const [visible, setVisible] = useState(true);
     const [visibleLoad, setVisibleLoad] = useState(false);
-    const [opened, { open, close }] = useDisclosure(true); // false
+    const [opened, { open, close }] = useDisclosure(false);
 
     const [skills, setSkills] = useState([]);
     const [skillCategories, setSkillCategories] = useState([])
@@ -104,12 +104,12 @@ export default function OrganizationSkillsPage() {
         }
     }, [])
 
+    // Adds skill category
+
     const [isAdding, setIsAdding] = useState(false)
     const [categoryName, setCategoryName] = useState('')
 
     const handleAddCategory = async () => {
-        close();
-        setVisible(true);
         try {
             const response = await axiosPrivate.post('skills/categories',
                 JSON.stringify({
@@ -131,7 +131,8 @@ export default function OrganizationSkillsPage() {
         } catch (error) {
             console.error('Error fetching unused skills:', error);
         }
-        setVisible(false);
+        setIsAdding(false)
+        setCategoryName('')
     }
 
 
@@ -208,7 +209,7 @@ export default function OrganizationSkillsPage() {
                         )}
                     </Drawer>
                     <div className="fixed bottom-9 right-9">
-                        <Button size="lg" className="bg-accent text-white font-bold py-2 px-4 text-lg rounded" onClick={() => { /*getTeamRoles();*/ open(); }}>
+                        <Button size="lg" className="bg-accent text-white font-bold py-2 px-4 text-lg rounded" onClick={() => { /*getSkillCategories();*/ open(); }}>
                             Skill Categories
                         </Button>
                     </div>
