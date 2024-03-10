@@ -26,34 +26,15 @@ export default function ProjectCard({ project }) {
                             <p className="py-1"><span className="font-bold">Description</span>: {project.description}</p>
                             <div className="flex items-center flex-wrap">
                                 <p className="py-1"><span className="font-bold">Technology Stack</span>: </p>
-                                {project.tech_stack.map((tech, index) => (
-                                    <Badge key={index} className="mx-3 my-1" color="gray" size="xl">{tech}</Badge>
+                                {project.tech_stack.map((tech) => (
+                                    <Badge key={tech.skill_id} className="mx-3 my-1" color="gray" size="xl">{tech.skill_name}</Badge>
                                 ))}
                             </div>
                             <div className="flex items-center flex-wrap">
                                 <p className="py-1"><span className="font-bold">Team Roles</span>: </p>
-                                {project.roles.map((role, index) => (
-                                    <Badge key={index} className="mx-3 my-1" color="gray" size="xl">
-
-                                        {/* <Button variant="outline"
-                                            className={`w-[20px] h-[20px] m-[6px] rounded-full p-0 text-accent border-accent border-[3px]`}>
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-minus w-[12px] h-[12px]" width="24" height="24" viewBox="0 0 24 24" strokeWidth="4" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path d="M5 12l14 0" />
-                                            </svg>
-                                        </Button> */}
-
-                                        {role.members}x {role.role}
-
-                                        {/* <Button variant="outline"
-                                            className={`w-[20px] h-[20px] m-[6px] rounded-full p-0 text-accent border-accent border-[3px]`}>
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus w-[15px] h-[15px]" viewBox="0 0 24 24" strokeWidth="4" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path d="M12 5l0 14" />
-                                                <path d="M5 12l14 0" />
-                                            </svg>
-                                        </Button> */}
-
+                                {project.team_role.map((role) => (
+                                    <Badge key={role.role_id} className="mx-3 my-1" color="gray" size="xl">
+                                        {role.count}x {role.role_name}
                                     </Badge>
                                 ))}
                             </div>

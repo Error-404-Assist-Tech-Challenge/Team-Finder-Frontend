@@ -16,7 +16,9 @@ export default function ProjectsPage() {
     const [darkMode, setDarkMode] = useContext(Context);
     const pinned = useHeadroom({ fixedAt: 20 });
     const [opened, { open, close }] = useDisclosure(false);
+
     const [skills, setSkills] = useState([])
+    const [projects, setProjects] = useState([])
 
     const [roles, setRoles] = useState([])
     const [teamRoles, setTeamRoles] = useState([]) // FOR SELECT
@@ -25,6 +27,33 @@ export default function ProjectsPage() {
     useEffect(() => {
 
     }, [darkMode]);
+
+    useEffect(() => {
+        let isMounted = true;
+        const controller = new AbortController();
+        const fetchProjects = async () => {
+            try {
+                const response = await axiosPrivate.get('projects', {
+                    signal: controller.signal,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Credentials': 'true'
+                    },
+                    withCredentials: true
+                });
+                console.log('Projects:', response.data);
+                isMounted && setProjects(response.data);
+            } catch (error) {
+                console.error('Error fetching projects:', error);
+            }
+        }
+        fetchProjects();
+        return () => {
+            isMounted = false;
+            controller.abort();
+        }
+    }, []);
 
     useEffect(() => {
         let isMounted = true;
@@ -89,81 +118,6 @@ export default function ProjectsPage() {
         }
     }, []);
 
-    const projects = [
-        {
-            "name": "E-commerce Platform Dev",
-            "period": "Fixed",
-            "start_date": "2024-02-01",
-            "deadline_date": "2024-08-01",
-            "status": "Starting",
-            "description": "Building an e-commerce platform for online retail.",
-            "tech_stack": ["PHP", "MySQL", "Laravel", "Vue.js"],
-            "roles": [
-                { "role": "Backend Developer", "members": 3 },
-                { "role": "Frontend Developer", "members": 2 },
-                { "role": "UI/UX Designer", "members": 1 },
-                { "role": "Project Manager", "members": 1 }
-            ]
-        },
-        {
-            "name": "Mobile App Dev",
-            "period": "Ongoing",
-            "start_date": "2023-11-15",
-            "status": "In Progress",
-            "description": "Creating a mobile app for both iOS and Android platforms.",
-            "tech_stack": ["Swift", "Kotlin", "Firebase"],
-            "roles": [
-                { "role": "iOS Developer", "members": 2 },
-                { "role": "Android Developer", "members": 2 },
-                { "role": "Backend Developer", "members": 1 },
-                { "role": "UI/UX Designer", "members": 1 },
-                { "role": "QA Engineer", "members": 1 }
-            ]
-        },
-        {
-            "name": "Data Analysis Dashboard",
-            "period": "Fixed",
-            "start_date": "2023-09-01",
-            "deadline_date": "2023-12-15",
-            "status": "Closing",
-            "description": "Developing a dashboard for analyzing and visualizing data.",
-            "tech_stack": ["Python", "Pandas", "Matplotlib", "React"],
-            "roles": [
-                { "role": "Data Scientist", "members": 2 },
-                { "role": "Frontend Developer", "members": 1 },
-                { "role": "Backend Developer", "members": 1 },
-                { "role": "Project Manager", "members": 1 }
-            ]
-        },
-        {
-            "name": "Cloud Migration",
-            "period": "Fixed",
-            "start_date": "2024-01-10",
-            "deadline_date": "2024-05-01",
-            "status": "In Progress",
-            "description": "Migrating on-premises infrastructure to cloud services.",
-            "tech_stack": ["AWS", "Azure", "Docker", "Kubernetes"],
-            "roles": [
-                { "role": "Cloud Architect", "members": 2 },
-                { "role": "DevOps Engineer", "members": 2 },
-                { "role": "Project Manager", "members": 1 }
-            ]
-        },
-        {
-            "name": "Marketing Automation",
-            "period": "Ongoing",
-            "start_date": "2024-02-15",
-            "status": "Not Started",
-            "description": "Automating marketing campaign processes to improve efficiency.",
-            "tech_stack": ["Python", "Django", "PostgreSQL"],
-            "roles": [
-                { "role": "Backend Developer", "members": 2 },
-                { "role": "UI/UX Designer", "members": 1 },
-                { "role": "Project Manager", "members": 1 }
-            ]
-        }
-    ];
-
 
     const handleAddProject = async () => {
 
@@ -210,11 +164,13 @@ export default function ProjectsPage() {
 
             console.log('Response:', response.data);
 
-            // setSkillCategories(response.data);
+            setProjects(response.data);
 
         } catch (error) {
             console.error('Error fetching unused skills:', error);
         }
+
+        close();
     }
 
     const [projectName, setProjectName] = useState('')
