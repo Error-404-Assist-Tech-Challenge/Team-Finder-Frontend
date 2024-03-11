@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 
-import { Card, Avatar, Modal, Button, Text, Title, TextInput, Textarea, Divider } from '@mantine/core';
+import { Card, Badge, Modal, Button, Text, Title, TextInput, Textarea, Divider, HoverCard } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useState, useContext, useEffect } from 'react';
 import LevelCirclesCard from './LevelCirclesCard'
@@ -43,22 +43,22 @@ export default function UserSkillCard(props) {
         props.setVisible(true);
         try {
             const response = await axiosPrivate.put('skills/user',
-                JSON.stringify({
-                    skill_id: props.skills[props.index].skill_id,
-                    level: currentLevel,
-                    experience: currentExperience
-                }),
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Access-Control-Allow-Origin': '*',
-                        'Access-Control-Allow-Credentials': 'true'
-                    },
-                    withCredentials: true
-                });
-
+            JSON.stringify({
+                skill_id: props.skills[props.index].skill_id,
+                level: currentLevel,
+                experience: currentExperience
+            }),
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Credentials': 'true'
+                },
+                withCredentials: true
+            });
+            
             console.log('Response:', response.data);
-
+            
             props.setSkills(response.data);
         } catch (error) {
             console.error('Error saving my skill:', error);
@@ -118,6 +118,10 @@ export default function UserSkillCard(props) {
 
     const handleEditEndorsment = async () => {
         setEditEndorsement(true)
+    }
+
+    const handleCancel = async () => {
+        setEditEndorsement(false)
     }
 
     return (
@@ -198,7 +202,7 @@ export default function UserSkillCard(props) {
                                 {editEndorsment &&(
                                     <>
                                         < TextInput
-                                            label="Training Name (optional)"
+                                            label="Training Name"
                                             placeholder="Training name..."
                                             size="md"
                                             value={training}
@@ -206,49 +210,75 @@ export default function UserSkillCard(props) {
                                             className=" py-[15px] w-[450px]"
                                         />
                                         <Textarea
-                                            label="Training Description (optional)"
+                                            label="Training Description"
                                             placeholder="Training description..."
                                             value={trainingDescpription}
                                             onChange={(event) => setTrainingDescription(event.currentTarget.value)}
-                                            className=" py-[15px]"
+                                            autosize
+                                            minRows={5}
+                                            className="py-4"
 
                                         />
-                                        < TextInput
-                                            label="Course Name (optional)"
-                                            placeholder="Course name..."
-                                            size="md"
-                                            value={course}
-                                            onChange={(event) => setCourse(event.currentTarget.value)}
-                                            className=" py-[15px]"
-                                        />
-                                        <Textarea
-                                            label="Course Description (optional)"
-                                            placeholder="Course description..."
-                                            value={courseDescription}
-                                            onChange={(event) => setCourseDescription(event.currentTarget.value)}
-                                            className=" py-[15px]"
-
-                                        />
+                                        <div className="p-[10px] fixed bottom-0 right-0">
+                                            <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-4 py-2 rounded mr-[60px] my-[10px] mt-[20px] mb-[15px]"
+                                                onClick={handleCancel}>
+                                                Cancel
+                                            </Button>
+                                            <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-4 py-2 rounded mx-[10px] my-[10px] mt-[20px] ml-[130px] mb-[15px] float-right"
+                                                onClick={handleSave}>
+                                                Save Endorsement
+                                            </Button>
+                                        </div>
                                     </>
                                 )}
                                 {!editEndorsment &&(
-                                    <>
-                                        <h1 className='text-white'>Training endorsement: </h1>
-                                        <h1 className='text-white'>Training endorsement description: </h1>
-                                        <h1 className='text-white'>Course endorsement: </h1>
-                                        <h1 className='text-white'>Course endorsement description: </h1>
-                                    </>
+                                    <div className='flex flex-wrap'>
+                                        <HoverCard width={280} shadow="md" zIndex={100000000}>
+                                            <HoverCard.Target>
+                                                <Badge variant="filled" color="rgba(250, 245, 240, 1)" size="lg" radius="lg" className='text-black my-[20px] mx-[10px]'>
+                                                    <Button variant="outline" className={`w-[40px] h-[20px] mb-[3px] mr-[10px] rounded-full p-0 text-accent border-accent border-2`} onClick={handleEditEndorsment}>
+                                                        Edit
+                                                    </Button>
+                                                    Training: Title
+                                                    <Button variant="outline" className={`w-[20px] h-[20px] mb-[3px] ml-[10px] rounded-full p-0 text-accent border-accent border-2`}>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-minus w-[12px] h-[12px]" width="24" height="24" viewBox="0 0 24 24" strokeWidth="3" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                            <path d="M5 12l14 0" />
+                                                        </svg>
+                                                    </Button>
+                                                </Badge>
+                                            </HoverCard.Target>
+                                            <HoverCard.Dropdown>
+                                            <Text size="sm">
+                                                LOOOOOOOOOOOTSSSSSSSSSS 
+                                                of details about endorsements
+                                            </Text>
+                                            </HoverCard.Dropdown>
+                                        </HoverCard>
+                                        <HoverCard width={280} shadow="md" zIndex={100000000}>
+                                            <HoverCard.Target>
+                                                <Badge variant="filled" color="rgba(250, 245, 240, 1)" size="lg" radius="lg" className='text-black my-[20px] mx-[10px]' onClick={handleEditEndorsment}>
+                                                    <Button variant="outline" className={`w-[40px] h-[20px] mb-[3px] mr-[10px] rounded-full p-0 text-accent border-accent border-2`}>
+                                                        Edit
+                                                    </Button>
+                                                    Course: Title
+                                                    <Button variant="outline" className={`w-[20px] h-[20px] mb-[3px] ml-[10px] rounded-full p-0 text-accent border-accent border-2`}>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-minus w-[12px] h-[12px]" width="24" height="24" viewBox="0 0 24 24" strokeWidth="3" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                            <path d="M5 12l14 0" />
+                                                        </svg>
+                                                    </Button>
+                                                </Badge>
+                                            </HoverCard.Target>
+                                            <HoverCard.Dropdown>
+                                            <Text size="sm">
+                                                LOOOOOOOOOOOTSSSSSSSSSS 
+                                                of details about endorsements
+                                            </Text>
+                                            </HoverCard.Dropdown>
+                                        </HoverCard>
+                                    </div>
                                 )}
-                                <div className="p-[10px] fixed bottom-0 right-0">
-                                    <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-4 py-2 rounded mx-[10px] my-[10px] mt-[20px] mb-[15px]"
-                                        onClick={handleEditEndorsment}>
-                                        Edit Endorsement
-                                    </Button>
-                                    <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-4 py-2 rounded mx-[10px] my-[10px] mt-[20px] ml-[130px] mb-[15px] float-right"
-                                        onClick={handleSave}>
-                                        Save Endorsement
-                                    </Button>
-                                </div>
                             </div>
                         </div>
                     </Modal>
