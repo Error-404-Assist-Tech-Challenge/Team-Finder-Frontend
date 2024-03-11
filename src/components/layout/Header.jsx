@@ -17,6 +17,7 @@ export default function GenericHeader() {
     const navigate = useNavigate();
 
     const handleLogout = async () => {
+        localStorage.clear();
         navigate('/');
         await logout();
     }
