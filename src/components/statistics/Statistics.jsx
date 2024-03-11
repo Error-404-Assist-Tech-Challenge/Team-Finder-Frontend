@@ -17,7 +17,7 @@ export default function StatisticsComp({ index, stat }) {
             <div className="flex flex-col">
                 <h1 className='text-white font-bold flex flex-col items-center' style={{ fontSize: '2rem' }}>{stat.skill_name}</h1>
                 <div className="flex flex-row justify-between">
-                    <table style={{ borderCollapse: 'separate', borderSpacing: '10px' }} className='mt-4'>
+                    <table style={{ borderCollapse: 'separate', borderSpacing: '12px' }} className='mt-4'>
                         <thead>
                             <tr>
                                 <th>Level 1</th>
@@ -28,14 +28,14 @@ export default function StatisticsComp({ index, stat }) {
                                 <th>Total</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody style={{ textAlign: 'center' }}>
                             <tr>
-                                <td>{stat.levels[1]}</td>
-                                <td>{stat.levels[2]}</td>
-                                <td>{stat.levels[3]}</td>
-                                <td>{stat.levels[4]}</td>
-                                <td>{stat.levels[5]}</td>
-                                <td>{stat.levels[0]}</td>
+                                <td style={{ fontWeight: 'bold' }}>{stat.levels[1]}</td>
+                                <td style={{ fontWeight: 'bold' }}>{stat.levels[2]}</td>
+                                <td style={{ fontWeight: 'bold' }}>{stat.levels[3]}</td>
+                                <td style={{ fontWeight: 'bold' }}>{stat.levels[4]}</td>
+                                <td style={{ fontWeight: 'bold' }}>{stat.levels[5]}</td>
+                                <td style={{ fontWeight: 'bold' }}>{stat.levels[0]}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -52,8 +52,9 @@ export default function StatisticsComp({ index, stat }) {
                 </div>
             </div>
             </Modal>
+            
             <div className="rounded-lg w-[200px] h-[80px] bg-card_modal rounded-xl text-white select-none font-bold mx-[30px] my-[20px]"
-                onClick={open} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                onClick={open} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '50%' }}>
                     <h1 className='text-white' style={{ fontSize: '1.5rem', textAlign: 'center' }}>{stat.skill_name}</h1>
                 </div>
