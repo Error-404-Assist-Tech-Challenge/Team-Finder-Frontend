@@ -3,7 +3,7 @@
 /* eslint-disable no-unused-vars */
 
 import UserSkillCard from '../skillComponents/UserSkillCard';
-import { Button, Modal, Title, Select, rem } from '@mantine/core';
+import { Button, Modal, Title, Select, rem, Divider, TextInput, Textarea } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
 import LevelCirclesSelected from '../skillComponents/LevelCirclesSelected';
@@ -25,6 +25,11 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
     const language = unusedSkills.find(lang => lang.value === addedSkill);
     const [changed, setChange] = useState(false)
     const [notification, setNotification] = useState(false);
+
+    const [training, setTraining] = useState('');
+    const [course, setCourse] =  useState('');
+    const [trainingDescpription, setTrainingDescription] = useState('');
+    const [courseDescription, setCourseDescription] =  useState('');
 
     useEffect(() => {
         setChange(true);
@@ -88,69 +93,111 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
                         </svg>
                     </Button>
                 </div>
-                <Modal opened={opened} onClose={close} centered overflow="inside" size={500} className="dark:bg-card_modal text-white select-none" zIndex={1000002}>
-                    <div className="flex flex-col space-y-4 ">
-                        <div className="flex flex-col justify-center items-center">
-                            <Title className="pb-[30px]">Add Skill</Title>
-                        </div>
-                        <div>
-                            <Select
-                                label="Skill"
-                                placeholder="Choose a skill"
-                                data={unusedSkills}
-                                value={addedSkill}
-                                onChange={setAddedSkill}
-                                searchable
-                                size="md"
-                                nothingFoundMessage="Skill does not exist..."
-                                comboboxProps={{ zIndex: 1000000000 }}
-                                className="pb-[30px]" />
-                        </div>
-                        <div className="p-3 flex justify-left text-xl">
-                            <p>
-                                <span className="font-bold">Level: </span>
-                                {addedSkill && (
-                                    <span>
-                                        {selectedSkillLevel == 1 && `You are learning ${language.label}`}
-                                        {selectedSkillLevel == 2 && `You know ${language.label}`}
-                                        {selectedSkillLevel == 3 && `You do ${language.label}`}
-                                        {selectedSkillLevel == 4 && `You can help in ${language.label}`}
-                                        {selectedSkillLevel == 5 && `You can teach ${language.label}`}
-                                    </span>
-                                )}
-                                {!addedSkill && (
-                                    <span> Please select a skill! </span>
-                                )}
-                            </p>
-                        </div>
-                        <div className="flex justify-center items-center flex-col text-center">
-                            <LevelCirclesSelected selectedSkillLevel={selectedSkillLevel} selectSkillLevel={selectSkillLevel} />
-                        </div>
-                        <div className="p-3 flex justify-left text-xl">
-                            <p>
-                                <span className="font-bold">Experience: </span>
-                                {addedSkill && (
-                                    <span>
-                                        {selectedSkillExperience == 1 && "0-6 months"}
-                                        {selectedSkillExperience == 2 && "6-12 months"}
-                                        {selectedSkillExperience == 3 && "1-2 years"}
-                                        {selectedSkillExperience == 4 && "2-4 years"}
-                                        {selectedSkillExperience == 5 && "4-7 years"}
-                                        {selectedSkillExperience == 6 && "7+ years"}
-                                    </span>
-                                )}
-                                {!addedSkill && (
-                                    <span>Please select a skill! </span>
-                                )}
+                <Modal opened={opened} onClose={close} centered overflow="inside" size={1000} className="dark:bg-card_modal text-white select-none" zIndex={1000002}>
+                    <div className='flex flex-wrap'>
+                        <div className="flex flex-col space-y-4 w-1/2">
+                            <div className="flex flex-col justify-center items-center">
+                                <Title className="pb-[30px]">Add Skill</Title>
+                            </div>
+                            <div>
+                                <Select
+                                    label="Skill"
+                                    placeholder="Choose a skill"
+                                    data={unusedSkills}
+                                    value={addedSkill}
+                                    onChange={setAddedSkill}
+                                    searchable
+                                    size="md"
+                                    nothingFoundMessage="Skill does not exist..."
+                                    comboboxProps={{ zIndex: 1000000000 }}
+                                    className="pb-[30px]" />
+                            </div>
+                            <div className="p-3 flex justify-left text-xl">
+                                <p>
+                                    <span className="font-bold">Level: </span>
+                                    {addedSkill && (
+                                        <span>
+                                            {selectedSkillLevel == 1 && `You are learning ${language.label}`}
+                                            {selectedSkillLevel == 2 && `You know ${language.label}`}
+                                            {selectedSkillLevel == 3 && `You do ${language.label}`}
+                                            {selectedSkillLevel == 4 && `You can help in ${language.label}`}
+                                            {selectedSkillLevel == 5 && `You can teach ${language.label}`}
+                                        </span>
+                                    )}
+                                    {!addedSkill && (
+                                        <span> Please select a skill! </span>
+                                    )}
+                                </p>
+                            </div>
+                            <div className="flex justify-center items-center flex-col text-center">
+                                <LevelCirclesSelected selectedSkillLevel={selectedSkillLevel} selectSkillLevel={selectSkillLevel} />
+                            </div>
+                            <div className="p-3 flex justify-left text-xl">
+                                <p>
+                                    <span className="font-bold">Experience: </span>
+                                    {addedSkill && (
+                                        <span>
+                                            {selectedSkillExperience == 1 && "0-6 months"}
+                                            {selectedSkillExperience == 2 && "6-12 months"}
+                                            {selectedSkillExperience == 3 && "1-2 years"}
+                                            {selectedSkillExperience == 4 && "2-4 years"}
+                                            {selectedSkillExperience == 5 && "4-7 years"}
+                                            {selectedSkillExperience == 6 && "7+ years"}
+                                        </span>
+                                    )}
+                                    {!addedSkill && (
+                                        <span>Please select a skill! </span>
+                                    )}
 
-                            </p>
+                                </p>
+                            </div>
+                            <div className="flex justify-center items-center flex-col text-center pb-[20px]">
+                                <ExperienceCirclesSelected selectedSkillExperience={selectedSkillExperience} selectSkillExperience={selectSkillExperience} />
+                                {addedSkill && (<Button className="bg-accent text-white hover:bg-btn_hover font-bold  py-2 rounded mx-[10px] mt-[30px] mb-[10px] float-right"
+                                    onClick={handleAddSkill} style={{ width: '460px' }}>
+                                    Add Skill
+                                </Button>)}
+                            </div>
                         </div>
-                        <div className="flex justify-center items-center flex-col text-center pb-[20px]">
-                            <ExperienceCirclesSelected selectedSkillExperience={selectedSkillExperience} selectSkillExperience={selectSkillExperience} />
-                            {addedSkill && (<Button className="bg-accent text-white hover:bg-btn_hover font-bold  py-2 rounded mx-[10px] mt-[30px] mb-[10px] float-right"
-                                onClick={handleAddSkill} style={{ width: '460px' }}>
-                                Add Skill
-                            </Button>)}
+
+                        <Divider size="sm" orientation="vertical" className='mx-4' />
+                        
+                        <div className="flex flex-col items-centre ">
+                            <div className="flex flex-col justify-center items-center">
+                                <Title className="pb-[30px] ml-[25px]">Skill Endorsements</Title>
+                            </div>
+                            < TextInput
+                                label="Training Name (optional)"
+                                placeholder="Training name..."
+                                size="md"
+                                value={training}
+                                onChange={(event) => setTraining(event.currentTarget.value)}
+                                className=" py-[15px] w-[450px]"
+                            />
+                            <Textarea
+                                label="Training Description (optional)"
+                                placeholder="Training description..."
+                                value={trainingDescpription}
+                                onChange={(event) => setTrainingDescription(event.currentTarget.value)}
+                                className=" py-[15px]"
+
+                            />
+                            < TextInput
+                                label="Course Name (optional)"
+                                placeholder="Course name..."
+                                size="md"
+                                value={course}
+                                onChange={(event) => setCourse(event.currentTarget.value)}
+                                className=" py-[15px]"
+                            />
+                            <Textarea
+                                label="Course Description (optional)"
+                                placeholder="Course description..."
+                                value={courseDescription}
+                                onChange={(event) => setCourseDescription(event.currentTarget.value)}
+                                className=" py-[15px]"
+
+                            />
                         </div>
                     </div>
                 </Modal>

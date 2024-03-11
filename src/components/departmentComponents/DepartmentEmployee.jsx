@@ -62,6 +62,12 @@ export default function DepartmentEmployee(props) {
                 {props.skills.map((skill, index) => (
                     <Badge key={index} className="m-2" color="gray" size="xl" variant="filled">{skill}</Badge>
                 ))}
+                <div className="pt-4 flex flex-col justify-start">
+                    <p className="p-4 text-xl font-bold">{props.name}'s Endorsements:</p>
+                    <Badge  className="m-2" color="gray" size="xl" variant="filled">Training endorsement</Badge>
+                    <Badge  className="m-2" color="gray" size="xl" variant="filled">Course endorsement</Badge>
+                    <Badge  className="m-2" color="gray" size="xl" variant="filled">Project endorsement</Badge>
+                </div>
                 <div>
                     <Button className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] rounded float-right" onClick={handleRemoveMember}>
                         Remove Employee
