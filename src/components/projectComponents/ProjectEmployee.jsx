@@ -71,7 +71,7 @@ export default function ProjectEmployee({ employee }) {
                 </div>
             </Modal>
 
-            <Button className="flex bg-[#495256] h-[90px] w-[220px] px-0 mx-[10px] my-[10px] rounded-xl text-white select-none font-bold"
+            <Button className="flex bg-[#878e96] h-[90px] w-[220px] px-0 mx-[10px] my-[10px] rounded-xl text-white select-none font-bold"
                 onClick={open} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
                 <div className="flex items-center justify-center h-full">
                     {!isHovering &&
@@ -87,6 +87,8 @@ export default function ProjectEmployee({ employee }) {
                 <div className="flex items-center justify-center h-full w-[220px]">
                     {isHovering && <Text className="text-lg font-bold text-center">Click to see more</Text>}
                 </div>
+
+                
             </Button >
         </>
     )

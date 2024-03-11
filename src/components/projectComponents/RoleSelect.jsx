@@ -44,7 +44,19 @@ export default function RoleSelect({ roles, teamRoles, setTeamRoles, projectRole
     });
 
     const [search, setSearch] = useState('');
-    const [value, setValue] = useState([]);
+
+
+    const mappedProjectRoles = projectRoles.map(role => role.role_id);
+
+    teamRoles.map(teamRole => {
+        const correspondingRole = projectRoles.find(role => role.role_id === teamRole.role_id);
+        if (correspondingRole) {
+            teamRole.count = correspondingRole.count;
+        }
+        return teamRole;
+    });
+
+    const [value, setValue] = useState(mappedProjectRoles);
 
     const handleValueSelect = (val) => {
         setValue((current) =>

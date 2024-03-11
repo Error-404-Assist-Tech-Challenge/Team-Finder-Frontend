@@ -181,6 +181,7 @@ export default function ProjectsPage() {
     const [projectDescription, setProjectDescription] = useState('')
     const [projectTech, setProjectTech] = useState([])
 
+
     return (
         <div className={`${darkMode && 'dark'}`}>
             <div className='dark:bg-darkcanvas bg-canvas h-auto min-h-screen select-none'>
@@ -263,7 +264,7 @@ export default function ProjectsPage() {
                         projectRoles={projectRoles}
                         setProjectRoles={setProjectRoles} />
 
-                    {projectName && projectPeriod && (projectStartDate || projectDates[0]) && (projectPeriod == 'Ongoing' || projectDates[1]) && projectStatus && projectDescription && projectTech && projectRoles && (
+                    {projectName && projectPeriod && (projectStartDate || projectDates[0]) && (projectPeriod == 'Ongoing' || projectDates[1]) && projectStatus && projectDescription && projectTech.length != 0 && projectRoles.length != 0 && (
                         <div className="flex justify-center">
                             <Button
                                 size="lg" onClick={handleAddProject}
@@ -275,7 +276,7 @@ export default function ProjectsPage() {
                 </Modal >
                 <div className="flex flex-wrap justify-center">
                     {projects.map((project, index) => (
-                        <ProjectCard key={index} project={project} />
+                        <ProjectCard key={index} project={project} roles={roles} teamRoles={teamRoles} setTeamRoles={setTeamRoles} skills={skills} />
                     ))}
                     <div className="w-[350px] h-[280px] mx-[40px] my-[40px] flex justify-center items-center">
                         <Button variant="outline" onClick={open}
