@@ -7,7 +7,7 @@ import { useDisclosure } from '@mantine/hooks';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 
-export const SkillCategoryCard = ({ name, id, setSkillCategories, visible, setVisible }) => {
+export const SkillCategoryCard = ({ name, id, is_used, setSkillCategories, visible, setVisible }) => {
 
     const [isHovering, setIsHovering] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
@@ -98,7 +98,12 @@ export const SkillCategoryCard = ({ name, id, setSkillCategories, visible, setVi
                     {isEditing && (
                         <Button className="w-[170px] mr-[5px] bg-accent mt-[10px] text-[18px]" onClick={handleSave}>Save</Button>
                     )}
-                    <Button className="w-[170px] ml-[5px] bg-accent mt-[10px] text-[18px]" onClick={deleteCategory}>Remove</Button>
+                    {!is_used && (
+                        <Button className="w-[170px] ml-[5px] bg-accent mt-[10px] text-[18px]" onClick={deleteCategory}>Remove</Button>
+                    )}
+                    {is_used && (
+                        <Button className="w-[170px] ml-[5px] bg-[gray] mt-[10px] text-[18px]" disabled>Is being used</Button>
+                    )}
                 </div>
             </div >
         </>

@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { Card, Badge, Title, Modal, Divider } from '@mantine/core';
+import { Card, Badge, Title, Modal, Divider, Checkbox, NumberInput } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useState, useEffect } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
@@ -12,6 +12,10 @@ export default function ProjectCard({ project }) {
     const [opened, { open, close }] = useDisclosure(false);
     const axiosPrivate = useAxiosPrivate();
     const [projectEmployees, setProjectEmployees] = useState([])
+
+    const [partiallyAvailable, setPartiallyAvailable] = useState(false)
+    const [closeToFinish, setCloseToFinish] = useState(null)
+    const [unavailable, setUnavailable] = useState(false)
 
     const handleOpen = () => {
         fetchProjects();
@@ -37,15 +41,27 @@ export default function ProjectCard({ project }) {
             );
             console.log('Project Employees:', response.data);
             setProjectEmployees(response.data);
-            console.log(projectEmployees);
         } catch (error) {
             console.error('Error fetching project employees:', error);
         }
     }
 
+    const filteredEmployees = projectEmployees.filter(employee => {
+
+        const isFullyAvailable = employee.work_hours == 0;
+
+        const isPartiallyAvailable = partiallyAvailable && employee.work_hours < 8;
+
+        const isCloseToFinish = closeToFinish && employee.weeks_until_next_deadline <= closeToFinish;
+
+        const isUnavailable = unavailable && employee.work_hours === 8;
+
+        return isFullyAvailable || isPartiallyAvailable /*|| isCloseToFinish*/ || isUnavailable;
+    });
+
     return (
         <>
-            <Modal opened={opened} onClose={close} size="calc(100vw - 3rem)" transitionProps={{ transition: 'fade', duration: 200 }} className="dark:bg-card_modal text-white select-none" zIndex={1000002}>
+            <Modal opened={opened} onClose={close} fullScreen transitionProps={{ transition: 'fade', duration: 200 }} className="dark:bg-card_modal text-white select-none" zIndex={1000002}>
                 <div className="h-[80vh] flex">
                     <div className="w-1/2">
                         <Title className="flex justify-center">
@@ -77,12 +93,38 @@ export default function ProjectCard({ project }) {
                     </div>
                     <Divider className="color-white" size="md" orientation="vertical" />
                     <div className="w-1/2">
-                        <Title className="flex justify-center">
+                        <Title className="flex justify-center pb-3">
                             Team Finder
                         </Title>
+                        <div className='w-full py-6 flex items-center'>
+                            <div className="w-1/3 flex justify-center">
+                                <Checkbox
+                                    size="md"
+                                    label="Include partially available"
+                                    checked={partiallyAvailable}
+                                    onChange={(event) => setPartiallyAvailable(event.currentTarget.checked)}
+                                />
+                            </div>
+                            <div className="w-1/3 flex justify-center">
+                                <NumberInput
+                                    placeholder="Include close to finish"
+                                    min={2} max={6}
+                                    className="w-10px"
+                                    value={closeToFinish} onChange={setCloseToFinish}
+                                />
+                            </div>
+                            <div className="w-1/3 flex justify-center">
+                                <Checkbox
+                                    size="md"
+                                    label="Include unavailable"
+                                    checked={unavailable}
+                                    onChange={(event) => setUnavailable(event.currentTarget.checked)}
+                                />
+                            </div>
+                        </div>
 
-                        <div className="flex flex-wrap">
-                            {projectEmployees.map((employee, index) => (
+                        <div className="flex flex-wrap justify-center">
+                            {filteredEmployees.map((employee, index) => (
                                 < ProjectEmployee key={index} employee={employee} />
                             ))}
                         </div>
