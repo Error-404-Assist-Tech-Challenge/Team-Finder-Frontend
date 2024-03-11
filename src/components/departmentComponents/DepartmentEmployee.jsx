@@ -64,9 +64,9 @@ export default function DepartmentEmployee(props) {
                 ))}
                 <div className="pt-4 flex flex-col justify-start">
                     <p className="p-4 text-xl font-bold">{props.name}'s Endorsements:</p>
-                    <Badge  className="m-2" color="gray" size="xl" variant="filled">Training endorsement</Badge>
-                    <Badge  className="m-2" color="gray" size="xl" variant="filled">Course endorsement</Badge>
-                    <Badge  className="m-2" color="gray" size="xl" variant="filled">Project endorsement</Badge>
+                    <Badge className="m-2" color="gray" size="xl" variant="filled">Training endorsement</Badge>
+                    <Badge className="m-2" color="gray" size="xl" variant="filled">Course endorsement</Badge>
+                    <Badge className="m-2" color="gray" size="xl" variant="filled">Project endorsement</Badge>
                 </div>
                 <div>
                     <Button className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] rounded float-right" onClick={handleRemoveMember}>
@@ -83,8 +83,8 @@ export default function DepartmentEmployee(props) {
             {!props.visible && (
                 <Card className="flex w-[300px] h-[120px] bg-[#505A5E] mx-[40px] my-[20px] rounded-xl text-white select-none font-bold"
                     onClick={open} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-                    <div className="flex items-center justify-left h-full">
-                        {!isHovering &&
+                    {!isHovering &&
+                        <div className="flex items-center justify-left h-full">
                             <>
                                 <div className="w-[75px] h-[75px] m-3">
                                     <Avatar className="w-[75px] h-[75px] bg-[#E9E5E6]">{getInitials(props.name)}</Avatar>
@@ -92,9 +92,13 @@ export default function DepartmentEmployee(props) {
                                 <div className="flex flex-col">
                                     <div className="text-xl font-bold">{props.name}</div>
                                 </div>
-                            </>}
-                        {isHovering && <Text className="text-lg font-bold">Click to see more</Text>}
-                    </div>
+                            </>
+                        </div>
+                    }
+                    {isHovering &&
+                        <div className="flex items-center justify-center h-full">
+                            <Text className="text-lg text-center font-bold">Click to see more</Text>
+                        </div>}
                 </Card>)}
         </>
     )

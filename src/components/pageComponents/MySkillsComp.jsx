@@ -27,9 +27,9 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
     const [notification, setNotification] = useState(false);
 
     const [training, setTraining] = useState('');
-    const [course, setCourse] =  useState('');
+    const [course, setCourse] = useState('');
     const [trainingDescpription, setTrainingDescription] = useState('');
-    const [courseDescription, setCourseDescription] =  useState('');
+    const [courseDescription, setCourseDescription] = useState('');
 
     useEffect(() => {
         setChange(true);
@@ -44,7 +44,8 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
                 JSON.stringify({
                     skill_id: addedSkill,
                     level: selectedSkillLevel,
-                    experience: selectedSkillExperience
+                    experience: selectedSkillExperience,
+                    role_id: ''
                 }),
                 {
                     headers: {
@@ -161,7 +162,7 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
                         </div>
 
                         <Divider size="sm" orientation="vertical" className='mx-4' />
-                        
+
                         <div className="flex flex-col items-centre ">
                             <div className="flex flex-col justify-center items-center">
                                 <Title className="pb-[30px] ml-[25px]">Skill Endorsements</Title>
