@@ -5,6 +5,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { useState, useEffect } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import ProjectEmployee from './ProjectEmployee';
+import { Tabs, rem } from '@mantine/core';
 
 export default function ProjectCard({ project }) {
 
@@ -122,11 +123,29 @@ export default function ProjectCard({ project }) {
                                 />
                             </div>
                         </div>
+                        <div>
+                            <Tabs defaultValue="NewMembers" color="#FF3D2E">
+                                <Tabs.List grow>
+                                    <Tabs.Tab value="NewMembers" className="  text-xl px-[40px]" >
+                                        New Members
+                                    </Tabs.Tab>
+                                    <Tabs.Tab value="ProposeMembers"  className=" text-xl px-[40px]">
+                                        Propose Members
+                                    </Tabs.Tab>
+                                </Tabs.List>
+                                <Tabs.Panel value="NewMembers">
+                                    <p>NEW MEMBERS</p>
+                                    <div className="flex flex-wrap justify-center">
+                                        {filteredEmployees.map((employee, index) => (
+                                            < ProjectEmployee key={index} employee={employee} />
+                                        ))}
+                                    </div>
+                                </Tabs.Panel>
 
-                        <div className="flex flex-wrap justify-center">
-                            {filteredEmployees.map((employee, index) => (
-                                < ProjectEmployee key={index} employee={employee} />
-                            ))}
+                                <Tabs.Panel value="ProposeMembers">
+                                    <p>PROPOSE MEMBERS</p>
+                                </Tabs.Panel>
+                            </Tabs>
                         </div>
                     </div>
                 </div>

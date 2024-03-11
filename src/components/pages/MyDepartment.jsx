@@ -174,21 +174,23 @@ setVisibleLoad(false);
                                     ))}</>)}
                             </div>
                         </Drawer>
-                        <Drawer offset={8} radius="xl" size="95%" opened={openedStatsDrawer} onClose={closeStatsDrawer} position="bottom" zIndex="1000000">
-                            <div className="flex justify-center text-white pb-9 select-none">
-                                <Title className="text-4xl">Statistics</Title>
-                            </div>
-                            <div className='flex flex-wrap'>
-                                <div className='bg-blue w-3/5 flex flex-wrap'>
-                                    {stats.map((stat, index) => (
-                                        <StatisticsComp index={index} stat={stat}/>
-                                    ))}
+                        {stats && (
+                            <Drawer offset={8} radius="xl" size="95%" opened={openedStatsDrawer} onClose={closeStatsDrawer} position="bottom" zIndex="1000000">
+                                <div className="flex justify-center text-white pb-9 select-none">
+                                    <Title className="text-4xl">Statistics</Title>
                                 </div>
-                                <div className='bg-red w-2/5' style={{ display: 'grid', placeItems: 'center' }}>
-                                    <LevelStatsComp index={0} stats={stats}/>
+                                <div className='flex flex-wrap'>
+                                    <div className='bg-blue w-3/5 flex flex-wrap'>
+                                        {stats.map((stat, index) => (
+                                            <StatisticsComp index={index} stat={stat}/>
+                                        ))}
+                                    </div>
+                                    <div className='bg-red w-2/5' style={{ display: 'grid', placeItems: 'center' }}>
+                                        <LevelStatsComp index={0} stats={stats}/>
+                                    </div>
                                 </div>
-                            </div>
-                        </Drawer>
+                            </Drawer>
+                        )}
                         {departmentName && (
                             <>
                                 <div className="flex flex-col">
