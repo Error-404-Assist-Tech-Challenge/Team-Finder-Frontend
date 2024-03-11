@@ -78,9 +78,13 @@ export default function MyDepartmentComp({ members, setMembers, }) {
 
             console.log('Response:', response.data);
 
-            setMembers(response.data)
+            setMembers(response.data);
+
+            const newAvailable = avalaible.filter(employee => employee.id !== addedEmployee)
+            setAvalaible(newAvailable)
 
             setAddedEmployee('');
+
         } catch (error) {
             console.error('Error adding employees:', error);
         }
