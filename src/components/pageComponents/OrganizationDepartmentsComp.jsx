@@ -47,7 +47,7 @@ export default function OrganizationDepartmentsComp({ departmentManagers, setDep
     return (
         <>
             <div className="flex flex-wrap justify-centerbg-darkcanvas">
-                <div className='bg-darkcanvas select-none py-[30px] flex flex-wrap'>
+                <div className='bg-darkcanvas select-none py-[30px] flex flex-wrap justify-center'>
                     {departments.map((department, index) => (
                         <DepartmentCard key={index}
                             id={department.id} manager={department.manager_name} manager_id={department.manager_id} name={department.name} members={department.department_members}
