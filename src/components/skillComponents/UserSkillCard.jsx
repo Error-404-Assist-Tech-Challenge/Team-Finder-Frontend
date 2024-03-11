@@ -99,17 +99,22 @@ export default function UserSkillCard(props) {
     }
 
 
-    const openModal = () => modals.openConfirmModal({
-        children: (
-            <Text className="text-white font-bold text-xl mb-[30px] ">
-                Are you sure you want to remove this skill?
-            </Text>
-        ),
-        labels: { confirm: 'Confirm', cancel: 'Cancel' },
-        confirmProps: { color: 'red' },
-        onConfirm: () => { handleRemoveSkill() },
-        zIndex: 1000003,
-    });
+    const openDeleteModal = () =>
+        modals.openConfirmModal({
+            title: 'Delete skill',
+            centered: true,
+            children: (
+                <Text size="sm">
+                    Are you sure you want to delete this skill? This action is destructive and you will have
+                    to contact support to restore your data.
+                </Text>
+            ),
+            labels: { confirm: 'Delete skill', cancel: "No don't delete it" },
+            confirmProps: { color: 'red' },
+            onCancel: () => console.log('Cancel'),
+            onConfirm: () => console.log(handleRemoveSkill()),
+            zIndex:10000002,
+        });
 
     const handleEditEndorsment = async () => {
         setEditEndorsement(true)
@@ -176,7 +181,7 @@ export default function UserSkillCard(props) {
                                 </div>
                                 <div className="p-[10px]">
                                     <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-4 py-2 rounded mx-[10px] mt-[30px]"
-                                        onClick={openModal}>
+                                        onClick={openDeleteModal}>
                                         Remove Skill
                                     </Button>
                                     <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-4 py-2 rounded mx-[10px] mt-[30px] float-right"

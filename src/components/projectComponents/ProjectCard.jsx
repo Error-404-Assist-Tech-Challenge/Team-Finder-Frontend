@@ -1,12 +1,12 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { Card, Badge, Title, Modal, Divider, Checkbox, NumberInput, Button } from '@mantine/core';
+import { Card, Badge, Title, Modal, Divider, Checkbox, NumberInput, Button, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useState, useEffect } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import ProjectEmployee from './ProjectEmployee';
 import { Tabs, rem } from '@mantine/core';
-
+import { modals } from '@mantine/modals';
 import ProjectEdit from './ProjectEdit';
 
 export default function ProjectCard({ project, roles, teamRoles, setTeamRoles, skills }) {
@@ -63,6 +63,25 @@ export default function ProjectCard({ project, roles, teamRoles, setTeamRoles, s
         return isFullyAvailable || isPartiallyAvailable /*|| isCloseToFinish*/ || isUnavailable;
     });
 
+    const handleRemoveProject = () =>{
+        console.log('DELETE PROJECT');
+    }
+
+    const openDeleteModal = () =>
+        modals.openConfirmModal({
+            title: 'Delete project',
+            centered: true,
+            children: (
+                <Text size="sm">
+                    Are you sure you want to delete this project? This action is destructive and you will have
+                    to contact support to restore your data.
+                </Text>
+            ),
+            labels: { confirm: 'Delete project', cancel: "No don't delete it" },
+            confirmProps: { color: 'red' },
+            onCancel: () => console.log('Cancel'),
+            onConfirm: () => console.log(handleRemoveProject()),
+        });
     return (
         <>
             <Modal opened={openedProject} onClose={closeProject} fullScreen transitionProps={{ transition: 'fade', duration: 200 }} className="dark:bg-card_modal text-white select-none" zIndex={300}>
@@ -205,7 +224,7 @@ export default function ProjectCard({ project, roles, teamRoles, setTeamRoles, s
                 </div>
                 <div className="flex justify-between">
                     <Button className="w-[120px] h-[35px] mx-4 bg-accent text-[18px]" onClick={openEdit}>Edit</Button>
-                    <Button className="w-[120px] h-[35px] mx-4 bg-accent text-[18px]">Remove</Button>
+                    <Button className="w-[120px] h-[35px] mx-4 bg-accent text-[18px]" onClick={openDeleteModal}>Remove</Button>
                 </div>
             </Card >
         </>
