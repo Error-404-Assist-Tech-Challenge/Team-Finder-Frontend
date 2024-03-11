@@ -21,8 +21,7 @@ export default function LevelStatsComp({index, stats})
             cnt = cnt + stats[i].levels[4];
         levelList[5] = stats[i].levels[5] + levelList[5]; 
         if(stats[i].levels[5] > 0)
-            cnt = cnt + stats[i].levels[5];
-        
+            cnt = cnt + stats[i].levels[5];      
     }
     const data01 = [
         { name: 'Level 1', value: levelList[1]},
@@ -39,34 +38,34 @@ export default function LevelStatsComp({index, stats})
         { name: 'Group E',  value: levelList[5] },
     ];
     return(
-        <div className='mt-4'>
-           <h1 className='text-white ml-12'  style={{ fontSize: '2em' }}>Levels in your department:</h1>
-            <table style={{ borderCollapse: 'separate', borderSpacing: '10px' }} className='text-white ml-12'>
-                <thead>
-                    <tr>
-                        <th>Level 1</th>
-                        <th>Level 2</th>
-                        <th>Level 3</th>
-                        <th>Level 4</th>
-                        <th>Level 5</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{stats[0].levels[0]}</td>
-                        <td>{stats[1].levels[0]}</td>
-                        <td>{stats[2].levels[0]}</td>
-                        <td>{stats[3].levels[0]}</td>
-                        <td>{stats[4].levels[0]}</td>
-                        <td>{cnt}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <PieChart width={500} height={500}>
-                <Pie data={data01} dataKey="value" cx="50%" cy="50%" outerRadius={130} fill="#E74C3C" />
-                <Pie data={data02} dataKey="value" cx="50%" cy="50%" innerRadius={160} outerRadius={200} fill="#922B21" label />
-            </PieChart>
-        </div>
+        <div className='mt-4 flex flex-col items-center'>
+    <h1 className='text-white' style={{ fontSize: '2em' }}>Levels in your department:</h1>
+    <table style={{ borderCollapse: 'separate', borderSpacing: '10px' }} className='text-white'>
+        <thead>
+            <tr>
+                <th >Level 1</th>
+                <th>Level 2</th>
+                <th>Level 3</th>
+                <th>Level 4</th>
+                <th>Level 5</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody style={{ textAlign: 'center' }}>
+        <tr>
+            <td style={{ fontWeight: 'bold' }}>{levelList[1]}</td>
+            <td style={{ fontWeight: 'bold' }}>{levelList[2]}</td>
+            <td style={{ fontWeight: 'bold' }}>{levelList[3]}</td>
+            <td style={{ fontWeight: 'bold' }}>{levelList[4]}</td>
+            <td style={{ fontWeight: 'bold' }}>{levelList[5]}</td>
+            <td style={{ fontWeight: 'bold' }}>{cnt}</td>
+        </tr>
+    </tbody>
+    </table>
+    <PieChart width={500} height={500}>
+        <Pie data={data01} dataKey="value" cx="50%" cy="50%" outerRadius={130} fill="#E74C3C" />
+        <Pie data={data02} dataKey="value" cx="50%" cy="50%" innerRadius={160} outerRadius={200} fill="#922B21" label />
+    </PieChart>
+</div>
     )
 }
