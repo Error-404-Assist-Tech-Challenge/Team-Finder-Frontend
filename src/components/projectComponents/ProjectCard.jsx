@@ -4,17 +4,18 @@ import { Card, Badge, Title, Modal, Divider } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useState, useEffect } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import ProjectEmployee from './ProjectEmployee';
 
 export default function ProjectCard({ project }) {
 
     const [isHovering, setIsHovering] = useState(false);
     const [opened, { open, close }] = useDisclosure(false);
     const axiosPrivate = useAxiosPrivate();
-    const [projectEmployees, setProjectEmployees] = useState(false)
+    const [projectEmployees, setProjectEmployees] = useState([])
 
     const handleOpen = () => {
-        open();
         fetchProjects();
+        open();
     }
 
     const fetchProjects = async () => {
@@ -36,6 +37,7 @@ export default function ProjectCard({ project }) {
             );
             console.log('Project Employees:', response.data);
             setProjectEmployees(response.data);
+            console.log(projectEmployees);
         } catch (error) {
             console.error('Error fetching project employees:', error);
         }
@@ -78,6 +80,12 @@ export default function ProjectCard({ project }) {
                         <Title className="flex justify-center">
                             Team Finder
                         </Title>
+
+                        <div className="flex flex-wrap">
+                            {projectEmployees.map((employee, index) => (
+                                < ProjectEmployee key={index} employee={employee} />
+                            ))}
+                        </div>
                     </div>
                 </div>
             </Modal>

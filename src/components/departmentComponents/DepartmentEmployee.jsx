@@ -13,19 +13,6 @@ export default function DepartmentEmployee(props) {
     const [opened, { open, close }] = useDisclosure(false);
     const [isHovering, setIsHovering] = useState(false);
 
-    const skills = [
-        "Programming Languages",
-        "Data Structures",
-        "Algorithms",
-        "Object-Oriented Design",
-        "Database Management",
-        "Web Development",
-        "Software Engineering",
-        "Version Control Systems",
-        "Networking",
-        "Operating Systems"
-    ]
-
     // Remove user skill
 
     const handleRemoveMember = async () => {
