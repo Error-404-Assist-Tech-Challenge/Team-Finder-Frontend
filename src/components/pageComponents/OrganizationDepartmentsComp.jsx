@@ -52,9 +52,9 @@ export default function OrganizationDepartmentsComp({ departmentManagers, setDep
                         <DepartmentCard key={index}
                             id={department.id} manager={department.manager_name} manager_id={department.manager_id} name={department.name} members={department.department_members}
                             departmentManagers={departmentManagers} setDepartmentManagers={setDepartmentManagers}
-                            departments={departments} setDepartments={setDepartments} visible={visible} setVisible={setVisible}/>
+                            departments={departments} setDepartments={setDepartments} visible={visible} setVisible={setVisible} />
                     ))}
-                    <div className="w-[200px] h-[224px] flex justify-center items-center">
+                    <div className="w-[320px] h-[224px] flex justify-center items-center">
                         <Button variant="outline" onClick={open}
                             className={`relative w-[80px] h-[80px] m-[6px] rounded-full p-0 text-accent border-accent border-[5px] hover:text-accent`}>
                             <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus w-full h-full" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">

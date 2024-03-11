@@ -276,7 +276,7 @@ export default function ProjectsPage() {
                 </Modal >
                 <div className="flex flex-wrap justify-center">
                     {projects.map((project, index) => (
-                        <ProjectCard key={index} project={project} roles={roles} teamRoles={teamRoles} setTeamRoles={setTeamRoles} skills={skills} />
+                        <ProjectCard key={index} project={project} setProjects={setProjects} roles={roles} teamRoles={teamRoles} setTeamRoles={setTeamRoles} skills={skills} />
                     ))}
                     <div className="w-[350px] h-[280px] mx-[40px] my-[40px] flex justify-center items-center">
                         <Button variant="outline" onClick={open}

@@ -9,7 +9,7 @@ import { Tabs, rem } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import ProjectEdit from './ProjectEdit';
 
-export default function ProjectCard({ project, roles, teamRoles, setTeamRoles, skills }) {
+export default function ProjectCard({ project, setProjects, roles, teamRoles, setTeamRoles, skills }) {
 
     const [isHovering, setIsHovering] = useState(false);
     const [openedProject, { open: openProject, close: closeProject }] = useDisclosure(false);
@@ -50,6 +50,30 @@ export default function ProjectCard({ project, roles, teamRoles, setTeamRoles, s
         }
     }
 
+    const deleteProject = async () => {
+        close();
+        try {
+            const response = await axiosPrivate.delete('project', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Credentials': 'true'
+                },
+                data: {
+                    proj_id: project.id
+                },
+                withCredentials: true
+            });
+
+            console.log('Response:', response.data);
+
+            setProjects(response.data);
+
+        } catch (error) {
+            console.error('Error deleting project:', error);
+        }
+    }
+
     const filteredEmployees = projectEmployees.filter(employee => {
 
         const isFullyAvailable = employee.work_hours == 0;
@@ -62,10 +86,6 @@ export default function ProjectCard({ project, roles, teamRoles, setTeamRoles, s
 
         return isFullyAvailable || isPartiallyAvailable /*|| isCloseToFinish*/ || isUnavailable;
     });
-
-    const handleRemoveProject = () =>{
-        console.log('DELETE PROJECT');
-    }
 
     const openDeleteModal = () =>
         modals.openConfirmModal({
@@ -80,153 +100,153 @@ export default function ProjectCard({ project, roles, teamRoles, setTeamRoles, s
             labels: { confirm: 'Delete project', cancel: "No don't delete it" },
             confirmProps: { color: 'red' },
             onCancel: () => console.log('Cancel'),
-            onConfirm: () => console.log(handleRemoveProject()),
-        });
-    return (
-        <>
-            <Modal opened={openedProject} onClose={closeProject} fullScreen transitionProps={{ transition: 'fade', duration: 200 }} className="dark:bg-card_modal text-white select-none" zIndex={300}>
-                <div className="h-[80vh] flex">
-                    <div className="w-1/2">
-                        <Title className="flex justify-center">
-                            {project.name}
-                        </Title>
-                        <div className="text-[20px] p-9">
-                            <p className="py-1"><span className="font-bold">Period</span>: {project.period}</p>
-                            <p className="py-1"><span className="font-bold">Start Date</span>: {project.start_date}</p>
-                            {project.deadline_date && (
-                                <p className="py-1"><span className="font-bold">Deadline Date</span>: {project.deadline_date}</p>
-                            )}
-                            <p className="py-1"><span className="font-bold">Status</span>: {project.status}</p>
-                            <p className="py-1"><span className="font-bold">Description</span>: {project.description}</p>
-                            <div className="flex items-center flex-wrap">
-                                <p className="py-1"><span className="font-bold">Technology Stack</span>: </p>
-                                {project.tech_stack.map((tech) => (
-                                    <Badge key={tech.skill_id} className="mx-3 my-1" color="gray" size="xl">{tech.skill_name}</Badge>
-                                ))}
-                            </div>
-                            <div className="flex items-center flex-wrap">
-                                <p className="py-1"><span className="font-bold">Team Roles</span>: </p>
-                                {project.team_role.map((role) => (
-                                    <Badge key={role.role_id} className="mx-3 my-1" color="gray" size="xl">
-                                        {role.count}x {role.role_name}
-                                    </Badge>
-                                ))}
-                            </div>
-                        </div>
-                        <div>
-                            <Tabs defaultValue="ActiveMembers" color="#FF3D2E">
-                                <Tabs.List grow>
-                                    <Tabs.Tab value="ActiveMembers" className="  text-xl px-[40px]" >
-                                        Active Members
-                                    </Tabs.Tab>
-                                    <Tabs.Tab value="PastMembers" className=" text-xl px-[40px]">
-                                        Past Members
-                                    </Tabs.Tab>
-                                </Tabs.List>
-
-                                <Tabs.Panel value="ActiveMembers">
-                                    <p>Active Members</p>
-                                </Tabs.Panel>
-
-                                <Tabs.Panel value="PastMembers">
-                                    <p>Past Members</p>
-                                </Tabs.Panel>
-                            </Tabs>
-                        </div>
-                    </div>
-                    <Divider className="color-white" size="md" orientation="vertical" />
-                    <div className="w-1/2">
-                        <Title className="flex justify-center pb-3">
-                            Team Finder
-                        </Title>
-
-                        <div>
-                            <Tabs defaultValue="NewMembers" color="#FF3D2E">
-                                <Tabs.List grow>
-                                    <Tabs.Tab value="NewMembers" className="  text-xl px-[40px]" >
-                                        New Members
-                                    </Tabs.Tab>
-                                    <Tabs.Tab value="ProposedMembers" className=" text-xl px-[40px]">
-                                        Proposed Members
-                                    </Tabs.Tab>
-                                </Tabs.List>
-
-                                <Tabs.Panel value="NewMembers">
-                                    <div className='w-full py-6 flex items-center'>
-                                        <div className="w-1/3 flex justify-center">
-                                            <Checkbox
-                                                size="md"
-                                                label="Include partially available"
-                                                checked={partiallyAvailable}
-                                                onChange={(event) => setPartiallyAvailable(event.currentTarget.checked)}
-                                            />
-                                        </div>
-                                        <div className="w-1/3 flex justify-center">
-                                            <NumberInput
-                                                placeholder="Include close to finish"
-                                                min={2} max={6}
-                                                className="w-10px"
-                                                value={closeToFinish} onChange={setCloseToFinish}
-                                            />
-                                        </div>
-                                        <div className="w-1/3 flex justify-center">
-                                            <Checkbox
-                                                size="md"
-                                                label="Include unavailable"
-                                                checked={unavailable}
-                                                onChange={(event) => setUnavailable(event.currentTarget.checked)}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-wrap justify-center">
-                                        {filteredEmployees.map((employee, index) => (
-                                            <ProjectEmployee key={index} employee={employee} />
-                                        ))}
-                                    </div>
-                                </Tabs.Panel>
-
-                                <Tabs.Panel value="ProposedMembers">
-                                    <p>Proposed Members</p>
-                                </Tabs.Panel>
-                            </Tabs>
-                        </div>
-                    </div>
-                </div>
-            </Modal>
-
-            <Modal opened={openedEdit} onClose={closeEdit} transitionProps={{ transition: 'fade', duration: 200 }} className="dark:bg-card_modal text-white select-none" zIndex={300}>
-                <ProjectEdit project={project} roles={roles} teamRoles={teamRoles} setTeamRoles={setTeamRoles} skills={skills} />
-            </Modal>
-
-            <Card className="flex w-[350px] h-[300px] dark:bg-card_modal mx-[40px] my-[40px] rounded-xl dark:text-darktext text-text select-none"
-                onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-                <Card.Section className="dark:bg-[#495256]" onClick={handleOpenProject}>
-                    <Title className="py-6 px-2 flex justify-center text-center text-[28px]">
+            onConfirm: () => deleteProject()),
+});
+return (
+    <>
+        <Modal opened={openedProject} onClose={closeProject} fullScreen transitionProps={{ transition: 'fade', duration: 200 }} className="dark:bg-card_modal text-white select-none" zIndex={300}>
+            <div className="h-[80vh] flex">
+                <div className="w-1/2">
+                    <Title className="flex justify-center">
                         {project.name}
                     </Title>
-                </Card.Section>
-                <div className="h-[250px]" onClick={handleOpenProject}>
-                    {!isHovering && (
-                        <div className="text-[18px] pt-4 pl-4">
-                            <p className="py-1"><span className="font-bold">Period</span>: {project.period}</p>
-                            <p className="py-1"><span className="font-bold">Start Date</span>: {project.start_date}</p>
-                            {project.deadline_date && (
-                                <p className="py-1"><span className="font-bold">Deadline Date</span>: {project.deadline_date}</p>
-                            )}
-                            <p className="pt-1"><span className="font-bold">Status</span>: {project.status}</p>
+                    <div className="text-[20px] p-9">
+                        <p className="py-1"><span className="font-bold">Period</span>: {project.period}</p>
+                        <p className="py-1"><span className="font-bold">Start Date</span>: {project.start_date}</p>
+                        {project.deadline_date && (
+                            <p className="py-1"><span className="font-bold">Deadline Date</span>: {project.deadline_date}</p>
+                        )}
+                        <p className="py-1"><span className="font-bold">Status</span>: {project.status}</p>
+                        <p className="py-1"><span className="font-bold">Description</span>: {project.description}</p>
+                        <div className="flex items-center flex-wrap">
+                            <p className="py-1"><span className="font-bold">Technology Stack</span>: </p>
+                            {project.tech_stack.map((tech) => (
+                                <Badge key={tech.skill_id} className="mx-3 my-1" color="gray" size="xl">{tech.skill_name}</Badge>
+                            ))}
                         </div>
-                    )}
-                    {isHovering && (
-                        <div className="flex h-full w-full justify-center text-center items-center">
-                            <p className="text-xl text-center">Click to see more!</p>
+                        <div className="flex items-center flex-wrap">
+                            <p className="py-1"><span className="font-bold">Team Roles</span>: </p>
+                            {project.team_role.map((role) => (
+                                <Badge key={role.role_id} className="mx-3 my-1" color="gray" size="xl">
+                                    {role.count}x {role.role_name}
+                                </Badge>
+                            ))}
                         </div>
-                    )}
+                    </div>
+                    <div>
+                        <Tabs defaultValue="ActiveMembers" color="#FF3D2E">
+                            <Tabs.List grow>
+                                <Tabs.Tab value="ActiveMembers" className="  text-xl px-[40px]" >
+                                    Active Members
+                                </Tabs.Tab>
+                                <Tabs.Tab value="PastMembers" className=" text-xl px-[40px]">
+                                    Past Members
+                                </Tabs.Tab>
+                            </Tabs.List>
+
+                            <Tabs.Panel value="ActiveMembers">
+                                <p>Active Members</p>
+                            </Tabs.Panel>
+
+                            <Tabs.Panel value="PastMembers">
+                                <p>Past Members</p>
+                            </Tabs.Panel>
+                        </Tabs>
+                    </div>
                 </div>
-                <div className="flex justify-between">
-                    <Button className="w-[120px] h-[35px] mx-4 bg-accent text-[18px]" onClick={openEdit}>Edit</Button>
-                    <Button className="w-[120px] h-[35px] mx-4 bg-accent text-[18px]" onClick={openDeleteModal}>Remove</Button>
+                <Divider className="color-white" size="md" orientation="vertical" />
+                <div className="w-1/2">
+                    <Title className="flex justify-center pb-3">
+                        Team Finder
+                    </Title>
+
+                    <div>
+                        <Tabs defaultValue="NewMembers" color="#FF3D2E">
+                            <Tabs.List grow>
+                                <Tabs.Tab value="NewMembers" className="  text-xl px-[40px]" >
+                                    New Members
+                                </Tabs.Tab>
+                                <Tabs.Tab value="ProposedMembers" className=" text-xl px-[40px]">
+                                    Proposed Members
+                                </Tabs.Tab>
+                            </Tabs.List>
+
+                            <Tabs.Panel value="NewMembers">
+                                <div className='w-full py-6 flex items-center'>
+                                    <div className="w-1/3 flex justify-center">
+                                        <Checkbox
+                                            size="md"
+                                            label="Include partially available"
+                                            checked={partiallyAvailable}
+                                            onChange={(event) => setPartiallyAvailable(event.currentTarget.checked)}
+                                        />
+                                    </div>
+                                    <div className="w-1/3 flex justify-center">
+                                        <NumberInput
+                                            placeholder="Include close to finish"
+                                            min={2} max={6}
+                                            className="w-10px"
+                                            value={closeToFinish} onChange={setCloseToFinish}
+                                        />
+                                    </div>
+                                    <div className="w-1/3 flex justify-center">
+                                        <Checkbox
+                                            size="md"
+                                            label="Include unavailable"
+                                            checked={unavailable}
+                                            onChange={(event) => setUnavailable(event.currentTarget.checked)}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="flex flex-wrap justify-center">
+                                    {filteredEmployees.map((employee, index) => (
+                                        <ProjectEmployee key={index} employee={employee} />
+                                    ))}
+                                </div>
+                            </Tabs.Panel>
+
+                            <Tabs.Panel value="ProposedMembers">
+                                <p>Proposed Members</p>
+                            </Tabs.Panel>
+                        </Tabs>
+                    </div>
                 </div>
-            </Card >
-        </>
-    )
+            </div>
+        </Modal>
+
+        <Modal opened={openedEdit} onClose={closeEdit} transitionProps={{ transition: 'fade', duration: 200 }} className="dark:bg-card_modal text-white select-none" zIndex={300}>
+            <ProjectEdit project={project} roles={roles} teamRoles={teamRoles} setTeamRoles={setTeamRoles} skills={skills} />
+        </Modal>
+
+        <Card className="flex w-[350px] h-[300px] dark:bg-card_modal mx-[40px] my-[40px] rounded-xl dark:text-darktext text-text select-none"
+            onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+            <Card.Section className="dark:bg-[#495256]" onClick={handleOpenProject}>
+                <Title className="py-6 px-2 flex justify-center text-center text-[28px]">
+                    {project.name}
+                </Title>
+            </Card.Section>
+            <div className="h-[250px]" onClick={handleOpenProject}>
+                {!isHovering && (
+                    <div className="text-[18px] pt-4 pl-4">
+                        <p className="py-1"><span className="font-bold">Period</span>: {project.period}</p>
+                        <p className="py-1"><span className="font-bold">Start Date</span>: {project.start_date}</p>
+                        {project.deadline_date && (
+                            <p className="py-1"><span className="font-bold">Deadline Date</span>: {project.deadline_date}</p>
+                        )}
+                        <p className="pt-1"><span className="font-bold">Status</span>: {project.status}</p>
+                    </div>
+                )}
+                {isHovering && (
+                    <div className="flex h-full w-full justify-center text-center items-center">
+                        <p className="text-xl text-center">Click to see more!</p>
+                    </div>
+                )}
+            </div>
+            <div className="flex justify-between">
+                <Button className="w-[120px] h-[35px] mx-4 bg-accent text-[18px]" onClick={openEdit}>Edit</Button>
+                <Button className="w-[120px] h-[35px] mx-4 bg-accent text-[18px]" onClick={openDeleteModal}>Remove</Button>
+            </div>
+        </Card >
+    </>
+)
 }
