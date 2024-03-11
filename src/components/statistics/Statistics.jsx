@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
-import { Modal } from '@mantine/core';
+import { Modal, Divider } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Table } from '@mantine/core';
 import PiechartComp from './SkillLevelStat';
