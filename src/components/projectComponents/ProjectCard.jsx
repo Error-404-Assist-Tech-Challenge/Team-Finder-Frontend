@@ -1,12 +1,45 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { Card, Badge, Title, Modal, Divider } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 export default function ProjectCard({ project }) {
 
     const [isHovering, setIsHovering] = useState(false);
     const [opened, { open, close }] = useDisclosure(false);
+    const axiosPrivate = useAxiosPrivate();
+    const [projectEmployees, setProjectEmployees] = useState(false)
+
+    const handleOpen = () => {
+        open();
+        fetchProjects();
+    }
+
+    const fetchProjects = async () => {
+        try {
+            const response = await axiosPrivate.get(
+                'projects/search_employees',
+                {
+                    params: {
+                        proj_id: project.id,
+                        weeks_until_deadline: null
+                    },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Credentials': 'true'
+                    },
+                    withCredentials: true
+                }
+            );
+            console.log('Project Employees:', response.data);
+            setProjectEmployees(response.data);
+        } catch (error) {
+            console.error('Error fetching project employees:', error);
+        }
+    }
 
     return (
         <>
@@ -49,7 +82,7 @@ export default function ProjectCard({ project }) {
                 </div>
             </Modal>
             <Card className="flex w-[350px] h-[280px] dark:bg-card_modal mx-[40px] my-[40px] rounded-xl dark:text-darktext text-text select-none"
-                onClick={open} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+                onClick={handleOpen} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
                 <Card.Section className="dark:bg-[#495256]">
                     <Title className="py-6 px-2 flex justify-center text-center text-[28px]">
                         {project.name}
