@@ -107,39 +107,6 @@ export default function OrganizationSkillsPage() {
         }
     }, [])
 
-    // Adds skill category
-
-    const [isAdding, setIsAdding] = useState(false)
-    const [categoryName, setCategoryName] = useState('')
-
-    const handleAddCategory = async () => {
-        try {
-            const response = await axiosPrivate.post('skills/categories',
-                JSON.stringify({
-                    name: categoryName
-                }),
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Access-Control-Allow-Origin': '*',
-                        'Access-Control-Allow-Credentials': 'true'
-                    },
-                    withCredentials: true
-                });
-
-            console.log('Response:', response.data);
-
-            setSkillCategories(response.data);
-
-        } catch (error) {
-            console.error('Error fetching unused skills:', error);
-        }
-        setIsAdding(false)
-        setCategoryName('')
-    }
-
-
-
     return (
         <section className={`${darkMode && 'dark'}`}>
             <div className='dark:bg-darkcanvas bg-canvas h-auto min-h-screen select-none'>
@@ -159,11 +126,11 @@ export default function OrganizationSkillsPage() {
                     </div>
                     <Divider orientation="vertical" />
                     <Drawer offset={8} radius="md" opened={opened} onClose={close} position="right" zIndex="1000000">
-                        <OrganizationCategoriesComp skillCategories={currentPostsCatego} setSkillCategories={setSkillCategories} 
-                                                    visibleLoad={visibleLoad} setVisibleLoad={setVisibleLoad} visible={visible} setVisible={setVisible} />
+                        <OrganizationCategoriesComp skillCategories={currentPostsCatego} setSkillCategories={setSkillCategories}
+                            visibleLoad={visibleLoad} setVisibleLoad={setVisibleLoad} visible={visible} setVisible={setVisible} />
                         <div className='flex justify-center items-center'>
-                                        <PaginationComp totalPosts={skillCategories.length} postsPerPage={postPerPageCatego} 
-                                                        currentPage={currentPageCatego} setCurrentPage={setCurrentPageCatego} drawer={true} />
+                            <PaginationComp totalPosts={skillCategories.length} postsPerPage={postPerPageCatego}
+                                currentPage={currentPageCatego} setCurrentPage={setCurrentPageCatego} drawer={true} />
                         </div>
                     </Drawer>
                     {auth?.roles.includes("dept_manager") && (
