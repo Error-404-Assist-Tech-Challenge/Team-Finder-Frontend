@@ -184,7 +184,7 @@ setVisibleLoad(false);
                                         <StatisticsComp index={index} stat={stat}/>
                                     ))}
                                 </div>
-                                <div className='bg-red w-2/5'>
+                                <div className='bg-red w-2/5' style={{ display: 'grid', placeItems: 'center' }}>
                                     <LevelStatsComp index={0} stats={stats}/>
                                 </div>
                             </div>

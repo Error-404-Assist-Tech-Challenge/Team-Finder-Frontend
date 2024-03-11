@@ -16,8 +16,8 @@ export default function TotalCountStats({index, stats})
     return(
         <>
             <PieChart width={400} height={300}>
-                <Pie data={data01} dataKey="value" cx="50%" cy="50%" outerRadius={60} fill="#8884d8" />
-                <Pie data={data02} dataKey="value" cx="50%" cy="50%" innerRadius={70} outerRadius={90} fill="#82ca9d" label />
+                <Pie data={data01} dataKey="value" cx="50%" cy="50%" outerRadius={60} fill="#DC143C" />
+                <Pie data={data02} dataKey="value" cx="50%" cy="50%" innerRadius={70} outerRadius={90} fill="#8B0000" label />
             </PieChart>
         </>
     )
