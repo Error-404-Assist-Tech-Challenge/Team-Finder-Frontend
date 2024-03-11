@@ -100,8 +100,8 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
             labels: { confirm: 'Delete project', cancel: "No don't delete it" },
             confirmProps: { color: 'red' },
             onCancel: () => console.log('Cancel'),
-            onConfirm: () => deleteProject()),
-});
+            onConfirm: () => deleteProject(),
+    });
 return (
     <>
         <Modal opened={openedProject} onClose={closeProject} fullScreen transitionProps={{ transition: 'fade', duration: 200 }} className="dark:bg-card_modal text-white select-none" zIndex={300}>
