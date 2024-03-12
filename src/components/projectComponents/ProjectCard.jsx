@@ -4,7 +4,7 @@ import { Card, Badge, Title, Modal, Divider, Checkbox, NumberInput, Button, Text
 import { useDisclosure } from '@mantine/hooks';
 import { useState, useEffect } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
-import ProjectEmployee from './ProjectEmployee';
+import NewMemberCard from './NewMemberCard';
 import { Tabs, rem } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import ProjectEdit from './ProjectEdit';
@@ -111,6 +111,7 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
             onCancel: () => console.log('Cancel'),
             onConfirm: () => deleteProject(),
         });
+
     return (
         <>
             <Modal opened={openedProject} onClose={closeProject} fullScreen transitionProps={{ transition: 'fade', duration: 200 }} className="dark:bg-card_modal text-white select-none" zIndex={300}>
@@ -209,7 +210,7 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                                     </div>
                                     <div className="flex flex-wrap justify-center">
                                         {filteredMembers.map((employee, index) => (
-                                            <ProjectEmployee key={index} employee={employee} />
+                                            <NewMemberCard key={index} employee={employee} available_roles={project.available_roles} project_id={project.id} />
                                         ))}
                                     </div>
                                 </Tabs.Panel>
@@ -224,7 +225,7 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
             </Modal>
 
             <Modal opened={openedEdit} onClose={closeEdit} transitionProps={{ transition: 'fade', duration: 200 }} className="dark:bg-card_modal text-white select-none" zIndex={300}>
-                <ProjectEdit project={project} roles={roles} teamRoles={teamRoles} setTeamRoles={setTeamRoles} skills={skills} />
+                <ProjectEdit project={project} setProjects={setProjects} roles={roles} teamRoles={teamRoles} setTeamRoles={setTeamRoles} skills={skills} closeEdit={closeEdit} />
             </Modal>
 
             <Card className="flex w-[350px] h-[300px] dark:bg-card_modal mx-[40px] my-[40px] rounded-xl dark:text-darktext text-text select-none"
@@ -253,7 +254,12 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                 </div>
                 <div className="flex justify-between">
                     <Button className="w-[120px] h-[35px] mx-4 bg-accent text-[18px]" onClick={openEdit}>Edit</Button>
-                    <Button className="w-[120px] h-[35px] mx-4 bg-accent text-[18px]" onClick={openDeleteModal}>Remove</Button>
+                    {project.can_be_deleted == "True" &&
+                        <Button className="w-[120px] h-[35px] mx-4 bg-accent text-[18px]" onClick={openDeleteModal}>Remove</Button>
+                    }
+                    {project.can_be_deleted != "True" &&
+                        <Button className="w-[120px] h-[35px] mx-4 bg-[gray] text-[18px]" disabled>Remove</Button>
+                    }
                 </div>
             </Card >
         </>

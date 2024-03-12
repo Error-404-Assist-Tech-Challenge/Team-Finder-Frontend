@@ -103,8 +103,6 @@ export default function ProjectsComp({ projects, setProjects }) {
                 ? projectDates[1]
                 : null
 
-        console.log(projectDates[1])
-
         console.log(JSON.stringify({
             name: projectName,
             period: projectPeriod,
@@ -164,6 +162,16 @@ export default function ProjectsComp({ projects, setProjects }) {
     const [projectDescription, setProjectDescription] = useState('')
     const [projectTech, setProjectTech] = useState([])
 
+    const [periodFilter, setPeriodFilter] = useState(null)
+    const [statusFilter, setStatusFilter] = useState(null)
+
+    const filteredProjects = projects.filter(project => {
+        const isPeriodFiltered = periodFilter == null || periodFilter == project.period;
+
+        const isStatusFiltered = statusFilter == null || statusFilter == project.status;
+
+        return isPeriodFiltered && isStatusFiltered;
+    });
 
     return (
         <div className={`${darkMode && 'dark'}`}>
@@ -257,8 +265,26 @@ export default function ProjectsComp({ projects, setProjects }) {
                         </div>
                     )}
                 </Modal >
-                <div className="flex flex-wrap justify-center">
-                    {projects.map((project, index) => (
+                <div className="flex flex-wrap justify-center w-full">
+                    <div className="flex w-full justify-around">
+                        <Select
+                            placeholder="Filter by period..."
+                            data={['Fixed', 'Ongoing']}
+                            value={periodFilter}
+                            onChange={setPeriodFilter}
+                            size="sm"
+                            className="py-[20px] px-[40px]"
+                        />
+                        <Select
+                            placeholder="Filter by status..."
+                            data={['Not Started', 'Starting', 'In Progress', 'Closing', 'Closed']}
+                            value={statusFilter}
+                            onChange={setStatusFilter}
+                            size="sm"
+                            className="py-[20px] px-[40px]"
+                        />
+                    </div>
+                    {filteredProjects.map((project, index) => (
                         <ProjectCard key={index} project={project} setProjects={setProjects} roles={roles} teamRoles={teamRoles} setTeamRoles={setTeamRoles} skills={skills} />
                     ))}
                     <div className="w-[350px] h-[280px] mx-[40px] my-[40px] flex justify-center items-center">
