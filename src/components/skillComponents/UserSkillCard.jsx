@@ -42,14 +42,16 @@ export default function UserSkillCard(props) {
         open();
     }
 
+    for(let i = 0; i < props.endorsementsList.length; i++)
+    {
+        if(props.endorsementsList[i].proj_id==="None")
+            props.endorsementsList[i].proj_id=""
+    }
     const handleSave = async () => {
         close();
         props.setVisible(true);
         try {
-            console.log(tempEndoLsit);
-            console.log(props.endorsementsList);
             const updatedEndorsementsList = props.endorsementsList.concat(tempEndoLsit);
-            console.log(updatedEndorsementsList);
             console.log({
                 skill_id: props.skills[props.index].skill_id,
                 level: currentLevel,
