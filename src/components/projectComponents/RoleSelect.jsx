@@ -5,7 +5,12 @@ import { PillsInput, Pill, Combobox, CheckIcon, Group, useCombobox, Button } fro
 
 export default function ExistingRoleSelect({ roles, teamRoles, setTeamRoles, projectRoles, setProjectRoles }) {
 
-    const updateUserRoles = async () => {
+    const [search, setSearch] = useState('');
+    const [value, setValue] = useState([]);
+    // console.log(value)
+    // console.log('projectRoles', projectRoles)
+
+    const updateUserRoles = () => {
         const updatedProjectRoles = value.map(item => ({
             role_id: item,
             count: teamRoles.find(role => role.role_id === item).count,
@@ -14,13 +19,16 @@ export default function ExistingRoleSelect({ roles, teamRoles, setTeamRoles, pro
         setProjectRoles(updatedProjectRoles)
     }
 
+    useEffect(() => {
+        updateUserRoles();
+    }, [value])
+
     const addCount = (role_id) => {
         setTeamRoles(prevRoles => (
             prevRoles.map(role =>
                 role.role_id === role_id ? { ...role, count: parseInt(role.count, 10) + 1 } : role
             )
         ));
-        updateUserRoles();
     }
 
     const removeCount = (role_id) => {
@@ -35,16 +43,12 @@ export default function ExistingRoleSelect({ roles, teamRoles, setTeamRoles, pro
                 )
             ));
         }
-        updateUserRoles();
     }
 
     const combobox = useCombobox({
         onDropdownClose: () => combobox.resetSelectedOption(),
         onDropdownOpen: () => combobox.updateSelectedOptionIndex('active'),
     });
-
-    const [search, setSearch] = useState('');
-    const [value, setValue] = useState([]);
 
     useEffect(() => {
         const mappedProjectRoles = projectRoles.map(role => role.role_id); // only difference
@@ -59,18 +63,13 @@ export default function ExistingRoleSelect({ roles, teamRoles, setTeamRoles, pro
     }, [])
 
     const handleValueSelect = (val) => {
-        console.log("added role")
         setValue((current) =>
             current.includes(val) ? current.filter((v) => v !== val) : [...current, val]
         );
-        updateUserRoles();
-
     }
 
     const handleValueRemove = (val) => {
-        console.log("removed role")
         setValue((current) => current.filter((v) => v !== val));
-        updateUserRoles();
     }
 
     const values = value.map((item) => {
@@ -79,7 +78,6 @@ export default function ExistingRoleSelect({ roles, teamRoles, setTeamRoles, pro
 
         return (
             <Pill key={item} size="lg">
-
                 <div className="flex items-center">
                     <Button variant="outline" onClick={() => removeCount(item)}
                         className={`w-[15px] h-[15px] m-[6px] rounded-full p-0 text-accent border-accent border-2`}>
@@ -100,7 +98,6 @@ export default function ExistingRoleSelect({ roles, teamRoles, setTeamRoles, pro
                         </svg>
                     </Button>
                 </div>
-
             </Pill>
         );
     });

@@ -108,7 +108,7 @@ export default function MyDepartmentComp({ members, setMembers, }) {
                     onChange={setAddedEmployee}
                     searchable
                     size="lg"
-                    allowDeselect={false}
+                    allowdeselect={false}
                     nothingFoundMessage="No employees avalaible..."
                     comboboxProps={{ zIndex: 1000000000 }} />
                 <div className="flex justify-center">

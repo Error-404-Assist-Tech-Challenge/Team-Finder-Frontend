@@ -9,9 +9,8 @@ import { Tabs, rem } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import ProjectEdit from './ProjectEdit';
 import NewMemberComp from '../pageComponents/NewMemberComp';
-import NewMemberCard from './NewMemberCard';
 import ProposedMemberCard from './ProposedMemberCard';
-import ProposedMembersComp from './ProposedMembersComp';
+import ActiveMemberCard from './ActiveMemberCard';
 
 export default function ProjectCard({ project, setProjects, roles, teamRoles, setTeamRoles, skills }) {
 
@@ -86,9 +85,9 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
     const filteredMembers = newMembers.filter(employee => {
         const isFullyAvailable = employee.work_hours == 0;
         const isPartiallyAvailable = partiallyAvailable && employee.work_hours < 8;
-        const isCloseToFinish = closeToFinish && employee.weeks_until_next_deadline <= closeToFinish;
+        const isCloseToFinish = closeToFinish && employee.deadline <= closeToFinish;
         const isUnavailable = unavailable && employee.work_hours === 8;
-        return isFullyAvailable || isPartiallyAvailable /*|| isCloseToFinish*/ || isUnavailable;
+        return isFullyAvailable || isPartiallyAvailable || isCloseToFinish || isUnavailable;
     });
 
     const [currentPageFiltered, setCurrentPageFiltered] = useState(1);
@@ -154,19 +153,31 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                             <Tabs defaultValue="ActiveMembers" color="#FF3D2E">
                                 <Tabs.List grow>
                                     <Tabs.Tab value="ActiveMembers" className="  text-xl px-[40px]" >
-                                        Active Members
+                                        Active Members ({activeMembers.length})
                                     </Tabs.Tab>
                                     <Tabs.Tab value="PastMembers" className=" text-xl px-[40px]">
-                                        Past Members
+                                        Past Members ({pastMembers.length})
                                     </Tabs.Tab>
                                 </Tabs.List>
 
                                 <Tabs.Panel value="ActiveMembers">
-                                    <p>Active Members</p>
+
+                                    {activeMembers.map((employee, index) => (
+                                        <ActiveMemberCard key={index} employee={employee} available_roles={project.available_roles} project_id={project.id} />
+                                    ))}
+
+
+
+
                                 </Tabs.Panel>
 
                                 <Tabs.Panel value="PastMembers">
-                                    <p>Past Members</p>
+
+
+
+
+
+
                                 </Tabs.Panel>
                             </Tabs>
                         </div>
@@ -247,6 +258,7 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                                         }
                                     </div>
                                 </Tabs.Panel>
+
                                 <Tabs.Panel value="ProposedMembers">
                                     <div>
                                         <div className="flex flex-wrap justify-center py-9">

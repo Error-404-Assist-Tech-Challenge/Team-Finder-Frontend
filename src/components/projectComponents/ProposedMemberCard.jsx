@@ -7,7 +7,7 @@ import { useDisclosure } from '@mantine/hooks';
 import React, { useState } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
-export default function ProposedMemberCard({ project_id, employee, available_roles }) {
+export default function ProposedMemberCard({ setNewMembers, setProposedMembers, project_id, employee, available_roles }) {
 
     const axiosPrivate = useAxiosPrivate();
     const [opened, { open, close }] = useDisclosure(false);
@@ -18,18 +18,18 @@ export default function ProposedMemberCard({ project_id, employee, available_rol
         return names.map((name) => name[0]).join('').toUpperCase();
     };
 
-    const [teamRoles, setTeamRoles] = useState([]);
-    const [workHours, setWorkHours] = useState(0);
-    const [comment, setComment] = useState('');
+    const [teamRoles, setTeamRoles] = useState(employee.proposed_roles);
+    const [workHours, setWorkHours] = useState(employee.proposed_work_hours);
+    const [comment, setComment] = useState(employee.comment);
 
-    const handlePropose = async () => {
+    const updateProposal = async () => {
         try {
-            const response = await axiosPrivate.post('projects/assignment_proposal',
+            const response = await axiosPrivate.put('projects/assignment_proposal',
                 JSON.stringify({
-                    user_id: employee.user_id,
+                    assignment_id: employee.assignment_id,
                     role_ids: teamRoles,
                     proj_id: project_id,
-                    work_hours: workHours,
+                    proposed_work_hours: workHours,
                     comment: comment
                 }),
                 {
@@ -41,10 +41,38 @@ export default function ProposedMemberCard({ project_id, employee, available_rol
                     withCredentials: true
                 });
             console.log('Response:', response.data);
+            setNewMembers(response.data.new);
+            setProposedMembers(response.data.proposed);
         } catch (error) {
-            console.error('Error fetching proposing user:', error);
+            console.error('Error updating proposal:', error);
         }
 
+        close();
+    }
+
+    const deleteProposal = async () => {
+        try {
+            const response = await axiosPrivate.delete('projects/assignment_proposal', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Credentials': 'true'
+                },
+                data: {
+                    assignment_id: employee.assignment_id,
+                    proj_id: project_id
+                },
+                withCredentials: true
+            });
+
+            console.log('Response:', response.data);
+
+            setNewMembers(response.data.new);
+            setProposedMembers(response.data.proposed);
+
+        } catch (error) {
+            console.error('Error deleting proposal:', error);
+        }
         close();
     }
 
@@ -68,7 +96,6 @@ export default function ProposedMemberCard({ project_id, employee, available_rol
 
                 <MultiSelect
                     label="Role"
-                    allowDeselect={false}
                     placeholder="Role..."
                     data={available_roles}
                     value={teamRoles}
@@ -100,14 +127,14 @@ export default function ProposedMemberCard({ project_id, employee, available_rol
                 />
 
                 <div className="flex ">
-                    {teamRoles.length != 0 && workHours != 0 && comment.length != 0 &&
+                    {teamRoles != [] && workHours != 0 && comment != '' &&
                         <>
-                            <Button className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] mx-3 rounded float-left" >
+                            <Button onClick={updateProposal} className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] mx-3 rounded float-left" >
                                 Update Proposal
                             </Button>
                         </>
                     }
-                    <Button className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] mx-3 rounded float-right" >
+                    <Button onClick={deleteProposal} className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] mx-3 rounded float-right" >
                         Revoke Proposal
                     </Button>
                 </div>
