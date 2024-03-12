@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 
 import '@mantine/dates/styles.css';
@@ -10,7 +11,7 @@ import { DatePickerInput } from '@mantine/dates';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import RoleSelect from '../projectComponents/RoleSelect';
 
-export default function ProjectsComp({projects, setProjects}) {
+export default function ProjectsComp({ projects, setProjects }) {
 
     const axiosPrivate = useAxiosPrivate();
     const [darkMode, setDarkMode] = useContext(Context);
@@ -95,12 +96,12 @@ export default function ProjectsComp({projects, setProjects}) {
 
         const startDate =
             projectPeriod == 'Fixed'
-                ? `${projectDates[0].getFullYear()}-${String(projectDates[0].getMonth() + 1).padStart(2, '0')}-${String(projectDates[0].getDate()).padStart(2, '0')}`
-                : `${projectStartDate.getFullYear()}-${String(projectStartDate.getMonth() + 1).padStart(2, '0')}-${String(projectStartDate.getDate()).padStart(2, '0')}`
+                ? projectDates[0]
+                : projectStartDate
         const deadlineDate =
             projectPeriod == 'Fixed'
-                ? `${projectDates[1].getFullYear()}-${String(projectDates[1].getMonth() + 1).padStart(2, '0')}-${String(projectDates[1].getDate()).padStart(2, '0')}`
-                : ''
+                ? projectDates[1]
+                : null
 
         console.log(JSON.stringify({
             name: projectName,
@@ -138,6 +139,14 @@ export default function ProjectsComp({projects, setProjects}) {
 
             setProjects(response.data);
 
+            setProjectName('')
+            setProjectPeriod('')
+            setProjectStartDate(null);
+            setProjectDates([null, null]);
+            setProjectStatus([null]);
+            setProjectDescription('');
+            setProjectTech([]);
+
         } catch (error) {
             console.error('Error fetching unused skills:', error);
         }
@@ -153,6 +162,16 @@ export default function ProjectsComp({projects, setProjects}) {
     const [projectDescription, setProjectDescription] = useState('')
     const [projectTech, setProjectTech] = useState([])
 
+    const [periodFilter, setPeriodFilter] = useState(null)
+    const [statusFilter, setStatusFilter] = useState(null)
+
+    const filteredProjects = projects.filter(project => {
+        const isPeriodFiltered = periodFilter == null || periodFilter == project.period;
+
+        const isStatusFiltered = statusFilter == null || statusFilter == project.status;
+
+        return isPeriodFiltered && isStatusFiltered;
+    });
 
     return (
         <div className={`${darkMode && 'dark'}`}>
@@ -246,8 +265,26 @@ export default function ProjectsComp({projects, setProjects}) {
                         </div>
                     )}
                 </Modal >
-                <div className="flex flex-wrap justify-center">
-                    {projects.map((project, index) => (
+                <div className="flex flex-wrap justify-center w-full">
+                    <div className="flex w-full justify-around">
+                        <Select
+                            placeholder="Filter by period..."
+                            data={['Fixed', 'Ongoing']}
+                            value={periodFilter}
+                            onChange={setPeriodFilter}
+                            size="sm"
+                            className="py-[20px] px-[40px]"
+                        />
+                        <Select
+                            placeholder="Filter by status..."
+                            data={['Not Started', 'Starting', 'In Progress', 'Closing', 'Closed']}
+                            value={statusFilter}
+                            onChange={setStatusFilter}
+                            size="sm"
+                            className="py-[20px] px-[40px]"
+                        />
+                    </div>
+                    {filteredProjects.map((project, index) => (
                         <ProjectCard key={index} project={project} setProjects={setProjects} roles={roles} teamRoles={teamRoles} setTeamRoles={setTeamRoles} skills={skills} />
                     ))}
                     <div className="w-[350px] h-[280px] mx-[40px] my-[40px] flex justify-center items-center">
