@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 
-import { Card, Badge, Modal, Button, Text, Title, TextInput, Textarea, Divider, HoverCard } from '@mantine/core';
+import { Card, Badge, Modal, Button, Text, Title, TextInput, Textarea, Divider, HoverCard, Select } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useState, useContext, useEffect } from 'react';
 import LevelCirclesCard from './LevelCirclesCard'
@@ -13,6 +13,7 @@ import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
 import { IconCheck } from '@tabler/icons-react';
+import SkillEndorsementBadge from './SkillsEndorsementsBadge';
 
 export default function UserSkillCard(props) {
 
@@ -23,12 +24,8 @@ export default function UserSkillCard(props) {
     const [currentLevel, setCurrentLevel] = useState(props.skills[props.index].level)
     const [currentExperience, setCurrentExperience] = useState(props.skills[props.index].experience)
 
-    const [training, setTraining] = useState('');
-    const [course, setCourse] =  useState('');
-    const [trainingDescpription, setTrainingDescription] = useState('');
-    const [courseDescription, setCourseDescription] =  useState('');
-
     const [editEndorsment, setEditEndorsement] = useState(false);
+    const [addEndorsement, setAddEndorsement] = useState(false);
 
     const axiosPrivate = useAxiosPrivate();
 
@@ -98,7 +95,6 @@ export default function UserSkillCard(props) {
         props.setVisible(false);
     }
 
-
     const openDeleteModal = () =>
         modals.openConfirmModal({
             title: 'Delete skill',
@@ -116,12 +112,14 @@ export default function UserSkillCard(props) {
             zIndex:10000002,
         });
 
-    const handleEditEndorsment = async () => {
-        setEditEndorsement(true)
-    }
+    
 
     const handleCancel = async () => {
         setEditEndorsement(false)
+    }
+
+    const handelAddEndorsement = async () =>{
+        setAddEndorsement(true)
     }
 
     return (
@@ -205,15 +203,15 @@ export default function UserSkillCard(props) {
                                             label="Training Name"
                                             placeholder="Training name..."
                                             size="md"
-                                            value={training}
-                                            onChange={(event) => setTraining(event.currentTarget.value)}
+                                            value={props.training}
+                                            onChange={(event) => props.setTraining(event.currentTarget.value)}
                                             className=" py-[15px] w-[450px]"
                                         />
                                         <Textarea
                                             label="Training Description"
                                             placeholder="Training description..."
-                                            value={trainingDescpription}
-                                            onChange={(event) => setTrainingDescription(event.currentTarget.value)}
+                                            value={props.trainingDescpription}
+                                            onChange={(event) => props.setTrainingDescription(event.currentTarget.value)}
                                             autosize
                                             minRows={5}
                                             className="py-4"
@@ -231,52 +229,75 @@ export default function UserSkillCard(props) {
                                         </div>
                                     </>
                                 )}
-                                {!editEndorsment &&(
-                                    <div className='flex flex-wrap'>
-                                        <HoverCard width={280} shadow="md" zIndex={100000000}>
-                                            <HoverCard.Target>
-                                                <Badge variant="filled" color="rgba(250, 245, 240, 1)" size="lg" radius="lg" className='text-black my-[20px] mx-[10px]'>
-                                                    <Button variant="outline" className={`w-[40px] h-[20px] mb-[3px] mr-[10px] rounded-full p-0 text-accent border-accent border-2`} onClick={handleEditEndorsment}>
-                                                        Edit
-                                                    </Button>
-                                                    Training: Title
-                                                    <Button variant="outline" className={`w-[20px] h-[20px] mb-[3px] ml-[10px] rounded-full p-0 text-accent border-accent border-2`}>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-minus w-[12px] h-[12px]" width="24" height="24" viewBox="0 0 24 24" strokeWidth="3" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                            <path d="M5 12l14 0" />
-                                                        </svg>
-                                                    </Button>
-                                                </Badge>
-                                            </HoverCard.Target>
-                                            <HoverCard.Dropdown>
-                                            <Text size="sm">
-                                                LOOOOOOOOOOOTSSSSSSSSSS 
-                                                of details about endorsements
-                                            </Text>
-                                            </HoverCard.Dropdown>
-                                        </HoverCard>
-                                        <HoverCard width={280} shadow="md" zIndex={100000000}>
-                                            <HoverCard.Target>
-                                                <Badge variant="filled" color="rgba(250, 245, 240, 1)" size="lg" radius="lg" className='text-black my-[20px] mx-[10px]' onClick={handleEditEndorsment}>
-                                                    <Button variant="outline" className={`w-[40px] h-[20px] mb-[3px] mr-[10px] rounded-full p-0 text-accent border-accent border-2`}>
-                                                        Edit
-                                                    </Button>
-                                                    Course: Title
-                                                    <Button variant="outline" className={`w-[20px] h-[20px] mb-[3px] ml-[10px] rounded-full p-0 text-accent border-accent border-2`}>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-minus w-[12px] h-[12px]" width="24" height="24" viewBox="0 0 24 24" strokeWidth="3" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                            <path d="M5 12l14 0" />
-                                                        </svg>
-                                                    </Button>
-                                                </Badge>
-                                            </HoverCard.Target>
-                                            <HoverCard.Dropdown>
-                                            <Text size="sm">
-                                                LOOOOOOOOOOOTSSSSSSSSSS 
-                                                of details about endorsements
-                                            </Text>
-                                            </HoverCard.Dropdown>
-                                        </HoverCard>
+                                {(!editEndorsment && !addEndorsement) &&(
+                                    <>
+                                        <div className='flex flex-wrap'>
+                                            {props.skills[props.index].skill_endorsements.map((endorsement, index) =>(
+                                                <SkillEndorsementBadge endorsement={endorsement} setEditEndorsement={setEditEndorsement}/>
+                                            ))}
+                                        </div>
+                                        <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-10 py-2 rounded ml-[120px] my-[10px] mt-[20px] mb-[25px] fixed bottom-0 "
+                                            onClick={handelAddEndorsement}>
+                                            Add endorsement
+                                        </Button>
+                                     </>
+                                )}
+                                {addEndorsement &&(
+                                    <div className="flex flex-col items-centre ">
+                                        <Select data={['Training', 'Course', 'Project']} 
+                                                value={props.endorsement} 
+                                                onChange={props.setEndorsement} 
+                                                comboboxProps={{ zIndex: 1000000000 }}
+                                                label="Endorsement"
+                                                placeholder="Choose an edorsement"
+                                                className=" py-[15px] w-[450px]"/>
+                                                
+                                        {props.endorsement ==='Training' &&(
+                                            <>
+                                                < TextInput
+                                                    label="Training Name"
+                                                    placeholder="Training name..."
+                                                    size="md"
+                                                    value={props.training}
+                                                    onChange={(event) => props.setTraining(event.currentTarget.value)}
+                                                    className=" py-[15px] w-[450px]"
+                                                />
+                                                <p>{props.training}</p>
+                                                <Textarea
+                                                    label="Training Description "
+                                                    placeholder="Training description..."
+                                                    value={props.trainingDescpription}
+                                                    onChange={(event) => props.setTrainingDescription(event.currentTarget.value)}
+                                                    className=" py-[15px]"
+            
+                                                />
+                                                <p>{props.trainingDescpription}</p>
+                                            </>
+                                        )}
+                                        {props.endorsement ==='Course' &&(
+                                            <>
+                                                < TextInput
+                                                    label="Course Name"
+                                                    placeholder="Course name..."
+                                                    size="md"
+                                                    value={props.course}
+                                                    onChange={(event) => props.setCourse(event.currentTarget.value)}
+                                                    className=" py-[15px] w-[450px]"
+                                                />
+                                                <Textarea
+                                                    label="Course Description"
+                                                    placeholder="Course description..."
+                                                    value={props.courseDescription}
+                                                    onChange={(event) => props.setCourseDescription(event.currentTarget.value)}
+                                                    className=" py-[15px]"
+            
+                                                />
+                                            </>
+                                        )}  
+                                        <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-10 py-2 rounded ml-[120px] my-[10px] mt-[20px] mb-[25px] fixed bottom-0 "
+                                            onClick={props.handleAddSkill}>
+                                            Save endorsement
+                                        </Button>
                                     </div>
                                 )}
                             </div>

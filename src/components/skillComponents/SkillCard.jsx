@@ -166,7 +166,7 @@ export const SkillCard = ({ skill, skillCategories, setSkills, visible, setVisib
                     {isEditing && (<Select
                         allowDeselect={false}
                         placeholder="Select a category"
-                        data={skillCategories}
+                        v
                         value={category}
                         onChange={setCategory}
                         searchable

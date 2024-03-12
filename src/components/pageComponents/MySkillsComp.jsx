@@ -32,6 +32,9 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
     const [trainingDescpription, setTrainingDescription] = useState('');
     const [courseDescription, setCourseDescription] = useState('');
 
+    let endorsements = {};
+    const [endorsementsList, setEndorsementList] = useState([]);
+
     useEffect(() => {
         setChange(true);
     }, [skills]);
@@ -40,13 +43,15 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
 
     const handleAddSkill = async () => {
         close();
+        console.log(endorsementsList)
         try {
             const response = await axiosPrivate.post('skills/user',
                 JSON.stringify({
                     skill_id: addedSkill,
                     level: selectedSkillLevel,
                     experience: selectedSkillExperience,
-                    role_id: ''
+                    role_id: '',
+                    endorsements: endorsementsList,
                 }),
                 {
                     headers: {
@@ -65,6 +70,10 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
             setUnusedSkills(newUnusedSkills);
 
             setAddedSkill('')
+            setEndorsement('')
+            setTraining('')
+            setTrainingDescription('')
+            
         } catch (error) {
             console.error('Error fetching unused skills:', error);
         }
@@ -77,13 +86,27 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
         })
     }
 
+    useEffect(() => {
+        // Update the endorsementsList when endorsement, training, or course changes
+        setEndorsementList([
+            {
+                type: endorsement,
+                endorsement: endorsement === 'Training' ? training : course,
+                description: endorsement === 'Training' ? trainingDescpription : courseDescription,
+                proj_id: ""
+            }
+        ]);
+    }, [endorsement, training, course, trainingDescpription, courseDescription]);
 
     return (
         <div>
             <div className="flex flex-wrap justify-center">
                 {skills.map((skill, index) => (
-                    <UserSkillCard key={index}
-                        index={index} skills={skills} setSkills={setSkills} unusedSkills={unusedSkills} setUnusedSkills={setUnusedSkills} visible={visible} setVisible={setVisible} />
+                    <UserSkillCard key={index} index={index} skills={skills} setSkills={setSkills} unusedSkills={unusedSkills} setUnusedSkills={setUnusedSkills}
+                                   visible={visible} setVisible={setVisible} endorsementsList={endorsementsList} setEndorsementList={setEndorsementList} handleAddSkill={handleAddSkill}
+                                   course={course} courseDescription={courseDescription} training={training} trainingDescpription={trainingDescpription}
+                                   setCourse={setCourse} setCourseDescription={setCourseDescription} setTraining={setTraining} setTrainingDescription={setTrainingDescription}
+                                   endorsement={endorsement}  setEndorsement={setEndorsement} />
                 ))}
                 <div className="w-[410px] h-[270px] flex justify-center items-center">
                     <Button variant="outline" onClick={open}
@@ -186,6 +209,7 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
                                         onChange={(event) => setTraining(event.currentTarget.value)}
                                         className=" py-[15px] w-[450px]"
                                     />
+                                    <p>{training}</p>
                                     <Textarea
                                         label="Training Description "
                                         placeholder="Training description..."
@@ -194,6 +218,7 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
                                         className=" py-[15px]"
 
                                     />
+                                    <p>{trainingDescpription}</p>
                                 </>
                             )}
                             {endorsement ==='Course' &&(
@@ -202,21 +227,20 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
                                         label="Course Name"
                                         placeholder="Course name..."
                                         size="md"
-                                        value={training}
-                                        onChange={(event) => setTraining(event.currentTarget.value)}
+                                        value={course}
+                                        onChange={(event) => setCourse(event.currentTarget.value)}
                                         className=" py-[15px] w-[450px]"
                                     />
                                     <Textarea
                                         label="Course Description"
                                         placeholder="Course description..."
-                                        value={trainingDescpription}
-                                        onChange={(event) => setTrainingDescription(event.currentTarget.value)}
+                                        value={courseDescription}
+                                        onChange={(event) => setCourseDescription(event.currentTarget.value)}
                                         className=" py-[15px]"
 
                                     />
                                 </>
-                            )}
-                            
+                            )}  
                         </div>
                     </div>
                 </Modal>
