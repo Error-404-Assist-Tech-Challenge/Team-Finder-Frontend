@@ -4,10 +4,11 @@ import { Card, Badge, Title, Modal, Divider, Checkbox, NumberInput, Button, Text
 import { useDisclosure } from '@mantine/hooks';
 import { useState, useEffect } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
-import NewMemberCard from './NewMemberCard';
 import { Tabs, rem } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import ProjectEdit from './ProjectEdit';
+import NewMemberCard from './NewMemberCard';
+import ProposedMemberCard from './ProposedMemberCard';
 
 export default function ProjectCard({ project, setProjects, roles, teamRoles, setTeamRoles, skills }) {
 
@@ -204,7 +205,7 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                                             <NewMemberCard key={index} employee={employee} available_roles={project.available_roles} project_id={project.id} />
                                         ))}
                                     </div>
-                                    <Divider className="pb-9" />
+                                    <Divider className="my-9" />
                                     <div className="flex w-full items-center">
                                         <Textarea
                                             size="md"
@@ -229,7 +230,11 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                                     </div>
                                 </Tabs.Panel>
                                 <Tabs.Panel value="ProposedMembers">
-                                    <p>Proposed Members</p>
+                                    <div className="flex flex-wrap justify-center py-9">
+                                        {proposedMembers.map((employee, index) => (
+                                            <ProposedMemberCard key={index} employee={employee} available_roles={project.available_roles} project_id={project.id} />
+                                        ))}
+                                    </div>
                                 </Tabs.Panel>
                             </Tabs>
                         </div>

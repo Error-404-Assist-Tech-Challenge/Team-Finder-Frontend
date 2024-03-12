@@ -23,18 +23,11 @@ export default function NewMemberCard({ project_id, employee, available_roles })
     const [comment, setComment] = useState('');
 
     const handlePropose = async () => {
-        console.log(JSON.stringify({
-            user_id: employee.user_id,
-            role_id: teamRoles,
-            proj_id: project_id,
-            work_hours: workHours,
-            comment: comment
-        }))
         try {
-            const response = await axiosPrivate.post('projects/project_assignments',
+            const response = await axiosPrivate.post('projects/assignment_proposal',
                 JSON.stringify({
                     user_id: employee.user_id,
-                    role_id: teamRoles,
+                    role_ids: teamRoles,
                     proj_id: project_id,
                     work_hours: workHours,
                     comment: comment
@@ -47,14 +40,12 @@ export default function NewMemberCard({ project_id, employee, available_roles })
                     },
                     withCredentials: true
                 });
-
             console.log('Response:', response.data);
-
-            // setTeamRoles(response.data);
-
         } catch (error) {
             console.error('Error fetching proposing user:', error);
         }
+
+        close();
     }
 
 
@@ -109,7 +100,7 @@ export default function NewMemberCard({ project_id, employee, available_roles })
                 />
 
                 <div className="flex justify-center">
-                    {teamRoles && workHours && comment &&
+                    {teamRoles.length != 0 && workHours != 0 && comment.length != 0 &&
                         <Button className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] rounded float-right" onClick={handlePropose} >
                             Propose Employee
                         </Button>

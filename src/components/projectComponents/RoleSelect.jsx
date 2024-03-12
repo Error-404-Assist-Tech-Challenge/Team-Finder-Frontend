@@ -5,13 +5,13 @@ import { PillsInput, Pill, Combobox, CheckIcon, Group, useCombobox, Button } fro
 
 export default function ExistingRoleSelect({ roles, teamRoles, setTeamRoles, projectRoles, setProjectRoles }) {
 
-    const updateUserRoles = () => {
+    const updateUserRoles = async () => {
         const updatedProjectRoles = value.map(item => ({
             role_id: item,
             count: teamRoles.find(role => role.role_id === item).count,
         }));
 
-        setProjectRoles(updatedProjectRoles);
+        setProjectRoles(updatedProjectRoles)
     }
 
     const addCount = (role_id) => {
@@ -59,13 +59,16 @@ export default function ExistingRoleSelect({ roles, teamRoles, setTeamRoles, pro
     }, [])
 
     const handleValueSelect = (val) => {
+        console.log("added role")
         setValue((current) =>
             current.includes(val) ? current.filter((v) => v !== val) : [...current, val]
         );
         updateUserRoles();
+
     }
 
     const handleValueRemove = (val) => {
+        console.log("removed role")
         setValue((current) => current.filter((v) => v !== val));
         updateUserRoles();
     }
@@ -75,7 +78,7 @@ export default function ExistingRoleSelect({ roles, teamRoles, setTeamRoles, pro
         const newRole = teamRoles.find(role => role.role_id === item);
 
         return (
-            <Pill key={item} size="lg" withRemoveButton>
+            <Pill key={item} size="lg">
 
                 <div className="flex items-center">
                     <Button variant="outline" onClick={() => removeCount(item)}
