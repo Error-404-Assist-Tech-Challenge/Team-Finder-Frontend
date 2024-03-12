@@ -16,9 +16,9 @@ import LevelStatsComp from '../statistics/LevelStats';
 
 
 export default function MyDepartmentPage() {
-    
+
     // Initialization
-    
+
     const [darkMode, setDarkMode] = useContext(Context);
     const axiosPrivate = useAxiosPrivate();
     const [visible, setVisible] = useState(true);
@@ -27,26 +27,26 @@ export default function MyDepartmentPage() {
     const [departmentName, setDepartmentName] = useState('');
     const [proposals, setProposals] = useState([]);
     const [stats, setStats] = useState([]);
-    
+
     const [unusedSkills, setUnusedSkills] = useState([]);
     const [addedSkill, setAddedSkill] = useState('');
-    
+
     const [openedDrawer, { open: openDrawer, close: closeDrawer }] = useDisclosure(false);
     const [openedStatsDrawer, { open: openStatsDrawer, close: closeStatsDrawer }] = useDisclosure(false);
-    
+
     const [currentPage, setCurrentPage] = useState(1);
     const [postPerPage, setPostPerPage] = useState(14);
     const lastPostIndex = currentPage * postPerPage;
     const firstPostIndex = lastPostIndex - postPerPage;
     const currentPosts = members.slice(firstPostIndex, lastPostIndex);
-    
+
     useEffect(() => {
     }, [darkMode]);
-    
+
     useEffect(() => {
         let isMounted = true;
         const controller = new AbortController();
-        
+
         const getDepartmentName = async () => {
             try {
                 const response = await axiosPrivate.get('departments/managed', {
@@ -54,7 +54,7 @@ export default function MyDepartmentPage() {
                     withCredentials: true
                 });
                 console.log('Department name:', response.data);
-                
+
                 if (isMounted) {
                     setDepartmentName(response.data.name);
                     getDepartmentMembers();
@@ -65,15 +65,45 @@ export default function MyDepartmentPage() {
                     console.error('You have no department');
                 }
                 else
-                console.error('Error fetching department members:', error);
+                    console.error('Error fetching department members:', error);
+            }
         }
-    }
-    
-    getDepartmentName();
-    // GET statistics
-    const getStats = async () => {
+
+        getDepartmentName();
+        // GET statistics
+        const getStats = async () => {
+            try {
+                const response = await axiosPrivate.get('departments/statistics', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Credentials': 'true'
+                    },
+                    withCredentials: true
+                });
+
+                console.log('Stats:', response.data);
+                setStats(response.data);
+
+            } catch (error) {
+                if (error?.response == 409)
+                    console.error('You have no department');
+                else
+                    console.error('Error fetching department members:', error);
+            }
+        }
+        getStats();
+
+        return () => {
+            isMounted = false;
+            controller.abort();
+        }
+    }, [])
+
+    const getProposals = async () => {
+        setVisibleLoad(true);
         try {
-            const response = await axiosPrivate.get('departments/statistics', {
+            const response = await axiosPrivate.get('skills/proposal', {
                 headers: {
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*',
@@ -81,49 +111,19 @@ export default function MyDepartmentPage() {
                 },
                 withCredentials: true
             });
-    
-            console.log('Stats:', response.data);
-            setStats(response.data);
-            
+
+            console.log('Propasals:', response.data);
+
+            setProposals(response.data)
+
         } catch (error) {
             if (error?.response == 409)
                 console.error('You have no department');
             else
                 console.error('Error fetching department members:', error);
         }
+        setVisibleLoad(false);
     }
-    getStats();
-    
-    return () => {
-        isMounted = false;
-        controller.abort();
-    }
-}, [])
-
-const getProposals = async () => {
-    setVisibleLoad(true);
-    try {
-        const response = await axiosPrivate.get('skills/proposal', {
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Credentials': 'true'
-            },
-            withCredentials: true
-        });
-        
-        console.log('Propasals:', response.data);
-        
-        setProposals(response.data)
-        
-    } catch (error) {
-        if (error?.response == 409)
-        console.error('You have no department');
-    else
-    console.error('Error fetching department members:', error);
-}
-setVisibleLoad(false);
-}
 
     const getDepartmentMembers = async () => {
         try {
@@ -143,11 +143,11 @@ setVisibleLoad(false);
         }
     }
 
-    
 
-    
+
+
     // All the user cards + button to generate signup employee link
-    
+
     return (
         <div className={`${darkMode && 'dark'}`}>
             <div className='dark:bg-darkcanvas bg-canvas h-auto min-h-screen select-none'>
@@ -182,11 +182,11 @@ setVisibleLoad(false);
                                 <div className='flex flex-wrap'>
                                     <div className='bg-blue w-3/5 flex flex-wrap'>
                                         {stats.map((stat, index) => (
-                                            <StatisticsComp index={index} stat={stat}/>
+                                            <StatisticsComp key={index} stat={stat} />
                                         ))}
                                     </div>
                                     <div className='bg-red w-2/5' style={{ display: 'grid', placeItems: 'center' }}>
-                                        <LevelStatsComp index={0} stats={stats}/>
+                                        <LevelStatsComp index={0} stats={stats} />
                                     </div>
                                 </div>
                             </Drawer>
@@ -198,7 +198,7 @@ setVisibleLoad(false);
                                         <Title className="text-4xl">{departmentName} Department</Title>
                                     </div>
                                 </div>
-                                <div className="flex flex-wrap ">
+                                <div className="flex flex-wrap">
                                     <MyDepartmentComp members={currentPosts} setMembers={setMembers} />
                                 </div>
                                 <div className="fixed bottom-9 right-9 flex flex-col">
