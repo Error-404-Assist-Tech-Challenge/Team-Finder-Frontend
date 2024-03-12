@@ -47,6 +47,7 @@ export default function UserSkillCard(props) {
         if(props.endorsementsList[i].proj_id==="None")
             props.endorsementsList[i].proj_id=""
     }
+    
     const handleSave = async () => {
         close();
         props.setVisible(true);
