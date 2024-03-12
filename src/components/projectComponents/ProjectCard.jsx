@@ -11,6 +11,7 @@ import ProjectEdit from './ProjectEdit';
 import NewMemberComp from '../pageComponents/NewMemberComp';
 import NewMemberCard from './NewMemberCard';
 import ProposedMemberCard from './ProposedMemberCard';
+import ProposedMembersComp from './ProposedMembersComp';
 
 export default function ProjectCard({ project, setProjects, roles, teamRoles, setTeamRoles, skills }) {
 
@@ -90,11 +91,17 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
         return isFullyAvailable || isPartiallyAvailable /*|| isCloseToFinish*/ || isUnavailable;
     });
 
-    const [currentPage, setCurrentPage] = useState(1);
-    const [postPerPage, setPostPerPage] = useState(2);
-    const lastPostIndex = currentPage * postPerPage;
-    const firstPostIndex = lastPostIndex - postPerPage;
-    const currentPosts = filteredMembers.slice(firstPostIndex, lastPostIndex);
+    const [currentPageFiltered, setCurrentPageFiltered] = useState(1);
+    const [postPerPageFiltered, setPostPerPageFiltered] = useState(2);
+    const lastPostIndexFiltered = currentPageFiltered * postPerPageFiltered;
+    const firstPostIndexFiltered = lastPostIndexFiltered - postPerPageFiltered;
+    const currentPostsFiltered = filteredMembers.slice(firstPostIndexFiltered, lastPostIndexFiltered);
+
+    const [currentPageProposed, setCurrentPageProposed] = useState(1);
+    const [postPerPageProposed, setPostPerPageProposed] = useState(1);
+    const lastPostIndexProposed = currentPageProposed * postPerPageProposed;
+    const firstPostIndexProposed = lastPostIndexProposed - postPerPageProposed;
+    const currentPostsProposed = proposedMembers.slice(firstPostIndexProposed, lastPostIndexProposed);
 
     const openDeleteModal = () =>
         modals.openConfirmModal({
@@ -210,10 +217,10 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                                             </div>
                                         </div>
                                         <div className="flex flex-wrap justify-center">
-                                            <NewMemberComp setNewMembers={setNewMembers} setProposedMembers={setProposedMembers} filteredMembers={currentPosts} available_roles={project.available_roles} project_id={project.id} />
+                                            <NewMemberComp setNewMembers={currentPostsFiltered} setProposedMembers={setProposedMembers} filteredMembers={currentPostsFiltered} available_roles={project.available_rolesFiltered} project_id={project.idFiltered} />
                                         </div>
                                         <div className='flex justify-center items-center'>
-                                            <PaginationComp totalPosts={filteredMembers.length} postsPerPage={postPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage} drawer={true} />
+                                            <PaginationComp totalPosts={filteredMembers.length} postsPerPage={postPerPageFiltered} currentPage={currentPageFiltered} setCurrentPage={setCurrentPageFiltered} drawer={true} />
                                         </div>
                                     </div>
                                     <Divider className="my-9" />
@@ -241,10 +248,13 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                                     </div>
                                 </Tabs.Panel>
                                 <Tabs.Panel value="ProposedMembers">
-                                    <div className="flex flex-wrap justify-center py-9">
-                                        {proposedMembers.map((employee, index) => (
-                                            <ProposedMemberCard key={index} employee={employee} available_roles={project.available_roles} project_id={project.id} />
-                                        ))}
+                                    <div>
+                                        <div className="flex flex-wrap justify-center py-9">
+                                            <ProposedMembersComp proposedMembers={currentPostsProposed} available_roles={project.available_roles} project_id={project.id}/>
+                                        </div>
+                                        <div className='flex justify-center items-center'>
+                                            <PaginationComp totalPosts={proposedMembers.length} postsPerPage={postPerPageProposed} currentPage={currentPageProposed} setCurrentPage={setCurrentPageProposed} drawer={true} />
+                                        </div>
                                     </div>
                                 </Tabs.Panel>
                             </Tabs>
