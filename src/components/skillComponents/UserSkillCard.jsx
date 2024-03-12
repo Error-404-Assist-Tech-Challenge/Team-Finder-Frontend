@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 
-import { Card, Avatar, Modal, Button, Text, Title, TextInput, Textarea, Divider } from '@mantine/core';
+import { Card, Badge, Modal, Button, Text, Title, TextInput, Textarea, Divider, HoverCard, Select } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useState, useContext, useEffect } from 'react';
 import LevelCirclesCard from './LevelCirclesCard'
@@ -13,6 +13,7 @@ import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
 import { IconCheck } from '@tabler/icons-react';
+import SkillEndorsementBadge from './SkillsEndorsementsBadge';
 
 export default function UserSkillCard(props) {
 
@@ -23,12 +24,8 @@ export default function UserSkillCard(props) {
     const [currentLevel, setCurrentLevel] = useState(props.skills[props.index].level)
     const [currentExperience, setCurrentExperience] = useState(props.skills[props.index].experience)
 
-    const [training, setTraining] = useState('');
-    const [course, setCourse] =  useState('');
-    const [trainingDescpription, setTrainingDescription] = useState('');
-    const [courseDescription, setCourseDescription] =  useState('');
-
     const [editEndorsment, setEditEndorsement] = useState(false);
+    const [addEndorsement, setAddEndorsement] = useState(false);
 
     const axiosPrivate = useAxiosPrivate();
 
@@ -43,22 +40,22 @@ export default function UserSkillCard(props) {
         props.setVisible(true);
         try {
             const response = await axiosPrivate.put('skills/user',
-                JSON.stringify({
-                    skill_id: props.skills[props.index].skill_id,
-                    level: currentLevel,
-                    experience: currentExperience
-                }),
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Access-Control-Allow-Origin': '*',
-                        'Access-Control-Allow-Credentials': 'true'
-                    },
-                    withCredentials: true
-                });
-
+            JSON.stringify({
+                skill_id: props.skills[props.index].skill_id,
+                level: currentLevel,
+                experience: currentExperience
+            }),
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Credentials': 'true'
+                },
+                withCredentials: true
+            });
+            
             console.log('Response:', response.data);
-
+            
             props.setSkills(response.data);
         } catch (error) {
             console.error('Error saving my skill:', error);
@@ -98,7 +95,6 @@ export default function UserSkillCard(props) {
         props.setVisible(false);
     }
 
-
     const openDeleteModal = () =>
         modals.openConfirmModal({
             title: 'Delete skill',
@@ -116,8 +112,14 @@ export default function UserSkillCard(props) {
             zIndex:10000002,
         });
 
-    const handleEditEndorsment = async () => {
-        setEditEndorsement(true)
+    
+
+    const handleCancel = async () => {
+        setEditEndorsement(false)
+    }
+
+    const handelAddEndorsement = async () =>{
+        setAddEndorsement(true)
     }
 
     return (
@@ -198,57 +200,106 @@ export default function UserSkillCard(props) {
                                 {editEndorsment &&(
                                     <>
                                         < TextInput
-                                            label="Training Name (optional)"
+                                            label="Training Name"
                                             placeholder="Training name..."
                                             size="md"
-                                            value={training}
-                                            onChange={(event) => setTraining(event.currentTarget.value)}
+                                            value={props.training}
+                                            onChange={(event) => props.setTraining(event.currentTarget.value)}
                                             className=" py-[15px] w-[450px]"
                                         />
                                         <Textarea
-                                            label="Training Description (optional)"
+                                            label="Training Description"
                                             placeholder="Training description..."
-                                            value={trainingDescpription}
-                                            onChange={(event) => setTrainingDescription(event.currentTarget.value)}
-                                            className=" py-[15px]"
+                                            value={props.trainingDescpription}
+                                            onChange={(event) => props.setTrainingDescription(event.currentTarget.value)}
+                                            autosize
+                                            minRows={5}
+                                            className="py-4"
 
                                         />
-                                        < TextInput
-                                            label="Course Name (optional)"
-                                            placeholder="Course name..."
-                                            size="md"
-                                            value={course}
-                                            onChange={(event) => setCourse(event.currentTarget.value)}
-                                            className=" py-[15px]"
-                                        />
-                                        <Textarea
-                                            label="Course Description (optional)"
-                                            placeholder="Course description..."
-                                            value={courseDescription}
-                                            onChange={(event) => setCourseDescription(event.currentTarget.value)}
-                                            className=" py-[15px]"
-
-                                        />
+                                        <div className="p-[10px] fixed bottom-0 right-0">
+                                            <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-4 py-2 rounded mr-[60px] my-[10px] mt-[20px] mb-[15px]"
+                                                onClick={handleCancel}>
+                                                Cancel
+                                            </Button>
+                                            <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-4 py-2 rounded mx-[10px] my-[10px] mt-[20px] ml-[130px] mb-[15px] float-right"
+                                                onClick={handleSave}>
+                                                Save Endorsement
+                                            </Button>
+                                        </div>
                                     </>
                                 )}
-                                {!editEndorsment &&(
+                                {(!editEndorsment && !addEndorsement) &&(
                                     <>
-                                        <h1 className='text-white'>Training endorsement: </h1>
-                                        <h1 className='text-white'>Training endorsement description: </h1>
-                                        <h1 className='text-white'>Course endorsement: </h1>
-                                        <h1 className='text-white'>Course endorsement description: </h1>
-                                    </>
+                                        <div className='flex flex-wrap'>
+                                            {props.skills[props.index].skill_endorsements.map((endorsement, index) =>(
+                                                <SkillEndorsementBadge endorsement={endorsement} setEditEndorsement={setEditEndorsement}/>
+                                            ))}
+                                        </div>
+                                        <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-10 py-2 rounded ml-[120px] my-[10px] mt-[20px] mb-[25px] fixed bottom-0 "
+                                            onClick={handelAddEndorsement}>
+                                            Add endorsement
+                                        </Button>
+                                     </>
                                 )}
-                                <div className="p-[10px] fixed bottom-0 right-0">
-                                    <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-4 py-2 rounded mx-[10px] my-[10px] mt-[20px] mb-[15px]"
-                                        onClick={handleEditEndorsment}>
-                                        Edit Endorsement
-                                    </Button>
-                                    <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-4 py-2 rounded mx-[10px] my-[10px] mt-[20px] ml-[130px] mb-[15px] float-right"
-                                        onClick={handleSave}>
-                                        Save Endorsement
-                                    </Button>
-                                </div>
+                                {addEndorsement &&(
+                                    <div className="flex flex-col items-centre ">
+                                        <Select data={['Training', 'Course', 'Project']} 
+                                                value={props.endorsement} 
+                                                onChange={props.setEndorsement} 
+                                                comboboxProps={{ zIndex: 1000000000 }}
+                                                label="Endorsement"
+                                                placeholder="Choose an edorsement"
+                                                className=" py-[15px] w-[450px]"/>
+                                                
+                                        {props.endorsement ==='Training' &&(
+                                            <>
+                                                < TextInput
+                                                    label="Training Name"
+                                                    placeholder="Training name..."
+                                                    size="md"
+                                                    value={props.training}
+                                                    onChange={(event) => props.setTraining(event.currentTarget.value)}
+                                                    className=" py-[15px] w-[450px]"
+                                                />
+                                                <p>{props.training}</p>
+                                                <Textarea
+                                                    label="Training Description "
+                                                    placeholder="Training description..."
+                                                    value={props.trainingDescpription}
+                                                    onChange={(event) => props.setTrainingDescription(event.currentTarget.value)}
+                                                    className=" py-[15px]"
+            
+                                                />
+                                                <p>{props.trainingDescpription}</p>
+                                            </>
+                                        )}
+                                        {props.endorsement ==='Course' &&(
+                                            <>
+                                                < TextInput
+                                                    label="Course Name"
+                                                    placeholder="Course name..."
+                                                    size="md"
+                                                    value={props.course}
+                                                    onChange={(event) => props.setCourse(event.currentTarget.value)}
+                                                    className=" py-[15px] w-[450px]"
+                                                />
+                                                <Textarea
+                                                    label="Course Description"
+                                                    placeholder="Course description..."
+                                                    value={props.courseDescription}
+                                                    onChange={(event) => props.setCourseDescription(event.currentTarget.value)}
+                                                    className=" py-[15px]"
+            
+                                                />
+                                            </>
+                                        )}  
+                                        <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-10 py-2 rounded ml-[120px] my-[10px] mt-[20px] mb-[25px] fixed bottom-0 "
+                                            onClick={props.handleAddSkill}>
+                                            Save endorsement
+                                        </Button>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </Modal>

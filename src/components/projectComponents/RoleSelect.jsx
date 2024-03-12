@@ -75,7 +75,7 @@ export default function ExistingRoleSelect({ roles, teamRoles, setTeamRoles, pro
         const newRole = teamRoles.find(role => role.role_id === item);
 
         return (
-            <Pill key={item} size="lg">
+            <Pill key={item} size="lg" withRemoveButton>
 
                 <div className="flex items-center">
                     <Button variant="outline" onClick={() => removeCount(item)}
