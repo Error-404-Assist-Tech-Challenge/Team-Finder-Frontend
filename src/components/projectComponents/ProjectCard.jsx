@@ -4,10 +4,11 @@ import { Card, Badge, Title, Modal, Divider, Checkbox, NumberInput, Button, Text
 import { useDisclosure } from '@mantine/hooks';
 import { useState, useEffect } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
-import NewMemberCard from './NewMemberCard';
+import PaginationComp from '../pageComponents/Pagination';
 import { Tabs, rem } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import ProjectEdit from './ProjectEdit';
+import NewMemberComp from '../pageComponents/NewMemberComp';
 
 export default function ProjectCard({ project, setProjects, roles, teamRoles, setTeamRoles, skills }) {
 
@@ -96,6 +97,12 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
         return isFullyAvailable || isPartiallyAvailable /*|| isCloseToFinish*/ || isUnavailable;
     });
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const [postPerPage, setPostPerPage] = useState(2);
+    const lastPostIndex = currentPage * postPerPage;
+    const firstPostIndex = lastPostIndex - postPerPage;
+    const currentPosts = filteredMembers.slice(firstPostIndex, lastPostIndex);
+    
     const openDeleteModal = () =>
         modals.openConfirmModal({
             title: 'Delete project',
@@ -182,36 +189,39 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                                 </Tabs.List>
 
                                 <Tabs.Panel value="NewMembers">
-                                    <div className='w-full py-6 flex items-center'>
-                                        <div className="w-1/3 flex justify-center">
-                                            <Checkbox
-                                                size="md"
-                                                label="Include partially available"
-                                                checked={partiallyAvailable}
-                                                onChange={(event) => setPartiallyAvailable(event.currentTarget.checked)}
-                                            />
+                                    <div>
+                                        <div className='w-full py-6 flex items-center'>
+                                            <div className="w-1/3 flex justify-center">
+                                                <Checkbox
+                                                    size="md"
+                                                    label="Include partially available"
+                                                    checked={partiallyAvailable}
+                                                    onChange={(event) => setPartiallyAvailable(event.currentTarget.checked)}
+                                                />
+                                            </div>
+                                            <div className="w-1/3 flex justify-center">
+                                                <NumberInput
+                                                    placeholder="Include close to finish"
+                                                    min={2} max={6}
+                                                    className="w-10px"
+                                                    value={closeToFinish} onChange={setCloseToFinish}
+                                                />
+                                            </div>
+                                            <div className="w-1/3 flex justify-center">
+                                                <Checkbox
+                                                    size="md"
+                                                    label="Include unavailable"
+                                                    checked={unavailable}
+                                                    onChange={(event) => setUnavailable(event.currentTarget.checked)}
+                                                />
+                                            </div>
                                         </div>
-                                        <div className="w-1/3 flex justify-center">
-                                            <NumberInput
-                                                placeholder="Include close to finish"
-                                                min={2} max={6}
-                                                className="w-10px"
-                                                value={closeToFinish} onChange={setCloseToFinish}
-                                            />
+                                        <div className="flex flex-wrap justify-center">
+                                            <NewMemberComp filteredMembers={currentPosts} available_roles={project.available_roles} project_id={project.id}/>
                                         </div>
-                                        <div className="w-1/3 flex justify-center">
-                                            <Checkbox
-                                                size="md"
-                                                label="Include unavailable"
-                                                checked={unavailable}
-                                                onChange={(event) => setUnavailable(event.currentTarget.checked)}
-                                            />
+                                        <div className='flex justify-center items-center'>
+                                            <PaginationComp totalPosts={filteredMembers.length} postsPerPage={postPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage} drawer={true} />
                                         </div>
-                                    </div>
-                                    <div className="flex flex-wrap justify-center">
-                                        {filteredMembers.map((employee, index) => (
-                                            <NewMemberCard key={index} employee={employee} available_roles={project.available_roles} project_id={project.id} />
-                                        ))}
                                     </div>
                                 </Tabs.Panel>
 
