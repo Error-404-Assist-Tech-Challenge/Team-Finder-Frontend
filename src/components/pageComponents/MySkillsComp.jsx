@@ -43,35 +43,15 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
     const handleAddSkill = async () => {
         close();
         try {
-
-            if (endorsementsList.length == 1) {
-                if (endorsementsList[0].endorsement == '') {
-                    const response = await axiosPrivate.post('skills/user',
-                        JSON.stringify({
-                            skill_id: addedSkill,
-                            level: selectedSkillLevel,
-                            experience: selectedSkillExperience,
-                            role_id: '',
-                            endorsements: null,
-                        }),
-                        {
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Access-Control-Allow-Origin': '*',
-                                'Access-Control-Allow-Credentials': 'true'
-                            },
-                            withCredentials: true
-                        });
-                }
-            }
-            else {
+            if(endorsementsList[0].endorsement == '')
+            {
                 const response = await axiosPrivate.post('skills/user',
                     JSON.stringify({
                         skill_id: addedSkill,
                         level: selectedSkillLevel,
                         experience: selectedSkillExperience,
                         role_id: '',
-                        endorsements: endorsementsList,
+                        endorsements: null,
                     }),
                     {
                         headers: {
@@ -81,11 +61,30 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
                         },
                         withCredentials: true
                     });
+                    console.log('Response:', response.data);
+                    setSkills(response.data);
             }
+            else {
+                const response = await axiosPrivate.post('skills/user',
 
-            console.log('Response:', response.data);
-
-            setSkills(response.data);
+                        JSON.stringify({
+                            skill_id: addedSkill,
+                            level: selectedSkillLevel,
+                            experience: selectedSkillExperience,
+                            role_id: '',
+                            endorsements: endorsementsList,
+                        }),
+                        {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Access-Control-Allow-Origin': '*',
+                                'Access-Control-Allow-Credentials': 'true'
+                            },
+                            withCredentials: true
+                        });
+                        console.log('Response:', response.data);
+                        setSkills(response.data);
+            }
 
             const newUnusedSkills = unusedSkills.filter(skill => skill.value !== addedSkill);
             setUnusedSkills(newUnusedSkills);
