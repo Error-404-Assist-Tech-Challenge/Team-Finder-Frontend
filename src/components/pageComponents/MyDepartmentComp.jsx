@@ -126,7 +126,7 @@ export default function MyDepartmentComp({ members, setMembers, }) {
             {!visible && (
                 <div className="flex">
                     <div className=" h-auto min-h-screen">
-                        <div className="flex flex-wrap ">
+                        <div className="flex flex-wrap justify-center">
                             {members.map((member, index) => (
                                 <DepartmentEmployee key={index} name={member.name} user_id={member.user_id} setMembers={setMembers} visible={visible} setVisible={setVisible} skills={member.skills} />
                             ))}

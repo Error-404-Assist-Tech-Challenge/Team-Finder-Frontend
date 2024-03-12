@@ -64,8 +64,9 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
                     console.log('Response:', response.data);
                     setSkills(response.data);
             }
-            else{
+            else {
                 const response = await axiosPrivate.post('skills/user',
+
                         JSON.stringify({
                             skill_id: addedSkill,
                             level: selectedSkillLevel,
