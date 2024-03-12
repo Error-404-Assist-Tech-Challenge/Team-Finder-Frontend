@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 
 import '@mantine/dates/styles.css';
@@ -10,7 +11,7 @@ import { DatePickerInput } from '@mantine/dates';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import RoleSelect from '../projectComponents/RoleSelect';
 
-export default function ProjectsComp({projects, setProjects}) {
+export default function ProjectsComp({ projects, setProjects }) {
 
     const axiosPrivate = useAxiosPrivate();
     const [darkMode, setDarkMode] = useContext(Context);
@@ -95,12 +96,14 @@ export default function ProjectsComp({projects, setProjects}) {
 
         const startDate =
             projectPeriod == 'Fixed'
-                ? `${projectDates[0].getFullYear()}-${String(projectDates[0].getMonth() + 1).padStart(2, '0')}-${String(projectDates[0].getDate()).padStart(2, '0')}`
-                : `${projectStartDate.getFullYear()}-${String(projectStartDate.getMonth() + 1).padStart(2, '0')}-${String(projectStartDate.getDate()).padStart(2, '0')}`
+                ? projectDates[0]
+                : projectStartDate
         const deadlineDate =
             projectPeriod == 'Fixed'
-                ? `${projectDates[1].getFullYear()}-${String(projectDates[1].getMonth() + 1).padStart(2, '0')}-${String(projectDates[1].getDate()).padStart(2, '0')}`
-                : ''
+                ? projectDates[1]
+                : null
+
+        console.log(projectDates[1])
 
         console.log(JSON.stringify({
             name: projectName,
@@ -137,6 +140,14 @@ export default function ProjectsComp({projects, setProjects}) {
             console.log('Response:', response.data);
 
             setProjects(response.data);
+
+            setProjectName('')
+            setProjectPeriod('')
+            setProjectStartDate(null);
+            setProjectDates([null, null]);
+            setProjectStatus([null]);
+            setProjectDescription('');
+            setProjectTech([]);
 
         } catch (error) {
             console.error('Error fetching unused skills:', error);
