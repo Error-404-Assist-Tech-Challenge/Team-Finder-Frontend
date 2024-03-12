@@ -44,10 +44,8 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
         close();
         try {
 
-            if(endorsementsList.length == 1)
-            {
-                if(endorsementsList[0].endorsement == '')
-                {
+            if (endorsementsList.length == 1) {
+                if (endorsementsList[0].endorsement == '') {
                     const response = await axiosPrivate.post('skills/user',
                         JSON.stringify({
                             skill_id: addedSkill,
@@ -66,23 +64,23 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
                         });
                 }
             }
-            else{
+            else {
                 const response = await axiosPrivate.post('skills/user',
-                        JSON.stringify({
-                            skill_id: addedSkill,
-                            level: selectedSkillLevel,
-                            experience: selectedSkillExperience,
-                            role_id: '',
-                            endorsements: endorsementsList,
-                        }),
-                        {
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Access-Control-Allow-Origin': '*',
-                                'Access-Control-Allow-Credentials': 'true'
-                            },
-                            withCredentials: true
-                        });
+                    JSON.stringify({
+                        skill_id: addedSkill,
+                        level: selectedSkillLevel,
+                        experience: selectedSkillExperience,
+                        role_id: '',
+                        endorsements: endorsementsList,
+                    }),
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Access-Control-Allow-Origin': '*',
+                            'Access-Control-Allow-Credentials': 'true'
+                        },
+                        withCredentials: true
+                    });
             }
 
             console.log('Response:', response.data);
