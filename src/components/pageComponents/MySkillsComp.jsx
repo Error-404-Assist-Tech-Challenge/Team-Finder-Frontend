@@ -107,7 +107,6 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
     useEffect(() => {
 
         // Update the endorsementsList when endorsement, training, or course changes
-
         setEndorsementList([
             {
                 type: endorsement,
@@ -195,10 +194,6 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
                             </div>
                             <div className="flex justify-center items-center flex-col text-center pb-[20px]">
                                 <ExperienceCirclesSelected selectedSkillExperience={selectedSkillExperience} selectSkillExperience={selectSkillExperience} />
-                                {addedSkill && (<Button className="bg-accent text-white hover:bg-btn_hover font-bold  py-2 rounded mx-[10px] mt-[30px] mb-[10px] float-right"
-                                    onClick={handleAddSkill} style={{ width: '460px' }}>
-                                    Add Skill
-                                </Button>)}
                             </div>
                         </div>
 
@@ -226,7 +221,6 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
                                         onChange={(event) => setTraining(event.currentTarget.value)}
                                         className=" py-[15px] w-[450px]"
                                     />
-                                    <p>{training}</p>
                                     <Textarea
                                         label="Training Description "
                                         placeholder="Training description..."
@@ -235,7 +229,6 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
                                         className=" py-[15px]"
 
                                     />
-                                    <p>{trainingDescpription}</p>
                                 </>
                             )}
                             {endorsement === 'Course' && (
@@ -254,11 +247,21 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
                                         value={courseDescription}
                                         onChange={(event) => setCourseDescription(event.currentTarget.value)}
                                         className=" py-[15px]"
-
                                     />
                                 </>
                             )}
                         </div>
+                    </div>
+                    <div className="flex justify-center items-center pb-[20px]">
+                        {addedSkill && (
+                            <Button 
+                                className="bg-accent text-white hover:bg-btn_hover font-bold py-2 rounded mx-[10px] mt-[30px] mb-[10px]"
+                                onClick={handleAddSkill}
+                                style={{ width: '460px' }}
+                            >
+                                Add Skill
+                            </Button>
+                        )}
                     </div>
                 </Modal>
             </div>

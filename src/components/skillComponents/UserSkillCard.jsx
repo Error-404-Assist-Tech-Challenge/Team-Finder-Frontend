@@ -24,7 +24,7 @@ export default function UserSkillCard(props) {
     const [currentLevel, setCurrentLevel] = useState(props.skills[props.index].level)
     const [currentExperience, setCurrentExperience] = useState(props.skills[props.index].experience)
 
-    const [editEndorsment, setEditEndorsement] = useState(false);
+    const [editEndorsement, setEditEndorsement] = useState(false);
     const [addEndorsement, setAddEndorsement] = useState(false);
 
     const axiosPrivate = useAxiosPrivate();
@@ -34,7 +34,9 @@ export default function UserSkillCard(props) {
     const [course, setCourse] = useState('');
     const [trainingDescpription, setTrainingDescription] = useState('');
     const [courseDescription, setCourseDescription] = useState('');
-    const [tempEndoLsit, setTempEndoList] = useState([])
+    const [tempEndoLsit, setTempEndoList] = useState([]);
+    const [indexToDelete, setIndexToDelete] = useState();
+    const [indexToEdit, setIndexToEdit] = useState();
 
     const handleOpen = () => {
         setCurrentLevel(props.skills[props.index].level);
@@ -47,12 +49,53 @@ export default function UserSkillCard(props) {
         if(props.endorsementsList[i].proj_id==="None")
             props.endorsementsList[i].proj_id=""
     }
-    
+    // Save endorsement and skill change
     const handleSave = async () => {
         close();
         props.setVisible(true);
         try {
-            const updatedEndorsementsList = props.endorsementsList.concat(tempEndoLsit);
+            let updatedEndorsementsList = props.endorsementsList.concat(tempEndoLsit);
+            updatedEndorsementsList.splice(indexToEdit, 1);
+            console.log({
+                skill_id: props.skills[props.index].skill_id,
+                level: currentLevel,
+                experience: currentExperience,
+                role_id: '',
+                endorsements: updatedEndorsementsList,
+            });
+            const response = await axiosPrivate.put('skills/user',
+            JSON.stringify({
+                skill_id: props.skills[props.index].skill_id,
+                level: currentLevel,
+                experience: currentExperience,
+                role_id: '',
+                endorsements: updatedEndorsementsList,
+            }),
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Credentials': 'true'
+                },
+                withCredentials: true
+            });
+            
+            console.log('Response:', response.data);
+            
+            props.setSkills(response.data);
+        } catch (error) {
+            console.error('Error saving my skill:', error);
+        }
+        props.setVisible(false);
+    }
+
+    // Delete endorsement
+    const handleDeleteEndorsement = async () => {
+        close();
+        props.setVisible(true);
+        try {
+            let updatedEndorsementsList = props.endorsementsList;
+            updatedEndorsementsList.splice(indexToDelete, 1);
             console.log({
                 skill_id: props.skills[props.index].skill_id,
                 level: currentLevel,
@@ -148,7 +191,6 @@ export default function UserSkillCard(props) {
     useEffect(() => {
 
         // Update the endorsementsList when endorsement, training, or course changes
-
         setTempEndoList([
             {
                 type: endorsement,
@@ -234,26 +276,47 @@ export default function UserSkillCard(props) {
                                 <div className="flex flex-col justify-center items-center">
                                     <Title className="pb-[30px] ml-[25px]">Skill Endorsements</Title>
                                 </div>
-                                {editEndorsment &&(
+                                {editEndorsement &&(
                                     <>
-                                        < TextInput
-                                            label="Training Name"
-                                            placeholder="Training name..."
-                                            size="md"
-                                            value={training}
-                                            onChange={(event) => setTraining(event.currentTarget.value)}
-                                            className=" py-[15px] w-[450px]"
-                                        />
-                                        <Textarea
-                                            label="Training Description"
-                                            placeholder="Training description..."
-                                            value={trainingDescpription}
-                                            onChange={(event) => setTrainingDescription(event.currentTarget.value)}
-                                            autosize
-                                            minRows={5}
-                                            className="py-4"
-
-                                        />
+                                        {endorsement ==='Training' &&(
+                                            <>
+                                                < TextInput
+                                                    label="Training Name"
+                                                    placeholder="Training name..."
+                                                    size="md"
+                                                    value={training}
+                                                    onChange={(event) => setTraining(event.currentTarget.value)}
+                                                    className=" py-[15px] w-[450px]"
+                                                />
+                                                <Textarea
+                                                    label="Training Description "
+                                                    placeholder="Training description..."
+                                                    value={trainingDescpription}
+                                                    onChange={(event) => setTrainingDescription(event.currentTarget.value)}
+                                                    className=" py-[15px]"
+            
+                                                />
+                                            </>
+                                        )}
+                                        {endorsement ==='Course' &&(
+                                            <>
+                                                < TextInput
+                                                    label="Course Name"
+                                                    placeholder="Course name..."
+                                                    size="md"
+                                                    value={course}
+                                                    onChange={(event) => setCourse(event.currentTarget.value)}
+                                                    className=" py-[15px] w-[450px]"
+                                                />
+                                                <Textarea
+                                                    label="Course Description"
+                                                    placeholder="Course description..."
+                                                    value={courseDescription}
+                                                    onChange={(event) => setCourseDescription(event.currentTarget.value)}
+                                                    className=" py-[15px]"
+                                                />
+                                            </>
+                                        )}  
                                         <div className="p-[10px] fixed bottom-0 right-0">
                                             <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-4 py-2 rounded mr-[60px] my-[10px] mt-[20px] mb-[15px]"
                                                 onClick={handleCancel}>
@@ -266,11 +329,12 @@ export default function UserSkillCard(props) {
                                         </div>
                                     </>
                                 )}
-                                {(!editEndorsment && !addEndorsement) &&(
+                                {(!editEndorsement && !addEndorsement) &&(
                                     <>
-                                        <div className='flex flex-wrap'>
+                                        <div className='flex flex-col'>
                                             {props.skills[props.index].skill_endorsements.map((endorsement, index) =>(
-                                                <SkillEndorsementBadge endorsement={endorsement} setEditEndorsement={setEditEndorsement}/>
+                                                <SkillEndorsementBadge key={index} index={index} endorsement={endorsement} setEndorsement={setEndorsement} editEndorsement={editEndorsement} setEditEndorsement={setEditEndorsement}
+                                                                       indexToDelete={indexToDelete} setIndexToDelete={setIndexToDelete} setIndexToEdit={setIndexToEdit} handleDeleteEndorsement={handleDeleteEndorsement}/>
                                             ))}
                                         </div>
                                         <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-10 py-2 rounded ml-[120px] my-[10px] mt-[20px] mb-[25px] fixed bottom-0 "
@@ -299,7 +363,6 @@ export default function UserSkillCard(props) {
                                                     onChange={(event) => setTraining(event.currentTarget.value)}
                                                     className=" py-[15px] w-[450px]"
                                                 />
-                                                <p>{props.training}</p>
                                                 <Textarea
                                                     label="Training Description "
                                                     placeholder="Training description..."
@@ -308,7 +371,6 @@ export default function UserSkillCard(props) {
                                                     className=" py-[15px]"
             
                                                 />
-                                                <p>{trainingDescpription}</p>
                                             </>
                                         )}
                                         {endorsement ==='Course' &&(
