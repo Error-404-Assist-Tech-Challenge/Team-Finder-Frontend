@@ -44,7 +44,7 @@ export default function NewMemberCard({ setNewMembers, setProposedMembers, proje
             setNewMembers(response.data.new);
             setProposedMembers(response.data.proposed);
         } catch (error) {
-            console.error('Error fetching proposing user:', error);
+            console.error('Error creating proposal:', error);
         }
 
         close();
