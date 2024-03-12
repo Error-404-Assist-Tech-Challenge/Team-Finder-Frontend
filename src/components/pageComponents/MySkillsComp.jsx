@@ -32,7 +32,6 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
     const [trainingDescpription, setTrainingDescription] = useState('');
     const [courseDescription, setCourseDescription] = useState('');
 
-    let endorsements = {};
     const [endorsementsList, setEndorsementList] = useState([]);
 
     useEffect(() => {
@@ -43,24 +42,48 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
 
     const handleAddSkill = async () => {
         close();
-        console.log(endorsementsList)
         try {
-            const response = await axiosPrivate.post('skills/user',
-                JSON.stringify({
-                    skill_id: addedSkill,
-                    level: selectedSkillLevel,
-                    experience: selectedSkillExperience,
-                    role_id: '',
-                    endorsements: endorsementsList,
-                }),
+
+            if(endorsementsList.length == 1)
+            {
+                if(endorsementsList[0].endorsement == '')
                 {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Access-Control-Allow-Origin': '*',
-                        'Access-Control-Allow-Credentials': 'true'
-                    },
-                    withCredentials: true
-                });
+                    const response = await axiosPrivate.post('skills/user',
+                        JSON.stringify({
+                            skill_id: addedSkill,
+                            level: selectedSkillLevel,
+                            experience: selectedSkillExperience,
+                            role_id: '',
+                            endorsements: null,
+                        }),
+                        {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Access-Control-Allow-Origin': '*',
+                                'Access-Control-Allow-Credentials': 'true'
+                            },
+                            withCredentials: true
+                        });
+                }
+            }
+            else{
+                const response = await axiosPrivate.post('skills/user',
+                        JSON.stringify({
+                            skill_id: addedSkill,
+                            level: selectedSkillLevel,
+                            experience: selectedSkillExperience,
+                            role_id: '',
+                            endorsements: endorsementsList,
+                        }),
+                        {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Access-Control-Allow-Origin': '*',
+                                'Access-Control-Allow-Credentials': 'true'
+                            },
+                            withCredentials: true
+                        });
+            }
 
             console.log('Response:', response.data);
 
