@@ -95,7 +95,7 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
     const lastPostIndex = currentPage * postPerPage;
     const firstPostIndex = lastPostIndex - postPerPage;
     const currentPosts = filteredMembers.slice(firstPostIndex, lastPostIndex);
-    
+
     const openDeleteModal = () =>
         modals.openConfirmModal({
             title: 'Delete project',
@@ -174,10 +174,10 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                             <Tabs defaultValue="NewMembers" color="#FF3D2E">
                                 <Tabs.List grow>
                                     <Tabs.Tab value="NewMembers" className="  text-xl px-[40px]" >
-                                        New Members
+                                        New Members ({filteredMembers.length} / {newMembers.length})
                                     </Tabs.Tab>
                                     <Tabs.Tab value="ProposedMembers" className=" text-xl px-[40px]">
-                                        Proposed Members
+                                        Proposed Members ({proposedMembers.length})
                                     </Tabs.Tab>
                                 </Tabs.List>
 
@@ -210,7 +210,7 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                                             </div>
                                         </div>
                                         <div className="flex flex-wrap justify-center">
-                                            <NewMemberComp filteredMembers={currentPosts} available_roles={project.available_roles} project_id={project.id}/>
+                                            <NewMemberComp setNewMembers={setNewMembers} setProposedMembers={setProposedMembers} filteredMembers={currentPosts} available_roles={project.available_roles} project_id={project.id} />
                                         </div>
                                         <div className='flex justify-center items-center'>
                                             <PaginationComp totalPosts={filteredMembers.length} postsPerPage={postPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage} drawer={true} />

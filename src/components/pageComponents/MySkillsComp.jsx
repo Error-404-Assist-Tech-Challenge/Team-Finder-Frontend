@@ -43,7 +43,13 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
 
     const handleAddSkill = async () => {
         close();
-        console.log(endorsementsList)
+        console.log(JSON.stringify({
+            skill_id: addedSkill,
+            level: selectedSkillLevel,
+            experience: selectedSkillExperience,
+            role_id: '',
+            endorsements: endorsementsList,
+        }))
         try {
             const response = await axiosPrivate.post('skills/user',
                 JSON.stringify({
@@ -73,7 +79,7 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
             setEndorsement('')
             setTraining('')
             setTrainingDescription('')
-            
+
         } catch (error) {
             console.error('Error fetching unused skills:', error);
         }
@@ -104,7 +110,7 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
             <div className="flex flex-wrap justify-center">
                 {skills.map((skill, index) => (
                     <UserSkillCard key={index} index={index} skills={skills} setSkills={setSkills} unusedSkills={unusedSkills} setUnusedSkills={setUnusedSkills}
-                                   visible={visible} setVisible={setVisible} endorsementsList={skill.skill_endorsements} setEndorsementList={setEndorsementList} />
+                        visible={visible} setVisible={setVisible} endorsementsList={skill.skill_endorsements} setEndorsementList={setEndorsementList} />
                 ))}
                 <div className="w-[410px] h-[270px] flex justify-center items-center">
                     <Button variant="outline" onClick={open}
@@ -189,15 +195,15 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
                             <div className="flex flex-col justify-center items-center">
                                 <Title className="pb-[30px] ml-[25px]">Skill Endorsements</Title>
                             </div>
-                            <Select data={['Training', 'Course', 'Project']} 
-                                    value={endorsement} 
-                                    onChange={setEndorsement} 
-                                    comboboxProps={{ zIndex: 1000000000 }}
-                                    label="Endorsement"
-                                    placeholder="Choose an edorsement"
-                                    className=" py-[15px] w-[450px]"/>
-                                    
-                            {endorsement ==='Training' &&(
+                            <Select data={['Training', 'Course', 'Project']}
+                                value={endorsement}
+                                onChange={setEndorsement}
+                                comboboxProps={{ zIndex: 1000000000 }}
+                                label="Endorsement"
+                                placeholder="Choose an edorsement"
+                                className=" py-[15px] w-[450px]" />
+
+                            {endorsement === 'Training' && (
                                 <>
                                     < TextInput
                                         label="Training Name"
@@ -219,7 +225,7 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
                                     <p>{trainingDescpription}</p>
                                 </>
                             )}
-                            {endorsement ==='Course' &&(
+                            {endorsement === 'Course' && (
                                 <>
                                     < TextInput
                                         label="Course Name"
@@ -238,7 +244,7 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
 
                                     />
                                 </>
-                            )}  
+                            )}
                         </div>
                     </div>
                 </Modal>

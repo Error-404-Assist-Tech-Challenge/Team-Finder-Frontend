@@ -7,7 +7,7 @@ import { useDisclosure } from '@mantine/hooks';
 import React, { useState } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
-export default function NewMemberCard({ project_id, employee, available_roles }) {
+export default function NewMemberCard({ setNewMembers, setProposedMembers, project_id, employee, available_roles }) {
 
     const axiosPrivate = useAxiosPrivate();
     const [opened, { open, close }] = useDisclosure(false);
@@ -41,6 +41,8 @@ export default function NewMemberCard({ project_id, employee, available_roles })
                     withCredentials: true
                 });
             console.log('Response:', response.data);
+            setNewMembers(response.data.new);
+            setProposedMembers(response.data.proposed);
         } catch (error) {
             console.error('Error fetching proposing user:', error);
         }
@@ -68,7 +70,6 @@ export default function NewMemberCard({ project_id, employee, available_roles })
 
                 <MultiSelect
                     label="Role"
-                    allowDeselect={false}
                     placeholder="Role..."
                     data={available_roles}
                     value={teamRoles}
