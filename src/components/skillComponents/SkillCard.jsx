@@ -81,6 +81,7 @@ export const SkillCard = ({ skill, skillCategories, setSkills, visible, setVisib
     const updateSkill = async () => {
         close();
         setVisible(true);
+
         try {
             const response = await axiosPrivate.put('organizations/skills',
                 JSON.stringify({
