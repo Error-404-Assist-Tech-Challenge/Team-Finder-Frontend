@@ -29,6 +29,13 @@ export default function UserSkillCard(props) {
 
     const axiosPrivate = useAxiosPrivate();
 
+    const [endorsement, setEndorsement] = useState('')
+    const [training, setTraining] = useState('');
+    const [course, setCourse] = useState('');
+    const [trainingDescpription, setTrainingDescription] = useState('');
+    const [courseDescription, setCourseDescription] = useState('');
+    const [tempEndoLsit, setTempEndoList] = useState([])
+
     const handleOpen = () => {
         setCurrentLevel(props.skills[props.index].level);
         setCurrentExperience(props.skills[props.index].experience)
@@ -39,11 +46,24 @@ export default function UserSkillCard(props) {
         close();
         props.setVisible(true);
         try {
+            console.log(tempEndoLsit);
+            console.log(props.endorsementsList);
+            const updatedEndorsementsList = props.endorsementsList.concat(tempEndoLsit);
+            console.log(updatedEndorsementsList);
+            console.log({
+                skill_id: props.skills[props.index].skill_id,
+                level: currentLevel,
+                experience: currentExperience,
+                role_id: '',
+                endorsements: updatedEndorsementsList,
+            });
             const response = await axiosPrivate.put('skills/user',
             JSON.stringify({
                 skill_id: props.skills[props.index].skill_id,
                 level: currentLevel,
-                experience: currentExperience
+                experience: currentExperience,
+                role_id: '',
+                endorsements: updatedEndorsementsList,
             }),
             {
                 headers: {
@@ -121,6 +141,20 @@ export default function UserSkillCard(props) {
     const handelAddEndorsement = async () =>{
         setAddEndorsement(true)
     }
+
+    useEffect(() => {
+
+        // Update the endorsementsList when endorsement, training, or course changes
+
+        setTempEndoList([
+            {
+                type: endorsement,
+                endorsement: endorsement === 'Training' ? training : course,
+                description: endorsement === 'Training' ? trainingDescpription : courseDescription,
+                proj_id: ""
+            }
+        ]);
+    }, [endorsement, training, course, trainingDescpription, courseDescription]);
 
     return (
         <>
@@ -203,15 +237,15 @@ export default function UserSkillCard(props) {
                                             label="Training Name"
                                             placeholder="Training name..."
                                             size="md"
-                                            value={props.training}
-                                            onChange={(event) => props.setTraining(event.currentTarget.value)}
+                                            value={training}
+                                            onChange={(event) => setTraining(event.currentTarget.value)}
                                             className=" py-[15px] w-[450px]"
                                         />
                                         <Textarea
                                             label="Training Description"
                                             placeholder="Training description..."
-                                            value={props.trainingDescpription}
-                                            onChange={(event) => props.setTrainingDescription(event.currentTarget.value)}
+                                            value={trainingDescpription}
+                                            onChange={(event) => setTrainingDescription(event.currentTarget.value)}
                                             autosize
                                             minRows={5}
                                             className="py-4"
@@ -245,57 +279,56 @@ export default function UserSkillCard(props) {
                                 {addEndorsement &&(
                                     <div className="flex flex-col items-centre ">
                                         <Select data={['Training', 'Course', 'Project']} 
-                                                value={props.endorsement} 
-                                                onChange={props.setEndorsement} 
+                                                value={endorsement} 
+                                                onChange={setEndorsement} 
                                                 comboboxProps={{ zIndex: 1000000000 }}
                                                 label="Endorsement"
                                                 placeholder="Choose an edorsement"
                                                 className=" py-[15px] w-[450px]"/>
                                                 
-                                        {props.endorsement ==='Training' &&(
+                                        {endorsement ==='Training' &&(
                                             <>
                                                 < TextInput
                                                     label="Training Name"
                                                     placeholder="Training name..."
                                                     size="md"
-                                                    value={props.training}
-                                                    onChange={(event) => props.setTraining(event.currentTarget.value)}
+                                                    value={training}
+                                                    onChange={(event) => setTraining(event.currentTarget.value)}
                                                     className=" py-[15px] w-[450px]"
                                                 />
                                                 <p>{props.training}</p>
                                                 <Textarea
                                                     label="Training Description "
                                                     placeholder="Training description..."
-                                                    value={props.trainingDescpription}
-                                                    onChange={(event) => props.setTrainingDescription(event.currentTarget.value)}
+                                                    value={trainingDescpription}
+                                                    onChange={(event) => setTrainingDescription(event.currentTarget.value)}
                                                     className=" py-[15px]"
             
                                                 />
-                                                <p>{props.trainingDescpription}</p>
+                                                <p>{trainingDescpription}</p>
                                             </>
                                         )}
-                                        {props.endorsement ==='Course' &&(
+                                        {endorsement ==='Course' &&(
                                             <>
                                                 < TextInput
                                                     label="Course Name"
                                                     placeholder="Course name..."
                                                     size="md"
-                                                    value={props.course}
-                                                    onChange={(event) => props.setCourse(event.currentTarget.value)}
+                                                    value={course}
+                                                    onChange={(event) => setCourse(event.currentTarget.value)}
                                                     className=" py-[15px] w-[450px]"
                                                 />
                                                 <Textarea
                                                     label="Course Description"
                                                     placeholder="Course description..."
-                                                    value={props.courseDescription}
-                                                    onChange={(event) => props.setCourseDescription(event.currentTarget.value)}
+                                                    value={courseDescription}
+                                                    onChange={(event) => setCourseDescription(event.currentTarget.value)}
                                                     className=" py-[15px]"
-            
                                                 />
                                             </>
                                         )}  
                                         <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-10 py-2 rounded ml-[120px] my-[10px] mt-[20px] mb-[25px] fixed bottom-0 "
-                                            onClick={props.handleAddSkill}>
+                                            onClick={handleSave}>
                                             Save endorsement
                                         </Button>
                                     </div>
