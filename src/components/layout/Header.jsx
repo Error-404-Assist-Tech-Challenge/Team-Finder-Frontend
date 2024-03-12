@@ -169,7 +169,7 @@ export default function GenericHeader() {
 
                         <Modal opened={opened} onClose={close} centered overflow="inside" className="bg-.m-1b7284a3.m-b5489c3c text-white rounded-modal" withCloseButton={false} zIndex={300}>
 
-                            
+                            <h1>NOTIFICATIONS</h1>
 
                         </Modal>
 

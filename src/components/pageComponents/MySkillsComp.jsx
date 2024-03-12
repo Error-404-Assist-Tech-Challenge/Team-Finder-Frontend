@@ -25,8 +25,8 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
     const language = unusedSkills.find(lang => lang.value === addedSkill);
     const [changed, setChange] = useState(false)
     const [notification, setNotification] = useState(false);
-    const [endorsement, setEndorsement] = useState('')
 
+    const [endorsement, setEndorsement] = useState('')
     const [training, setTraining] = useState('');
     const [course, setCourse] = useState('');
     const [trainingDescpription, setTrainingDescription] = useState('');
@@ -85,9 +85,10 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
             style: { width: 455 },
         })
     }
-
     useEffect(() => {
+
         // Update the endorsementsList when endorsement, training, or course changes
+
         setEndorsementList([
             {
                 type: endorsement,
@@ -103,10 +104,7 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
             <div className="flex flex-wrap justify-center">
                 {skills.map((skill, index) => (
                     <UserSkillCard key={index} index={index} skills={skills} setSkills={setSkills} unusedSkills={unusedSkills} setUnusedSkills={setUnusedSkills}
-                                   visible={visible} setVisible={setVisible} endorsementsList={endorsementsList} setEndorsementList={setEndorsementList} handleAddSkill={handleAddSkill}
-                                   course={course} courseDescription={courseDescription} training={training} trainingDescpription={trainingDescpription}
-                                   setCourse={setCourse} setCourseDescription={setCourseDescription} setTraining={setTraining} setTrainingDescription={setTrainingDescription}
-                                   endorsement={endorsement}  setEndorsement={setEndorsement} />
+                                   visible={visible} setVisible={setVisible} endorsementsList={skill.skill_endorsements} setEndorsementList={setEndorsementList} />
                 ))}
                 <div className="w-[410px] h-[270px] flex justify-center items-center">
                     <Button variant="outline" onClick={open}

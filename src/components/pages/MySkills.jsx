@@ -70,7 +70,6 @@ export default function MySkillsPage() {
         }
     }, []);
 
-
     // GET UNUSED USER SKILLS
 
     useEffect(() => {
