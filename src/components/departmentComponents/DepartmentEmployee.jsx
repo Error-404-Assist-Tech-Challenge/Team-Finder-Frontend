@@ -65,8 +65,11 @@ export default function DepartmentEmployee(props) {
                 <div className="pt-4 flex flex-col justify-start">
                     <p className="p-4 text-xl font-bold">{props.name}'s Endorsements:</p>
                     <Badge className="m-2" color="gray" size="xl" variant="filled">Training endorsement</Badge>
-                    <Badge className="m-2" color="gray" size="xl" variant="filled">Course endorsement</Badge>
-                    <Badge className="m-2" color="gray" size="xl" variant="filled">Project endorsement</Badge>
+                    {/* <div className='flex flex-col'>
+                        {endorsements.map((endorsement, index) =>(
+                            <SkillEndorsementBadge key={index} index={index} endorsement={endorsement}/>
+                        ))}
+                    </div> */}
                 </div>
                 <div>
                     <Button className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] rounded float-right" onClick={handleRemoveMember}>
