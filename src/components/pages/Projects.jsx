@@ -5,7 +5,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useHeadroom, useDisclosure } from '@mantine/hooks';
 import { Context } from '../../App';
 import ProjectCard from '../projectComponents/ProjectCard';
-import { Button, Modal, Title, TextInput, Textarea, Select, MultiSelect } from '@mantine/core';
+import { Loader, Button, Modal, Title, TextInput, Textarea, Select, MultiSelect } from '@mantine/core';
 import { DatePickerInput } from '@mantine/dates';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import RoleSelect from '../projectComponents/RoleSelect';
@@ -21,6 +21,8 @@ export default function ProjectsPage() {
 
     const [skills, setSkills] = useState([])
     const [projects, setProjects] = useState([])
+
+    const [visible, setVisible] = useState(true)
 
     const [roles, setRoles] = useState([])
     const [teamRoles, setTeamRoles] = useState([]) // FOR SELECT
@@ -52,6 +54,7 @@ export default function ProjectsPage() {
                 });
                 console.log('Projects:', response.data);
                 isMounted && setProjects(response.data);
+                setVisible(false);
             } catch (error) {
                 console.error('Error fetching projects:', error);
             }
@@ -63,80 +66,26 @@ export default function ProjectsPage() {
         }
     }, []);
 
-    useEffect(() => {
-        let isMounted = true;
-        const controller = new AbortController();
-        const fetchSkills = async () => {
-            try {
-                const response = await axiosPrivate.get('organizations/skills/unused/all', {
-                    signal: controller.signal,
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Access-Control-Allow-Origin': '*',
-                        'Access-Control-Allow-Credentials': 'true'
-                    },
-                    withCredentials: true
-                });
-                console.log('Skills:', response.data);
-                isMounted && setSkills(response.data);
-            } catch (error) {
-                console.error('Error fetching skills:', error);
-            }
-        }
-        fetchSkills();
-        return () => {
-            isMounted = false;
-            controller.abort();
-        }
-    }, []);
-
-    useEffect(() => {
-        let isMounted = true;
-        const controller = new AbortController();
-        const fetchRoles = async () => {
-            try {
-                const response = await axiosPrivate.get('organizations/team_roles/all', {
-                    signal: controller.signal,
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Access-Control-Allow-Origin': '*',
-                        'Access-Control-Allow-Credentials': 'true'
-                    },
-                    withCredentials: true
-                });
-                console.log('Roles:', response.data);
-                if (isMounted) {
-                    setRoles(response.data);
-
-                    const newRoles = response.data.map(role => ({
-                        role_id: role.value,
-                        count: 1
-                    }));
-
-                    setTeamRoles(newRoles);
-                }
-            } catch (error) {
-                console.error('Error fetching roles:', error);
-            }
-        }
-        fetchRoles();
-        return () => {
-            isMounted = false;
-            controller.abort();
-        }
-    }, []);
-
-
     return (
         <div className={`${darkMode && 'dark'}`}>
             <div className='dark:bg-darkcanvas bg-canvas h-auto min-h-screen select-none'>
-                <div className="flex flex-wrap justify-center">
-                    <ProjectsComp projects={currentPosts} setProjects={setProjects} />
-                </div>
+                {visible && (
+                        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                            <Loader size={30} color="red" />
+                        </div>
+                    )}
+
+                {!visible &&(
+                    <>
+                        <div className="flex flex-wrap justify-center">
+                            <ProjectsComp projects={currentPosts} setProjects={setProjects} />
+                        </div>
+                        <div className='dark:bg-darkcanvas bg-canvas flex justify-center items-center'>
+                            <PaginationComp totalPosts={projects.length} postsPerPage={postPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage} drawer={false} />
+                        </div>
+                    </>
+                )}
             </div >
-            <div className='dark:bg-darkcanvas bg-canvas flex justify-center items-center'>
-                <PaginationComp totalPosts={projects.length} postsPerPage={postPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage} drawer={false} />
-            </div>
         </div >
     )
 }

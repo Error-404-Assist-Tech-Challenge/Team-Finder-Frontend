@@ -25,11 +25,15 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
     const language = unusedSkills.find(lang => lang.value === addedSkill);
     const [changed, setChange] = useState(false)
     const [notification, setNotification] = useState(false);
+    const [endorsement, setEndorsement] = useState('')
 
     const [training, setTraining] = useState('');
     const [course, setCourse] = useState('');
     const [trainingDescpription, setTrainingDescription] = useState('');
     const [courseDescription, setCourseDescription] = useState('');
+
+    let endorsements = {};
+    const [endorsementsList, setEndorsementList] = useState([]);
 
     useEffect(() => {
         setChange(true);
@@ -39,13 +43,15 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
 
     const handleAddSkill = async () => {
         close();
+        console.log(endorsementsList)
         try {
             const response = await axiosPrivate.post('skills/user',
                 JSON.stringify({
                     skill_id: addedSkill,
                     level: selectedSkillLevel,
                     experience: selectedSkillExperience,
-                    role_id: ''
+                    role_id: '',
+                    endorsements: endorsementsList,
                 }),
                 {
                     headers: {
@@ -64,6 +70,10 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
             setUnusedSkills(newUnusedSkills);
 
             setAddedSkill('')
+            setEndorsement('')
+            setTraining('')
+            setTrainingDescription('')
+            
         } catch (error) {
             console.error('Error fetching unused skills:', error);
         }
@@ -76,13 +86,27 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
         })
     }
 
+    useEffect(() => {
+        // Update the endorsementsList when endorsement, training, or course changes
+        setEndorsementList([
+            {
+                type: endorsement,
+                endorsement: endorsement === 'Training' ? training : course,
+                description: endorsement === 'Training' ? trainingDescpription : courseDescription,
+                proj_id: ""
+            }
+        ]);
+    }, [endorsement, training, course, trainingDescpription, courseDescription]);
 
     return (
         <div>
             <div className="flex flex-wrap justify-center">
                 {skills.map((skill, index) => (
-                    <UserSkillCard key={index}
-                        index={index} skills={skills} setSkills={setSkills} unusedSkills={unusedSkills} setUnusedSkills={setUnusedSkills} visible={visible} setVisible={setVisible} />
+                    <UserSkillCard key={index} index={index} skills={skills} setSkills={setSkills} unusedSkills={unusedSkills} setUnusedSkills={setUnusedSkills}
+                                   visible={visible} setVisible={setVisible} endorsementsList={endorsementsList} setEndorsementList={setEndorsementList} handleAddSkill={handleAddSkill}
+                                   course={course} courseDescription={courseDescription} training={training} trainingDescpription={trainingDescpription}
+                                   setCourse={setCourse} setCourseDescription={setCourseDescription} setTraining={setTraining} setTrainingDescription={setTrainingDescription}
+                                   endorsement={endorsement}  setEndorsement={setEndorsement} />
                 ))}
                 <div className="w-[410px] h-[270px] flex justify-center items-center">
                     <Button variant="outline" onClick={open}
@@ -167,38 +191,56 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
                             <div className="flex flex-col justify-center items-center">
                                 <Title className="pb-[30px] ml-[25px]">Skill Endorsements</Title>
                             </div>
-                            < TextInput
-                                label="Training Name (optional)"
-                                placeholder="Training name..."
-                                size="md"
-                                value={training}
-                                onChange={(event) => setTraining(event.currentTarget.value)}
-                                className=" py-[15px] w-[450px]"
-                            />
-                            <Textarea
-                                label="Training Description (optional)"
-                                placeholder="Training description..."
-                                value={trainingDescpription}
-                                onChange={(event) => setTrainingDescription(event.currentTarget.value)}
-                                className=" py-[15px]"
+                            <Select data={['Training', 'Course', 'Project']} 
+                                    value={endorsement} 
+                                    onChange={setEndorsement} 
+                                    comboboxProps={{ zIndex: 1000000000 }}
+                                    label="Endorsement"
+                                    placeholder="Choose an edorsement"
+                                    className=" py-[15px] w-[450px]"/>
+                                    
+                            {endorsement ==='Training' &&(
+                                <>
+                                    < TextInput
+                                        label="Training Name"
+                                        placeholder="Training name..."
+                                        size="md"
+                                        value={training}
+                                        onChange={(event) => setTraining(event.currentTarget.value)}
+                                        className=" py-[15px] w-[450px]"
+                                    />
+                                    <p>{training}</p>
+                                    <Textarea
+                                        label="Training Description "
+                                        placeholder="Training description..."
+                                        value={trainingDescpription}
+                                        onChange={(event) => setTrainingDescription(event.currentTarget.value)}
+                                        className=" py-[15px]"
 
-                            />
-                            < TextInput
-                                label="Course Name (optional)"
-                                placeholder="Course name..."
-                                size="md"
-                                value={course}
-                                onChange={(event) => setCourse(event.currentTarget.value)}
-                                className=" py-[15px]"
-                            />
-                            <Textarea
-                                label="Course Description (optional)"
-                                placeholder="Course description..."
-                                value={courseDescription}
-                                onChange={(event) => setCourseDescription(event.currentTarget.value)}
-                                className=" py-[15px]"
+                                    />
+                                    <p>{trainingDescpription}</p>
+                                </>
+                            )}
+                            {endorsement ==='Course' &&(
+                                <>
+                                    < TextInput
+                                        label="Course Name"
+                                        placeholder="Course name..."
+                                        size="md"
+                                        value={course}
+                                        onChange={(event) => setCourse(event.currentTarget.value)}
+                                        className=" py-[15px] w-[450px]"
+                                    />
+                                    <Textarea
+                                        label="Course Description"
+                                        placeholder="Course description..."
+                                        value={courseDescription}
+                                        onChange={(event) => setCourseDescription(event.currentTarget.value)}
+                                        className=" py-[15px]"
 
-                            />
+                                    />
+                                </>
+                            )}  
                         </div>
                     </div>
                 </Modal>
