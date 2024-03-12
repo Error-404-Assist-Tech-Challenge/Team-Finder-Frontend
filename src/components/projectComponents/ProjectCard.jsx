@@ -1,13 +1,14 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { Card, Badge, Title, Modal, Divider, Checkbox, NumberInput, Button, Text } from '@mantine/core';
+import { Card, Badge, Title, Modal, Divider, Checkbox, NumberInput, Button, Text, Textarea } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useState, useEffect } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
-import NewMemberCard from './NewMemberCard';
 import { Tabs, rem } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import ProjectEdit from './ProjectEdit';
+import NewMemberCard from './NewMemberCard';
+import ProposedMemberCard from './ProposedMemberCard';
 
 export default function ProjectCard({ project, setProjects, roles, teamRoles, setTeamRoles, skills }) {
 
@@ -25,13 +26,14 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
     const [pastMembers, setPastMembers] = useState([])
     const [proposedMembers, setProposedMembers] = useState([])
 
+    const [context, setContext] = useState([])
+
     const handleOpenProject = () => {
         fetchProjects();
         openProject();
     }
 
     const fetchProjects = async () => {
-        console.log(project.id)
         try {
             const response = await axiosPrivate.get(
                 'projects/search_employees',
@@ -48,12 +50,10 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                 }
             );
             console.log('Project Employees:', response.data);
-
             setActiveMembers(response.data.active);
             setNewMembers(response.data.new);
             setPastMembers(response.data.past);
             setProposedMembers(response.data.proposed);
-
         } catch (error) {
             console.error('Error fetching project employees:', error);
         }
@@ -73,26 +73,18 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                 },
                 withCredentials: true
             });
-
             console.log('Response:', response.data);
-
             setProjects(response.data);
-
         } catch (error) {
             console.error('Error deleting project:', error);
         }
     }
 
     const filteredMembers = newMembers.filter(employee => {
-
         const isFullyAvailable = employee.work_hours == 0;
-
         const isPartiallyAvailable = partiallyAvailable && employee.work_hours < 8;
-
         const isCloseToFinish = closeToFinish && employee.weeks_until_next_deadline <= closeToFinish;
-
         const isUnavailable = unavailable && employee.work_hours === 8;
-
         return isFullyAvailable || isPartiallyAvailable /*|| isCloseToFinish*/ || isUnavailable;
     });
 
@@ -213,10 +205,36 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                                             <NewMemberCard key={index} employee={employee} available_roles={project.available_roles} project_id={project.id} />
                                         ))}
                                     </div>
+                                    <Divider className="my-9" />
+                                    <div className="flex w-full items-center">
+                                        <Textarea
+                                            size="md"
+                                            autosize
+                                            minRows={4}
+                                            maxRows={4}
+                                            placeholder="Additional context for chatgpt..."
+                                            className="m-5 w-full"
+                                            value={context}
+                                            onChange={(event) => setContext(event.currentTarget.value)}
+                                        />
+                                        {context.length == 0 &&
+                                            <Button className="bg-[#19c37d] my-5 ml-5 w-[120px] h-[74px] text-xl font-bold rounded-lg">Find</Button>
+                                        }
+                                        {context.length != 0 &&
+                                            <Button className="bg-[#19c37d] my-5 ml-5 w-[187px] h-[116px] text-xl font-bold rounded-lg">
+                                                Find <br />
+                                                with <br />
+                                                ChatGPT
+                                            </Button>
+                                        }
+                                    </div>
                                 </Tabs.Panel>
-
                                 <Tabs.Panel value="ProposedMembers">
-                                    <p>Proposed Members</p>
+                                    <div className="flex flex-wrap justify-center py-9">
+                                        {proposedMembers.map((employee, index) => (
+                                            <ProposedMemberCard key={index} employee={employee} available_roles={project.available_roles} project_id={project.id} />
+                                        ))}
+                                    </div>
                                 </Tabs.Panel>
                             </Tabs>
                         </div>
