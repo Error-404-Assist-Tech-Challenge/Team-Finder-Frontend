@@ -11,6 +11,7 @@ import ProjectEdit from './ProjectEdit';
 import NewMemberComp from '../pageComponents/NewMemberComp';
 import ProposedMemberCard from './ProposedMemberCard';
 import ActiveMemberCard from './ActiveMemberCard';
+import ProposedMembersComp from './ProposedMembersComp';
 
 export default function ProjectCard({ project, setProjects, roles, teamRoles, setTeamRoles, skills }) {
 
@@ -90,11 +91,17 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
         return isFullyAvailable || isPartiallyAvailable || isCloseToFinish || isUnavailable;
     });
 
-    const [currentPage, setCurrentPage] = useState(1);
-    const [postPerPage, setPostPerPage] = useState(6);
-    const lastPostIndex = currentPage * postPerPage;
-    const firstPostIndex = lastPostIndex - postPerPage;
-    const currentPosts = filteredMembers.slice(firstPostIndex, lastPostIndex);
+    const [currentPageFiltered, setCurrentPageFiltered] = useState(1);
+    const [postPerPageFiltered, setPostPerPageFiltered] = useState(6);
+    const lastPostIndexFiltered = currentPageFiltered * postPerPageFiltered;
+    const firstPostIndexFiltered = lastPostIndexFiltered - postPerPageFiltered;
+    const currentPostsFiltered = filteredMembers.slice(firstPostIndexFiltered, lastPostIndexFiltered);
+
+    const [currentPageProposed, setCurrentPageProposed] = useState(1);
+    const [postPerPageProposed, setPostPerPageProposed] = useState(6);
+    const lastPostIndexProposed = currentPageProposed * postPerPageProposed;
+    const firstPostIndexProposed = lastPostIndexProposed - postPerPageProposed;
+    const currentPostsProposed = proposedMembers.slice(firstPostIndexProposed, lastPostIndexProposed);
 
     const openDeleteModal = () =>
         modals.openConfirmModal({
@@ -170,7 +177,7 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                     </div>
 
                     <Divider className="color-white" size="md" orientation="vertical" />
-                    
+
                     <div className="w-1/2">
                         <Title className="flex justify-center pb-3">
                             Team Finder
@@ -248,10 +255,13 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                                 </Tabs.Panel>
 
                                 <Tabs.Panel value="ProposedMembers">
-                                    <div className="flex flex-wrap justify-center py-9">
-                                        {proposedMembers.map((employee, index) => (
-                                            <ProposedMemberCard setNewMembers={setNewMembers} setProposedMembers={setProposedMembers} key={index} employee={employee} available_roles={project.available_roles} project_id={project.id} />
-                                        ))}
+                                    <div>
+                                        <div className="flex flex-wrap justify-center py-9">
+                                            <ProposedMembersComp proposedMembers={currentPostsProposed} available_roles={project.available_roles} project_id={project.id} />
+                                        </div>
+                                        <div className='flex justify-center items-center'>
+                                            <PaginationComp totalPosts={proposedMembers.length} postsPerPage={postPerPageProposed} currentPage={currentPageProposed} setCurrentPage={setCurrentPageProposed} drawer={true} />
+                                        </div>
                                     </div>
                                 </Tabs.Panel>
                             </Tabs>

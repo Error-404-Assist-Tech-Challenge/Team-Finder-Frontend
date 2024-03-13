@@ -7,7 +7,9 @@ import { useDisclosure } from '@mantine/hooks';
 import React, { useState } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
-export default function ActiveMemberCard({ project_id, employee, available_roles }) {
+
+
+export default function ActiveMemberCard({ project_id, employee }) {
 
     const axiosPrivate = useAxiosPrivate();
     const [opened, { open, close }] = useDisclosure(false);
@@ -17,8 +19,32 @@ export default function ActiveMemberCard({ project_id, employee, available_roles
         const names = name.split(' ');
         return names.map((name) => name[0]).join('').toUpperCase();
     };
-
     const [comment, setComment] = useState('');
+
+    const handleProposeDeallocation = async () => {
+        try {
+            const response = await axiosPrivate.post('projects/deallocation_proposal',
+                JSON.stringify({
+                    assignment_id: employee.assignment_id,
+                    user_id: employee.user_id,
+                    proj_id: project_id,
+                    comment: comment
+                }),
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Credentials': 'true'
+                    },
+                    withCredentials: true
+                });
+            console.log('Response:', response.data);
+        } catch (error) {
+            console.error('Error creating proposal:', error);
+        }
+
+        close();
+    }
 
     const proposeDeallocation = async () => {
         try {
@@ -56,7 +82,7 @@ export default function ActiveMemberCard({ project_id, employee, available_roles
                 </div>
 
                 <p className="px-4 pt-4 text-xl font-bold">Currently working {employee.work_hours} / 8 hours</p>
-                <p className="px-4 pb-4 text-xl font-bold">Out of which {} are on this project</p>
+                <p className="px-4 pb-4 text-xl font-bold">Out of which { } are on this project</p>
                 <p className="p-4 text-xl font-bold">{employee.name}'s Skills:</p>
                 {employee.skills.map((skill, index) => (
                     <Badge key={index} className="m-2" color="gray" size="xl" variant="filled">{skill.name}</Badge>
@@ -70,18 +96,18 @@ export default function ActiveMemberCard({ project_id, employee, available_roles
                 <Divider className="my-5" />
 
                 <Textarea
-                    label="Comments"
+                    label="Comments for deallocation"
                     placeholder={`Additional information for ${employee.dept_name} department manager...`}
                     className="py-[5px]"
                     value={comment}
                     onChange={(event) => setComment(event.currentTarget.value)}
                 />
 
-                <div className="flex ">
+                <div className="flex justify-center">
                     {comment != '' &&
                         <>
-                            <Button className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] mx-3 rounded float-left" >
-                                Proposal Deallocation
+                            <Button className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] rounded" onClick={handleProposeDeallocation}>
+                                Propose Deallocation
                             </Button>
                         </>
                     }
