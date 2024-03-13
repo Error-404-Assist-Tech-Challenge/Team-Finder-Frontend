@@ -21,7 +21,7 @@ export default function ExistingRoleSelect({ roles, teamRoles, setTeamRoles, pro
 
     useEffect(() => {
         updateUserRoles();
-    }, [value])
+    }, [value, teamRoles])
 
     const addCount = (role_id) => {
         setTeamRoles(prevRoles => (

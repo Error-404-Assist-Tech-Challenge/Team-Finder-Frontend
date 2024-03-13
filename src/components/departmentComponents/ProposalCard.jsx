@@ -11,7 +11,6 @@ export default function ProposalCard({ proposal, setProposals, visible, setVisib
     const axiosPrivate = useAxiosPrivate();
 
     const handleSkillProposal = async (proposal_response) => {
-        setVisible(true);
         try {
             const response = await axiosPrivate.put('skills/proposal',
                 JSON.stringify({
@@ -35,12 +34,9 @@ export default function ProposalCard({ proposal, setProposals, visible, setVisib
         } catch (error) {
             console.error('Error fetching updating skill:', error);
         }
-        setVisible(false);
     }
 
     const handleProjectProposal = async (proposal_response) => {
-        // setVisible(true);
-
         const action = proposal_response ? "Accept" : "Reject"
 
         try {
@@ -66,13 +62,12 @@ export default function ProposalCard({ proposal, setProposals, visible, setVisib
         } catch (error) {
             console.error('Error responding to proposal:', error);
         }
-        // setVisible(false);
     }
 
 
     return (
         <div className="w-full rounded-lg bg-white p-4 my-2 select-none">
-            {proposal.skill_id != 'None' && (
+            {proposal.skill_id != null && (
                 <>
                     <p className="text-[17px] text-darkcanvas pb-5"><span className="font-bold">{proposal.user_name}</span> wishes to {proposal.type == "put" ? "update" : "create"} his <span className="font-bold">{proposal.skill_name}</span> skill</p>
                     <ProposalLevel level={proposal.level} />
@@ -81,9 +76,19 @@ export default function ProposalCard({ proposal, setProposals, visible, setVisib
                     <Button className="w-[170px] ml-[5px] bg-accent mt-[10px]" onClick={() => handleSkillProposal(false)}>Reject</Button>
                 </>
             )}
-            {proposal.role_ids != null && (
+            {proposal.role_ids != null && proposal.deallocated === false && (
                 <>
-                    <p className="text-[17px] text-darkcanvas"><span className="font-bold">{proposal.user_name}</span> has been proposed to join <span className="font-bold">{proposal.project_name}</span></p>
+                    <p className="text-[17px] text-darkcanvas"><span className="font-bold">{proposal.user_name}</span> has been proposed to be <span className="font-bold">allocated</span> to <span className="font-bold">{proposal.project_name}</span></p>
+                    <p className="text-[13px] text-darkcanvas">
+                        He has been assigned to work as <span className="font-bold">{proposal.role_name}</span> for <span className="font-bold">{proposal.work_hours}</span> hours a day. <span className="font-bold">{proposal.project_manager}</span> sent the comment: "{proposal.comment}"
+                    </p>
+                    <Button className="w-[170px] mr-[5px] bg-[#1CB85C] mt-[10px]" onClick={() => handleProjectProposal(true)}>Confirm</Button>
+                    <Button className="w-[170px] ml-[5px] bg-accent mt-[10px]" onClick={() => handleProjectProposal(false)}>Reject</Button>
+                </>
+            )}
+            {proposal.role_ids != null && proposal.deallocated === true && (
+                <>
+                    <p className="text-[17px] text-darkcanvas"><span className="font-bold">{proposal.user_name}</span> has been proposed to be <span className="font-bold">deallocated</span> to <span className="font-bold">{proposal.project_name}</span></p>
                     <p className="text-[13px] text-darkcanvas">
                         He has been assigned to work as <span className="font-bold">{proposal.role_name}</span> for <span className="font-bold">{proposal.work_hours}</span> hours a day. <span className="font-bold">{proposal.project_manager}</span> sent the comment: "{proposal.comment}"
                     </p>
