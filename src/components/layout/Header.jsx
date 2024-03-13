@@ -1,6 +1,6 @@
-import { useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Switch, useMantineTheme, rem, Group, Popover, Text, Modal, Button, Avatar, Tabs, Title } from '@mantine/core';
+import { Switch, useMantineTheme, rem, Group, Popover, Text, Modal, Button, Avatar, Tabs, Title, Badge } from '@mantine/core';
 import { useLocalStorage, useDisclosure } from '@mantine/hooks';
 import { IconSun, IconMoonStars, IconBell } from '@tabler/icons-react';
 import useLogout from '../../hooks/useLogout';
@@ -8,9 +8,11 @@ import useLogout from '../../hooks/useLogout';
 import { Context } from '../../App';
 import useAuth from '../../hooks/useAuth'
 import { NotificationCard } from './NotificationCard';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 export default function GenericHeader() {
 
+    const axiosPrivate = useAxiosPrivate();
     const { auth } = useAuth();
     const logout = useLogout();
     const navigate = useNavigate();
@@ -92,52 +94,38 @@ export default function GenericHeader() {
     };
     const account = formatRoles();
 
-    const notifications = [
-        {
-            proposal_id: "9746bb10-1f98-41f8-8575-f3a58785403f",
-            user_name: "William Clark",
-            skill_id: "56773271-6e37-42c3-8148-367f6649feb4",
-            skill_name: "SQL",
-            proposal: "False",
-            project_name: null,
-            type: "put"
-        },
-        {
-            proposal_id: "e5c0f2a1-72bf-4a9a-bf7d-9e0892c485d3",
-            user_name: "Emily Johnson",
-            skill_id: "None",
-            skill_name: "Python",
-            proposal: "True",
-            project_name: "Data Analysis Project",
-            type: "post"
-        },
-        {
-            proposal_id: "3d8f6132-e1df-46c6-89ee-021f8603a9b2",
-            user_name: "Michael Smith",
-            skill_id: "c1e180c8-847b-4561-9444-01522497551e",
-            skill_name: "Java",
-            proposal: "True",
-            project_name: "Enterprise Application Development",
-            type: "post"
-        },
-        {
-            proposal_id: "f04978a4-7d78-4e22-80b6-5d32e7f1c0d1",
-            user_name: "Sophia Brown",
-            skill_id: "None",
-            skill_name: "JavaScript",
-            proposal: "False",
-            project_name: "Enterprise Application Development",
-            type: "put"
-        },
-        {
-            proposal_id: "82ff843b-92d8-4fe1-85c0-1fc413ae7fae",
-            user_name: "Daniel Miller",
-            skill_id: "62b243fe-2e30-4d2d-bdf9-48e78a163d03",
-            skill_name: "React",
-            proposal: "True",
-            project_name: "Frontend Development",
+    const [notifications, setNotifications] = useState([])
+
+    const getNotifications = async () => {
+        try {
+            const response = await axiosPrivate.get('skills/proposal/unread', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Credentials': 'true'
+                },
+                withCredentials: true
+            });
+
+            console.log('Notificatinos:', response.data);
+
+            setNotifications(response.data)
+
+        } catch (error) {
+            console.error('Error fetching notifications:', error);
         }
-    ]
+    }
+
+    useEffect(() => {
+        getNotifications();
+
+        const interval = setInterval(() => {
+            getNotifications();
+        }, 10000);
+
+        return () => clearInterval(interval);
+    }, []);
+
 
     return (
         <div className={`${darkMode && 'dark'}`} >
@@ -187,24 +175,34 @@ export default function GenericHeader() {
                         </Tabs>
                     </div>
                     <Group justify="center" className='pr-4 pt-1'>
-                        <Button className='hover:bg-transparent' onClick={open}>
-                            <IconBell
-                                style={{ width: rem(35), height: rem(35), color: darkMode ? 'white' : 'black' }}
-                                stroke={1.5}
-                            />
+                        <Button className='hover:bg-transparent' onClick={() => { open() }}>
+                            <div style={{ position: 'relative', display: 'inline-block' }}>
+                                <IconBell
+                                    style={{ width: rem(35), height: rem(35), color: darkMode ? 'white' : 'black' }}
+                                    stroke={1.5}
+                                />
+                                <Badge
+                                    size="md"
+                                    circle
+                                    className="bg-accent text-lg"
+                                    style={{ position: 'absolute', bottom: 0, right: 0 }}
+                                >
+                                    {notifications.length}
+                                </Badge>
+                            </div>
                         </Button>
+
 
                         <Modal opened={opened} onClose={close} centered overflow="inside" className="bg-.m-1b7284a3.m-b5489c3c text-white rounded-modal" withCloseButton={false} zIndex={300}>
 
-                            <div className="flex text-center">
+                            <div className="flex justify-center py-6 select-none">
                                 <Title>Notifications ({notifications.length})</Title>
                             </div>
                             {notifications.map(notification => (
-                                <NotificationCard key={notification.proposal_id} notification={notification} />)
+                                <NotificationCard key={notification.proposal_id} notification={notification} setNotifications={setNotifications} />)
                             )}
 
                         </Modal>
-
 
 
                         <Popover width={250} position="bottom" withArrow shadow="md" className="custom-popover">
