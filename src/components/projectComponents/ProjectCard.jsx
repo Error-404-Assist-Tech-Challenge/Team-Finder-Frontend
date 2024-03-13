@@ -91,7 +91,7 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
     });
 
     const [currentPage, setCurrentPage] = useState(1);
-    const [postPerPage, setPostPerPage] = useState(2);
+    const [postPerPage, setPostPerPage] = useState(6);
     const lastPostIndex = currentPage * postPerPage;
     const firstPostIndex = lastPostIndex - postPerPage;
     const currentPosts = filteredMembers.slice(firstPostIndex, lastPostIndex);
@@ -115,7 +115,7 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
     return (
         <>
             <Modal opened={openedProject} onClose={closeProject} fullScreen transitionProps={{ transition: 'fade', duration: 200 }} className="dark:bg-card_modal text-white select-none" zIndex={300}>
-                <div className="h-[80vh] flex">
+                <div className="h-[90vh] flex">
                     <div className="w-1/2">
                         <Title className="flex justify-center">
                             {project.name}
@@ -147,7 +147,7 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                             <Tabs defaultValue="ActiveMembers" color="#FF3D2E">
                                 <Tabs.List grow>
                                     <Tabs.Tab value="ActiveMembers" className="  text-xl px-[40px]" >
-                                        Active Members ({activeMembers.length})
+                                        Project Team ({activeMembers.length})
                                     </Tabs.Tab>
                                     <Tabs.Tab value="PastMembers" className=" text-xl px-[40px]">
                                         Past Members ({pastMembers.length})
@@ -155,28 +155,22 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                                 </Tabs.List>
 
                                 <Tabs.Panel value="ActiveMembers">
+                                    <div className="flex flex-wrap justify-center">
 
-                                    {activeMembers.map((employee, index) => (
-                                        <ActiveMemberCard key={index} employee={employee} available_roles={project.available_roles} project_id={project.id} />
-                                    ))}
-
-
-
-
+                                        {activeMembers.map((employee, index) => (
+                                            <ActiveMemberCard key={index} employee={employee} available_roles={project.available_roles} project_id={project.id} />
+                                        ))}
+                                    </div>
                                 </Tabs.Panel>
 
                                 <Tabs.Panel value="PastMembers">
-
-
-
-
-
-
                                 </Tabs.Panel>
                             </Tabs>
                         </div>
                     </div>
+
                     <Divider className="color-white" size="md" orientation="vertical" />
+                    
                     <div className="w-1/2">
                         <Title className="flex justify-center pb-3">
                             Team Finder
@@ -186,7 +180,7 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                             <Tabs defaultValue="NewMembers" color="#FF3D2E">
                                 <Tabs.List grow>
                                     <Tabs.Tab value="NewMembers" className="  text-xl px-[40px]" >
-                                        New Members ({filteredMembers.length} / {newMembers.length})
+                                        New Team Members ({filteredMembers.length} / {newMembers.length})
                                     </Tabs.Tab>
                                     <Tabs.Tab value="ProposedMembers" className=" text-xl px-[40px]">
                                         Proposed Members ({proposedMembers.length})
