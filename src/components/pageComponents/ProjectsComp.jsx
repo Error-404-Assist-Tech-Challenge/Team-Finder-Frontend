@@ -93,7 +93,6 @@ export default function ProjectsComp({ projects, setProjects }) {
 
 
     const handleAddProject = async () => {
-
         const startDate =
             projectPeriod == 'Fixed'
                 ? projectDates[0]
@@ -102,18 +101,6 @@ export default function ProjectsComp({ projects, setProjects }) {
             projectPeriod == 'Fixed'
                 ? projectDates[1]
                 : null
-
-        console.log(JSON.stringify({
-            name: projectName,
-            period: projectPeriod,
-            start_date: startDate,
-            deadline_date: deadlineDate,
-            status: projectStatus,
-            description: projectDescription,
-            tech_stack: projectTech,
-            team_roles: projectRoles
-        }),)
-
         try {
             const response = await axiosPrivate.post('/project',
                 JSON.stringify({
@@ -146,6 +133,7 @@ export default function ProjectsComp({ projects, setProjects }) {
             setProjectStatus([null]);
             setProjectDescription('');
             setProjectTech([]);
+            setProjectRoles([]);
 
         } catch (error) {
             console.error('Error fetching unused skills:', error);
