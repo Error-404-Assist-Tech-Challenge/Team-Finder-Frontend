@@ -46,31 +46,6 @@ export default function ActiveMemberCard({ project_id, employee }) {
         close();
     }
 
-    const proposeDeallocation = async () => {
-        try {
-            const response = await axiosPrivate.put('projects/assignment_proposal',
-                JSON.stringify({
-                    proj_id: project_id,
-                    comment: comment
-                }),
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Access-Control-Allow-Origin': '*',
-                        'Access-Control-Allow-Credentials': 'true'
-                    },
-                    withCredentials: true
-                });
-            console.log('Response:', response.data);
-            // setNewMembers(response.data.new);
-            // setProposedMembers(response.data.proposed);
-        } catch (error) {
-            console.error('Error updating proposal:', error);
-        }
-
-        close();
-    }
-
     return (
         <>
             <Modal opened={opened} onClose={close} centered overflow="inside" size="500" className="bg-graybg text-white select-none" zIndex={300}>

@@ -47,7 +47,8 @@ export default function ProposalCard({ proposal, setProposals, visible, setVisib
             const response = await axiosPrivate.post('projects/manage_proposal',
                 JSON.stringify({
                     assignment_id: proposal.assignment_id,
-                    action: action
+                    action: action,
+                    type: "Assignment" // hardcodatat
                 }),
                 {
                     headers: {
