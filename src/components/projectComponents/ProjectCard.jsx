@@ -216,10 +216,10 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                                             </div>
                                         </div>
                                         <div className="flex flex-wrap justify-center">
-                                            <NewMemberComp setNewMembers={setNewMembers} setProposedMembers={setProposedMembers} filteredMembers={currentPosts} available_roles={project.available_roles} project_id={project.id} />
+                                            <NewMemberComp setNewMembers={currentPostsFiltered} setProposedMembers={setProposedMembers} filteredMembers={currentPostsFiltered} available_roles={project.available_rolesFiltered} project_id={project.idFiltered} />
                                         </div>
                                         <div className='flex justify-center items-center'>
-                                            <PaginationComp totalPosts={filteredMembers.length} postsPerPage={postPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage} drawer={true} />
+                                            <PaginationComp totalPosts={filteredMembers.length} postsPerPage={postPerPageFiltered} currentPage={currentPageFiltered} setCurrentPage={setCurrentPageFiltered} drawer={true} />
                                         </div>
                                     </div>
                                     <Divider className="my-9" />
