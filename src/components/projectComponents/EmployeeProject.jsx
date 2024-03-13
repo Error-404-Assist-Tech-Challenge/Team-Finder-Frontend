@@ -3,13 +3,18 @@
 import { Card, Badge, Title, Modal, Divider, Checkbox, NumberInput, Button, Text, Textarea } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useState, useEffect } from 'react';
-import { Tabs, rem } from '@mantine/core';
+import { Tabs, rem, Avatar } from '@mantine/core';
 
 
 export default function ProjectEmployeeCard({}) {
 
     const [opened, { open, close}] = useDisclosure(false);
     const [isHovering, setIsHovering] = useState(false);
+
+    const getInitials = (name) => {
+        const names = name.split(' ');
+        return names.map((name) => name[0]).join('').toUpperCase();
+    };
 
     return (
         <>
@@ -18,42 +23,57 @@ export default function ProjectEmployeeCard({}) {
                     <Title className="flex justify-center">
                         PROJECT NAME
                     </Title>
-                    <div className='flex flex-wrap mt-[30px]'>
-                        <div className="text-[20px] px-9 py-2">
+                    <div className='mt-[30px] w-full flex'>
+                        <div className="text-[20px] px-9 py-2 w-1/2">
                             <p className="py-1"><span className="font-bold">Period</span>: PROJECT START DATE</p>
-                            {/* <p className="py-1"><span className="font-bold">Start Date</span>: {project.start_date.substring(0, 10)}</p> */}
-                                <p className="py-1"><span className="font-bold">Deadline Date</span>: PROJECT DEADLINE DATE</p>
-                                {/* // <p className="py-1"><span className="font-bold">Deadline Date</span>: {project.deadline_date.substring(0, 10)}</p> */}
-                            
+                            <p className="py-1"><span className="font-bold">Deadline Date</span>: PROJECT DEADLINE DATE</p>
                             <p className="py-1"><span className="font-bold">Status</span>: PROJECT STATUS</p>
                             <p className="py-1"><span className="font-bold">Description</span>: PROJECT DESCRIPTION</p>
                             <div className="flex items-center flex-wrap">
                                 <p className="py-1"><span className="font-bold">Technology Stack</span>: </p>
-                                {/* {project.tech_stack.map((tech) => (
-                                    <Badge key={tech.skill_id} className="mx-3 my-1" color="gray" size="xl">{tech.skill_name}</Badge>
-                                ))} */}
                             </div>
                             <div className="flex items-center flex-wrap">
-                                {/* {project.team_role.map((role) => (
-                                    <Badge key={role.role_id} className="mx-3 my-1" color="gray" size="xl">
-                                        {role.count}x {role.role_name}
-                                    </Badge>
-                                ))} */}
+                                {/* Render technology stack badges here */}
                             </div>
                         </div>
-                        <div>
+                        <div className='w-1/2'>
                             <Tabs defaultValue="ActiveMembers" color="#FF3D2E">
                                 <Tabs.List grow>
-                                    <Tabs.Tab value="ActiveMembers" className="  text-xl w-[300px]" >
+                                    <Tabs.Tab value="ActiveMembers" className="text-xl w-[120px]">
                                         Project Team 
                                     </Tabs.Tab>
-                                    <Tabs.Tab value="PastMembers" className=" text-xl w-[300px]">
+                                    <Tabs.Tab value="PastMembers" className="text-xl w-[120px]">
                                         Past Members 
                                     </Tabs.Tab>
                                 </Tabs.List>
 
                                 <Tabs.Panel value="ActiveMembers">
-                                    ACTIVE MEMBERS
+                                    <div className='flex flex-wrap'>
+                                        <Card className="flex w-[250px] h-[80px] bg-[#505A5E] my-[20px] rounded-xl text-white select-none font-bold border border-white">                                        
+                                            <div className="flex items-center justify-left h-full">
+                                                <>
+                                                    <div className="w-[50px] h-[50px] m-1">
+                                                        <Avatar className="w-[50px] h-[50px] bg-[#E9E5E6]">{getInitials('NumeEmployee')}</Avatar>
+                                                    </div>
+                                                    <div className="flex flex-col">
+                                                        <div className="text-xl font-bold">Nume Employee</div>
+                                                    </div>
+                                                </>
+                                            </div>
+                                        </Card>
+                                        <Card className="flex w-[250px] h-[80px] bg-[#505A5E] mx-[40px] my-[20px] rounded-xl text-white select-none font-bold border border-white">
+                                            <div className="flex items-center justify-left h-full">
+                                                <>
+                                                    <div className="w-[50px] h-[50px] m-1">
+                                                        <Avatar className="w-[50px] h-[50px] bg-[#E9E5E6]">{getInitials('NumeEmployee')}</Avatar>
+                                                    </div>
+                                                    <div className="flex flex-col">
+                                                        <div className="text-xl font-bold">Nume Employee</div>
+                                                    </div>
+                                                </>
+                                            </div>
+                                        </Card>
+                                    </div>
                                 </Tabs.Panel>
 
                                 <Tabs.Panel value="PastMembers">
