@@ -62,84 +62,87 @@ export default function ProjectEmployeeCard({ name, roles, status, tech_stack, s
 
     return (
         <>
-            <Modal opened={opened} onClose={close} size={1200}  transitionProps={{ transition: 'fade', duration: 200 }} className="dark:bg-card_modal text-white select-none" zIndex={300}>
+            <Modal opened={opened} onClose={close} size={550} transitionProps={{ transition: 'fade', duration: 200 }} className="dark:bg-card_modal text-white select-none" zIndex={300}>
                 <div className="flex flex-col">
                     <Title className="flex justify-center">
                         {name}
                     </Title>
-                    <div className='mt-[30px] w-full flex'>
-                        <div className="text-[20px] px-9 py-2 w-1/2">
-                            <p className="py-1"><span className="font-bold">Period</span>: {start}</p>
-                            <p className="py-1"><span className="font-bold">Deadline Date</span>: {deadline}</p>
+                    <div className='mt-[30px] w-full'>
+                        <div className="text-[20px] px-9 py-2">
+                            <p className="py-1"><span className="font-bold">Period</span>: {start.substring(0, 10)}</p>
+                            {deadline &&
+                                <p className="py-1"><span className="font-bold">Deadline Date</span>: {deadline.substring(0, 10)}</p>
+                            }
                             <p className="py-1"><span className="font-bold">Status</span>: {status}</p>
                             <p className="py-1"><span className="font-bold">Description</span>: {description}</p>
-                            <div className="text-[18px] flex flex-wrap mt-2">
-                                    <p className='font-bold my-1'>Tech stack: </p>
-                                    {tech_stack.map((tech, index) => (
-                                        <>
-                                            <Badge color="gray " size='lg' className='mx-2 my-1.5'>{tech.skill_name}</Badge>
-                                        </>
-                                    ))}
+                            <div className="text-[20px] flex flex-wrap mt-2">
+                                <p className='font-bold my-1'>Tech stack: </p>
+                                {tech_stack.map((tech, index) => (
+                                    <>
+                                        <Badge color="gray " size='lg' className='mx-2 my-1.5'>{tech.skill_name}</Badge>
+                                    </>
+                                ))}
                             </div>
                             <div className="flex items-center flex-wrap">
                                 {/* Render technology stack badges here */}
                             </div>
                         </div>
-                        <div className='w-1/2'>
-                            <Tabs defaultValue="ActiveMembers" color="#FF3D2E">
-                                <Tabs.List grow>
-                                    <Tabs.Tab value="ActiveMembers" className="text-xl w-[120px]">
-                                        Project Team
-                                    </Tabs.Tab>
-                                    <Tabs.Tab value="PastMembers" className="text-xl w-[120px]">
-                                        Past Members
-                                    </Tabs.Tab>
-                                </Tabs.List>
+                        <Tabs defaultValue="ActiveMembers" color="#FF3D2E">
+                            <Tabs.List grow>
+                                <Tabs.Tab value="ActiveMembers" className="text-xl w-[120px]">
+                                    Project Team
+                                </Tabs.Tab>
+                                <Tabs.Tab value="PastMembers" className="text-xl w-[120px]">
+                                    Past Members
+                                </Tabs.Tab>
+                            </Tabs.List>
 
-                                <Tabs.Panel value="ActiveMembers">
-                                    
-                                    <div className='mt-[40px] flex flex-wrap'>
-                                        {activeMembers.map((member, index) => (
-                                            <>
-                                                <Card className="flex w-[250px] h-[80px] bg-[#505A5E] my-3 rounded-xl text-white select-none font-bold border border-white mx-3">
-                                                    <div className="flex items-center justify-left h-full">
-                                                        <>
-                                                            <div className="w-[50px] h-[50px] mr-3 ">
-                                                                <Avatar className="w-[50px] h-[50px] bg-[#E9E5E6]">{getInitials(member.name)}</Avatar>
-                                                            </div>
-                                                            <div className="flex flex-col">
-                                                                <div className="text-xl font-bold">{member.name}</div>
-                                                            </div>
-                                                        </>
-                                                    </div>
-                                                </Card>
-                                            </>
-                                        ))}
-                                    </div>
-                                </Tabs.Panel>
+                            <Tabs.Panel value="ActiveMembers">
 
-                                <Tabs.Panel value="PastMembers">
-                                    <div className='mt-[40px] flex flex-wrap'>
-                                        {pastMembers.map((member, index) => (
-                                            <>
-                                                <Card className="flex w-[250px] h-[80px] bg-[#505A5E] my-3 rounded-xl text-white select-none font-bold border border-white mx-3">
-                                                    <div className="flex items-center justify-left h-full">
-                                                        <>
-                                                            <div className="w-[50px] h-[50px] mr-3 ">
-                                                                <Avatar className="w-[50px] h-[50px] bg-[#E9E5E6]">{getInitials(member.name)}</Avatar>
-                                                            </div>
-                                                            <div className="flex flex-col">
-                                                                <div className="text-xl font-bold">{member.name}</div>
-                                                            </div>
-                                                        </>
-                                                    </div>
-                                                </Card>
-                                            </>
-                                        ))}
-                                    </div>
-                                </Tabs.Panel>
-                            </Tabs>
-                        </div>
+                                <div className='py-7 w-full flex flex-wrap justify-center'>
+                                    {activeMembers.map((member, index) => (
+                                        <Button className="flex bg-[#878e96] h-[90px] w-[220px] px-0 mx-[10px] my-[10px] rounded-xl text-white select-none font-bold" key={index}>
+                                            <div className="flex items-center justify-center h-full">
+                                                {!isHovering &&
+                                                    <>
+                                                        <Avatar className="w-[60px] h-[60px] m-3 bg-[#E9E5E6]">{getInitials(member.name)}</Avatar>
+                                                        <div className="text-xl font-bold text-left">
+                                                            {member.name.split(' ').slice(0, 2).map((word, index) => (
+                                                                <div key={index}>{word}</div>
+                                                            ))}
+                                                        </div>
+                                                    </>}
+                                            </div>
+                                            <div className="flex items-center justify-center h-full w-[220px]">
+                                                {isHovering && <Text className="text-lg font-bold text-center">Click to see more</Text>}
+                                            </div>
+                                        </Button >
+                                    ))}
+                                </div>
+                            </Tabs.Panel>
+                            <Tabs.Panel value="PastMembers">
+                                <div className='py-7 w-full flex flex-wrap justify-center'>
+                                    {pastMembers.map((member, index) => (
+                                        <Button className="flex bg-[#878e96] h-[90px] w-[220px] px-0 mx-[10px] my-[10px] rounded-xl text-white select-none font-bold" key={index}>
+                                            <div className="flex items-center justify-center h-full">
+                                                {!isHovering &&
+                                                    <>
+                                                        <Avatar className="w-[60px] h-[60px] m-3 bg-[#E9E5E6]">{getInitials(member.name)}</Avatar>
+                                                        <div className="text-xl font-bold text-left">
+                                                            {member.name.split(' ').slice(0, 2).map((word, index) => (
+                                                                <div key={index}>{word}</div>
+                                                            ))}
+                                                        </div>
+                                                    </>}
+                                            </div>
+                                            <div className="flex items-center justify-center h-full w-[220px]">
+                                                {isHovering && <Text className="text-lg font-bold text-center">Click to see more</Text>}
+                                            </div>
+                                        </Button >
+                                    ))}
+                                </div>
+                            </Tabs.Panel>
+                        </Tabs>
                     </div>
                 </div>
             </Modal>
@@ -156,22 +159,16 @@ export default function ProjectEmployeeCard({ name, roles, status, tech_stack, s
                         <>
                             <div className="text-[18px] pt-4 pl-4 flex flex-wrap">
                                 <p className='font-bold'>Roles: </p>
-                                    {roles.map((role, index) => (
-                                        <>
-                                            
-                                            <Badge color="gray  " className='mx-2 my-1'>{role.role_name}</Badge>
-                                        </>
-                                    ))}
-                                
+                                {roles.map((role, index) => (
+                                    <Badge key={index} color="gray" className='mx-2 my-1'>{role.role_name}</Badge>
+                                ))}
+
                             </div>
                             <div className="text-[18px] pt-4 pl-4 flex flex-wrap">
-                                    <p className='font-bold'>Tech stack: </p>
-                                    {tech_stack.map((tech, index) => (
-                                        <>
-                                            
-                                            <Badge color="gray  " className='mx-1 my-1'>{tech.skill_name}</Badge>
-                                        </>
-                                    ))}
+                                <p className='font-bold'>Tech stack: </p>
+                                {tech_stack.map((tech, index) => (
+                                    <Badge color="gray" key={index} className='mx-1 my-1'>{tech.skill_name}</Badge>
+                                ))}
                             </div>
                             <p className="text-[18px] pt-4 pl-4 flex flex-wrap"><span className="font-bold">Status</span>: {status}</p>
                         </>

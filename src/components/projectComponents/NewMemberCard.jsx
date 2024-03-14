@@ -23,13 +23,6 @@ export default function NewMemberCard({ setNewMembers, setProposedMembers, proje
     const [comment, setComment] = useState('');
 
     const handlePropose = async () => {
-        console.log(JSON.stringify({
-            user_id: employee.user_id,
-            role_ids: teamRoles,
-            proj_id: project_id,
-            work_hours: workHours,
-            comment: comment
-        }))
         try {
             const response = await axiosPrivate.post('projects/assignment_proposal',
                 JSON.stringify({
@@ -54,6 +47,9 @@ export default function NewMemberCard({ setNewMembers, setProposedMembers, proje
             console.error('Error creating proposal:', error);
         }
 
+        setTeamRoles([]);
+        setWorkHours(0);
+        setComment('');
         close();
     }
 

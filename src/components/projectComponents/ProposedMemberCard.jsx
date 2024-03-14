@@ -156,8 +156,6 @@ export default function ProposedMemberCard({ setNewMembers, setProposedMembers, 
                 <div className="flex items-center justify-center h-full w-[220px]">
                     {isHovering && <Text className="text-lg font-bold text-center">Click to see more</Text>}
                 </div>
-
-
             </Button >
         </>
     )

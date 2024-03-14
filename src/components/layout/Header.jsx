@@ -140,37 +140,37 @@ export default function GenericHeader() {
                     <div className="flex space-x-2 pt-1">
                         <Tabs color="#FF3D2E" radius="xs" defaultValue="" variant="default" value={Value}>
                             <Tabs.List>
-                                <Tabs.Tab onClick={handleMySkills} value="MySkills" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-[40px]">
+                                <Tabs.Tab onClick={handleMySkills} value="MySkills" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-7">
                                     My Skills
                                 </Tabs.Tab>
-                                <Tabs.Tab onClick={handleProjects} color="#FF3D2E" value="Projects" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-[40px]">
-                                    Projects
+                                <Tabs.Tab onClick={handleMyProjects} value="MyProjects" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-7">
+                                    My Projects
                                 </Tabs.Tab>
 
                                 {auth?.roles.includes("admin") &&
-                                    (<Tabs.Tab onClick={handleOrganizationEmployees} value="OrganizationEmployees" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-[40px]">
+                                    <Tabs.Tab onClick={handleOrganizationEmployees} value="OrganizationEmployees" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-7">
                                         Org. Employees
-                                    </Tabs.Tab>)}
+                                    </Tabs.Tab>}
 
                                 {auth?.roles.includes("admin") &&
-                                    (<Tabs.Tab onClick={handleOrganizationDepartments} value="OrganizationDepartments" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-[40px]">
+                                    <Tabs.Tab onClick={handleOrganizationDepartments} value="OrganizationDepartments" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-7">
                                         Org. Departments
-                                    </Tabs.Tab>)}
+                                    </Tabs.Tab>}
 
 
-                                <Tabs.Tab onClick={handleOrganizationSkills} value="OrganizationSkills" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-[40px]">
+                                <Tabs.Tab onClick={handleOrganizationSkills} value="OrganizationSkills" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-7">
                                     Org. Skills
                                 </Tabs.Tab>
 
                                 {auth?.roles.includes("dept_manager") &&
-                                    (<Tabs.Tab onClick={handleMyDepartment} value="MyDepartment" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-[40px]">
+                                    <Tabs.Tab onClick={handleMyDepartment} value="MyDepartment" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-7">
                                         My Department
-                                    </Tabs.Tab>)}
+                                    </Tabs.Tab>}
 
                                 {auth?.roles.includes("proj_manager") &&
-                                    (<Tabs.Tab onClick={handleMyProjects} value="MyProjects" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-[40px]">
-                                        My Projects
-                                    </Tabs.Tab>)}
+                                    <Tabs.Tab onClick={handleProjects} color="#FF3D2E" value="Projects" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-7">
+                                        Managed Projects
+                                    </Tabs.Tab>}
                             </Tabs.List>
                         </Tabs>
                     </div>
@@ -194,14 +194,12 @@ export default function GenericHeader() {
 
 
                         <Modal opened={opened} onClose={close} centered overflow="inside" className="bg-.m-1b7284a3.m-b5489c3c text-white rounded-modal" withCloseButton={false} zIndex={300}>
-
                             <div className="flex justify-center py-6 select-none">
                                 <Title>Notifications ({notifications.length})</Title>
                             </div>
                             {notifications.map(notification => (
                                 <NotificationCard key={notification.proposal_id} notification={notification} setNotifications={setNotifications} />)
                             )}
-
                         </Modal>
 
 
