@@ -6,15 +6,20 @@ import { useState, useEffect } from 'react';
 import { Tabs, rem, Avatar } from '@mantine/core';
 
 
-export default function ProjectEmployeeCard({}) {
+export default function ProjectEmployeeCard({key, name, roles }) {
+
+    
 
     const [opened, { open, close}] = useDisclosure(false);
     const [isHovering, setIsHovering] = useState(false);
+    const [visible, setVisible] = useState(false);
 
     const getInitials = (name) => {
         const names = name.split(' ');
         return names.map((name) => name[0]).join('').toUpperCase();
     };
+
+    console.log("ROLES:", roles)
 
     return (
         <>
@@ -89,13 +94,18 @@ export default function ProjectEmployeeCard({}) {
                 onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
                 <Card.Section className="dark:bg-[#495256]" onClick={open}>
                     <Title className="py-6 px-2 flex justify-center text-center text-[28px]">
-                        PROJECT NAME
+                        {name}
                     </Title>
                 </Card.Section>
                 <div className="h-[250px]" onClick={open}>
                     {!isHovering && (
                         <div className="text-[18px] pt-4 pl-4">
-                            <p className="py-1"><span className="font-bold">ROLES</span>: PROJECT ROLES</p>
+                            
+                            {/* {roles.map((role, index) => (
+                            <>
+                                <p className="py-1">{role[index].role_name}</p>
+                            </>
+                          ))} */}
                             <p className="py-1"><span className="font-bold">TECH STACK</span>: TECHNOLOGY STACK</p>
                             {/* {project.deadline_date && (
                                 < p className="py-1"><span className="font-bold">Deadline Date</span>: DEADLINE DATE</p>

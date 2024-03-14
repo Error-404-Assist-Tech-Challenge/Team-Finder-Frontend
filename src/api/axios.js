@@ -1,5 +1,5 @@
 import axios from 'axios'
-const BASE_URL = 'https://api-team-finder.azurewebsites.net/api/'
+const BASE_URL = 'https://api-team-finder.koyeb.app/api'
 
 export default axios.create({
     baseURL: BASE_URL
