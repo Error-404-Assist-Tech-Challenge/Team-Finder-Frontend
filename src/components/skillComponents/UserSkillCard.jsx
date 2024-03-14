@@ -39,15 +39,19 @@ export default function UserSkillCard(props) {
     const [indexToEdit, setIndexToEdit] = useState();
 
     const handleOpen = () => {
-        setCurrentLevel(props.skills[props.index].level);
-        setCurrentExperience(props.skills[props.index].experience)
+        setCurrentLevel(parseInt(props.skills[props.index].level, 10));
+        setCurrentExperience(parseInt(props.skills[props.index].experience, 10));
         open();
     }
 
-    for(let i = 0; i < props.endorsementsList.length; i++)
-    {
-        if(props.endorsementsList[i].proj_id==="None")
-            props.endorsementsList[i].proj_id=""
+    useEffect(() => {
+        console.log('Level', currentLevel)
+        console.log('Experience', currentExperience)
+    }, [currentLevel, currentExperience])
+
+    for (let i = 0; i < props.endorsementsList.length; i++) {
+        if (props.endorsementsList[i].proj_id === "None")
+            props.endorsementsList[i].proj_id = ""
     }
     // Save endorsement and skill change
     const handleSave = async () => {
@@ -64,24 +68,24 @@ export default function UserSkillCard(props) {
                 endorsements: updatedEndorsementsList,
             });
             const response = await axiosPrivate.put('skills/user',
-            JSON.stringify({
-                skill_id: props.skills[props.index].skill_id,
-                level: currentLevel,
-                experience: currentExperience,
-                role_id: '',
-                endorsements: updatedEndorsementsList,
-            }),
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Credentials': 'true'
-                },
-                withCredentials: true
-            });
-            
+                JSON.stringify({
+                    skill_id: props.skills[props.index].skill_id,
+                    level: currentLevel,
+                    experience: currentExperience,
+                    role_id: '',
+                    endorsements: updatedEndorsementsList,
+                }),
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Credentials': 'true'
+                    },
+                    withCredentials: true
+                });
+
             console.log('Response:', response.data);
-            
+
             props.setSkills(response.data);
         } catch (error) {
             console.error('Error saving my skill:', error);
@@ -104,24 +108,24 @@ export default function UserSkillCard(props) {
                 endorsements: updatedEndorsementsList,
             });
             const response = await axiosPrivate.put('skills/user',
-            JSON.stringify({
-                skill_id: props.skills[props.index].skill_id,
-                level: currentLevel,
-                experience: currentExperience,
-                role_id: '',
-                endorsements: updatedEndorsementsList,
-            }),
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Credentials': 'true'
-                },
-                withCredentials: true
-            });
-            
+                JSON.stringify({
+                    skill_id: props.skills[props.index].skill_id,
+                    level: currentLevel,
+                    experience: currentExperience,
+                    role_id: '',
+                    endorsements: updatedEndorsementsList,
+                }),
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Credentials': 'true'
+                    },
+                    withCredentials: true
+                });
+
             console.log('Response:', response.data);
-            
+
             props.setSkills(response.data);
         } catch (error) {
             console.error('Error saving my skill:', error);
@@ -175,16 +179,16 @@ export default function UserSkillCard(props) {
             confirmProps: { color: 'red' },
             onCancel: () => console.log('Cancel'),
             onConfirm: () => console.log(handleRemoveSkill()),
-            zIndex:10000002,
+            zIndex: 10000002,
         });
 
-    
+
 
     const handleCancel = async () => {
         setEditEndorsement(false)
     }
 
-    const handelAddEndorsement = async () =>{
+    const handelAddEndorsement = async () => {
         setAddEndorsement(true)
     }
 
@@ -276,9 +280,9 @@ export default function UserSkillCard(props) {
                                 <div className="flex flex-col justify-center items-center">
                                     <Title className="pb-[30px] ml-[25px]">Skill Endorsements</Title>
                                 </div>
-                                {editEndorsement &&(
+                                {editEndorsement && (
                                     <>
-                                        {endorsement ==='Training' &&(
+                                        {endorsement === 'Training' && (
                                             <>
                                                 < TextInput
                                                     label="Training Name"
@@ -294,11 +298,11 @@ export default function UserSkillCard(props) {
                                                     value={trainingDescpription}
                                                     onChange={(event) => setTrainingDescription(event.currentTarget.value)}
                                                     className=" py-[15px]"
-            
+
                                                 />
                                             </>
                                         )}
-                                        {endorsement ==='Course' &&(
+                                        {endorsement === 'Course' && (
                                             <>
                                                 < TextInput
                                                     label="Course Name"
@@ -316,7 +320,7 @@ export default function UserSkillCard(props) {
                                                     className=" py-[15px]"
                                                 />
                                             </>
-                                        )}  
+                                        )}
                                         <div className="p-[10px] fixed bottom-0 right-0">
                                             <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-4 py-2 rounded mr-[60px] my-[10px] mt-[20px] mb-[15px]"
                                                 onClick={handleCancel}>
@@ -329,31 +333,31 @@ export default function UserSkillCard(props) {
                                         </div>
                                     </>
                                 )}
-                                {(!editEndorsement && !addEndorsement) &&(
+                                {(!editEndorsement && !addEndorsement) && (
                                     <>
                                         <div className='flex flex-col'>
-                                            {props.skills[props.index].skill_endorsements.map((endorsement, index) =>(
+                                            {props.skills[props.index].skill_endorsements.map((endorsement, index) => (
                                                 <SkillEndorsementBadge key={index} index={index} endorsement={endorsement} setEndorsement={setEndorsement} editEndorsement={editEndorsement} setEditEndorsement={setEditEndorsement}
-                                                                       indexToDelete={indexToDelete} setIndexToDelete={setIndexToDelete} setIndexToEdit={setIndexToEdit} handleDeleteEndorsement={handleDeleteEndorsement}/>
+                                                    indexToDelete={indexToDelete} setIndexToDelete={setIndexToDelete} setIndexToEdit={setIndexToEdit} handleDeleteEndorsement={handleDeleteEndorsement} />
                                             ))}
                                         </div>
                                         <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-10 py-2 rounded ml-[120px] my-[10px] mt-[20px] mb-[25px] fixed bottom-0 "
                                             onClick={handelAddEndorsement}>
                                             Add endorsement
                                         </Button>
-                                     </>
+                                    </>
                                 )}
-                                {addEndorsement &&(
+                                {addEndorsement && (
                                     <div className="flex flex-col items-centre ">
-                                        <Select data={['Training', 'Course', 'Project']} 
-                                                value={endorsement} 
-                                                onChange={setEndorsement} 
-                                                comboboxProps={{ zIndex: 1000000000 }}
-                                                label="Endorsement"
-                                                placeholder="Choose an edorsement"
-                                                className=" py-[15px] w-[450px]"/>
-                                                
-                                        {endorsement ==='Training' &&(
+                                        <Select data={['Training', 'Course', 'Project']}
+                                            value={endorsement}
+                                            onChange={setEndorsement}
+                                            comboboxProps={{ zIndex: 1000000000 }}
+                                            label="Endorsement"
+                                            placeholder="Choose an edorsement"
+                                            className=" py-[15px] w-[450px]" />
+
+                                        {endorsement === 'Training' && (
                                             <>
                                                 < TextInput
                                                     label="Training Name"
@@ -369,11 +373,11 @@ export default function UserSkillCard(props) {
                                                     value={trainingDescpription}
                                                     onChange={(event) => setTrainingDescription(event.currentTarget.value)}
                                                     className=" py-[15px]"
-            
+
                                                 />
                                             </>
                                         )}
-                                        {endorsement ==='Course' &&(
+                                        {endorsement === 'Course' && (
                                             <>
                                                 < TextInput
                                                     label="Course Name"
@@ -391,7 +395,7 @@ export default function UserSkillCard(props) {
                                                     className=" py-[15px]"
                                                 />
                                             </>
-                                        )}  
+                                        )}
                                         <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-10 py-2 rounded ml-[120px] my-[10px] mt-[20px] mb-[25px] fixed bottom-0 "
                                             onClick={handleSave}>
                                             Save endorsement

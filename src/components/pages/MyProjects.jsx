@@ -49,48 +49,52 @@ export default function MyProjects() {
 
 
     return (
-      <div className={`${darkMode && 'dark'}`}>
-        <div className='dark:bg-darkcanvas bg-canvas h-auto min-h-screen select-none'>
-            {visible && (
-                  <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                      <Loader size={30} color="red" />
-                  </div>
-            )}
-            {!visible && (
-                <div className={`${darkMode && 'dark'}`}>
-                    <div className='dark:bg-darkcanvas bg-canvas h-auto min-h-screen select-none'>
-                        <div className='text-white'>
-                            <Tabs defaultValue="ActiveMembers" color="#FF3D2E">
-                                <Tabs.List grow>
-                                    <Tabs.Tab value="ActiveMembers" className="  text-xl px-[40px]" >
-                                        Project projects
-                                    </Tabs.Tab>
-                                    <Tabs.Tab value="PastMembers" className=" text-xl px-[40px]">
-                                        Past projects
-                                    </Tabs.Tab>
-                                </Tabs.List>
+        <div className={`${darkMode && 'dark'}`}>
+            <div className='dark:bg-darkcanvas bg-canvas h-auto min-h-screen select-none'>
+                {visible && (
+                    <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                        <Loader size={30} color="red" />
+                    </div>
+                )}
+                {!visible && (
+                    <div className={`${darkMode && 'dark'}`}>
+                        <div className='dark:bg-darkcanvas bg-canvas h-auto min-h-screen select-none'>
+                            <div className='text-white'>
+                                <Tabs defaultValue="CurrentProjects" color="#FF3D2E" className="py-3">
+                                    <Tabs.List grow>
+                                        <Tabs.Tab value="CurrentProjects" className="  text-xl px-[40px]" >
+                                            Project projects
+                                        </Tabs.Tab>
+                                        <Tabs.Tab value="PastProjects" className=" text-xl px-[40px]">
+                                            Past projects
+                                        </Tabs.Tab>
+                                    </Tabs.List>
 
 
-                                <Tabs.Panel value="ActiveMembers">
-                                    <div className=' dark:bg-darkcanvas bg-canvas mt-[40px] flex flex-wrap'>
-                                        {userProjects.active.map((userProject, index) => (
-                                            <>
+                                    <Tabs.Panel value="CurrentProjects">
+                                        <div className=' dark:bg-darkcanvas bg-canvas mt-[40px] flex flex-wrap'>
+                                            {userProjects.active.map((userProject, index) => (
                                                 <ProjectEmployeeCard key={index} name={userProject.project_name} roles={userProject.role_names} status={userProject.status} tech_stack={userProject.technology_stack}
-                                                                      start={userProject.start_date} deadline={userProject.deadline_date} description={userProject.description} project_id={userProject.proj_id}/>
-                                            </>
-                                        ))}
-                                    </div>
-                                </Tabs.Panel>
+                                                    start={userProject.start_date} deadline={userProject.deadline_date} description={userProject.description} project_id={userProject.proj_id} />
+                                            ))}
+                                        </div>
+                                    </Tabs.Panel>
 
-                                <Tabs.Panel value="PastMembers">
-                                    <p>{userProjects.active.length}</p>
-                                </Tabs.Panel>
-                            </Tabs>
-                        </div>
+                                    <Tabs.Panel value="PastProjects">
+                                        <div className=' dark:bg-darkcanvas bg-canvas mt-[40px] flex flex-wrap'>
+
+                                            {userProjects.past.map((userProject, index) => (
+                                                <ProjectEmployeeCard key={index} name={userProject.project_name} roles={userProject.role_names} status={userProject.status} tech_stack={userProject.technology_stack}
+                                                    start={userProject.start_date} deadline={userProject.deadline_date} description={userProject.description} project_id={userProject.proj_id} />
+                                            ))}
+                                        </div>
+                                    </Tabs.Panel>
+                                </Tabs>
+                            </div>
+                        </div >
                     </div >
-                </div >
-            )}
-          </div>
+                )}
+            </div>
         </div>
     )
 }
