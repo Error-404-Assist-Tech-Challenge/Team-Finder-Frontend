@@ -85,7 +85,7 @@ export default function ProposalCard({ proposal, setProposals, proposals, visibl
                     <>
                         <p className="text-[17px] text-darkcanvas"><span className="font-bold">{proposal.user_name}</span> has been proposed to be <span className="font-bold">allocated</span> to <span className="font-bold">{proposal.project_name}</span></p>
                         <p className="text-[13px] text-darkcanvas">
-                            He has been assigned to work as <span className="font-bold">{proposal.role_name}</span> for <span className="font-bold">{proposal.work_hours}</span> hours a day. <span className="font-bold">{proposal.project_manager}</span> sent the comment: "{proposal.comment}"
+                            He has been assigned to work as <span className="font-bold">{proposal.role_names.join(' and ')}</span> for <span className="font-bold">{proposal.work_hours}</span> hours a day. <span className="font-bold">{proposal.project_manager}</span> sent the comment: "{proposal.comment}"
                         </p>
                         <Button className="w-[170px] mr-[5px] bg-[#1CB85C] mt-[10px]" onClick={() => handleProjectProposal("Accept", "Assignment")}>Confirm</Button>
                         <Button className="w-[170px] ml-[5px] bg-accent mt-[10px]" onClick={() => handleProjectProposal("Reject", "Assignment")}>Reject</Button>

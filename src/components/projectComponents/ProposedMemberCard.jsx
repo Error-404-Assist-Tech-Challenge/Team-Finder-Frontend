@@ -75,8 +75,7 @@ export default function ProposedMemberCard({ setNewMembers, setProposedMembers, 
         }
         close();
     }
-
-
+    
     return (
         <>
             <Modal opened={opened} onClose={close} centered overflow="inside" size="500" className="bg-graybg text-white select-none" zIndex={300}>

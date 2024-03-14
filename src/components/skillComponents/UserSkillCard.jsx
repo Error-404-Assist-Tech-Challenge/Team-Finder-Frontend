@@ -44,11 +44,6 @@ export default function UserSkillCard(props) {
         open();
     }
 
-    useEffect(() => {
-        console.log('Level', currentLevel)
-        console.log('Experience', currentExperience)
-    }, [currentLevel, currentExperience])
-
     for (let i = 0; i < props.endorsementsList.length; i++) {
         if (props.endorsementsList[i].proj_id === "None")
             props.endorsementsList[i].proj_id = ""
