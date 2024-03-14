@@ -83,13 +83,7 @@ export default function MyProjects() {
                                 </Tabs.Panel>
 
                                 <Tabs.Panel value="PastMembers">
-                                  <div className=' dark:bg-darkcanvas bg-canvas mt-[40px] flex flex-wrap'>
-                                        {userProjects.past.map((userProject, index) => (
-                                            <>
-                                                <ProjectEmployeeCard key={index} name={userProject.project_name} roles={userProject.role_names} status={userProject.status} tech_stack={userProject.technology_stack}/>
-                                            </>
-                                        ))}
-                                    </div>
+                                    <p>{userProjects.active.length}</p>
                                 </Tabs.Panel>
                             </Tabs>
                         </div>

@@ -27,7 +27,7 @@ export default function MySkillsPage() {
     const [addedSkill, setAddedSkill] = useState('');
 
     const [currentPage, setCurrentPage] = useState(1);
-    const [postPerPage, setPostPerPage] = useState(9);
+    const [postPerPage, setPostPerPage] = useState(5);
     const lastPostIndex = currentPage * postPerPage;
     const firstPostIndex = lastPostIndex - postPerPage;
     const currentPosts = skills.slice(firstPostIndex, lastPostIndex);
@@ -120,7 +120,7 @@ export default function MySkillsPage() {
 
                 {!visible &&
                     <div className="flex flex-wrap">
-                            <MySkillsComp  skills={currentPosts} setSkills={setSkills} unusedSkills={unusedSkills} setUnusedSkills={setUnusedSkills} visible={visible} setVisible={setVisible} />
+                        <MySkillsComp skills={currentPosts} setSkills={setSkills} unusedSkills={unusedSkills} setUnusedSkills={setUnusedSkills} visible={visible} setVisible={setVisible} />
                     </div>}
             </div>
             <div className='dark:bg-darkcanvas bg-canvas flex justify-center items-center'>

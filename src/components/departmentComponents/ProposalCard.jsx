@@ -6,11 +6,14 @@ import ProposalLevel from './ProposalLevel';
 import ProposalExperience from './ProposalExperience';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
-export default function ProposalCard({ proposal, setProposals, visible, setVisible }) {
+export default function ProposalCard({ proposal, setProposals, proposals, visible, setVisible }) {
 
     const axiosPrivate = useAxiosPrivate();
 
     const handleSkillProposal = async (proposal_response) => {
+
+        setProposals(proposals.filter(proposal => proposal.id !== proposal_response.id));
+
         try {
             const response = await axiosPrivate.put('skills/proposal',
                 JSON.stringify({
@@ -37,6 +40,9 @@ export default function ProposalCard({ proposal, setProposals, visible, setVisib
     }
 
     const handleProjectProposal = async (proposal_response, proposal_type) => {
+
+        setProposals(proposals.filter(proposal => proposal.id !== proposal_response.id));
+
         try {
             const response = await axiosPrivate.post('projects/manage_proposal',
                 JSON.stringify({
@@ -65,7 +71,7 @@ export default function ProposalCard({ proposal, setProposals, visible, setVisib
 
     return (
         <div className="w-full rounded-lg bg-white p-4 my-2 select-none">
-            {proposal.skill_id != null && (
+            {proposal.proposal === false ? (
                 <>
                     <p className="text-[17px] text-darkcanvas pb-5"><span className="font-bold">{proposal.user_name}</span> wishes to {proposal.type == "put" ? "update" : "create"} his <span className="font-bold">{proposal.skill_name}</span> skill</p>
                     <ProposalLevel level={proposal.level} />
@@ -73,27 +79,27 @@ export default function ProposalCard({ proposal, setProposals, visible, setVisib
                     <Button className="w-[170px] mr-[5px] bg-[#1CB85C] mt-[10px]" onClick={() => handleSkillProposal(true)}>Confirm</Button>
                     <Button className="w-[170px] ml-[5px] bg-accent mt-[10px]" onClick={() => handleSkillProposal(false)}>Reject</Button>
                 </>
-            )}
-            {proposal.role_ids != null && proposal.deallocated === false && (
-                <>
-                    <p className="text-[17px] text-darkcanvas"><span className="font-bold">{proposal.user_name}</span> has been proposed to be <span className="font-bold">allocated</span> to <span className="font-bold">{proposal.project_name}</span></p>
-                    <p className="text-[13px] text-darkcanvas">
-                        He has been assigned to work as <span className="font-bold">{proposal.role_name}</span> for <span className="font-bold">{proposal.work_hours}</span> hours a day. <span className="font-bold">{proposal.project_manager}</span> sent the comment: "{proposal.comment}"
-                    </p>
-                    <Button className="w-[170px] mr-[5px] bg-[#1CB85C] mt-[10px]" onClick={() => handleProjectProposal("Accept", "Assignment")}>Confirm</Button>
-                    <Button className="w-[170px] ml-[5px] bg-accent mt-[10px]" onClick={() => handleProjectProposal("Reject", "Assignment")}>Reject</Button>
-                </>
-            )}
-            {proposal.role_ids != null && proposal.deallocated === true && (
-                <>
-                    <p className="text-[17px] text-darkcanvas"><span className="font-bold">{proposal.user_name}</span> has been proposed to be <span className="font-bold">deallocated</span> to <span className="font-bold">{proposal.project_name}</span></p>
-                    <p className="text-[13px] text-darkcanvas">
-                        He has been assigned to work as <span className="font-bold">{proposal.role_name}</span> for <span className="font-bold">{proposal.work_hours}</span> hours a day. <span className="font-bold">{proposal.project_manager}</span> sent the comment: "{proposal.dealloc_reason}"
-                    </p>
-                    <Button className="w-[170px] mr-[5px] bg-[#1CB85C] mt-[10px]" onClick={() => handleProjectProposal("Accept", "Deallocation")}>Confirm</Button>
-                    <Button className="w-[170px] ml-[5px] bg-accent mt-[10px]" onClick={() => handleProjectProposal("Reject", "Deallocation")}>Reject</Button>
-                </>
-            )}
+            ) :
+                proposal.deallocated == false ? (
+                    <>
+                        <p className="text-[17px] text-darkcanvas"><span className="font-bold">{proposal.user_name}</span> has been proposed to be <span className="font-bold">allocated</span> to <span className="font-bold">{proposal.project_name}</span></p>
+                        <p className="text-[13px] text-darkcanvas">
+                            He has been assigned to work as <span className="font-bold">{proposal.role_name}</span> for <span className="font-bold">{proposal.work_hours}</span> hours a day. <span className="font-bold">{proposal.project_manager}</span> sent the comment: "{proposal.comment}"
+                        </p>
+                        <Button className="w-[170px] mr-[5px] bg-[#1CB85C] mt-[10px]" onClick={() => handleProjectProposal("Accept", "Assignment")}>Confirm</Button>
+                        <Button className="w-[170px] ml-[5px] bg-accent mt-[10px]" onClick={() => handleProjectProposal("Reject", "Assignment")}>Reject</Button>
+                    </>
+                ) :
+                    (
+                        <>
+                            <p className="text-[17px] text-darkcanvas"><span className="font-bold">{proposal.user_name}</span> has been proposed to be <span className="font-bold">deallocated</span> to <span className="font-bold">{proposal.project_name}</span></p>
+                            <p className="text-[13px] text-darkcanvas">
+                                He has been assigned to work as <span className="font-bold">{proposal.role_name}</span> for <span className="font-bold">{proposal.work_hours}</span> hours a day. <span className="font-bold">{proposal.project_manager}</span> sent the comment: "{proposal.dealloc_reason}"
+                            </p>
+                            <Button className="w-[170px] mr-[5px] bg-[#1CB85C] mt-[10px]" onClick={() => handleProjectProposal("Accept", "Deallocation")}>Confirm</Button>
+                            <Button className="w-[170px] ml-[5px] bg-accent mt-[10px]" onClick={() => handleProjectProposal("Reject", "Deallocation")}>Reject</Button>
+                        </>
+                    )}
         </div >
     )
 
