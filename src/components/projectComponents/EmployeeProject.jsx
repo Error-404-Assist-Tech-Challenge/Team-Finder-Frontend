@@ -4,38 +4,82 @@ import { Card, Badge, Title, Modal, Divider, Checkbox, NumberInput, Button, Text
 import { useDisclosure } from '@mantine/hooks';
 import { useState, useEffect } from 'react';
 import { Tabs, rem, Avatar } from '@mantine/core';
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 
-export default function ProjectEmployeeCard({ name, roles }) {
+export default function ProjectEmployeeCard({ name, roles, status, tech_stack, start, deadline, description, project_id }) {
 
 
-
+    const axiosPrivate = useAxiosPrivate();
     const [opened, { open, close }] = useDisclosure(false);
     const [isHovering, setIsHovering] = useState(false);
     const [visible, setVisible] = useState(false);
+    const [pastMembers, setPastMembers] = useState([])
+    const [activeMembers, setActiveMembers] = useState([])
 
     const getInitials = (name) => {
         const names = name.split(' ');
         return names.map((name) => name[0]).join('').toUpperCase();
     };
 
-    console.log("ROLES:", roles)
+    useEffect(() => {
+        let isMounted = true;
+        const controller = new AbortController();
+
+        const fetchMembers = async () => {
+            try {
+                const response = await axiosPrivate.get(
+                    'projects/search_employees',
+                    {
+                        params: {
+                            proj_id: project_id,
+                        },
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Access-Control-Allow-Origin': '*',
+                            'Access-Control-Allow-Credentials': 'true'
+                        },
+                        withCredentials: true
+                    }
+                );
+                console.log('Project Employees:', response.data);
+                isMounted && setActiveMembers(response.data.active);
+                isMounted && setPastMembers(response.data.past);
+                setVisible(true);
+                // setActiveMembers(response.data.active);
+                // setPastMembers(response.data.past);
+            } catch (error) {
+                console.error('Error fetching project employees:', error);
+            }
+        }
+        fetchMembers();
+        return () => {
+            isMounted = false;
+            controller.abort();
+        }
+    }, [])
+    // console.log("ROLES:", roles)
 
     return (
         <>
-            <Modal opened={opened} onClose={close} size={1200} transitionProps={{ transition: 'fade', duration: 200 }} className="dark:bg-card_modal text-white select-none" zIndex={300}>
+            <Modal opened={opened} onClose={close} size={1200}  transitionProps={{ transition: 'fade', duration: 200 }} className="dark:bg-card_modal text-white select-none" zIndex={300}>
                 <div className="flex flex-col">
                     <Title className="flex justify-center">
-                        PROJECT NAME
+                        {name}
                     </Title>
                     <div className='mt-[30px] w-full flex'>
                         <div className="text-[20px] px-9 py-2 w-1/2">
-                            <p className="py-1"><span className="font-bold">Period</span>: PROJECT START DATE</p>
-                            <p className="py-1"><span className="font-bold">Deadline Date</span>: PROJECT DEADLINE DATE</p>
-                            <p className="py-1"><span className="font-bold">Status</span>: PROJECT STATUS</p>
-                            <p className="py-1"><span className="font-bold">Description</span>: PROJECT DESCRIPTION</p>
-                            <div className="flex items-center flex-wrap">
-                                <p className="py-1"><span className="font-bold">Technology Stack</span>: </p>
+                            <p className="py-1"><span className="font-bold">Period</span>: {start}</p>
+                            <p className="py-1"><span className="font-bold">Deadline Date</span>: {deadline}</p>
+                            <p className="py-1"><span className="font-bold">Status</span>: {status}</p>
+                            <p className="py-1"><span className="font-bold">Description</span>: {description}</p>
+                            <div className="text-[18px] flex flex-wrap mt-2">
+                                    <p className='font-bold my-1'>Tech stack: </p>
+                                    {tech_stack.map((tech, index) => (
+                                        <>
+                                            <Badge color="gray " size='lg' className='mx-2 my-1.5'>{tech.skill_name}</Badge>
+                                        </>
+                                    ))}
                             </div>
                             <div className="flex items-center flex-wrap">
                                 {/* Render technology stack badges here */}
@@ -53,36 +97,46 @@ export default function ProjectEmployeeCard({ name, roles }) {
                                 </Tabs.List>
 
                                 <Tabs.Panel value="ActiveMembers">
-                                    <div className='flex flex-wrap'>
-                                        <Card className="flex w-[250px] h-[80px] bg-[#505A5E] my-[20px] rounded-xl text-white select-none font-bold border border-white">
-                                            <div className="flex items-center justify-left h-full">
-                                                <>
-                                                    <div className="w-[50px] h-[50px] m-1">
-                                                        <Avatar className="w-[50px] h-[50px] bg-[#E9E5E6]">{getInitials('NumeEmployee')}</Avatar>
+                                    
+                                    <div className='mt-[40px] flex flex-wrap'>
+                                        {activeMembers.map((member, index) => (
+                                            <>
+                                                <Card className="flex w-[250px] h-[80px] bg-[#505A5E] my-3 rounded-xl text-white select-none font-bold border border-white mx-3">
+                                                    <div className="flex items-center justify-left h-full">
+                                                        <>
+                                                            <div className="w-[50px] h-[50px] mr-3 ">
+                                                                <Avatar className="w-[50px] h-[50px] bg-[#E9E5E6]">{getInitials(member.name)}</Avatar>
+                                                            </div>
+                                                            <div className="flex flex-col">
+                                                                <div className="text-xl font-bold">{member.name}</div>
+                                                            </div>
+                                                        </>
                                                     </div>
-                                                    <div className="flex flex-col">
-                                                        <div className="text-xl font-bold">Nume Employee</div>
-                                                    </div>
-                                                </>
-                                            </div>
-                                        </Card>
-                                        <Card className="flex w-[250px] h-[80px] bg-[#505A5E] mx-[40px] my-[20px] rounded-xl text-white select-none font-bold border border-white">
-                                            <div className="flex items-center justify-left h-full">
-                                                <>
-                                                    <div className="w-[50px] h-[50px] m-1">
-                                                        <Avatar className="w-[50px] h-[50px] bg-[#E9E5E6]">{getInitials('NumeEmployee')}</Avatar>
-                                                    </div>
-                                                    <div className="flex flex-col">
-                                                        <div className="text-xl font-bold">Nume Employee</div>
-                                                    </div>
-                                                </>
-                                            </div>
-                                        </Card>
+                                                </Card>
+                                            </>
+                                        ))}
                                     </div>
                                 </Tabs.Panel>
 
                                 <Tabs.Panel value="PastMembers">
-                                    PAST MEMBERS
+                                    <div className='mt-[40px] flex flex-wrap'>
+                                        {pastMembers.map((member, index) => (
+                                            <>
+                                                <Card className="flex w-[250px] h-[80px] bg-[#505A5E] my-3 rounded-xl text-white select-none font-bold border border-white mx-3">
+                                                    <div className="flex items-center justify-left h-full">
+                                                        <>
+                                                            <div className="w-[50px] h-[50px] mr-3 ">
+                                                                <Avatar className="w-[50px] h-[50px] bg-[#E9E5E6]">{getInitials(member.name)}</Avatar>
+                                                            </div>
+                                                            <div className="flex flex-col">
+                                                                <div className="text-xl font-bold">{member.name}</div>
+                                                            </div>
+                                                        </>
+                                                    </div>
+                                                </Card>
+                                            </>
+                                        ))}
+                                    </div>
                                 </Tabs.Panel>
                             </Tabs>
                         </div>
@@ -99,19 +153,28 @@ export default function ProjectEmployeeCard({ name, roles }) {
                 </Card.Section>
                 <div className="h-[250px]" onClick={open}>
                     {!isHovering && (
-                        <div className="text-[18px] pt-4 pl-4">
-
-                            {roles.map((role, index) => (
-                                <>
-                                    <p className="py-1">{role.role_name}</p>
-                                </>
-                            ))}
-                            <p className="py-1"><span className="font-bold">TECH STACK</span>: TECHNOLOGY STACK</p>
-                            {/* {project.deadline_date && (
-                                < p className="py-1"><span className="font-bold">Deadline Date</span>: DEADLINE DATE</p>
-                            )} */}
-                            <p className="pt-1"><span className="font-bold">Status</span>:STATUS</p>
-                        </div>
+                        <>
+                            <div className="text-[18px] pt-4 pl-4 flex flex-wrap">
+                                <p className='font-bold'>Roles: </p>
+                                    {roles.map((role, index) => (
+                                        <>
+                                            
+                                            <Badge color="gray  " className='mx-2 my-1'>{role.role_name}</Badge>
+                                        </>
+                                    ))}
+                                
+                            </div>
+                            <div className="text-[18px] pt-4 pl-4 flex flex-wrap">
+                                    <p className='font-bold'>Tech stack: </p>
+                                    {tech_stack.map((tech, index) => (
+                                        <>
+                                            
+                                            <Badge color="gray  " className='mx-1 my-1'>{tech.skill_name}</Badge>
+                                        </>
+                                    ))}
+                            </div>
+                            <p className="text-[18px] pt-4 pl-4 flex flex-wrap"><span className="font-bold">Status</span>: {status}</p>
+                        </>
                     )}
                     {isHovering && (
                         <div className="flex h-full w-full justify-center text-center items-center">
