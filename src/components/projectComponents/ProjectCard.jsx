@@ -9,9 +9,9 @@ import { Tabs, rem } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import ProjectEdit from './ProjectEdit';
 import NewMemberComp from '../pageComponents/NewMemberComp';
-import ProposedMemberCard from './ProposedMemberCard';
 import ActiveMemberCard from './ActiveMemberCard';
 import ProposedMembersComp from './ProposedMembersComp';
+import PastMemberCard from './PastMemberCard';
 import OrganizationEmployeesComp from '../pageComponents/OrganizationEmployeesComp';
 
 export default function ProjectCard({ project, setProjects, roles, teamRoles, setTeamRoles, skills }) {
@@ -200,14 +200,25 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                                 </Tabs.List>
 
                                 <Tabs.Panel value="ActiveMembers">
-                                    <div className="flex flex-wrap justify-center">
-                                        {activeMembers.map((employee, index) => (
+                                    <div className="flex flex-wrap justify-center items-center h-[220px]">
+                                        {activeMembers.length != 0 && activeMembers.map((employee, index) => (
                                             <ActiveMemberCard key={index} employee={employee} available_roles={project.available_roles} project_id={project.id} setActiveMembers={setActiveMembers} />
                                         ))}
+                                        {activeMembers.length == 0 &&
+                                            <p>No active members in this project...</p>
+                                        }
                                     </div>
                                 </Tabs.Panel>
 
                                 <Tabs.Panel value="PastMembers">
+                                    <div className="flex flex-wrap justify-center items-center h-[220px]">
+                                        {pastMembers.length != 0 && pastMembers.map((employee, index) => (
+                                            <PastMemberCard key={index} employee={employee} available_roles={project.available_roles} project_id={project.id} setActiveMembers={setActiveMembers} />
+                                        ))}
+                                        {pastMembers.length == 0 &&
+                                            <p>No past members in this project...</p>
+                                        }
+                                    </div>
                                 </Tabs.Panel>
                             </Tabs>
                         </div>
@@ -261,7 +272,7 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                                         </div>
                                         <div className="flex flex-wrap justify-center items-center h-[220px]">
                                             {newMembers.length != 0 &&
-                                                < NewMemberComp setNewMembers={setNewMembers} setProposedMembers={setProposedMembers} filteredMembers={currentPostsFiltered} available_roles={project.available_roles} project_id={project.id} />
+                                                <NewMemberComp setNewMembers={setNewMembers} setProposedMembers={setProposedMembers} filteredMembers={currentPostsFiltered} available_roles={project.available_roles} project_id={project.id} />
                                             }
                                             {newMembers.length == 0 &&
                                                 <p>No employees match the criteria for this project...</p>
@@ -313,7 +324,12 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                                 <Tabs.Panel value="ProposedMembers">
                                     <div>
                                         <div className="flex flex-wrap justify-center items-center py-9 h-[220px]">
-                                            <ProposedMembersComp proposedMembers={currentPostsProposed} available_roles={project.available_roles} project_id={project.id} />
+                                            {proposedMembers.length != 0 &&
+                                                <ProposedMembersComp proposedMembers={currentPostsProposed} available_roles={project.available_roles} project_id={project.id} />
+                                            }
+                                            {proposedMembers.length == 0 &&
+                                                <p>No members have been proposed for this project...</p>
+                                            }
                                         </div>
                                         <div className='flex justify-center items-center'>
                                             <PaginationComp totalPosts={proposedMembers.length} postsPerPage={postPerPageProposed} currentPage={currentPageProposed} setCurrentPage={setCurrentPageProposed} drawer={true} />
@@ -324,7 +340,7 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                         </div>
                     </div>
                 </div>
-            </Modal>
+            </Modal >
 
             <Modal opened={openedEdit} onClose={closeEdit} transitionProps={{ transition: 'fade', duration: 200 }} className="dark:bg-card_modal text-white select-none" zIndex={300}>
                 <ProjectEdit project={project} setProjects={setProjects} roles={roles} teamRoles={teamRoles} setTeamRoles={setTeamRoles} skills={skills} closeEdit={closeEdit} />

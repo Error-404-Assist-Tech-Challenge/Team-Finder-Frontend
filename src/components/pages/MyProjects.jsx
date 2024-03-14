@@ -77,9 +77,6 @@ export default function MyProjects() {
 
                                 <Tabs.Panel value="PastMembers">
                                     <p>{userProjects.active.length}</p>
-                                    <div className=' dark:bg-darkcanvas bg-canvas mt-[40px]'>
-                                        <ProjectEmployeeCard />
-                                    </div>
                                 </Tabs.Panel>
                             </Tabs>
                         </div>

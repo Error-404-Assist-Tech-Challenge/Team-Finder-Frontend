@@ -101,11 +101,11 @@ export default function ProjectEmployeeCard({ name, roles }) {
                     {!isHovering && (
                         <div className="text-[18px] pt-4 pl-4">
 
-                            {/* {roles.map((role, index) => (
-                            <>
-                                <p className="py-1">{role[index].role_name}</p>
-                            </>
-                          ))} */}
+                            {roles.map((role, index) => (
+                                <>
+                                    <p className="py-1">{role.role_name}</p>
+                                </>
+                            ))}
                             <p className="py-1"><span className="font-bold">TECH STACK</span>: TECHNOLOGY STACK</p>
                             {/* {project.deadline_date && (
                                 < p className="py-1"><span className="font-bold">Deadline Date</span>: DEADLINE DATE</p>
