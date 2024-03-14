@@ -9,7 +9,7 @@ import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 
 
-export default function ActiveMemberCard({ project_id, employee }) {
+export default function ActiveMemberCard({ project_id, employee, setActiveMembers }) {
 
     const axiosPrivate = useAxiosPrivate();
     const [opened, { open, close }] = useDisclosure(false);
@@ -19,7 +19,7 @@ export default function ActiveMemberCard({ project_id, employee }) {
         const names = name.split(' ');
         return names.map((name) => name[0]).join('').toUpperCase();
     };
-    const [comment, setComment] = useState('');
+    const [comment, setComment] = useState(employee.deallocate_proposal ? employee.deallocate_comment : '');
 
     const handleProposeDeallocation = async () => {
         try {
@@ -39,12 +39,62 @@ export default function ActiveMemberCard({ project_id, employee }) {
                     withCredentials: true
                 });
             console.log('Response:', response.data);
+            setActiveMembers(response.data.active);
+            setComment('')
         } catch (error) {
             console.error('Error creating proposal:', error);
         }
-
         close();
     }
+
+    const updateProposeDeallocation = async () => {
+        try {
+            const response = await axiosPrivate.put('projects/deallocation_proposal',
+                JSON.stringify({
+                    assignment_id: employee.assignment_id,
+                    // user_id: employee.user_id,
+                    proj_id: project_id,
+                    comment: comment
+                }),
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Credentials': 'true'
+                    },
+                    withCredentials: true
+                });
+            console.log('Response:', response.data);
+            setActiveMembers(response.data.active)
+        } catch (error) {
+            console.error('Error updating proposal:', error);
+        }
+        close();
+    }
+
+    const deleteProposeDeallocation = async () => {
+        try {
+            const response = await axiosPrivate.delete('projects/deallocation_proposal', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Credentials': 'true'
+                },
+                data: {
+                    assignment_id: employee.assignment_id,
+                    proj_id: project_id
+                },
+                withCredentials: true
+            });
+            console.log('Response:', response.data);
+            setActiveMembers(response.data.active);
+            setComment('');
+        } catch (error) {
+            console.error('Error deleting deallocation proposal proposal:', error);
+        }
+        close();
+    }
+
 
     return (
         <>
@@ -78,15 +128,32 @@ export default function ActiveMemberCard({ project_id, employee }) {
                     onChange={(event) => setComment(event.currentTarget.value)}
                 />
 
-                <div className="flex justify-center">
-                    {comment != '' &&
-                        <>
-                            <Button className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] rounded" onClick={handleProposeDeallocation}>
-                                Propose Deallocation
-                            </Button>
-                        </>
-                    }
-                </div>
+                {!employee.deallocate_proposal &&
+                    <div className="flex justify-center">
+                        {comment != '' &&
+                            <>
+                                <Button className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] rounded" onClick={handleProposeDeallocation}>
+                                    Propose Deallocation
+                                </Button>
+                            </>
+                        }
+                    </div>
+                }
+                {
+                    employee.deallocate_proposal &&
+                    <div className="flex justify-around">
+                        {comment != '' &&
+                            <>
+                                <Button className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] rounded" onClick={updateProposeDeallocation}>
+                                    Update proposal
+                                </Button>
+                                <Button className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] rounded" onClick={deleteProposeDeallocation}>
+                                    Revoke proposal
+                                </Button>
+                            </>
+                        }
+                    </div>
+                }
             </Modal >
 
             <Button className="flex bg-[#878e96] h-[90px] w-[220px] px-0 mx-[10px] my-[10px] rounded-xl text-white select-none font-bold"

@@ -12,6 +12,7 @@ import NewMemberComp from '../pageComponents/NewMemberComp';
 import ProposedMemberCard from './ProposedMemberCard';
 import ActiveMemberCard from './ActiveMemberCard';
 import ProposedMembersComp from './ProposedMembersComp';
+import OrganizationEmployeesComp from '../pageComponents/OrganizationEmployeesComp';
 
 export default function ProjectCard({ project, setProjects, roles, teamRoles, setTeamRoles, skills }) {
 
@@ -24,12 +25,34 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
     const [closeToFinish, setCloseToFinish] = useState(null)
     const [unavailable, setUnavailable] = useState(false)
 
+    const [allMembers, setAllMembers] = useState([])
     const [activeMembers, setActiveMembers] = useState([])
     const [newMembers, setNewMembers] = useState([])
     const [pastMembers, setPastMembers] = useState([])
     const [proposedMembers, setProposedMembers] = useState([])
 
-    const [context, setContext] = useState([])
+    const [contextChatgpt, setContextChatgpt] = useState('')
+    const [listFromChatgpt, setListFromChatgpt] = useState(false)
+
+    const filteredMembers = newMembers.filter(employee => {
+        const isFullyAvailable = employee.work_hours == 0;
+        const isPartiallyAvailable = partiallyAvailable && employee.work_hours < 8;
+        const isCloseToFinish = closeToFinish && employee.deadline <= closeToFinish;
+        const isUnavailable = unavailable && employee.work_hours === 8;
+        return isFullyAvailable || isPartiallyAvailable || isCloseToFinish || isUnavailable;
+    });
+
+    const [currentPageFiltered, setCurrentPageFiltered] = useState(1);
+    const [postPerPageFiltered, setPostPerPageFiltered] = useState(6);
+    const lastPostIndexFiltered = currentPageFiltered * postPerPageFiltered;
+    const firstPostIndexFiltered = lastPostIndexFiltered - postPerPageFiltered;
+    const currentPostsFiltered = filteredMembers.slice(firstPostIndexFiltered, lastPostIndexFiltered);
+
+    const [currentPageProposed, setCurrentPageProposed] = useState(1);
+    const [postPerPageProposed, setPostPerPageProposed] = useState(6);
+    const lastPostIndexProposed = currentPageProposed * postPerPageProposed;
+    const firstPostIndexProposed = lastPostIndexProposed - postPerPageProposed;
+    const currentPostsProposed = proposedMembers.slice(firstPostIndexProposed, lastPostIndexProposed);
 
     const handleOpenProject = () => {
         fetchProjects();
@@ -53,6 +76,7 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                 }
             );
             console.log('Project Employees:', response.data);
+            setAllMembers(response.data)
             setActiveMembers(response.data.active);
             setNewMembers(response.data.new);
             setPastMembers(response.data.past);
@@ -83,25 +107,39 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
         }
     }
 
-    const filteredMembers = newMembers.filter(employee => {
-        const isFullyAvailable = employee.work_hours == 0;
-        const isPartiallyAvailable = partiallyAvailable && employee.work_hours < 8;
-        const isCloseToFinish = closeToFinish && employee.deadline <= closeToFinish;
-        const isUnavailable = unavailable && employee.work_hours === 8;
-        return isFullyAvailable || isPartiallyAvailable || isCloseToFinish || isUnavailable;
-    });
+    const sendToChatgpt = async () => {
+        console.log(JSON.stringify({
+            context: contextChatgpt,
+            project_members: allMembers,
+            project: project
+        }),)
+        // setListFromChatgpt(true)
+        // try {
+        //     const response = await axiosPrivate.post('/chat_gpt_feature',
+        //         JSON.stringify({
+        //             context: contextChatgpt,
+        //             project_members: allMembers,
+        //             project: project
+        //         }),
+        //         {
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'Access-Control-Allow-Origin': '*',
+        //                 'Access-Control-Allow-Credentials': 'true'
+        //             },
+        //             withCredentials: true
+        //         });
+        //     console.log('Response:', response.data);
 
-    const [currentPageFiltered, setCurrentPageFiltered] = useState(1);
-    const [postPerPageFiltered, setPostPerPageFiltered] = useState(6);
-    const lastPostIndexFiltered = currentPageFiltered * postPerPageFiltered;
-    const firstPostIndexFiltered = lastPostIndexFiltered - postPerPageFiltered;
-    const currentPostsFiltered = filteredMembers.slice(firstPostIndexFiltered, lastPostIndexFiltered);
+        // } catch (error) {
+        //     console.error('Error with chatgpt feature:', error);
+        // }
+    }
 
-    const [currentPageProposed, setCurrentPageProposed] = useState(1);
-    const [postPerPageProposed, setPostPerPageProposed] = useState(6);
-    const lastPostIndexProposed = currentPageProposed * postPerPageProposed;
-    const firstPostIndexProposed = lastPostIndexProposed - postPerPageProposed;
-    const currentPostsProposed = proposedMembers.slice(firstPostIndexProposed, lastPostIndexProposed);
+    const handleReset = () => {
+        setListFromChatgpt(false);
+        setContextChatgpt('');
+    }
 
     const openDeleteModal = () =>
         modals.openConfirmModal({
@@ -163,9 +201,8 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
 
                                 <Tabs.Panel value="ActiveMembers">
                                     <div className="flex flex-wrap justify-center">
-
                                         {activeMembers.map((employee, index) => (
-                                            <ActiveMemberCard key={index} employee={employee} available_roles={project.available_roles} project_id={project.id} />
+                                            <ActiveMemberCard key={index} employee={employee} available_roles={project.available_roles} project_id={project.id} setActiveMembers={setActiveMembers} />
                                         ))}
                                     </div>
                                 </Tabs.Panel>
@@ -222,41 +259,60 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                                                 />
                                             </div>
                                         </div>
-                                        <div className="flex flex-wrap justify-center">
-                                            <NewMemberComp setNewMembers={setNewMembers} setProposedMembers={setProposedMembers} filteredMembers={currentPostsFiltered} available_roles={project.available_roles} project_id={project.id} />
+                                        <div className="flex flex-wrap justify-center items-center h-[220px]">
+                                            {newMembers.length != 0 &&
+                                                < NewMemberComp setNewMembers={setNewMembers} setProposedMembers={setProposedMembers} filteredMembers={currentPostsFiltered} available_roles={project.available_roles} project_id={project.id} />
+                                            }
+                                            {newMembers.length == 0 &&
+                                                <p>No employees match the criteria for this project...</p>
+                                            }
                                         </div>
                                         <div className='flex justify-center items-center'>
                                             <PaginationComp totalPosts={filteredMembers.length} postsPerPage={postPerPageFiltered} currentPage={currentPageFiltered} setCurrentPage={setCurrentPageFiltered} drawer={true} />
                                         </div>
                                     </div>
-                                    <Divider className="my-9" />
+
+                                    <Divider className="mb-4 mt-6" />
+
                                     <div className="flex w-full items-center">
                                         <Textarea
                                             size="md"
                                             autosize
-                                            minRows={4}
-                                            maxRows={4}
+                                            minRows={5}
+                                            maxRows={5}
                                             placeholder="Additional context for chatgpt..."
                                             className="m-5 w-full"
-                                            value={context}
-                                            onChange={(event) => setContext(event.currentTarget.value)}
+                                            value={contextChatgpt}
+                                            onChange={(event) => setContextChatgpt(event.currentTarget.value)}
                                         />
-                                        {context.length == 0 &&
-                                            <Button className="bg-[#19c37d] my-5 ml-5 w-[120px] h-[74px] text-xl font-bold rounded-lg">Find</Button>
+                                        {contextChatgpt.length == 0 &&
+                                            <div className="w-[120px] mx-5">
+                                                <Button className="bg-[#19c37d] my-2 w-full h-[50px] text-xl font-bold rounded-lg " onClick={sendToChatgpt}>Find</Button>
+                                                {listFromChatgpt &&
+                                                    <Button className="bg-[#149760] my-2 w-full h-[50px] text-xl font-bold rounded-lg" onClick={handleReset}>Reset</Button>
+                                                }
+                                            </div>
+
                                         }
-                                        {context.length != 0 &&
-                                            <Button className="bg-[#19c37d] my-5 ml-5 w-[187px] h-[116px] text-xl font-bold rounded-lg">
-                                                Find <br />
-                                                with <br />
-                                                ChatGPT
-                                            </Button>
+                                        {contextChatgpt.length != 0 &&
+                                            <div className="w-[187px] mx-5">
+                                                <Button className="bg-[#19c37d] my-2 w-full h-[90px] text-xl font-bold rounded-lg" onClick={sendToChatgpt}>
+                                                    Find <br />
+                                                    with <br />
+                                                    ChatGPT
+                                                </Button>
+                                                {listFromChatgpt &&
+                                                    <Button className="bg-[#149760] my-2 w-full h-[35px] text-xl font-bold rounded-lg" onClick={handleReset}>Reset</Button>
+                                                }
+                                            </div>
                                         }
+
                                     </div>
                                 </Tabs.Panel>
 
                                 <Tabs.Panel value="ProposedMembers">
                                     <div>
-                                        <div className="flex flex-wrap justify-center py-9">
+                                        <div className="flex flex-wrap justify-center items-center py-9 h-[220px]">
                                             <ProposedMembersComp proposedMembers={currentPostsProposed} available_roles={project.available_roles} project_id={project.id} />
                                         </div>
                                         <div className='flex justify-center items-center'>
