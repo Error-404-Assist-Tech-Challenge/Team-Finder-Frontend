@@ -56,23 +56,23 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
     const currentPostsProposed = proposedMembers.slice(firstPostIndexProposed, lastPostIndexProposed);
 
     const [currentPageActiveMember, setCurrentPageActiveMember] = useState(1);
-    const [postPerPageActiveMember, setPostPerPageActiveMember] = useState(6);
-    const lastPostIndexActiveMember= currentPageActiveMember * postPerPageActiveMember;
+    const [postPerPageActiveMember, setPostPerPageActiveMember] = useState(3);
+    const lastPostIndexActiveMember = currentPageActiveMember * postPerPageActiveMember;
     const firstPostIndexActiveMember = lastPostIndexActiveMember - postPerPageActiveMember;
     const currentPostsActiveMember = activeMembers.slice(firstPostIndexActiveMember, lastPostIndexActiveMember);
 
     const [currentPagePastMember, setCurrentPagePastMember] = useState(1);
-    const [postPerPagePastMember, setPostPerPagePastMember] = useState(6);
-    const lastPostIndexPastMember= currentPagePastMember * postPerPagePastMember;
+    const [postPerPagePastMember, setPostPerPagePastMember] = useState(3);
+    const lastPostIndexPastMember = currentPagePastMember * postPerPagePastMember;
     const firstPostIndexPastMember = lastPostIndexPastMember - postPerPagePastMember;
     const currentPostsPastMember = pastMembers.slice(firstPostIndexPastMember, lastPostIndexPastMember);
 
     const handleOpenProject = () => {
-        fetchProjects();
+        fetchProjectEmployees();
         openProject();
     }
 
-    const fetchProjects = async () => {
+    const fetchProjectEmployees = async () => {
         try {
             const response = await axiosPrivate.get(
                 'projects/search_employees',
@@ -122,35 +122,35 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
     }
 
     const sendToChatgpt = async () => {
-        console.log(JSON.stringify({
-            context: contextChatgpt,
-            project_members: allMembers,
-            project: project
-        }),)
-        // setListFromChatgpt(true)
-        // try {
-        //     const response = await axiosPrivate.post('/chat_gpt_feature',
-        //         JSON.stringify({
-        //             context: contextChatgpt,
-        //             project_members: allMembers,
-        //             project: project
-        //         }),
-        //         {
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //                 'Access-Control-Allow-Origin': '*',
-        //                 'Access-Control-Allow-Credentials': 'true'
-        //             },
-        //             withCredentials: true
-        //         });
-        //     console.log('Response:', response.data);
-
-        // } catch (error) {
-        //     console.error('Error with chatgpt feature:', error);
-        // }
+        setListFromChatgpt(true)
+        setVisible(true)
+        setPartiallyAvailable(true)
+        try {
+            const response = await axiosPrivate.post('chat_gpt_feature',
+                JSON.stringify({
+                    context: contextChatgpt,
+                    project_members: allMembers,
+                    project: project
+                }),
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Credentials': 'true'
+                    },
+                    withCredentials: true
+                });
+            console.log('Response:', response.data);
+            setNewMembers(response.data);
+        } catch (error) {
+            console.error('Error with chatgpt feature:', error);
+        }
+        setVisible(false)
     }
 
     const handleReset = () => {
+        setVisible(true)
+        fetchProjectEmployees();
         setListFromChatgpt(false);
         setContextChatgpt('');
     }
@@ -222,7 +222,7 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
 
                                     {!visible && (
                                         <>
-                                            <div className="flex flex-wrap justify-center items-center h-[220px]">
+                                            <div className="flex flex-wrap justify-center items-center h-[180px]">
                                                 {activeMembers.length != 0 && currentPostsActiveMember.map((employee, index) => (
                                                     <ActiveMemberCard key={index} employee={employee} available_roles={project.available_roles} project_id={project.id} setActiveMembers={setActiveMembers} />
                                                 ))}
@@ -238,7 +238,7 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                                 </Tabs.Panel>
 
                                 <Tabs.Panel value="PastMembers">
-                                    <div className="flex flex-wrap justify-center items-center h-[220px]">
+                                    <div className="flex flex-wrap justify-center items-center h-[180px]">
                                         {pastMembers.length != 0 && currentPostsPastMember.map((employee, index) => (
                                             <PastMemberCard key={index} employee={employee} available_roles={project.available_roles} project_id={project.id} setActiveMembers={setActiveMembers} />
                                         ))}
@@ -300,27 +300,27 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                                                 />
                                             </div>
                                         </div>
-                                        
-                                            <div className="flex flex-wrap justify-center items-center h-[220px]">
+
+                                        <div className="flex flex-wrap justify-center items-center h-[220px]">
                                             {visible && (
                                                 <div className="fixed bottom right transform translate-x-1/2 translate-y-1/2 h-[220px]">
                                                     <Loader size={30} color="red" />
                                                 </div>
                                             )}
 
-                                        {!visible &&(<>
+                                            {!visible && (<>
                                                 {newMembers.length != 0 &&
                                                     <NewMemberComp setNewMembers={setNewMembers} setProposedMembers={setProposedMembers} filteredMembers={currentPostsFiltered} available_roles={project.available_roles} project_id={project.id} />
                                                 }
                                                 {newMembers.length == 0 &&
                                                     <p>No employees match the criteria for this project...</p>
                                                 }
-                                                </>
+                                            </>
                                             )}
-                                            </div>
-                                            <div className='flex justify-center items-center'>
-                                                <PaginationComp totalPosts={filteredMembers.length} postsPerPage={postPerPageFiltered} currentPage={currentPageFiltered} setCurrentPage={setCurrentPageFiltered} drawer={true} />
-                                            </div>
+                                        </div>
+                                        <div className='flex justify-center items-center'>
+                                            <PaginationComp totalPosts={filteredMembers.length} postsPerPage={postPerPageFiltered} currentPage={currentPageFiltered} setCurrentPage={setCurrentPageFiltered} drawer={true} />
+                                        </div>
                                     </div>
 
                                     <Divider className="mb-4 mt-6" />

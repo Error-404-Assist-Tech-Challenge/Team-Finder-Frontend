@@ -7,7 +7,7 @@ import { Tabs, rem, Avatar } from '@mantine/core';
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 
-export default function ProjectEmployeeCard({ name, roles, status, tech_stack, start, deadline, description, project_id }) {
+export default function ProjectEmployeeCard({ name, roles, period, status, tech_stack, start, deadline, description, project_id }) {
 
 
     const axiosPrivate = useAxiosPrivate();
@@ -69,7 +69,8 @@ export default function ProjectEmployeeCard({ name, roles, status, tech_stack, s
                     </Title>
                     <div className='mt-[30px] w-full'>
                         <div className="text-[20px] px-9 py-2">
-                            <p className="py-1"><span className="font-bold">Period</span>: {start.substring(0, 10)}</p>
+                            <p className="py-1"><span className="font-bold">Period</span>: {period}</p>
+                            <p className="py-1"><span className="font-bold">Start Date</span>: {start.substring(0, 10)}</p>
                             {deadline &&
                                 <p className="py-1"><span className="font-bold">Deadline Date</span>: {deadline.substring(0, 10)}</p>
                             }

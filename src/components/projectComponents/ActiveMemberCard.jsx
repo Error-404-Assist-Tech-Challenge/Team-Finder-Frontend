@@ -122,7 +122,7 @@ export default function ActiveMemberCard({ project_id, employee, setActiveMember
 
                 <Textarea
                     label="Comments for deallocation"
-                    placeholder={`Additional information for ${employee.dept_name} department manager...`}
+                    placeholder={`Additional information for department manager...`}
                     className="py-[5px]"
                     value={comment}
                     onChange={(event) => setComment(event.currentTarget.value)}
@@ -156,18 +156,31 @@ export default function ActiveMemberCard({ project_id, employee, setActiveMember
                 }
             </Modal >
 
-            <Button className="flex bg-[#878e96] h-[90px] w-[220px] px-0 mx-[10px] my-[10px] rounded-xl text-white select-none font-bold"
+            <Button className="flex bg-[#878e96] h-[150px] w-[220px] px-0 mx-[10px] my-[10px] rounded-xl text-white select-none font-bold"
                 onClick={open} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-                <div className="flex items-center justify-center h-full">
+                <div className="flex flex-wrap h-full">
                     {!isHovering &&
                         <>
-                            <Avatar className="w-[60px] h-[60px] m-3 bg-[#E9E5E6]">{getInitials(employee.name)}</Avatar>
-                            <div className="text-xl font-bold text-left">
-                                {employee.name.split(' ').slice(0, 2).map((word, index) => (
-                                    <div key={index}>{word}</div>
-                                ))}
+                            <div className="flex items-center justify-center">
+                                <Avatar className="w-[60px] h-[60px] m-3 bg-[#E9E5E6]">{getInitials(employee.name)}</Avatar>
+                                <div className="text-xl font-bold text-left">
+                                    {employee.name.split(' ').slice(0, 2).map((word, index) => (
+                                        <div key={index}>{word}</div>
+                                    ))}
+                                </div>
                             </div>
-                        </>}
+                            <div className="flex items-center flex-wrap">
+                                {employee.roles.slice(0, 2).map((role, index) => (
+                                    <Badge key={role.id} className="mx-3 my-1 text-[#868e96] bg-[#E9E5E6]" size="sm">
+                                        {role.name}
+                                    </Badge>
+                                ))}
+                                {employee.roles.length > 2 && (
+                                    <span className="mx-3 my-1">Click to see more...</span>
+                                )}
+                            </div>
+                        </
+                        >}
                 </div>
                 <div className="flex items-center justify-center h-full w-[220px]">
                     {isHovering && <Text className="text-lg font-bold text-center">Click to see more</Text>}

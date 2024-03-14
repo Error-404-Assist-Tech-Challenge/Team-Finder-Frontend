@@ -30,12 +30,6 @@ export default function OrganizationSkillsComp({ skills, skillCategories, setSki
     const handleAddSkill = async () => {
         close();
         setVisible(true);
-        console.log(JSON.stringify({
-            name: skillName,
-            description: skillDescription,
-            category_id: skillCategory,
-            assign_department: includeMyDepartment
-        }))
         try {
             const response = await axiosPrivate.post('organizations/skills',
                 JSON.stringify({

@@ -43,6 +43,7 @@ export default function NewMemberCard({ setNewMembers, setProposedMembers, proje
             console.log('Response:', response.data);
             setNewMembers(response.data.new);
             setProposedMembers(response.data.proposed);
+            fetchAvailableRoles();
         } catch (error) {
             console.error('Error creating proposal:', error);
         }
@@ -52,6 +53,24 @@ export default function NewMemberCard({ setNewMembers, setProposedMembers, proje
         setComment('');
         close();
     }
+
+    const fetchAvailableRoles = async () => {
+        try {
+            const response = await axiosPrivate.get('projects/project_needed_roles', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Credentials': 'true'
+                },
+                withCredentials: true
+            });
+
+            console.log(response)
+        } catch (error) {
+            console.error('Error fetching available roles:', error);
+        }
+    }
+
 
 
     return (
