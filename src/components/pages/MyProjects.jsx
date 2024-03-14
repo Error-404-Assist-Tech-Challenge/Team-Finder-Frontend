@@ -85,7 +85,7 @@ export default function MyProjects() {
 
                                             {userProjects.past.map((userProject, index) => (
                                                 <ProjectEmployeeCard key={index} name={userProject.project_name} roles={userProject.role_names} status={userProject.status} tech_stack={userProject.technology_stack}
-                                                    start={userProject.start_date} deadline={userProject.deadline_date} description={userProject.description} project_id={userProject.proj_id} />
+                                                    period={userProject.period} start={userProject.start_date} deadline={userProject.deadline_date} description={userProject.description} project_id={userProject.proj_id} />
                                             ))}
                                         </div>
                                     </Tabs.Panel>

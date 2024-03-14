@@ -140,7 +140,7 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                     },
                     withCredentials: true
                 });
-            console.log('Response:', response.data);
+            console.log('Response from chatgpt:', response.data);
             setNewMembers(response.data);
         } catch (error) {
             console.error('Error with chatgpt feature:', error);
