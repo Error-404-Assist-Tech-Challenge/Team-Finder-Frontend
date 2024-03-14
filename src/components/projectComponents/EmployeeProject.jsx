@@ -6,11 +6,11 @@ import { useState, useEffect } from 'react';
 import { Tabs, rem, Avatar } from '@mantine/core';
 
 
-export default function ProjectEmployeeCard({key, name, roles }) {
+export default function ProjectEmployeeCard({ name, roles }) {
 
-    
 
-    const [opened, { open, close}] = useDisclosure(false);
+
+    const [opened, { open, close }] = useDisclosure(false);
     const [isHovering, setIsHovering] = useState(false);
     const [visible, setVisible] = useState(false);
 
@@ -45,16 +45,16 @@ export default function ProjectEmployeeCard({key, name, roles }) {
                             <Tabs defaultValue="ActiveMembers" color="#FF3D2E">
                                 <Tabs.List grow>
                                     <Tabs.Tab value="ActiveMembers" className="text-xl w-[120px]">
-                                        Project Team 
+                                        Project Team
                                     </Tabs.Tab>
                                     <Tabs.Tab value="PastMembers" className="text-xl w-[120px]">
-                                        Past Members 
+                                        Past Members
                                     </Tabs.Tab>
                                 </Tabs.List>
 
                                 <Tabs.Panel value="ActiveMembers">
                                     <div className='flex flex-wrap'>
-                                        <Card className="flex w-[250px] h-[80px] bg-[#505A5E] my-[20px] rounded-xl text-white select-none font-bold border border-white">                                        
+                                        <Card className="flex w-[250px] h-[80px] bg-[#505A5E] my-[20px] rounded-xl text-white select-none font-bold border border-white">
                                             <div className="flex items-center justify-left h-full">
                                                 <>
                                                     <div className="w-[50px] h-[50px] m-1">
@@ -100,7 +100,7 @@ export default function ProjectEmployeeCard({key, name, roles }) {
                 <div className="h-[250px]" onClick={open}>
                     {!isHovering && (
                         <div className="text-[18px] pt-4 pl-4">
-                            
+
                             {/* {roles.map((role, index) => (
                             <>
                                 <p className="py-1">{role[index].role_name}</p>
