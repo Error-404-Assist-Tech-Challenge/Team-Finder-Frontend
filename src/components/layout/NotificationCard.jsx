@@ -34,7 +34,7 @@ export const NotificationCard = ({ notification, setNotifications }) => {
 
     return (
         <>
-            {notification.skill_id !== null && (
+            {notification.proposal === false && (
                 <div className="bg-[#C5D6DB] h-[56px] w-full flex items-center rounded-lg p-4 my-2 select-none"
                     onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} onClick={readNotifications}>
                     {!isHovered &&
@@ -48,7 +48,7 @@ export const NotificationCard = ({ notification, setNotifications }) => {
                 </div >
             )}
             {
-                notification.skill_id === null && notification.proposal === true && (
+                notification.proposal === true && notification.deallocated == false && (
                     <div className="bg-[#B0C4B1] h-[83px] w-full flex items-center rounded-lg p-4 my-2 select-none"
                         onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} onClick={readNotifications}>
                         {!isHovered &&
@@ -63,7 +63,7 @@ export const NotificationCard = ({ notification, setNotifications }) => {
                 )
             }
             {
-                notification.skill_id === null && notification.proposal === false && (
+                notification.proposal === true && notification.deallocated == true && (
                     <div className="bg-[#D98880] h-[104px] w-full rounded-lg p-4 flex items-center my-2 select-none"
                         onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} onClick={readNotifications}>
                         {!isHovered &&
