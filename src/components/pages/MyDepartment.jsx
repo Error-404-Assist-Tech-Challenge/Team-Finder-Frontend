@@ -170,7 +170,7 @@ export default function MyDepartmentPage() {
                                 )}
                                 {!visibleLoad && (<>
                                     {proposals.map((proposal, index) => (
-                                        <ProposalCard key={index} proposal={proposal} setProposals={setProposals} visible={visibleLoad} setVisible={setVisibleLoad} />
+                                        <ProposalCard key={index} proposal={proposal} setProposals={setProposals} proposals={proposals} visible={visibleLoad} setVisible={setVisibleLoad} />
                                     ))}</>)}
                             </div>
                         </Drawer>
