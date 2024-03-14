@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { Card, Badge, Title, Modal, Divider, Checkbox, NumberInput, Button, Text, Textarea } from '@mantine/core';
+import { Card, Badge, Title, Modal, Divider, Checkbox, NumberInput, Button, Text, Textarea, Loader } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useState, useEffect } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
@@ -16,6 +16,7 @@ import OrganizationEmployeesComp from '../pageComponents/OrganizationEmployeesCo
 
 export default function ProjectCard({ project, setProjects, roles, teamRoles, setTeamRoles, skills }) {
 
+    const [visible, setVisible] = useState(true)
     const [isHovering, setIsHovering] = useState(false);
     const [openedProject, { open: openProject, close: closeProject }] = useDisclosure(false);
     const [openedEdit, { open: openEdit, close: closeEdit }] = useDisclosure(false);
@@ -49,10 +50,22 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
     const currentPostsFiltered = filteredMembers.slice(firstPostIndexFiltered, lastPostIndexFiltered);
 
     const [currentPageProposed, setCurrentPageProposed] = useState(1);
-    const [postPerPageProposed, setPostPerPageProposed] = useState(6);
+    const [postPerPageProposed, setPostPerPageProposed] = useState(9);
     const lastPostIndexProposed = currentPageProposed * postPerPageProposed;
     const firstPostIndexProposed = lastPostIndexProposed - postPerPageProposed;
     const currentPostsProposed = proposedMembers.slice(firstPostIndexProposed, lastPostIndexProposed);
+
+    const [currentPageActiveMember, setCurrentPageActiveMember] = useState(1);
+    const [postPerPageActiveMember, setPostPerPageActiveMember] = useState(6);
+    const lastPostIndexActiveMember= currentPageActiveMember * postPerPageActiveMember;
+    const firstPostIndexActiveMember = lastPostIndexActiveMember - postPerPageActiveMember;
+    const currentPostsActiveMember = activeMembers.slice(firstPostIndexActiveMember, lastPostIndexActiveMember);
+
+    const [currentPagePastMember, setCurrentPagePastMember] = useState(1);
+    const [postPerPagePastMember, setPostPerPagePastMember] = useState(6);
+    const lastPostIndexPastMember= currentPagePastMember * postPerPagePastMember;
+    const firstPostIndexPastMember = lastPostIndexPastMember - postPerPagePastMember;
+    const currentPostsPastMember = pastMembers.slice(firstPostIndexPastMember, lastPostIndexPastMember);
 
     const handleOpenProject = () => {
         fetchProjects();
@@ -81,6 +94,7 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
             setNewMembers(response.data.new);
             setPastMembers(response.data.past);
             setProposedMembers(response.data.proposed);
+            setVisible(false);
         } catch (error) {
             console.error('Error fetching project employees:', error);
         }
@@ -200,24 +214,40 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                                 </Tabs.List>
 
                                 <Tabs.Panel value="ActiveMembers">
-                                    <div className="flex flex-wrap justify-center items-center h-[220px]">
-                                        {activeMembers.length != 0 && activeMembers.map((employee, index) => (
-                                            <ActiveMemberCard key={index} employee={employee} available_roles={project.available_roles} project_id={project.id} setActiveMembers={setActiveMembers} />
-                                        ))}
-                                        {activeMembers.length == 0 &&
-                                            <p>No active members in this project...</p>
-                                        }
-                                    </div>
+                                    {visible && (
+                                        <div className="fixed bottom-0 left-1/4 w-1/2 h-1/2 transform translate-y-1/2">
+                                            <Loader size={30} color="red" />
+                                        </div>
+                                    )}
+
+                                    {!visible && (
+                                        <>
+                                            <div className="flex flex-wrap justify-center items-center h-[220px]">
+                                                {activeMembers.length != 0 && currentPostsActiveMember.map((employee, index) => (
+                                                    <ActiveMemberCard key={index} employee={employee} available_roles={project.available_roles} project_id={project.id} setActiveMembers={setActiveMembers} />
+                                                ))}
+                                                {activeMembers.length == 0 &&
+                                                    <p>No active members in this project...</p>
+                                                }
+                                            </div>
+                                            <div className='flex justify-center items-center'>
+                                                <PaginationComp totalPosts={activeMembers.length} postsPerPage={postPerPageActiveMember} currentPage={currentPageActiveMember} setCurrentPage={setCurrentPageActiveMember} drawer={true} />
+                                            </div>
+                                        </>
+                                    )}
                                 </Tabs.Panel>
 
                                 <Tabs.Panel value="PastMembers">
                                     <div className="flex flex-wrap justify-center items-center h-[220px]">
-                                        {pastMembers.length != 0 && pastMembers.map((employee, index) => (
+                                        {pastMembers.length != 0 && currentPostsPastMember.map((employee, index) => (
                                             <PastMemberCard key={index} employee={employee} available_roles={project.available_roles} project_id={project.id} setActiveMembers={setActiveMembers} />
                                         ))}
                                         {pastMembers.length == 0 &&
                                             <p>No past members in this project...</p>
                                         }
+                                    </div>
+                                    <div className='flex justify-center items-center'>
+                                        <PaginationComp totalPosts={pastMembers.length} postsPerPage={postPerPagePastMember} currentPage={currentPagePastMember} setCurrentPage={setCurrentPagePastMember} drawer={true} />
                                     </div>
                                 </Tabs.Panel>
                             </Tabs>
@@ -270,17 +300,27 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                                                 />
                                             </div>
                                         </div>
-                                        <div className="flex flex-wrap justify-center items-center h-[220px]">
-                                            {newMembers.length != 0 &&
-                                                <NewMemberComp setNewMembers={setNewMembers} setProposedMembers={setProposedMembers} filteredMembers={currentPostsFiltered} available_roles={project.available_roles} project_id={project.id} />
-                                            }
-                                            {newMembers.length == 0 &&
-                                                <p>No employees match the criteria for this project...</p>
-                                            }
-                                        </div>
-                                        <div className='flex justify-center items-center'>
-                                            <PaginationComp totalPosts={filteredMembers.length} postsPerPage={postPerPageFiltered} currentPage={currentPageFiltered} setCurrentPage={setCurrentPageFiltered} drawer={true} />
-                                        </div>
+                                        
+                                            <div className="flex flex-wrap justify-center items-center h-[220px]">
+                                            {visible && (
+                                                <div className="fixed bottom right transform translate-x-1/2 translate-y-1/2 h-[220px]">
+                                                    <Loader size={30} color="red" />
+                                                </div>
+                                            )}
+
+                                        {!visible &&(<>
+                                                {newMembers.length != 0 &&
+                                                    <NewMemberComp setNewMembers={setNewMembers} setProposedMembers={setProposedMembers} filteredMembers={currentPostsFiltered} available_roles={project.available_roles} project_id={project.id} />
+                                                }
+                                                {newMembers.length == 0 &&
+                                                    <p>No employees match the criteria for this project...</p>
+                                                }
+                                                </>
+                                            )}
+                                            </div>
+                                            <div className='flex justify-center items-center'>
+                                                <PaginationComp totalPosts={filteredMembers.length} postsPerPage={postPerPageFiltered} currentPage={currentPageFiltered} setCurrentPage={setCurrentPageFiltered} drawer={true} />
+                                            </div>
                                     </div>
 
                                     <Divider className="mb-4 mt-6" />
