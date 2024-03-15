@@ -224,7 +224,7 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                                         <>
                                             <div className="flex flex-wrap justify-center items-center h-[180px]">
                                                 {activeMembers.length != 0 && currentPostsActiveMember.map((employee, index) => (
-                                                    <ActiveMemberCard key={index} employee={employee} available_roles={project.available_roles} project_id={project.id} setActiveMembers={setActiveMembers} />
+                                                    <ActiveMemberCard key={index} employee={employee} project_id={project.id} setActiveMembers={setActiveMembers} />
                                                 ))}
                                                 {activeMembers.length == 0 &&
                                                     <p>No active members in this project...</p>
@@ -240,7 +240,7 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                                 <Tabs.Panel value="PastMembers">
                                     <div className="flex flex-wrap justify-center items-center h-[180px]">
                                         {pastMembers.length != 0 && currentPostsPastMember.map((employee, index) => (
-                                            <PastMemberCard key={index} employee={employee} available_roles={project.available_roles} project_id={project.id} setActiveMembers={setActiveMembers} />
+                                            <PastMemberCard key={index} employee={employee} project_id={project.id} setActiveMembers={setActiveMembers} />
                                         ))}
                                         {pastMembers.length == 0 &&
                                             <p>No past members in this project...</p>

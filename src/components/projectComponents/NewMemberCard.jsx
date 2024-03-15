@@ -7,7 +7,7 @@ import { useDisclosure } from '@mantine/hooks';
 import React, { useState } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
-export default function NewMemberCard({ setNewMembers, setProposedMembers, project_id, employee, available_roles }) {
+export default function NewMemberCard({ setNewMembers, setProposedMembers, project_id, employee }) {
 
     const axiosPrivate = useAxiosPrivate();
     const [opened, { open, close }] = useDisclosure(false);
@@ -23,10 +23,11 @@ export default function NewMemberCard({ setNewMembers, setProposedMembers, proje
         fetchAvailableRoles();
     }
 
-
     const [teamRoles, setTeamRoles] = useState([]);
     const [workHours, setWorkHours] = useState(0);
     const [comment, setComment] = useState('');
+
+    const [availableRoles, setAvailableRoles] = useState([]);
 
     const handlePropose = async () => {
         try {
@@ -70,7 +71,8 @@ export default function NewMemberCard({ setNewMembers, setProposedMembers, proje
                 },
                 withCredentials: true
             });
-            console.log(response.data)
+            console.log('Available Role', response.data)
+            setAvailableRoles(response.data)
         } catch (error) {
             console.error('Error fetching available roles:', error);
         }
@@ -96,7 +98,7 @@ export default function NewMemberCard({ setNewMembers, setProposedMembers, proje
                 <MultiSelect
                     label="Role"
                     placeholder="Role..."
-                    data={available_roles}
+                    data={availableRoles}
                     value={teamRoles}
                     onChange={setTeamRoles}
                     size="sm"
