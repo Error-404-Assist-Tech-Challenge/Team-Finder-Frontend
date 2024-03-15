@@ -2,11 +2,11 @@
 import { DatePickerInput } from '@mantine/dates';
 import '@mantine/dates/styles.css';
 import RoleSelect from './RoleSelect';
-import { Button, Title, TextInput, Textarea, Select, MultiSelect } from '@mantine/core';
+import { Button, Title, TextInput, Textarea, Select, TagsInput } from '@mantine/core';
 import { useState } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
-export default function ProjectEdit({ project, setProjects, roles, teamRoles, setTeamRoles, skills, closeEdit }) {
+export default function ProjectEdit({ project, setProjects, roles, teamRoles, setTeamRoles, closeEdit }) {
     const [projectName, setProjectName] = useState(project.name)
     const [projectPeriod, setProjectPeriod] = useState(project.period)
 
@@ -155,16 +155,14 @@ export default function ProjectEdit({ project, setProjects, roles, teamRoles, se
                 onChange={(event) => setProjectDescription(event.currentTarget.value)}
                 className=" py-[5px]"
             />
-            <MultiSelect
+            <TagsInput
                 label="Technology Stack"
                 placeholder="Technology..."
-                data={skills}
+                data={[]}
                 value={projectTech}
                 onChange={setProjectTech}
-                searchable
                 clearable
                 size="sm"
-                nothingFoundMessage="Technology does not exist..."
                 className="py-[5px]"
             />
             <RoleSelect

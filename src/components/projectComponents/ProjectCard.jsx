@@ -14,7 +14,7 @@ import ProposedMembersComp from './ProposedMembersComp';
 import PastMemberCard from './PastMemberCard';
 import OrganizationEmployeesComp from '../pageComponents/OrganizationEmployeesComp';
 
-export default function ProjectCard({ project, setProjects, roles, teamRoles, setTeamRoles, skills }) {
+export default function ProjectCard({ project, setProjects, roles, teamRoles, setTeamRoles }) {
 
     const [visible, setVisible] = useState(true)
     const [isHovering, setIsHovering] = useState(false);
@@ -383,7 +383,7 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
             </Modal >
 
             <Modal opened={openedEdit} onClose={closeEdit} transitionProps={{ transition: 'fade', duration: 200 }} className="dark:bg-card_modal text-white select-none" zIndex={300}>
-                <ProjectEdit project={project} setProjects={setProjects} roles={roles} teamRoles={teamRoles} setTeamRoles={setTeamRoles} skills={skills} closeEdit={closeEdit} />
+                <ProjectEdit project={project} setProjects={setProjects} roles={roles} teamRoles={teamRoles} setTeamRoles={setTeamRoles} closeEdit={closeEdit} />
             </Modal>
 
             <Card className="flex w-[350px] h-[300px] dark:bg-card_modal mx-[40px] my-[40px] rounded-xl dark:text-darktext text-text select-none"

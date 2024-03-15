@@ -29,7 +29,7 @@ export default function ProjectsPage() {
     const [projectRoles, setProjectRoles] = useState([]) // FOR SELECT
 
     const [currentPage, setCurrentPage] = useState(1);
-    const [postPerPage, setPostPerPage] = useState(11);
+    const [postPerPage, setPostPerPage] = useState(5);
     const lastPostIndex = currentPage * postPerPage;
     const firstPostIndex = lastPostIndex - postPerPage;
     const currentPosts = projects.slice(firstPostIndex, lastPostIndex);
@@ -70,12 +70,12 @@ export default function ProjectsPage() {
         <div className={`${darkMode && 'dark'}`}>
             <div className='dark:bg-darkcanvas bg-canvas h-auto min-h-screen select-none'>
                 {visible && (
-                        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                            <Loader size={30} color="red" />
-                        </div>
-                    )}
+                    <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                        <Loader size={30} color="red" />
+                    </div>
+                )}
 
-                {!visible &&(
+                {!visible && (
                     <>
                         <div className="flex flex-wrap justify-center">
                             <ProjectsComp projects={currentPosts} setProjects={setProjects} />

@@ -149,7 +149,7 @@ export default function ProposedMemberCard({ setNewMembers, setProposedMembers, 
                     onChange={(event) => setComment(event.currentTarget.value)}
                 />
 
-                <div className="flex ">
+                <div className="flex justify-around">
                     {teamRoles != [] && workHours != 0 && comment != '' &&
                         <>
                             <Button onClick={updateProposal} className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] mx-3 rounded float-left" >
