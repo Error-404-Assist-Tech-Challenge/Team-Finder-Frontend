@@ -18,6 +18,12 @@ export default function NewMemberCard({ setNewMembers, setProposedMembers, proje
         return names.map((name) => name[0]).join('').toUpperCase();
     };
 
+    const handleOpen = () => {
+        open();
+        fetchAvailableRoles();
+    }
+
+
     const [teamRoles, setTeamRoles] = useState([]);
     const [workHours, setWorkHours] = useState(0);
     const [comment, setComment] = useState('');
@@ -56,7 +62,7 @@ export default function NewMemberCard({ setNewMembers, setProposedMembers, proje
 
     const fetchAvailableRoles = async () => {
         try {
-            const response = await axiosPrivate.get('projects/project_needed_roles', {
+            const response = await axiosPrivate.get(`projects/project_needed_roles?proj_id=${project_id}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*',
@@ -64,14 +70,11 @@ export default function NewMemberCard({ setNewMembers, setProposedMembers, proje
                 },
                 withCredentials: true
             });
-
-            console.log(response)
+            console.log(response.data)
         } catch (error) {
             console.error('Error fetching available roles:', error);
         }
     }
-
-
 
     return (
         <>
@@ -132,7 +135,7 @@ export default function NewMemberCard({ setNewMembers, setProposedMembers, proje
             </Modal>
 
             <Button className="flex bg-[#878e96] h-[90px] w-[220px] px-0 mx-[10px] my-[10px] rounded-xl text-white select-none font-bold"
-                onClick={open} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+                onClick={handleOpen} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
                 <div className="flex items-center justify-center h-full">
                     {!isHovering &&
                         <>

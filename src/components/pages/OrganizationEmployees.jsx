@@ -46,25 +46,19 @@ export default function OrganizationEmployeesPage() {
     useEffect(() => {
         let isMounted = true;
         const controller = new AbortController();
-
         const getTeamRoles = async () => {
             try {
                 const response = await axiosPrivate.get('organizations/team_roles', {
                     signal: controller.signal,
                     withCredentials: true
                 });
-
                 console.log('Team Roles:', response.data);
-
                 isMounted && setTeamRoles(response.data)
-
             } catch (error) {
                 console.error('Error fetching organization members:', error);
             }
         }
-
         getTeamRoles();
-
         return () => {
             isMounted = false;
             controller.abort();
@@ -76,27 +70,20 @@ export default function OrganizationEmployeesPage() {
     useEffect(() => {
         let isMounted = true;
         const controller = new AbortController();
-
         const getUsers = async () => {
             try {
                 const response = await axiosPrivate.get('organization/users', {
                     signal: controller.signal,
                     withCredentials: true
                 });
-
                 console.log('Users:', response.data);
-
                 isMounted && setUsers(response.data)
-
                 setVisible(false);
-
             } catch (error) {
                 console.error('Error fetching organization members:', error);
             }
         }
-
         getUsers();
-
         return () => {
             isMounted = false;
             controller.abort();
