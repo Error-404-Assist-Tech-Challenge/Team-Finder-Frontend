@@ -18,6 +18,7 @@ import OrganizationEmployeesPage from './components/pages/OrganizationEmployees'
 import OrganizationDepartmentsPage from './components/pages/OrganizationDepartments';
 import MyDepartment from './components/pages/MyDepartment';
 import MyProjects from './components/pages/MyProjects'
+import DepartmentProjects from './components/pages/DepartmentProjects';
 import MainPage from './components/pages/MainPage'
 import RequireAuth from './components/auth/RequireAuth';
 import Welcome from './components/pages/Welcome';
@@ -65,6 +66,7 @@ export default function App() {
 
                                 <Route element={<RequireAuth allowedRoles={["dept_manager"]} />}>
                                     <Route path='/mydepartment' element={<MainPage Content={MyDepartment} />} />
+                                    <Route path='/departmentprojects' element={<MainPage Content={DepartmentProjects} />} />
                                 </Route>
 
                                 <Route element={<RequireAuth allowedRoles={["proj_manager"]} />}>

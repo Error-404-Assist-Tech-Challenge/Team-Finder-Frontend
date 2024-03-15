@@ -62,6 +62,10 @@ export default function GenericHeader() {
         setValue('MyProjects')
         navigate('/myprojects');
     };
+    const handleDepartmentProjects = () => {
+        setValue('DepartmentProjects')
+        navigate('/departmentprojects');
+    };
 
     const theme = useMantineTheme();
     const sunIcon = (
@@ -170,6 +174,11 @@ export default function GenericHeader() {
                                 {auth?.roles.includes("proj_manager") &&
                                     <Tabs.Tab onClick={handleProjects} color="#FF3D2E" value="Projects" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-7">
                                         Managed Projects
+                                    </Tabs.Tab>}
+
+                                {auth?.roles.includes("dept_manager") &&
+                                    <Tabs.Tab onClick={handleDepartmentProjects} value="DepartmentProjects" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-7">
+                                        Department Projects
                                     </Tabs.Tab>}
                             </Tabs.List>
                         </Tabs>
