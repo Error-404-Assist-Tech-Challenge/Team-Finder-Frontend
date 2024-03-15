@@ -48,14 +48,14 @@ export default function UserSkillCard(props) {
         if (props.endorsementsList[i].proj_id === "None")
             props.endorsementsList[i].proj_id = ""
     }
+
     // Save endorsement and skill change
     const handleSave = async () => {
         close();
         props.setVisible(true);
         try {
             let updatedEndorsementsList = props.endorsementsList.concat(tempEndoLsit);
-            updatedEndorsementsList.splice(indexToEdit, 1);
-            console.log({
+            console.log("AICI INTRA:",{
                 skill_id: props.skills[props.index].skill_id,
                 level: currentLevel,
                 experience: currentExperience,
@@ -63,25 +63,69 @@ export default function UserSkillCard(props) {
                 endorsements: updatedEndorsementsList,
             });
             const response = await axiosPrivate.put('skills/user',
-                JSON.stringify({
-                    skill_id: props.skills[props.index].skill_id,
-                    level: currentLevel,
-                    experience: currentExperience,
-                    role_id: '',
-                    endorsements: updatedEndorsementsList,
-                }),
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Access-Control-Allow-Origin': '*',
-                        'Access-Control-Allow-Credentials': 'true'
-                    },
-                    withCredentials: true
-                });
-
+            JSON.stringify({
+                skill_id: props.skills[props.index].skill_id,
+                level: currentLevel,
+                experience: currentExperience,
+                role_id: '',
+                endorsements: updatedEndorsementsList,
+            }),
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Credentials': 'true'
+                },
+                withCredentials: true
+            });
+            
             console.log('Response:', response.data);
-
             props.setSkills(response.data);
+
+            
+
+        } catch (error) {
+            console.error('Error saving my skill:', error);
+        }
+        props.setVisible(false);
+    }
+
+    const handleSaveEndorsement = async () => {
+        close();
+        props.setVisible(true);
+        try {
+            let updatedEndorsementsList = props.endorsementsList.concat(tempEndoLsit);
+            console.log("Index to delete:",indexToEdit)
+            updatedEndorsementsList.splice(indexToEdit, 1);
+            console.log("AICI INTRA:",{
+                skill_id: props.skills[props.index].skill_id,
+                level: currentLevel,
+                experience: currentExperience,
+                role_id: '',
+                endorsements: updatedEndorsementsList,
+            });
+            const response = await axiosPrivate.put('skills/user',
+            JSON.stringify({
+                skill_id: props.skills[props.index].skill_id,
+                level: currentLevel,
+                experience: currentExperience,
+                role_id: '',
+                endorsements: updatedEndorsementsList,
+            }),
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Credentials': 'true'
+                },
+                withCredentials: true
+            });
+            
+            console.log('Response:', response.data);
+            props.setSkills(response.data);
+
+            
+
         } catch (error) {
             console.error('Error saving my skill:', error);
         }
@@ -322,7 +366,7 @@ export default function UserSkillCard(props) {
                                                 Cancel
                                             </Button>
                                             <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-4 py-2 rounded mx-[10px] my-[10px] mt-[20px] ml-[130px] mb-[15px] float-right"
-                                                onClick={handleSave}>
+                                                onClick={handleSaveEndorsement}>
                                                 Save Endorsement
                                             </Button>
                                         </div>
@@ -333,7 +377,7 @@ export default function UserSkillCard(props) {
                                         <div className='flex flex-col'>
                                             {props.skills[props.index].skill_endorsements.map((endorsement, index) => (
                                                 <SkillEndorsementBadge key={index} index={index} endorsement={endorsement} setEndorsement={setEndorsement} editEndorsement={editEndorsement} setEditEndorsement={setEditEndorsement}
-                                                    indexToDelete={indexToDelete} setIndexToDelete={setIndexToDelete} setIndexToEdit={setIndexToEdit} handleDeleteEndorsement={handleDeleteEndorsement} />
+                                                    indexToDelete={indexToDelete} setIndexToDelete={setIndexToDelete} setIndexToEdit={setIndexToEdit} handleDeleteEndorsement={handleDeleteEndorsement} indexToEdit={indexToEdit}/>
                                             ))}
                                         </div>
                                         <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-10 py-2 rounded ml-[120px] my-[10px] mt-[20px] mb-[25px] fixed bottom-0 "
