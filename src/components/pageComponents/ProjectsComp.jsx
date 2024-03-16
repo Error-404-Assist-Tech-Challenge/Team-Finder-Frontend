@@ -18,17 +18,13 @@ export default function ProjectsComp({ projects, setProjects }) {
     const [darkMode, setDarkMode] = useContext(Context);
     const pinned = useHeadroom({ fixedAt: 20 });
     const [opened, { open, close }] = useDisclosure(false);
-
     const [skills, setSkills] = useState([])
     const [chosenSkills, setChosenSkills] = useState([]);
-
-
     const [roles, setRoles] = useState([])
     const [teamRoles, setTeamRoles] = useState([]) // FOR SELECT
     const [projectRoles, setProjectRoles] = useState([]) // FOR SELECT
 
     useEffect(() => {
-
     }, [darkMode]);
 
     useEffect(() => {
@@ -101,7 +97,6 @@ export default function ProjectsComp({ projects, setProjects }) {
         }
     }, []);
 
-
     const handleAddProject = async () => {
         const startDate =
             projectPeriod == 'Fixed'
@@ -116,19 +111,6 @@ export default function ProjectsComp({ projects, setProjects }) {
             skill_id: skill.id,
             minimum_level: skill.minimum_level
         }));
-
-        console.log(JSON.stringify({
-            name: projectName,
-            period: projectPeriod,
-            start_date: startDate,
-            deadline_date: deadlineDate,
-            status: projectStatus,
-            description: projectDescription,
-            tech_stack: projectTech,
-            team_roles: projectRoles,
-            required_skills: projectRequirements
-        }))
-
         try {
             const response = await axiosPrivate.post('/project',
                 JSON.stringify({
@@ -150,7 +132,6 @@ export default function ProjectsComp({ projects, setProjects }) {
                     },
                     withCredentials: true
                 });
-
             console.log('Response:', response.data);
             setProjects(response.data);
             setProjectName('')
@@ -161,6 +142,12 @@ export default function ProjectsComp({ projects, setProjects }) {
             setProjectDescription('');
             setProjectTech([]);
             setProjectRoles([]);
+            const mappedSkills = skills.map(skill => ({
+                id: skill.id,
+                name: skill.name,
+                minimum_level: 1,
+            }));
+            setSkills(mappedSkills);
         } catch (error) {
             console.error('Error fetching unused skills:', error);
         }
@@ -174,10 +161,9 @@ export default function ProjectsComp({ projects, setProjects }) {
     const [projectStatus, setProjectStatus] = useState([null]);
     const [projectDescription, setProjectDescription] = useState('')
     const [projectTech, setProjectTech] = useState([])
-
     const [periodFilter, setPeriodFilter] = useState(null)
     const [statusFilter, setStatusFilter] = useState(null)
-
+    
     const filteredProjects = projects.filter(project => {
         const isPeriodFiltered = periodFilter == null || periodFilter == project.period;
         const isStatusFiltered = statusFilter == null || statusFilter == project.status;
@@ -266,7 +252,6 @@ export default function ProjectsComp({ projects, setProjects }) {
                     />
                     <SkillSelect
                         skills={skills}
-                        setSkills={setSkills}
                         value={chosenSkills}
                         setValue={setChosenSkills}
                     />
@@ -301,7 +286,7 @@ export default function ProjectsComp({ projects, setProjects }) {
                         />
                     </div>
                     {filteredProjects.map((project, index) => (
-                        <ProjectCard key={index} project={project} setProjects={setProjects} roles={roles} teamRoles={teamRoles} setTeamRoles={setTeamRoles} />
+                        <ProjectCard key={index} project={project} setProjects={setProjects} roles={roles} teamRoles={teamRoles} setTeamRoles={setTeamRoles} skills={skills} />
                     ))}
                     <div className="w-[350px] h-[280px] mx-[40px] my-[40px] flex justify-center items-center">
                         <Button variant="outline" onClick={open}

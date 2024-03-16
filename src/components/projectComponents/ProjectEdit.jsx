@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { DatePickerInput } from '@mantine/dates';
 import '@mantine/dates/styles.css';
@@ -5,27 +6,31 @@ import RoleSelect from './RoleSelect';
 import { Button, Title, TextInput, Textarea, Select, TagsInput } from '@mantine/core';
 import { useState } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import { SkillSelect } from './SkillSelect';
 
-export default function ProjectEdit({ project, setProjects, roles, teamRoles, setTeamRoles, closeEdit }) {
+export default function ProjectEdit({ project, setProjects, roles, teamRoles, setTeamRoles, closeEdit, skills }) {
     const [projectName, setProjectName] = useState(project.name)
     const [projectPeriod, setProjectPeriod] = useState(project.period)
-
     const startDate = new Date(project.start_date);
     const deadlineDate = new Date(project.deadline_date);
-
     const [projectStartDate, setProjectStartDate] = useState(startDate);
     const [projectDates, setProjectDates] = useState([startDate, deadlineDate]);
     const [projectStatus, setProjectStatus] = useState(project.status);
     const [projectDescription, setProjectDescription] = useState(project.description)
-
-    const mappedTechStack = project.tech_stack.map(skill => skill.skill_id);
-    const [projectTech, setProjectTech] = useState(mappedTechStack)
+    const [projectTech, setProjectTech] = useState(project.tech_stack)
 
     const mappedTeamRoles = project.team_role.map(role => ({
         role_id: role.role_id,
         count: role.count
     }));
     const [projectRoles, setProjectRoles] = useState(mappedTeamRoles)
+
+    const mappedRequiredSkills = project.required_skills.map(skill => ({
+        id: skill.skill_id,
+        name: skill.name,
+        minimum_level: skill.minimum_level
+    }));
+    const [chosenSkills, setChosenSkills] = useState(mappedRequiredSkills);
 
     const axiosPrivate = useAxiosPrivate();
 
@@ -40,17 +45,18 @@ export default function ProjectEdit({ project, setProjects, roles, teamRoles, se
                 ? projectDates[1]
                 : null
 
-        console.log(JSON.stringify({
-            proj_id: project.id,
-            name: projectName,
-            period: projectPeriod,
-            start_date: startDate,
-            deadline_date: deadlineDate,
-            status: projectStatus,
-            description: projectDescription,
-            tech_stack: projectTech,
-            team_roles: projectRoles
-        }),)
+        const projectRequirements = chosenSkills.map(modifiedSkill => {
+            const originalSkill = project.required_skills.find(skill => skill.skill_id === modifiedSkill.id);
+            if (originalSkill) {
+                return { ...modifiedSkill, skill_id: modifiedSkill.id, required: true };
+            } else {
+                return { ...modifiedSkill, skill_id: modifiedSkill.id, required: true };
+            }
+        }).concat(project.required_skills.filter(originalSkill => {
+            return !chosenSkills.some(modifiedSkill => modifiedSkill.id === originalSkill.skill_id);
+        }).map(skill => ({ ...skill, skill_id: skill.skill_id, required: false })));
+
+        console.log('projectRequirements', projectRequirements);
 
         try {
             const response = await axiosPrivate.put('/project',
@@ -63,7 +69,8 @@ export default function ProjectEdit({ project, setProjects, roles, teamRoles, se
                     status: projectStatus,
                     description: projectDescription,
                     tech_stack: projectTech,
-                    team_roles: projectRoles
+                    team_roles: projectRoles,
+                    required_skills: projectRequirements
                 }),
                 {
                     headers: {
@@ -75,9 +82,7 @@ export default function ProjectEdit({ project, setProjects, roles, teamRoles, se
                 });
 
             console.log('Response:', response.data);
-
             setProjects(response.data);
-
             setProjectName('')
             setProjectPeriod('')
             setProjectStartDate(null);
@@ -85,14 +90,11 @@ export default function ProjectEdit({ project, setProjects, roles, teamRoles, se
             setProjectStatus([null]);
             setProjectDescription('');
             setProjectTech([]);
-
         } catch (error) {
             console.error('Error fetching unused skills:', error);
         }
-
         closeEdit();
     }
-
 
     return (
         <>
@@ -171,6 +173,11 @@ export default function ProjectEdit({ project, setProjects, roles, teamRoles, se
                 setTeamRoles={setTeamRoles}
                 projectRoles={projectRoles}
                 setProjectRoles={setProjectRoles} />
+            <SkillSelect
+                skills={skills}
+                value={chosenSkills}
+                setValue={setChosenSkills}
+            />
 
             {projectName && projectPeriod && (projectStartDate || projectDates[0]) && (projectPeriod == 'Ongoing' || projectDates[1]) && projectStatus && projectDescription && projectTech.length != 0 && projectRoles.length != 0 && (
                 <div className="flex justify-center">
