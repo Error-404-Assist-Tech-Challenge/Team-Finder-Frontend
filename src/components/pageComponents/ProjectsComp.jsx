@@ -163,6 +163,7 @@ export default function ProjectsComp({ projects, setProjects }) {
     const [projectTech, setProjectTech] = useState([])
     const [periodFilter, setPeriodFilter] = useState(null)
     const [statusFilter, setStatusFilter] = useState(null)
+    
     const filteredProjects = projects.filter(project => {
         const isPeriodFiltered = periodFilter == null || periodFilter == project.period;
         const isStatusFiltered = statusFilter == null || statusFilter == project.status;

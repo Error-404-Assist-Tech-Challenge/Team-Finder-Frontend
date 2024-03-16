@@ -5,10 +5,10 @@ import { useDisclosure } from '@mantine/hooks';
 import { useState, useEffect } from 'react';
 import { Tabs, rem, Avatar } from '@mantine/core';
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import SkillLevelUneditable from './SkillLevelUneditable';
 
 
-export default function ProjectEmployeeCard({ name, roles, period, status, tech_stack, start, deadline, description, project_id }) {
-
+export default function ProjectEmployeeCard({ name, roles, period, status, tech_stack, start, deadline, description, project_id, required_skills }) {
 
     const axiosPrivate = useAxiosPrivate();
     const [opened, { open, close }] = useDisclosure(false);
@@ -25,7 +25,6 @@ export default function ProjectEmployeeCard({ name, roles, period, status, tech_
     useEffect(() => {
         let isMounted = true;
         const controller = new AbortController();
-
         const fetchMembers = async () => {
             try {
                 const response = await axiosPrivate.get(
@@ -46,8 +45,6 @@ export default function ProjectEmployeeCard({ name, roles, period, status, tech_
                 isMounted && setActiveMembers(response.data.active);
                 isMounted && setPastMembers(response.data.past);
                 setVisible(true);
-                // setActiveMembers(response.data.active);
-                // setPastMembers(response.data.past);
             } catch (error) {
                 console.error('Error fetching project employees:', error);
             }
@@ -58,16 +55,15 @@ export default function ProjectEmployeeCard({ name, roles, period, status, tech_
             controller.abort();
         }
     }, [])
-    // console.log("ROLES:", roles)
 
     return (
         <>
-            <Modal opened={opened} onClose={close} size={550} transitionProps={{ transition: 'fade', duration: 200 }} className="dark:bg-card_modal text-white select-none" zIndex={300}>
+            <Modal opened={opened} onClose={close} size={560} transitionProps={{ transition: 'fade', duration: 200 }} className="dark:bg-card_modal text-white select-none" zIndex={300}>
                 <div className="flex flex-col">
                     <Title className="flex justify-center">
                         {name}
                     </Title>
-                    <div className='mt-[30px] w-full'>
+                    <div className='mt-3 w-full'>
                         <div className="text-[20px] px-9 py-2">
                             <p className="py-1"><span className="font-bold">Period</span>: {period}</p>
                             <p className="py-1"><span className="font-bold">Start Date</span>: {start.substring(0, 10)}</p>
@@ -76,16 +72,30 @@ export default function ProjectEmployeeCard({ name, roles, period, status, tech_
                             }
                             <p className="py-1"><span className="font-bold">Status</span>: {status}</p>
                             <p className="py-1"><span className="font-bold">Description</span>: {description}</p>
-                            <div className="text-[20px] flex flex-wrap mt-2">
-                                <p className='font-bold my-1'>Tech stack: </p>
+                            <div className="flex items-center flex-wrap">
+                                <p className="py-1"><span className="font-bold">Technology Stack</span>: </p>
                                 {tech_stack.map((tech, index) => (
-                                    <>
-                                        <Badge color="gray " size='lg' className='mx-2 my-1.5'>{tech.skill_name}</Badge>
-                                    </>
+                                    <Badge key={index} className="mx-3 my-1" color="gray" size="xl">{tech}</Badge>
                                 ))}
                             </div>
                             <div className="flex items-center flex-wrap">
-                                {/* Render technology stack badges here */}
+                                <p className="py-1"><span className="font-bold">Team Roles</span>: </p>
+                                {roles.map((role) => (
+                                    <Badge key={role.role_id} className="mx-3 my-1" color="gray" size="xl">
+                                        {role.count}x {role.role_name}
+                                    </Badge>
+                                ))}
+                            </div>
+                            <div className="flex items-center flex-wrap">
+                                <p className="py-1"><span className="font-bold">Skill Requirements</span>: </p>
+                                {required_skills.map((skill) => (
+                                    <Badge key={skill.skill_id} className="mx-3 my-1 h-auto" color="gray">
+                                        <div className="h-[50px] py-[6px] w-[100px] flex justify-center items-center flex-wrap">
+                                            <p className="">{skill.name}</p>
+                                            <SkillLevelUneditable level={skill.minimum_level} />
+                                        </div>
+                                    </Badge>
+                                ))}
                             </div>
                         </div>
                         <Tabs defaultValue="ActiveMembers" color="#FF3D2E">
@@ -148,30 +158,30 @@ export default function ProjectEmployeeCard({ name, roles, period, status, tech_
                 </div>
             </Modal>
 
-            <Card className="flex w-[350px] h-[300px] dark:bg-card_modal mx-[40px] rounded-xl dark:text-darktext text-text select-none "
+            <Card className="flex w-[350px] h-[280px] dark:bg-card_modal mx-[40px] rounded-xl dark:text-darktext text-text select-none "
                 onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
                 <Card.Section className="dark:bg-[#495256]" onClick={open}>
                     <Title className="py-6 px-2 flex justify-center text-center text-[28px]">
                         {name}
                     </Title>
                 </Card.Section>
-                <div className="h-[250px]" onClick={open}>
+                <div className="h-full" onClick={open}>
                     {!isHovering && (
                         <>
-                            <div className="text-[18px] pt-4 pl-4 flex flex-wrap">
+                            <div className="text-[18px] pt-4 pl-4 flex items-center flex-wrap">
                                 <p className='font-bold'>Roles: </p>
                                 {roles.map((role, index) => (
-                                    <Badge key={index} color="gray" className='mx-2 my-1'>{role.role_name}</Badge>
+                                    <Badge key={index} className="mx-1 my-1" color="gray" size="md">{role.role_name}</Badge>
                                 ))}
 
                             </div>
-                            <div className="text-[18px] pt-4 pl-4 flex flex-wrap">
-                                <p className='font-bold'>Tech stack: </p>
+                            <div className="text-[18px] flex pt-2 pl-4  items-center flex-wrap">
+                                <p className="py-1"><span className="font-bold">Technology Stack</span>: </p>
                                 {tech_stack.map((tech, index) => (
-                                    <Badge color="gray" key={index} className='mx-1 my-1'>{tech.skill_name}</Badge>
+                                    <Badge key={index} className="mx-1 my-1" color="gray" size="md">{tech}</Badge>
                                 ))}
                             </div>
-                            <p className="text-[18px] pt-4 pl-4 flex flex-wrap"><span className="font-bold">Status</span>: {status}</p>
+                            <p className="text-[18px] pt-2 pl-4 flex flex-wrap"><span className="font-bold">Status</span>: {status}</p>
                         </>
                     )}
                     {isHovering && (
