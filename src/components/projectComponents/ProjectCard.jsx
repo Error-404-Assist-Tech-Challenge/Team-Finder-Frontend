@@ -14,7 +14,7 @@ import ProposedMembersComp from './ProposedMembersComp';
 import PastMemberCard from './PastMemberCard';
 import OrganizationEmployeesComp from '../pageComponents/OrganizationEmployeesComp';
 
-export default function ProjectCard({ project, setProjects, roles, teamRoles, setTeamRoles, skills }) {
+export default function ProjectCard({ project, setProjects, roles, teamRoles, setTeamRoles }) {
 
     const [visible, setVisible] = useState(true)
     const [isHovering, setIsHovering] = useState(false);
@@ -189,8 +189,8 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                             <p className="py-1"><span className="font-bold">Description</span>: {project.description}</p>
                             <div className="flex items-center flex-wrap">
                                 <p className="py-1"><span className="font-bold">Technology Stack</span>: </p>
-                                {project.tech_stack.map((tech) => (
-                                    <Badge key={tech.skill_id} className="mx-3 my-1" color="gray" size="xl">{tech.skill_name}</Badge>
+                                {project.tech_stack.map((tech, index) => (
+                                    <Badge key={index} className="mx-3 my-1" color="gray" size="xl">{tech}</Badge>
                                 ))}
                             </div>
                             <div className="flex items-center flex-wrap">
@@ -224,7 +224,7 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                                         <>
                                             <div className="flex flex-wrap justify-center items-center h-[180px]">
                                                 {activeMembers.length != 0 && currentPostsActiveMember.map((employee, index) => (
-                                                    <ActiveMemberCard key={index} employee={employee} available_roles={project.available_roles} project_id={project.id} setActiveMembers={setActiveMembers} />
+                                                    <ActiveMemberCard key={index} employee={employee} project_id={project.id} setActiveMembers={setActiveMembers} />
                                                 ))}
                                                 {activeMembers.length == 0 &&
                                                     <p>No active members in this project...</p>
@@ -240,7 +240,7 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                                 <Tabs.Panel value="PastMembers">
                                     <div className="flex flex-wrap justify-center items-center h-[180px]">
                                         {pastMembers.length != 0 && currentPostsPastMember.map((employee, index) => (
-                                            <PastMemberCard key={index} employee={employee} available_roles={project.available_roles} project_id={project.id} setActiveMembers={setActiveMembers} />
+                                            <PastMemberCard key={index} employee={employee} project_id={project.id} setActiveMembers={setActiveMembers} />
                                         ))}
                                         {pastMembers.length == 0 &&
                                             <p>No past members in this project...</p>
@@ -383,7 +383,7 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
             </Modal >
 
             <Modal opened={openedEdit} onClose={closeEdit} transitionProps={{ transition: 'fade', duration: 200 }} className="dark:bg-card_modal text-white select-none" zIndex={300}>
-                <ProjectEdit project={project} setProjects={setProjects} roles={roles} teamRoles={teamRoles} setTeamRoles={setTeamRoles} skills={skills} closeEdit={closeEdit} />
+                <ProjectEdit project={project} setProjects={setProjects} roles={roles} teamRoles={teamRoles} setTeamRoles={setTeamRoles} closeEdit={closeEdit} />
             </Modal>
 
             <Card className="flex w-[350px] h-[300px] dark:bg-card_modal mx-[40px] my-[40px] rounded-xl dark:text-darktext text-text select-none"

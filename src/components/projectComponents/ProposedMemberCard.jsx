@@ -7,7 +7,7 @@ import { useDisclosure } from '@mantine/hooks';
 import React, { useState } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
-export default function ProposedMemberCard({ setNewMembers, setProposedMembers, project_id, employee, available_roles }) {
+export default function ProposedMemberCard({ setNewMembers, setProposedMembers, project_id, employee }) {
 
     const axiosPrivate = useAxiosPrivate();
     const [opened, { open, close }] = useDisclosure(false);
@@ -18,9 +18,16 @@ export default function ProposedMemberCard({ setNewMembers, setProposedMembers, 
         return names.map((name) => name[0]).join('').toUpperCase();
     };
 
+    const handleOpen = () => {
+        open();
+        fetchAvailableRoles();
+    }
+
     const [teamRoles, setTeamRoles] = useState(employee.proposed_roles);
     const [workHours, setWorkHours] = useState(employee.proposed_work_hours);
     const [comment, setComment] = useState(employee.comment);
+
+    const [availableRoles, setAvailableRoles] = useState([]);
 
     const updateProposal = async () => {
         try {
@@ -75,7 +82,24 @@ export default function ProposedMemberCard({ setNewMembers, setProposedMembers, 
         }
         close();
     }
-    
+
+    const fetchAvailableRoles = async () => {
+        try {
+            const response = await axiosPrivate.get(`projects/project_needed_roles?proj_id=${project_id}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Credentials': 'true'
+                },
+                withCredentials: true
+            });
+            console.log('Available Role', response.data)
+            setAvailableRoles(response.data)
+        } catch (error) {
+            console.error('Error fetching available roles:', error);
+        }
+    }
+
     return (
         <>
             <Modal opened={opened} onClose={close} centered overflow="inside" size="500" className="bg-graybg text-white select-none" zIndex={300}>
@@ -96,7 +120,7 @@ export default function ProposedMemberCard({ setNewMembers, setProposedMembers, 
                 <MultiSelect
                     label="Role"
                     placeholder="Role..."
-                    data={available_roles}
+                    data={availableRoles}
                     value={teamRoles}
                     onChange={setTeamRoles}
                     size="sm"
@@ -125,7 +149,7 @@ export default function ProposedMemberCard({ setNewMembers, setProposedMembers, 
                     onChange={(event) => setComment(event.currentTarget.value)}
                 />
 
-                <div className="flex ">
+                <div className="flex justify-around">
                     {teamRoles != [] && workHours != 0 && comment != '' &&
                         <>
                             <Button onClick={updateProposal} className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] mx-3 rounded float-left" >
@@ -140,7 +164,7 @@ export default function ProposedMemberCard({ setNewMembers, setProposedMembers, 
             </Modal >
 
             <Button className="flex bg-[#878e96] h-[90px] w-[220px] px-0 mx-[10px] my-[10px] rounded-xl text-white select-none font-bold"
-                onClick={open} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+                onClick={handleOpen} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
                 <div className="flex items-center justify-center h-full">
                     {!isHovering &&
                         <>

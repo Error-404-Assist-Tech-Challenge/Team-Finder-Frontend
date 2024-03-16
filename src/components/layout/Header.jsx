@@ -144,41 +144,41 @@ export default function GenericHeader() {
                     <div className="flex space-x-2 pt-1">
                         <Tabs color="#FF3D2E" radius="xs" defaultValue="" variant="default" value={Value}>
                             <Tabs.List>
-                                <Tabs.Tab onClick={handleMySkills} value="MySkills" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-7">
+                                <Tabs.Tab onClick={handleMySkills} value="MySkills" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-5">
                                     My Skills
                                 </Tabs.Tab>
-                                <Tabs.Tab onClick={handleMyProjects} value="MyProjects" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-7">
+                                <Tabs.Tab onClick={handleMyProjects} value="MyProjects" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-5">
                                     My Projects
                                 </Tabs.Tab>
 
                                 {auth?.roles.includes("admin") &&
-                                    <Tabs.Tab onClick={handleOrganizationEmployees} value="OrganizationEmployees" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-7">
+                                    <Tabs.Tab onClick={handleOrganizationEmployees} value="OrganizationEmployees" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-5">
                                         Org. Employees
                                     </Tabs.Tab>}
 
                                 {auth?.roles.includes("admin") &&
-                                    <Tabs.Tab onClick={handleOrganizationDepartments} value="OrganizationDepartments" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-7">
+                                    <Tabs.Tab onClick={handleOrganizationDepartments} value="OrganizationDepartments" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-5">
                                         Org. Departments
                                     </Tabs.Tab>}
 
 
-                                <Tabs.Tab onClick={handleOrganizationSkills} value="OrganizationSkills" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-7">
+                                <Tabs.Tab onClick={handleOrganizationSkills} value="OrganizationSkills" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-5">
                                     Org. Skills
                                 </Tabs.Tab>
 
                                 {auth?.roles.includes("dept_manager") &&
-                                    <Tabs.Tab onClick={handleMyDepartment} value="MyDepartment" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-7">
+                                    <Tabs.Tab onClick={handleMyDepartment} value="MyDepartment" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-5">
                                         My Department
                                     </Tabs.Tab>}
 
                                 {auth?.roles.includes("proj_manager") &&
-                                    <Tabs.Tab onClick={handleProjects} color="#FF3D2E" value="Projects" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-7">
+                                    <Tabs.Tab onClick={handleProjects} color="#FF3D2E" value="Projects" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-5">
                                         Managed Projects
                                     </Tabs.Tab>}
 
                                 {auth?.roles.includes("dept_manager") &&
-                                    <Tabs.Tab onClick={handleDepartmentProjects} value="DepartmentProjects" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-7">
-                                        Department Projects
+                                    <Tabs.Tab onClick={handleDepartmentProjects} value="DepartmentProjects" className="hover:text-[#FF3D2E] dark:text-darktext text-text text-xl px-5">
+                                        Dept. Projects
                                     </Tabs.Tab>}
                             </Tabs.List>
                         </Tabs>
