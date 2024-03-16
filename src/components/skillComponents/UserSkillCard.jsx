@@ -423,6 +423,17 @@ export default function UserSkillCard(props) {
                                                 />
                                             </>
                                         )}
+                                        {endorsement === 'Project' && (
+                                            <>
+                                                <Select data={props.list}
+                                                    value={endorsement}
+                                                    onChange={setEndorsement}
+                                                    comboboxProps={{ zIndex: 1000000000 }}
+                                                    label="Endorsement"
+                                                    placeholder="Choose an edorsement"
+                                                    className=" py-[15px] w-[450px]" />
+                                            </>
+                                        )}
                                         <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-10 py-2 rounded ml-[120px] my-[10px] mt-[20px] mb-[25px] fixed bottom-0 "
                                             onClick={handleSave}>
                                             Save endorsement

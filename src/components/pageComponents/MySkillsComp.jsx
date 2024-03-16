@@ -32,6 +32,9 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
     const [trainingDescpription, setTrainingDescription] = useState('');
     const [courseDescription, setCourseDescription] = useState('');
 
+    const [userProjects, setUserProjects] = useState({});
+    const [projectsList, setProjectsList] = useState([]);
+
     const [endorsementsList, setEndorsementList] = useState([]);
 
     useEffect(() => {
@@ -115,12 +118,53 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
         ]);
     }, [endorsement, training, course, trainingDescpription, courseDescription]);
 
+    // GET user projects
+    useEffect(() => {
+        let isMounted = true;
+        const controller = new AbortController();
+
+        const getUserProjects = async () => {
+            try {
+                const response = await axiosPrivate.get('projects/user', {
+                    signal: controller.signal,
+                    withCredentials: true
+                });
+                console.log('Users projects:', response.data);
+                isMounted && setUserProjects(response.data)
+            } catch (error) {
+                console.error('Error fetching department members:', error);
+            }
+        }
+        
+        getUserProjects();
+        
+        return () => {
+            isMounted = false;
+            controller.abort();
+        }
+    }, [])
+    
+    let list=[]
+
+    if (userProjects && userProjects.active && Array.isArray(userProjects.active) && userProjects.past && Array.isArray(userProjects.past)) {
+        for (let i = 0; i < userProjects.active.length; i++) {
+            list[i] = { value: userProjects.active[i].id, label: userProjects.active[i].project_name };
+        }
+        for (let i = 0; i < userProjects.past.length; i++) {
+            list.push({ value: userProjects.past[i].id, label: userProjects.past[i].project_name });
+        }
+        console.log("Lista projects:", list);
+    } else {
+        console.error("userProjects or userProjects.active is not defined or is not an array");
+    }
+    
+
     return (
         <div>
             <div className="flex flex-wrap justify-center">
                 {skills.map((skill, index) => (
                     <UserSkillCard key={index} index={index} skills={skills} setSkills={setSkills} unusedSkills={unusedSkills} setUnusedSkills={setUnusedSkills}
-                        visible={visible} setVisible={setVisible} endorsementsList={skill.skill_endorsements} setEndorsementList={setEndorsementList} />
+                        visible={visible} setVisible={setVisible} endorsementsList={skill.skill_endorsements} setEndorsementList={setEndorsementList} list={list}/>
                 ))}
                 <div className="w-[410px] h-[270px] flex justify-center items-center">
                     <Button variant="outline" onClick={open}
@@ -246,6 +290,17 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
                                         onChange={(event) => setCourseDescription(event.currentTarget.value)}
                                         className=" py-[15px]"
                                     />
+                                </>
+                            )}
+                             {endorsement === 'Project' && (
+                                <>
+                                    <Select data={list}
+                                        value={endorsement}
+                                        onChange={setEndorsement}
+                                        comboboxProps={{ zIndex: 1000000000 }}
+                                        label="Endorsement"
+                                        placeholder="Choose an edorsement"
+                                        className=" py-[15px] w-[450px]" />
                                 </>
                             )}
                         </div>
