@@ -43,16 +43,16 @@ export default function StatisticsComp({ index, stat }) {
                     </div>
                     <div className='flex flex-row justify-center'>
                         <div className='flex-grow-0 mr-4'>
-                            <PiechartComp index={index} stats={stat}/>
+                            <PiechartComp index={index} stats={stat} />
                         </div>
                         <Divider size="sm" orientation="vertical" />
                         <div className='flex-grow-0'>
-                            <TotalCountStats index={index} stats={stat}/>
+                            <TotalCountStats index={index} stats={stat} />
                         </div>
                     </div>
                 </div>
             </Modal>
-            
+
             <div className="rounded-lg w-[200px] h-[80px] bg-card_modal rounded-xl text-white select-none font-bold mx-[30px] my-[20px]"
                 onClick={open} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '50%' }}>

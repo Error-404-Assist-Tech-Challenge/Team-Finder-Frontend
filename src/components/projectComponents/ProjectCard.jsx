@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { Card, Badge, Title, Modal, Divider, Checkbox, NumberInput, Button, Text, Textarea, Loader } from '@mantine/core';
+import { Card, Badge, Title, Modal, Divider, Checkbox, NumberInput, Button, Text, Textarea, Loader, TextInput } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useState, useEffect } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
@@ -26,6 +26,7 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
     const [partiallyAvailable, setPartiallyAvailable] = useState(false)
     const [closeToFinish, setCloseToFinish] = useState(null)
     const [unavailable, setUnavailable] = useState(false)
+    const [searchName, setSearchName] = useState('')
 
     const [allMembers, setAllMembers] = useState([])
     const [activeMembers, setActiveMembers] = useState([])
@@ -41,7 +42,10 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
         const isPartiallyAvailable = partiallyAvailable && employee.work_hours < 8;
         const isCloseToFinish = closeToFinish && employee.deadline <= closeToFinish;
         const isUnavailable = unavailable && employee.work_hours === 8;
-        return isFullyAvailable || isPartiallyAvailable || isCloseToFinish || isUnavailable;
+
+        const nameMatchesSearch = searchName && employee.name.toLowerCase().includes(searchName.toLowerCase());
+
+        return (isFullyAvailable || isPartiallyAvailable || isCloseToFinish || isUnavailable) && (searchName ? nameMatchesSearch : true);
     });
 
     const [currentPageFiltered, setCurrentPageFiltered] = useState(1);
@@ -286,8 +290,16 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
 
                                 <Tabs.Panel value="NewMembers">
                                     <div>
-                                        <div className='w-full py-6 flex items-center'>
-                                            <div className="w-1/3 flex justify-center">
+                                        <div className='w-full py-3 flex items-center justify-around'>
+                                            <TextInput
+                                                className='w-[50vh]'
+                                                placeholder="Search.."
+                                                value={searchName}
+                                                onChange={(event) => setSearchName(event.currentTarget.value)}
+                                            />
+                                        </div>
+                                        <div className='w-full pb-3 flex items-center justify-around'>
+                                            <div className="w-[200px]">
                                                 <Checkbox
                                                     size="md"
                                                     label="Include partially available"
@@ -295,15 +307,12 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                                                     onChange={(event) => setPartiallyAvailable(event.currentTarget.checked)}
                                                 />
                                             </div>
-                                            <div className="w-1/3 flex justify-center">
-                                                <NumberInput
-                                                    placeholder="Include close to finish"
-                                                    min={2} max={6}
-                                                    className="w-10px"
-                                                    value={closeToFinish} onChange={setCloseToFinish}
-                                                />
-                                            </div>
-                                            <div className="w-1/3 flex justify-center">
+                                            <NumberInput
+                                                placeholder="Include close to finish"
+                                                min={2} max={6}
+                                                value={closeToFinish} onChange={setCloseToFinish}
+                                            />
+                                            <div className="w-[200px]">
                                                 <Checkbox
                                                     size="md"
                                                     label="Include unavailable"
@@ -312,14 +321,12 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                                                 />
                                             </div>
                                         </div>
-
                                         <div className="flex flex-wrap justify-center items-center h-[220px]">
                                             {visible && (
                                                 <div className="fixed bottom right transform translate-x-1/2 translate-y-1/2 h-[220px]">
                                                     <Loader size={30} color="red" />
                                                 </div>
                                             )}
-
                                             {!visible && (<>
                                                 {newMembers.length != 0 &&
                                                     <NewMemberComp setNewMembers={setNewMembers} setProposedMembers={setProposedMembers} filteredMembers={currentPostsFiltered} available_roles={project.available_roles} project_id={project.id} />
