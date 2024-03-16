@@ -6,10 +6,11 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useHeadroom, useDisclosure } from '@mantine/hooks';
 import { Context } from '../../App';
 import ProjectCard from '../projectComponents/ProjectCard';
-import { Button, Modal, Title, TextInput, Textarea, Select, MultiSelect } from '@mantine/core';
+import { Button, Modal, Title, TextInput, Textarea, Select, TagsInput } from '@mantine/core';
 import { DatePickerInput } from '@mantine/dates';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import RoleSelect from '../projectComponents/RoleSelect';
+import { SkillSelect } from '../projectComponents/SkillSelect';
 
 export default function ProjectsComp({ projects, setProjects }) {
 
@@ -19,6 +20,8 @@ export default function ProjectsComp({ projects, setProjects }) {
     const [opened, { open, close }] = useDisclosure(false);
 
     const [skills, setSkills] = useState([])
+    const [chosenSkills, setChosenSkills] = useState([]);
+
 
     const [roles, setRoles] = useState([])
     const [teamRoles, setTeamRoles] = useState([]) // FOR SELECT
@@ -43,7 +46,15 @@ export default function ProjectsComp({ projects, setProjects }) {
                     withCredentials: true
                 });
                 console.log('Skills:', response.data);
-                isMounted && setSkills(response.data);
+                if (isMounted) {
+                    const mappedSkills = response.data.map(skill => ({
+                        id: skill.value,
+                        name: skill.label.trim(),
+                        minimum_level: 1,
+                    }));
+                    setSkills(mappedSkills);
+                    console.log(mappedSkills);
+                }
             } catch (error) {
                 console.error('Error fetching skills:', error);
             }
@@ -77,7 +88,6 @@ export default function ProjectsComp({ projects, setProjects }) {
                         role_id: role.value,
                         count: 1
                     }));
-
                     setTeamRoles(newRoles);
                 }
             } catch (error) {
@@ -101,6 +111,24 @@ export default function ProjectsComp({ projects, setProjects }) {
             projectPeriod == 'Fixed'
                 ? projectDates[1]
                 : null
+
+        const projectRequirements = chosenSkills.map(skill => ({
+            skill_id: skill.id,
+            minimum_level: skill.minimum_level
+        }));
+
+        console.log(JSON.stringify({
+            name: projectName,
+            period: projectPeriod,
+            start_date: startDate,
+            deadline_date: deadlineDate,
+            status: projectStatus,
+            description: projectDescription,
+            tech_stack: projectTech,
+            team_roles: projectRoles,
+            required_skills: projectRequirements
+        }))
+
         try {
             const response = await axiosPrivate.post('/project',
                 JSON.stringify({
@@ -111,7 +139,8 @@ export default function ProjectsComp({ projects, setProjects }) {
                     status: projectStatus,
                     description: projectDescription,
                     tech_stack: projectTech,
-                    team_roles: projectRoles
+                    team_roles: projectRoles,
+                    required_skills: projectRequirements
                 }),
                 {
                     headers: {
@@ -123,9 +152,7 @@ export default function ProjectsComp({ projects, setProjects }) {
                 });
 
             console.log('Response:', response.data);
-
             setProjects(response.data);
-
             setProjectName('')
             setProjectPeriod('')
             setProjectStartDate(null);
@@ -134,11 +161,9 @@ export default function ProjectsComp({ projects, setProjects }) {
             setProjectDescription('');
             setProjectTech([]);
             setProjectRoles([]);
-
         } catch (error) {
             console.error('Error fetching unused skills:', error);
         }
-
         close();
     }
 
@@ -155,9 +180,7 @@ export default function ProjectsComp({ projects, setProjects }) {
 
     const filteredProjects = projects.filter(project => {
         const isPeriodFiltered = periodFilter == null || periodFilter == project.period;
-
         const isStatusFiltered = statusFilter == null || statusFilter == project.status;
-
         return isPeriodFiltered && isStatusFiltered;
     });
 
@@ -224,16 +247,14 @@ export default function ProjectsComp({ projects, setProjects }) {
                         onChange={(event) => setProjectDescription(event.currentTarget.value)}
                         className=" py-[5px]"
                     />
-                    <MultiSelect
+                    <TagsInput
                         label="Technology Stack"
                         placeholder="Technology..."
-                        data={skills}
+                        data={[]}
                         value={projectTech}
                         onChange={setProjectTech}
-                        searchable
                         clearable
                         size="sm"
-                        nothingFoundMessage="Technology does not exist..."
                         className="py-[5px]"
                     />
                     <RoleSelect
@@ -241,7 +262,14 @@ export default function ProjectsComp({ projects, setProjects }) {
                         teamRoles={teamRoles}
                         setTeamRoles={setTeamRoles}
                         projectRoles={projectRoles}
-                        setProjectRoles={setProjectRoles} />
+                        setProjectRoles={setProjectRoles}
+                    />
+                    <SkillSelect
+                        skills={skills}
+                        setSkills={setSkills}
+                        value={chosenSkills}
+                        setValue={setChosenSkills}
+                    />
 
                     {projectName && projectPeriod && (projectStartDate || projectDates[0]) && (projectPeriod == 'Ongoing' || projectDates[1]) && projectStatus && projectDescription && projectTech.length != 0 && projectRoles.length != 0 && (
                         <div className="flex justify-center">
@@ -273,7 +301,7 @@ export default function ProjectsComp({ projects, setProjects }) {
                         />
                     </div>
                     {filteredProjects.map((project, index) => (
-                        <ProjectCard key={index} project={project} setProjects={setProjects} roles={roles} teamRoles={teamRoles} setTeamRoles={setTeamRoles} skills={skills} />
+                        <ProjectCard key={index} project={project} setProjects={setProjects} roles={roles} teamRoles={teamRoles} setTeamRoles={setTeamRoles} />
                     ))}
                     <div className="w-[350px] h-[280px] mx-[40px] my-[40px] flex justify-center items-center">
                         <Button variant="outline" onClick={open}

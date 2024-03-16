@@ -59,30 +59,27 @@ export default function UserSkillCard(props) {
                 skill_id: props.skills[props.index].skill_id,
                 level: currentLevel,
                 experience: currentExperience,
-                role_id: '',
                 endorsements: updatedEndorsementsList,
             });
             const response = await axiosPrivate.put('skills/user',
-            JSON.stringify({
-                skill_id: props.skills[props.index].skill_id,
-                level: currentLevel,
-                experience: currentExperience,
-                role_id: '',
-                endorsements: updatedEndorsementsList,
-            }),
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Credentials': 'true'
-                },
-                withCredentials: true
-            });
-            
+                JSON.stringify({
+                    skill_id: props.skills[props.index].skill_id,
+                    level: currentLevel,
+                    experience: currentExperience,
+
+                    endorsements: updatedEndorsementsList,
+                }),
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Credentials': 'true'
+                    },
+                    withCredentials: true
+                });
+
             console.log('Response:', response.data);
             props.setSkills(response.data);
-
-            
 
         } catch (error) {
             console.error('Error saving my skill:', error);
@@ -143,7 +140,6 @@ export default function UserSkillCard(props) {
                 skill_id: props.skills[props.index].skill_id,
                 level: currentLevel,
                 experience: currentExperience,
-                role_id: '',
                 endorsements: updatedEndorsementsList,
             });
             const response = await axiosPrivate.put('skills/user',
@@ -151,7 +147,7 @@ export default function UserSkillCard(props) {
                     skill_id: props.skills[props.index].skill_id,
                     level: currentLevel,
                     experience: currentExperience,
-                    role_id: '',
+
                     endorsements: updatedEndorsementsList,
                 }),
                 {

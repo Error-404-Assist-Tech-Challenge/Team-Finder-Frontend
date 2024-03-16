@@ -43,14 +43,12 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
     const handleAddSkill = async () => {
         close();
         try {
-            if(endorsementsList[0].endorsement == '')
-            {
+            if (endorsementsList[0].endorsement == '') {
                 const response = await axiosPrivate.post('skills/user',
                     JSON.stringify({
                         skill_id: addedSkill,
                         level: selectedSkillLevel,
                         experience: selectedSkillExperience,
-                        role_id: '',
                         endorsements: null,
                     }),
                     {
@@ -61,29 +59,28 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
                         },
                         withCredentials: true
                     });
-                    console.log('Response:', response.data);
-                    setSkills(response.data);
+                console.log('Response:', response.data);
+                setSkills(response.data);
             }
             else {
                 const response = await axiosPrivate.post('skills/user',
 
-                        JSON.stringify({
-                            skill_id: addedSkill,
-                            level: selectedSkillLevel,
-                            experience: selectedSkillExperience,
-                            role_id: '',
-                            endorsements: endorsementsList,
-                        }),
-                        {
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Access-Control-Allow-Origin': '*',
-                                'Access-Control-Allow-Credentials': 'true'
-                            },
-                            withCredentials: true
-                        });
-                        console.log('Response:', response.data);
-                        setSkills(response.data);
+                    JSON.stringify({
+                        skill_id: addedSkill,
+                        level: selectedSkillLevel,
+                        experience: selectedSkillExperience,
+                        endorsements: endorsementsList,
+                    }),
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Access-Control-Allow-Origin': '*',
+                            'Access-Control-Allow-Credentials': 'true'
+                        },
+                        withCredentials: true
+                    });
+                console.log('Response:', response.data);
+                setSkills(response.data);
             }
 
             const newUnusedSkills = unusedSkills.filter(skill => skill.value !== addedSkill);
@@ -255,7 +252,7 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
                     </div>
                     <div className="flex justify-center items-center pb-[20px]">
                         {addedSkill && (
-                            <Button 
+                            <Button
                                 className="bg-accent text-white hover:bg-btn_hover font-bold py-2 rounded mx-[10px] mt-[30px] mb-[10px]"
                                 onClick={handleAddSkill}
                                 style={{ width: '460px' }}
