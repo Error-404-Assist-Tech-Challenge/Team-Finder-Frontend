@@ -1,20 +1,14 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { CheckIcon, Combobox, Group, Pill, PillsInput, useCombobox } from '@mantine/core';
 import SkillLevel from './SkillLevel';
-import SkillExperience from './SkillExperience';
 
-export function SkillSelect({ skills }) {
+export function SkillSelect({ skills, setSkills, value, setValue }) {
     const combobox = useCombobox({
         onDropdownClose: () => combobox.resetSelectedOption(),
         onDropdownOpen: () => combobox.updateSelectedOptionIndex('active'),
     });
     const [search, setSearch] = useState('');
-    const [value, setValue] = useState([]);
-
-    useEffect(() => {
-        console.log(value)
-    }, [value])
 
     const handleValueSelect = (skill) =>
         setValue((current) =>
@@ -28,10 +22,9 @@ export function SkillSelect({ skills }) {
 
     const values = value.map((skill) => (
         <Pill key={skill.id} withRemoveButton onRemove={() => handleValueRemove(skill)} className="h-auto">
-            <div className="h-[70px] p-[2px] w-[150px] flex justify-center flex-wrap">
-                <p className="">{skill.name} Requirement</p>
-                <SkillLevel currentLevel={skill.level} />
-                <SkillExperience currentExperience={skill.experience} />
+            <div className="h-[50px] pb-[2px] w-[130px] flex justify-center flex-wrap">
+                <p className="">{skill.name}</p>
+                <SkillLevel skills={value} setSkills={setValue} skill_id={skill.id} />
             </div>
         </Pill>
     ));
@@ -53,7 +46,6 @@ export function SkillSelect({ skills }) {
                 <PillsInput onClick={() => combobox.openDropdown()}>
                     <Pill.Group>
                         {values}
-
                         <Combobox.EventsTarget>
                             <PillsInput.Field
                                 onFocus={() => combobox.openDropdown()}

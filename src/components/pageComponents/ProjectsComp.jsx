@@ -20,6 +20,8 @@ export default function ProjectsComp({ projects, setProjects }) {
     const [opened, { open, close }] = useDisclosure(false);
 
     const [skills, setSkills] = useState([])
+    const [chosenSkills, setChosenSkills] = useState([]);
+
 
     const [roles, setRoles] = useState([])
     const [teamRoles, setTeamRoles] = useState([]) // FOR SELECT
@@ -48,10 +50,10 @@ export default function ProjectsComp({ projects, setProjects }) {
                     const mappedSkills = response.data.map(skill => ({
                         id: skill.value,
                         name: skill.label.trim(),
-                        level: 1,
-                        experience: 1
+                        minimum_level: 1,
                     }));
                     setSkills(mappedSkills);
+                    console.log(mappedSkills);
                 }
             } catch (error) {
                 console.error('Error fetching skills:', error);
@@ -109,6 +111,24 @@ export default function ProjectsComp({ projects, setProjects }) {
             projectPeriod == 'Fixed'
                 ? projectDates[1]
                 : null
+
+        const projectRequirements = chosenSkills.map(skill => ({
+            skill_id: skill.id,
+            minimum_level: skill.minimum_level
+        }));
+
+        console.log(JSON.stringify({
+            name: projectName,
+            period: projectPeriod,
+            start_date: startDate,
+            deadline_date: deadlineDate,
+            status: projectStatus,
+            description: projectDescription,
+            tech_stack: projectTech,
+            team_roles: projectRoles,
+            required_skills: projectRequirements
+        }))
+
         try {
             const response = await axiosPrivate.post('/project',
                 JSON.stringify({
@@ -119,7 +139,8 @@ export default function ProjectsComp({ projects, setProjects }) {
                     status: projectStatus,
                     description: projectDescription,
                     tech_stack: projectTech,
-                    team_roles: projectRoles
+                    team_roles: projectRoles,
+                    required_skills: projectRequirements
                 }),
                 {
                     headers: {
@@ -245,6 +266,9 @@ export default function ProjectsComp({ projects, setProjects }) {
                     />
                     <SkillSelect
                         skills={skills}
+                        setSkills={setSkills}
+                        value={chosenSkills}
+                        setValue={setChosenSkills}
                     />
 
                     {projectName && projectPeriod && (projectStartDate || projectDates[0]) && (projectPeriod == 'Ongoing' || projectDates[1]) && projectStatus && projectDescription && projectTech.length != 0 && projectRoles.length != 0 && (

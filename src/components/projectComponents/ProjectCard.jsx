@@ -189,8 +189,8 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                             <p className="py-1"><span className="font-bold">Description</span>: {project.description}</p>
                             <div className="flex items-center flex-wrap">
                                 <p className="py-1"><span className="font-bold">Technology Stack</span>: </p>
-                                {project.tech_stack.map((tech) => (
-                                    <Badge key={tech.skill_id} className="mx-3 my-1" color="gray" size="xl">{tech.skill_name}</Badge>
+                                {project.tech_stack.map((tech, index) => (
+                                    <Badge key={index} className="mx-3 my-1" color="gray" size="xl">{tech}</Badge>
                                 ))}
                             </div>
                             <div className="flex items-center flex-wrap">

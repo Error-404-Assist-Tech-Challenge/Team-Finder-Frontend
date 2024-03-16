@@ -5,24 +5,25 @@ import { Button } from '@mantine/core';
 import { Context } from '../../App';
 import { useContext } from 'react';
 
-export default function SkillLevel({ currentLevel }) {
+export default function SkillLevel({ skills, setSkills, skill_id }) {
     const [darkMode, setDarkMode] = useContext(Context);
-
+    const skillIndex = skills.findIndex(skill => skill.id === skill_id);
+    const skillLevel = skills[skillIndex].minimum_level
     function upgradeSkill() {
-        if (currentLevel < 5) {
-            const updatedLevel = currentLevel + 1;
-            // props.setCurrentLevel(updatedLevel);
+        if (skillLevel < 5) {
+            const updatedSkills = [...skills];
+            updatedSkills[skillIndex] = { ...updatedSkills[skillIndex], minimum_level: skillLevel + 1 };
+            setSkills(updatedSkills);
         }
     }
-
     function downgradeSkill() {
-        if (currentLevel > 1) {
-            const updatedLevel = currentLevel - 1;
-            // props.setCurrentLevel(updatedLevel);
+        if (skillLevel > 1) {
+            const updatedSkills = [...skills];
+            updatedSkills[skillIndex] = { ...updatedSkills[skillIndex], minimum_level: skillLevel - 1 };
+            setSkills(updatedSkills);
         }
     }
-
-    const filledCircles = Math.min(currentLevel, 5);
+    const filledCircles = Math.min(skillLevel, 5);
     const emptyCircles = Math.max(5 - filledCircles, 0);
     return (
         <div className={`${darkMode && 'dark'}`}>
@@ -33,17 +34,14 @@ export default function SkillLevel({ currentLevel }) {
                     <path d="M5 12l14 0" />
                 </svg>
             </Button>
-
             {Array.from({ length: filledCircles }).map((_, index) => (
                 <Button key={`filled-${index}`} variant="filled"
                     className={`w-[15px] h-[15px] m-[1px] rounded-full p-0 bg-text border-[2px] `} />
             ))}
-
             {Array.from({ length: emptyCircles }).map((_, index) => (
                 <Button key={`empty-${index}`} variant="outline"
                     className={`w-[15px] h-[15px] m-[1px] rounded-full p-0 border-text border-[2px]`} />
             ))}
-
             <Button variant="outline" onClick={upgradeSkill}
                 className={`w-[15px] h-[15px] m-[1px] rounded-full p-0 text-accent border-accent border-[2px] hover:text-accent`}>
                 <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus w-[10px] h-[10px]" viewBox="0 0 24 24" strokeWidth="3.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
