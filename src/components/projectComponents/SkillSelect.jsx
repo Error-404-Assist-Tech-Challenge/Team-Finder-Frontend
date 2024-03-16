@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { CheckIcon, Combobox, Group, Pill, PillsInput, useCombobox } from '@mantine/core';
 import SkillLevel from './SkillLevel';
 
-export function SkillSelect({ skills, setSkills, value, setValue }) {
+export function SkillSelect({ skills, value, setValue }) {
     const combobox = useCombobox({
         onDropdownClose: () => combobox.resetSelectedOption(),
         onDropdownOpen: () => combobox.updateSelectedOptionIndex('active'),
