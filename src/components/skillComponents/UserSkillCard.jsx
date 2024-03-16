@@ -92,15 +92,7 @@ export default function UserSkillCard(props) {
         props.setVisible(true);
         try {
             let updatedEndorsementsList = props.endorsementsList.concat(tempEndoLsit);
-            console.log("Index to delete:",indexToEdit)
             updatedEndorsementsList.splice(indexToEdit, 1);
-            console.log("AICI INTRA:",{
-                skill_id: props.skills[props.index].skill_id,
-                level: currentLevel,
-                experience: currentExperience,
-                role_id: '',
-                endorsements: updatedEndorsementsList,
-            });
             const response = await axiosPrivate.put('skills/user',
             JSON.stringify({
                 skill_id: props.skills[props.index].skill_id,

@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 
-import { Card, Avatar, Modal, Button, Text, Loader, Badge } from '@mantine/core';
+import { Card, Avatar, Modal, Button, Text, Loader, Badge, HoverCard } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import React, { useContext, useEffect, useState } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
@@ -64,12 +64,28 @@ export default function DepartmentEmployee(props) {
                 ))}
                 <div className="pt-4 flex flex-col justify-start">
                     <p className="p-4 text-xl font-bold">{props.name}'s Endorsements:</p>
-                    <Badge className="m-2" color="gray" size="xl" variant="filled">Training endorsement</Badge>
-                    {/* <div className='flex flex-col'>
-                        {endorsements.map((endorsement, index) =>(
-                            <SkillEndorsementBadge key={index} index={index} endorsement={endorsement}/>
-                        ))}
-                    </div> */}
+                    <div className="flex flex-wrap"> 
+                        {props.endorsements.length != 0 &&(
+                            <>
+                                {props.endorsements.map((endorsement, index) => (
+                                    <HoverCard width={280} shadow="md" zIndex={100000000}>
+                                            <HoverCard.Target>
+                                                <Badge className="m-2" color="gray" size="xl" variant="filled">
+                                                    {endorsement.type} : {endorsement.endorsement}
+                                                </Badge>
+                                            </HoverCard.Target>
+                                            <HoverCard.Dropdown>
+                                            <Text size="sm">
+                                                {endorsement.description}
+                                            </Text>
+                                            </HoverCard.Dropdown>
+                                        </HoverCard>
+                                    ))}
+                            </>
+                        )}
+                         {props.endorsements.length == 0 &&(
+                            <Badge className="m-2" color="gray" size="xl" variant="filled">No endorsements</Badge>)}
+                    </div>
                 </div>
                 <div>
                     <Button className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] rounded float-right" onClick={handleRemoveMember}>
