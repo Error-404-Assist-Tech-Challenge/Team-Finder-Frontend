@@ -13,8 +13,9 @@ import ActiveMemberCard from './ActiveMemberCard';
 import ProposedMembersComp from './ProposedMembersComp';
 import PastMemberCard from './PastMemberCard';
 import OrganizationEmployeesComp from '../pageComponents/OrganizationEmployeesComp';
+import SkillLevelUneditable from './SkillLevelUneditable';
 
-export default function ProjectCard({ project, setProjects, roles, teamRoles, setTeamRoles }) {
+export default function ProjectCard({ project, setProjects, roles, teamRoles, setTeamRoles, skills }) {
 
     const [visible, setVisible] = useState(true)
     const [isHovering, setIsHovering] = useState(false);
@@ -201,6 +202,17 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                                     </Badge>
                                 ))}
                             </div>
+                            <div className="flex items-center flex-wrap">
+                                <p className="py-1"><span className="font-bold">Skill Requirements</span>: </p>
+                                {project.required_skills.map((skill) => (
+                                    <Badge key={skill.skill_id} className="mx-3 my-1 h-auto" color="gray">
+                                        <div className="h-[50px] py-[6px] w-[100px] flex justify-center items-center flex-wrap">
+                                            <p className="">{skill.name}</p>
+                                            <SkillLevelUneditable level={skill.minimum_level} />
+                                        </div>
+                                    </Badge>
+                                ))}
+                            </div>
                         </div>
                         <div>
                             <Tabs defaultValue="ActiveMembers" color="#FF3D2E">
@@ -383,7 +395,7 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
             </Modal >
 
             <Modal opened={openedEdit} onClose={closeEdit} transitionProps={{ transition: 'fade', duration: 200 }} className="dark:bg-card_modal text-white select-none" zIndex={300}>
-                <ProjectEdit project={project} setProjects={setProjects} roles={roles} teamRoles={teamRoles} setTeamRoles={setTeamRoles} closeEdit={closeEdit} />
+                <ProjectEdit project={project} setProjects={setProjects} roles={roles} teamRoles={teamRoles} setTeamRoles={setTeamRoles} closeEdit={closeEdit} skills={skills} />
             </Modal>
 
             <Card className="flex w-[350px] h-[300px] dark:bg-card_modal mx-[40px] my-[40px] rounded-xl dark:text-darktext text-text select-none"
