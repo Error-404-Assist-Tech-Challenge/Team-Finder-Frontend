@@ -12,6 +12,7 @@ import { useEffect } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { IconCheck } from '@tabler/icons-react';
 import { notifications } from '@mantine/notifications';
+import SkillUpgradeCard from '../skillComponents/SkillUpgradeCard';
 
 
 export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnusedSkills, visible, setVisible }) {
@@ -192,9 +193,9 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
                         <Title className="text-3xl">Skill Upgrade Proposals</Title>
                     </div>
                     <div className="flex flex-wrap justify-center">
-                        {/* {teamRoles.map(role => (
-                            <TeamRoleCard key={role.role_id} id={role.id} name={role.name} setTeamRoles={setTeamRoles} />
-                        ))} */}
+                        {skills.map(skill => (
+                            <SkillUpgradeCard key={skill.skill_id} skill_name={skill.skill_name} level={3} experience={4} />
+                        ))}
                     </div>
                 </Drawer>
 
