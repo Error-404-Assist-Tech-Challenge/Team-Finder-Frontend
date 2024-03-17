@@ -15,7 +15,7 @@ import { notifications } from '@mantine/notifications';
 import SkillUpgradeCard from '../skillComponents/SkillUpgradeCard';
 
 
-export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnusedSkills, visible, setVisible }) {
+export default function MySkillsComp({ skills, setSkills, skillUpgrades, setSkillUpgrades, unusedSkills, setUnusedSkills, visible, setVisible }) {
 
     const axiosPrivate = useAxiosPrivate();
 
@@ -50,7 +50,7 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
     const handleAddSkill = async () => {
         close();
         try {
-            console.log("In post intra: ",JSON.stringify({
+            console.log("In post intra: ", JSON.stringify({
                 skill_id: addedSkill,
                 level: selectedSkillLevel,
                 experience: selectedSkillExperience,
@@ -115,6 +115,7 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
             style: { width: 455 },
         })
     }
+
     useEffect(() => {
         if (endorsement === 'Project') {
             setEndorsementList([
@@ -125,7 +126,7 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
                     proj_id: projectEndorsement
                 }
             ]);
-            console.log("Proj id:",projectEndorsement );
+            console.log("Proj id:", projectEndorsement);
             console.log("Post object:", endorsementsList);
         } else {
             setEndorsementList([
@@ -138,7 +139,7 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
             ]);
         }
     }, [endorsement, training, course, trainingDescpription, courseDescription, projectEndorsement]);
-    
+
     // GET user projects
     useEffect(() => {
         let isMounted = true;
@@ -182,8 +183,6 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
         <div>
             <div className="flex flex-wrap justify-center">
 
-
-
                 {skills.map((skill, index) => (
                     <UserSkillCard key={index} index={index} skills={skills} setSkills={setSkills} unusedSkills={unusedSkills} setUnusedSkills={setUnusedSkills}
                         visible={visible} setVisible={setVisible} endorsementsList={skill.skill_endorsements} setEndorsementList={setEndorsementList} list={list} />
@@ -210,8 +209,8 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
                         <Title className="text-3xl">Skill Upgrade Proposals</Title>
                     </div>
                     <div className="flex flex-wrap justify-center">
-                        {skills.map(skill => (
-                            <SkillUpgradeCard key={skill.skill_id} skill_name={skill.skill_name} level={3} experience={4} />
+                        {skillUpgrades.map(skill => (
+                            <SkillUpgradeCard key={skill.id} setSkillUpgrades={setSkillUpgrades} id={skill.id} skill_name={skill.skill_name} level={skill.level} experience={skill.experience} />
                         ))}
                     </div>
                 </Drawer>
@@ -342,8 +341,8 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
                                         label="Endorsement"
                                         placeholder="Choose an edorsement"
                                         className=" py-[15px] w-[450px]" />
-                                        <p>{projectEndorsement}</p>
-                                        
+                                    <p>{projectEndorsement}</p>
+
                                 </>
                             )}
                         </div>

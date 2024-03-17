@@ -1,11 +1,12 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { Card, Badge, Title, Modal, Divider, Checkbox, NumberInput, Button, Text, Textarea } from '@mantine/core';
+import { Card, Badge, Title, Modal, Divider, Checkbox, NumberInput, Button, Text, Textarea, Select } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useState, useEffect } from 'react';
 import { Tabs, rem, Avatar } from '@mantine/core';
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import SkillLevelUneditable from './SkillLevelUneditable';
+import { SkillSelect } from './SkillSelect';
 
 
 export default function ProjectEmployeeCard({ name, roles, period, status, tech_stack, start, deadline, description, project_id, required_skills }) {
@@ -16,11 +17,13 @@ export default function ProjectEmployeeCard({ name, roles, period, status, tech_
     const [visible, setVisible] = useState(false);
     const [pastMembers, setPastMembers] = useState([])
     const [activeMembers, setActiveMembers] = useState([])
-
+    const [isAdding, setIsAdding] = useState(false)
     const getInitials = (name) => {
         const names = name.split(' ');
         return names.map((name) => name[0]).join('').toUpperCase();
     };
+    const [skills, setSkills] = useState([])
+    const [chosenSkills, setChosenSkills] = useState([]);
 
     useEffect(() => {
         let isMounted = true;
@@ -56,9 +59,44 @@ export default function ProjectEmployeeCard({ name, roles, period, status, tech_
         }
     }, [])
 
+    useEffect(() => {
+        let isMounted = true;
+        const controller = new AbortController();
+        const fetchSkills = async () => {
+            try {
+                const response = await axiosPrivate.get('organizations/skills/unused/all', {
+                    signal: controller.signal,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Credentials': 'true'
+                    },
+                    withCredentials: true
+                });
+                console.log('Skills:', response.data);
+                if (isMounted) {
+                    const mappedSkills = response.data.map(skill => ({
+                        id: skill.value,
+                        name: skill.label.trim(),
+                        minimum_level: 1,
+                    }));
+                    setSkills(mappedSkills);
+                    console.log(mappedSkills);
+                }
+            } catch (error) {
+                console.error('Error fetching skills:', error);
+            }
+        }
+        fetchSkills();
+        return () => {
+            isMounted = false;
+            controller.abort();
+        }
+    }, []);
+
     return (
         <>
-            <Modal opened={opened} onClose={close} size={560} transitionProps={{ transition: 'fade', duration: 200 }} className="dark:bg-card_modal text-white select-none" zIndex={300}>
+            <Modal opened={opened} onClose={close} size={560} transitionProps={{ transition: 'fade', duration: 200 }} className="dark:bg-card_modal text-white select-none" zIndex={350}>
                 <div className="flex flex-col">
                     <Title className="flex justify-center">
                         {name}
@@ -97,6 +135,35 @@ export default function ProjectEmployeeCard({ name, roles, period, status, tech_
                                     </Badge>
                                 ))}
                             </div>
+
+                            {!isAdding &&
+                                <div className="w-[100px] h-[50px] flex justify-center items-center">
+                                    <Button variant="outline" onClick={() => { setIsAdding(true) }}
+                                        className={`relative w-[30px] h-[30px] rounded-full p-0 text-accent border-accent border-[3px] hover:text-accent`}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-plus w-full h-full" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M12 5l0 14" />
+                                            <path d="M5 12l14 0" />
+                                        </svg>
+                                    </Button>
+                                </div>
+                            }
+                            {isAdding &&
+                                <SkillSelect
+                                    skills={skills}
+                                    value={chosenSkills}
+                                    setValue={setChosenSkills}
+                                />
+                            }
+                            {chosenSkills.length != 0 && (
+                                <div className="flex justify-center">
+                                    <Button
+                                        size="lg"
+                                        className="bg-accent text-white hover:bg-btn_hover font-bold px-4 py-2 rounded mb-[10px] mt-[20px]">
+                                        Update Project
+                                    </Button>
+                                </div>
+                            )}
                         </div>
                         <Tabs defaultValue="ActiveMembers" color="#FF3D2E">
                             <Tabs.List grow>
