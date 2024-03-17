@@ -3,7 +3,7 @@
 /* eslint-disable no-unused-vars */
 
 import UserSkillCard from '../skillComponents/UserSkillCard';
-import { Button, Modal, Title, Select, rem, Divider, TextInput, Textarea } from '@mantine/core';
+import { Button, Modal, Title, Select, rem, Divider, TextInput, Textarea, Drawer } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
 import LevelCirclesSelected from '../skillComponents/LevelCirclesSelected';
@@ -12,6 +12,7 @@ import { useEffect } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { IconCheck } from '@tabler/icons-react';
 import { notifications } from '@mantine/notifications';
+import SkillUpgradeCard from '../skillComponents/SkillUpgradeCard';
 
 
 export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnusedSkills, visible, setVisible }) {
@@ -19,6 +20,7 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
     const axiosPrivate = useAxiosPrivate();
 
     const [opened, { open, close }] = useDisclosure(false);
+    const [openedDrawer, { open: openDrawer, close: closeDrawer }] = useDisclosure(false);
     const [addedSkill, setAddedSkill] = useState('');
     const [selectedSkillLevel, selectSkillLevel] = useState(1);
     const [selectedSkillExperience, selectSkillExperience] = useState(1);
@@ -153,16 +155,16 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
                 console.error('Error fetching department members:', error);
             }
         }
-        
+
         getUserProjects();
-        
+
         return () => {
             isMounted = false;
             controller.abort();
         }
     }, [])
-    
-    let list=[]
+
+    let list = []
 
     if (userProjects && userProjects.active && Array.isArray(userProjects.active) && userProjects.past && Array.isArray(userProjects.past)) {
         for (let i = 0; i < userProjects.active.length; i++) {
@@ -174,14 +176,17 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
     } else {
         console.error("userProjects or userProjects.active is not defined or is not an array");
     }
-    
+
 
     return (
         <div>
             <div className="flex flex-wrap justify-center">
+
+
+
                 {skills.map((skill, index) => (
                     <UserSkillCard key={index} index={index} skills={skills} setSkills={setSkills} unusedSkills={unusedSkills} setUnusedSkills={setUnusedSkills}
-                        visible={visible} setVisible={setVisible} endorsementsList={skill.skill_endorsements} setEndorsementList={setEndorsementList} list={list}/>
+                        visible={visible} setVisible={setVisible} endorsementsList={skill.skill_endorsements} setEndorsementList={setEndorsementList} list={list} />
                 ))}
                 <div className="w-[410px] h-[270px] flex justify-center items-center">
                     <Button variant="outline" onClick={open}
@@ -193,6 +198,25 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
                         </svg>
                     </Button>
                 </div>
+
+                <div className="fixed bottom-9 right-9">
+                    <Button size="lg" className="bg-accent text-white font-bold py-2 px-4 text-lg rounded" onClick={() => { /*getSkillCategories();*/ openDrawer() }}>
+                        Skill Upgrade Proposals
+                    </Button>
+                </div>
+
+                <Drawer offset={8} radius="md" opened={openedDrawer} onClose={closeDrawer} position="right" zIndex="1000000">
+                    <div className="flex justify-center text-white pb-9 select-none">
+                        <Title className="text-3xl">Skill Upgrade Proposals</Title>
+                    </div>
+                    <div className="flex flex-wrap justify-center">
+                        {skills.map(skill => (
+                            <SkillUpgradeCard key={skill.skill_id} skill_name={skill.skill_name} level={3} experience={4} />
+                        ))}
+                    </div>
+                </Drawer>
+
+
                 <Modal opened={opened} onClose={close} centered overflow="inside" size={1000} className="dark:bg-card_modal text-white select-none" zIndex={1000002}>
                     <div className='flex flex-wrap'>
                         <div className="flex flex-col space-y-4 w-1/2">
@@ -309,7 +333,7 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
                                     />
                                 </>
                             )}
-                             {endorsement === 'Project' && (
+                            {endorsement === 'Project' && (
                                 <>
                                     <Select data={list}
                                         value={projectEndorsement}
