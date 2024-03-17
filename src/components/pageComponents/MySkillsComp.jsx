@@ -37,7 +37,6 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
     const [projectEndorsement, setProjectEdorsement] = useState('');
 
     const [endorsementsList, setEndorsementList] = useState([]);
-    const [projectEndorsementsList, setprojectEndorsementsList] = useState([]);
 
     useEffect(() => {
         setChange(true);
@@ -182,7 +181,8 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
             <div className="flex flex-wrap justify-center">
                 {skills.map((skill, index) => (
                     <UserSkillCard key={index} index={index} skills={skills} setSkills={setSkills} unusedSkills={unusedSkills} setUnusedSkills={setUnusedSkills}
-                        visible={visible} setVisible={setVisible} endorsementsList={skill.skill_endorsements} setEndorsementList={setEndorsementList} list={list}/>
+                        visible={visible} setVisible={setVisible} endorsementsList={skill.skill_endorsements} setEndorsementList={setEndorsementList} list={list} projectEndorsement={projectEndorsement}
+                        setProjectEdorsement={setProjectEdorsement}/>
                 ))}
                 <div className="w-[410px] h-[270px] flex justify-center items-center">
                     <Button variant="outline" onClick={open}
