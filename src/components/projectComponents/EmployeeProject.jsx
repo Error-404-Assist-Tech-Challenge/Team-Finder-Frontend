@@ -64,8 +64,11 @@ export default function ProjectEmployeeCard({ name, roles, period, status, tech_
         const controller = new AbortController();
         const fetchSkills = async () => {
             try {
-                const response = await axiosPrivate.get('organizations/skills/unused/all', {
+                const response = await axiosPrivate.get(`projects/eligible_skills`, {
                     signal: controller.signal,
+                    params: {
+                        proj_id: project_id,
+                    },
                     headers: {
                         'Content-Type': 'application/json',
                         'Access-Control-Allow-Origin': '*',
@@ -73,18 +76,18 @@ export default function ProjectEmployeeCard({ name, roles, period, status, tech_
                     },
                     withCredentials: true
                 });
-                console.log('Skills:', response.data);
+                console.log('Eligible Skills:', response.data);
                 if (isMounted) {
                     const mappedSkills = response.data.map(skill => ({
-                        id: skill.value,
-                        name: skill.label.trim(),
+                        id: skill.id,
+                        name: skill.name,
                         minimum_level: 1,
                     }));
                     setSkills(mappedSkills);
                     console.log(mappedSkills);
                 }
             } catch (error) {
-                console.error('Error fetching skills:', error);
+                console.error('Error fetching eligible skills:', error);
             }
         }
         fetchSkills();
@@ -93,6 +96,27 @@ export default function ProjectEmployeeCard({ name, roles, period, status, tech_
             controller.abort();
         }
     }, []);
+
+    const handleUpdateRequirements = async () => {
+        try {
+            const response = await axiosPrivate.put('projects/skill_requirement',
+                JSON.stringify({
+                    // proposal: proposal_response
+                }),
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Credentials': 'true'
+                    },
+                    withCredentials: true
+                });
+
+            console.log('Proposal response:', response.data);
+        } catch (error) {
+            console.error('Error fetching updating skill:', error);
+        }
+    }
 
     return (
         <>
@@ -158,7 +182,7 @@ export default function ProjectEmployeeCard({ name, roles, period, status, tech_
                             {chosenSkills.length != 0 && (
                                 <div className="flex justify-center">
                                     <Button
-                                        size="lg"
+                                        size="lg" onClick={handleUpdateRequirements}
                                         className="bg-accent text-white hover:bg-btn_hover font-bold px-4 py-2 rounded mb-[10px] mt-[20px]">
                                         Update Project
                                     </Button>

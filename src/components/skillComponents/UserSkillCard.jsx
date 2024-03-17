@@ -55,7 +55,7 @@ export default function UserSkillCard(props) {
         props.setVisible(true);
         try {
             let updatedEndorsementsList = props.endorsementsList.concat(tempEndoLsit);
-            console.log("AICI INTRA:",{
+            console.log("AICI INTRA:", {
                 skill_id: props.skills[props.index].skill_id,
                 level: currentLevel,
                 experience: currentExperience,
@@ -94,26 +94,26 @@ export default function UserSkillCard(props) {
             let updatedEndorsementsList = props.endorsementsList.concat(tempEndoLsit);
             updatedEndorsementsList.splice(indexToEdit, 1);
             const response = await axiosPrivate.put('skills/user',
-            JSON.stringify({
-                skill_id: props.skills[props.index].skill_id,
-                level: currentLevel,
-                experience: currentExperience,
-                role_id: '',
-                endorsements: updatedEndorsementsList,
-            }),
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Credentials': 'true'
-                },
-                withCredentials: true
-            });
-            
+                JSON.stringify({
+                    skill_id: props.skills[props.index].skill_id,
+                    level: currentLevel,
+                    experience: currentExperience,
+                    role_id: '',
+                    endorsements: updatedEndorsementsList,
+                }),
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Credentials': 'true'
+                    },
+                    withCredentials: true
+                });
+
             console.log('Response:', response.data);
             props.setSkills(response.data);
 
-            
+
 
         } catch (error) {
             console.error('Error saving my skill:', error);
@@ -256,15 +256,15 @@ export default function UserSkillCard(props) {
                                 <div className="p-3 flex justify-left text-xl">
                                     <p>
                                         <span className="font-bold">Level: </span>
-                                        {props.skills[props.index].level == 1 &&
+                                        {currentLevel == 1 &&
                                             (<span>You are learning {props.skills[props.index].skill_name}</span>)}
-                                        {props.skills[props.index].level == 2 &&
+                                        {currentLevel == 2 &&
                                             (<span>You know {props.skills[props.index].skill_name}</span>)}
-                                        {props.skills[props.index].level == 3 &&
+                                        {currentLevel == 3 &&
                                             (<span>You do {props.skills[props.index].skill_name}</span>)}
-                                        {props.skills[props.index].level == 4 &&
+                                        {currentLevel == 4 &&
                                             (<span>You can help in {props.skills[props.index].skill_name}</span>)}
-                                        {props.skills[props.index].level == 5 &&
+                                        {currentLevel == 5 &&
                                             (<span>You can teach {props.skills[props.index].skill_name}</span>)}
                                     </p>
                                 </div>
@@ -274,17 +274,17 @@ export default function UserSkillCard(props) {
                                 <div className="p-3 flex justify-left text-xl">
                                     <p>
                                         <span className="font-bold">Experience: </span>
-                                        {props.skills[props.index].experience == 1 &&
+                                        {currentExperience == 1 &&
                                             (<span>0-6 months</span>)}
-                                        {props.skills[props.index].experience == 2 &&
+                                        {currentExperience == 2 &&
                                             (<span>6-12 months</span>)}
-                                        {props.skills[props.index].experience == 3 &&
+                                        {currentExperience == 3 &&
                                             (<span>1-2 years</span>)}
-                                        {props.skills[props.index].experience == 4 &&
+                                        {currentExperience == 4 &&
                                             (<span>2-4 years</span>)}
-                                        {props.skills[props.index].experience == 5 &&
+                                        {currentExperience == 5 &&
                                             (<span>4-7 years</span>)}
-                                        {props.skills[props.index].experience == 6 &&
+                                        {currentExperience == 6 &&
                                             (<span>7+ years</span>)}
                                     </p>
                                 </div>
@@ -365,7 +365,7 @@ export default function UserSkillCard(props) {
                                         <div className='flex flex-col'>
                                             {props.skills[props.index].skill_endorsements.map((endorsement, index) => (
                                                 <SkillEndorsementBadge key={index} index={index} endorsement={endorsement} setEndorsement={setEndorsement} editEndorsement={editEndorsement} setEditEndorsement={setEditEndorsement}
-                                                    indexToDelete={indexToDelete} setIndexToDelete={setIndexToDelete} setIndexToEdit={setIndexToEdit} handleDeleteEndorsement={handleDeleteEndorsement} indexToEdit={indexToEdit}/>
+                                                    indexToDelete={indexToDelete} setIndexToDelete={setIndexToDelete} setIndexToEdit={setIndexToEdit} handleDeleteEndorsement={handleDeleteEndorsement} indexToEdit={indexToEdit} />
                                             ))}
                                         </div>
                                         <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-10 py-2 rounded ml-[120px] my-[10px] mt-[20px] mb-[25px] fixed bottom-0 "
