@@ -149,6 +149,7 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
                     withCredentials: true
                 });
                 isMounted && setUserProjects(response.data)
+                console.log("Projects:", response.data)
             } catch (error) {
                 console.error('Error fetching department members:', error);
             }
@@ -166,10 +167,10 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
 
     if (userProjects && userProjects.active && Array.isArray(userProjects.active) && userProjects.past && Array.isArray(userProjects.past)) {
         for (let i = 0; i < userProjects.active.length; i++) {
-            list[i] = { value: userProjects.active[i].id, label: userProjects.active[i].project_name };
+            list[i] = { value: userProjects.active[i].proj_id, label: userProjects.active[i].project_name };
         }
         for (let i = 0; i < userProjects.past.length; i++) {
-            list.push({ value: userProjects.past[i].id, label: userProjects.past[i].project_name });
+            list.push({ value: userProjects.past[i].proj_id, label: userProjects.past[i].project_name });
         }
     } else {
         console.error("userProjects or userProjects.active is not defined or is not an array");
