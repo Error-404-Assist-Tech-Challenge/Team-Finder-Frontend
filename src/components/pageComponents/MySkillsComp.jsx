@@ -36,8 +36,10 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
 
     const [userProjects, setUserProjects] = useState({});
     const [projectsList, setProjectsList] = useState([]);
+    const [projectEndorsement, setProjectEdorsement] = useState('');
 
     const [endorsementsList, setEndorsementList] = useState([]);
+    const [projectEndorsementsList, setprojectEndorsementsList] = useState([]);
 
     useEffect(() => {
         setChange(true);
@@ -48,7 +50,13 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
     const handleAddSkill = async () => {
         close();
         try {
-            if (endorsementsList[0].endorsement == '') {
+            console.log("In post intra: ",JSON.stringify({
+                skill_id: addedSkill,
+                level: selectedSkillLevel,
+                experience: selectedSkillExperience,
+                endorsements: endorsementsList,
+            }),)
+            if (endorsementsList[0].endorsement == '' && endorsementsList[0].proj_id == '') {
                 const response = await axiosPrivate.post('skills/user',
                     JSON.stringify({
                         skill_id: addedSkill,
@@ -108,18 +116,29 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
         })
     }
     useEffect(() => {
-
-        // Update the endorsementsList when endorsement, training, or course changes
-        setEndorsementList([
-            {
-                type: endorsement,
-                endorsement: endorsement === 'Training' ? training : course,
-                description: endorsement === 'Training' ? trainingDescpription : courseDescription,
-                proj_id: ""
-            }
-        ]);
-    }, [endorsement, training, course, trainingDescpription, courseDescription]);
-
+        if (endorsement === 'Project') {
+            setEndorsementList([
+                {
+                    type: endorsement,
+                    endorsement: "",
+                    description: "",
+                    proj_id: projectEndorsement
+                }
+            ]);
+            console.log("Proj id:",projectEndorsement );
+            console.log("Post object:", endorsementsList);
+        } else {
+            setEndorsementList([
+                {
+                    type: endorsement,
+                    endorsement: endorsement === 'Training' ? training : course,
+                    description: endorsement === 'Training' ? trainingDescpription : courseDescription,
+                    proj_id: ""
+                }
+            ]);
+        }
+    }, [endorsement, training, course, trainingDescpription, courseDescription, projectEndorsement]);
+    
     // GET user projects
     useEffect(() => {
         let isMounted = true;
@@ -131,7 +150,6 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
                     signal: controller.signal,
                     withCredentials: true
                 });
-                console.log('Users projects:', response.data);
                 isMounted && setUserProjects(response.data)
             } catch (error) {
                 console.error('Error fetching department members:', error);
@@ -155,7 +173,6 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
         for (let i = 0; i < userProjects.past.length; i++) {
             list.push({ value: userProjects.past[i].id, label: userProjects.past[i].project_name });
         }
-        console.log("Lista projects:", list);
     } else {
         console.error("userProjects or userProjects.active is not defined or is not an array");
     }
@@ -319,12 +336,14 @@ export default function MySkillsComp({ skills, setSkills, unusedSkills, setUnuse
                             {endorsement === 'Project' && (
                                 <>
                                     <Select data={list}
-                                        value={endorsement}
-                                        onChange={setEndorsement}
+                                        value={projectEndorsement}
+                                        onChange={setProjectEdorsement}
                                         comboboxProps={{ zIndex: 1000000000 }}
                                         label="Endorsement"
                                         placeholder="Choose an edorsement"
                                         className=" py-[15px] w-[450px]" />
+                                        <p>{projectEndorsement}</p>
+                                        
                                 </>
                             )}
                         </div>
