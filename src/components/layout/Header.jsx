@@ -110,9 +110,6 @@ export default function GenericHeader() {
                 },
                 withCredentials: true
             });
-
-            // console.log('Notificatinos:', response.data);
-
             setNotifications(response.data)
 
         } catch (error) {

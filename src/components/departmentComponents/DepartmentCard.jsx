@@ -21,13 +21,12 @@ export default function DepartmentCard(props) {
         ? [...props.departmentManagers, currentManagerObject]
         : [...props.departmentManagers]);
 
-    const [departmentManager, setDepartmentManager] = useState(currentManager);
-    const [departmentName, setDepartmentName] = useState(props.name);
+    const [departmentManager, setDepartmentManager] = useState(props.manager ? currentManager : null);
+    const [departmentName, setDepartmentName] = useState(props.name ? props.name : '');
 
     const handleEdit = () => {
         setIsEditing(true);
     }
-
     const handleSave = () => {
         updateDepartment();
         setIsEditing(false);
