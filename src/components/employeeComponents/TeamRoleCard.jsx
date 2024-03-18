@@ -4,7 +4,7 @@ import { useState } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 
-export default function TeamRoleCard({ id, name, setTeamRoles }) {
+export default function TeamRoleCard({ id, name, setTeamRoles, used }) {
 
     const [isEditing, setIsEditing] = useState(false);
     const [roleName, setRoleName] = useState(name);
@@ -85,7 +85,11 @@ export default function TeamRoleCard({ id, name, setTeamRoles }) {
                 {isEditing && (
                     <Button className="w-[170px] mr-[5px] bg-accent mt-[10px] text-[18px]" onClick={handleSave}>Save</Button>
                 )}
-                <Button className="w-[170px] ml-[5px] bg-accent mt-[10px] text-[18px]" onClick={handleRemove}>Remove</Button>
+                {!used ?
+                    <Button className="w-[170px] ml-[5px] bg-accent mt-[10px] text-[18px]" onClick={handleRemove}>Remove</Button>
+                    :
+                    <Button className="w-[170px] ml-[5px] bg-[gray] mt-[10px] text-[18px]" disabled>Is being used</Button>
+                }
             </div>
         </div >
     )
