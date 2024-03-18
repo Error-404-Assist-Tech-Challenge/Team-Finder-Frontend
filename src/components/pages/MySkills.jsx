@@ -19,9 +19,7 @@ export default function MySkillsPage() {
     const [changed, setChange] = useState(false)
 
     const [skills, setSkills] = useState([]);
-
-    const [selectedSkillLevel, selectSkillLevel] = useState(1);
-    const [selectedSkillExperience, selectSkillExperience] = useState(1);
+    const [skillUpgrades, setSkillUpgrades] = useState([]);
 
     const [unusedSkills, setUnusedSkills] = useState([]);
     const [addedSkill, setAddedSkill] = useState('');
@@ -64,6 +62,42 @@ export default function MySkillsPage() {
             }
         }
         fetchUserSkills();
+        return () => {
+            isMounted = false;
+            controller.abort();
+        }
+    }, []);
+
+    // GET USER SKILL UPGRADES
+
+    useEffect(() => {
+        let isMounted = true;
+        const controller = new AbortController();
+        const fetchUserSkillUpgrades = async () => {
+            try {
+                const response = await axiosPrivate.get('skills/employee_proposals', {
+                    signal: controller.signal,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Credentials': 'true'
+                    },
+                    withCredentials: true
+                });
+
+                console.log('My Skill Upgrades:', response.data);
+
+                isMounted && setSkillUpgrades(response.data)
+
+                setVisible(false);
+            } catch (error) {
+                console.error('Error fetching user skill upgrades:', error);
+            } finally {
+                isMounted = false;
+                controller.abort();
+            }
+        }
+        fetchUserSkillUpgrades();
         return () => {
             isMounted = false;
             controller.abort();
@@ -120,7 +154,7 @@ export default function MySkillsPage() {
 
                 {!visible &&
                     <div className="flex flex-wrap">
-                        <MySkillsComp skills={currentPosts} setSkills={setSkills} unusedSkills={unusedSkills} setUnusedSkills={setUnusedSkills} visible={visible} setVisible={setVisible} />
+                        <MySkillsComp skills={currentPosts} setSkills={setSkills} skillUpgrades={skillUpgrades} setSkillUpgrades={setSkillUpgrades} unusedSkills={unusedSkills} setUnusedSkills={setUnusedSkills} visible={visible} setVisible={setVisible} />
                     </div>}
             </div>
             <div className='dark:bg-darkcanvas bg-canvas flex justify-center items-center'>
