@@ -180,8 +180,6 @@ export default function MySkillsComp({ skills, setSkills, skillUpgrades, setSkil
         for (let i = 0; i < userProjects.past.length; i++) {
             list.push({ value: userProjects.past[i].proj_id, label: userProjects.past[i].project_name });
         }
-    } else {
-        console.error("userProjects or userProjects.active is not defined or is not an array");
     }
 
 
