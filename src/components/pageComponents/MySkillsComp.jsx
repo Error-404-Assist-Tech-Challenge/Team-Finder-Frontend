@@ -39,7 +39,6 @@ export default function MySkillsComp({ skills, setSkills, skillUpgrades, setSkil
     const [projectEndorsement, setProjectEdorsement] = useState('');
 
     const [endorsementsList, setEndorsementList] = useState([]);
-    const [projectEndorsementsList, setprojectEndorsementsList] = useState([]);
 
     useEffect(() => {
         setChange(true);
@@ -152,6 +151,7 @@ export default function MySkillsComp({ skills, setSkills, skillUpgrades, setSkil
                     withCredentials: true
                 });
                 isMounted && setUserProjects(response.data)
+                console.log("Projects:", response.data)
             } catch (error) {
                 console.error('Error fetching department members:', error);
             }
@@ -169,10 +169,10 @@ export default function MySkillsComp({ skills, setSkills, skillUpgrades, setSkil
 
     if (userProjects && userProjects.active && Array.isArray(userProjects.active) && userProjects.past && Array.isArray(userProjects.past)) {
         for (let i = 0; i < userProjects.active.length; i++) {
-            list[i] = { value: userProjects.active[i].id, label: userProjects.active[i].project_name };
+            list[i] = { value: userProjects.active[i].proj_id, label: userProjects.active[i].project_name };
         }
         for (let i = 0; i < userProjects.past.length; i++) {
-            list.push({ value: userProjects.past[i].id, label: userProjects.past[i].project_name });
+            list.push({ value: userProjects.past[i].proj_id, label: userProjects.past[i].project_name });
         }
     } else {
         console.error("userProjects or userProjects.active is not defined or is not an array");
@@ -185,7 +185,8 @@ export default function MySkillsComp({ skills, setSkills, skillUpgrades, setSkil
 
                 {skills.map((skill, index) => (
                     <UserSkillCard key={index} index={index} skills={skills} setSkills={setSkills} unusedSkills={unusedSkills} setUnusedSkills={setUnusedSkills}
-                        visible={visible} setVisible={setVisible} endorsementsList={skill.skill_endorsements} setEndorsementList={setEndorsementList} list={list} />
+                        visible={visible} setVisible={setVisible} endorsementsList={skill.skill_endorsements} setEndorsementList={setEndorsementList} list={list} projectEndorsement={projectEndorsement}
+                        setProjectEdorsement={setProjectEdorsement}/>
                 ))}
                 <div className="w-[410px] h-[270px] flex justify-center items-center">
                     <Button variant="outline" onClick={open}

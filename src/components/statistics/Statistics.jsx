@@ -39,7 +39,7 @@ export default function StatisticsComp({ index, stat }) {
                 <Divider size="sm"  />
                 <div className='flex items-center'>
                     <p className='font-bold pl-4'>Total {stat.skill_name} employees: {stat.levels[0]}</p>
-                    <div className='ml-[125px] mt-4'>
+                    <div className='ml-[13px] mt-4'>
                         <TotalCountStats index={index} stats={stat}/>
                     </div>
                 </div>

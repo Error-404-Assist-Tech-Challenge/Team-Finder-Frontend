@@ -55,31 +55,55 @@ export default function UserSkillCard(props) {
         props.setVisible(true);
         try {
             let updatedEndorsementsList = props.endorsementsList.concat(tempEndoLsit);
-            console.log("AICI INTRA:", {
-                skill_id: props.skills[props.index].skill_id,
-                level: currentLevel,
-                experience: currentExperience,
-                endorsements: updatedEndorsementsList,
-            });
-            const response = await axiosPrivate.put('skills/user',
-                JSON.stringify({
+
+            if (updatedEndorsementsList[0].endorsement == '' && updatedEndorsementsList[0].proj_id == '')
+            {
+
+                const response = await axiosPrivate.put('skills/user',
+                    JSON.stringify({
+                        skill_id: props.skills[props.index].skill_id,
+                        level: currentLevel,
+                        experience: currentExperience,
+                        endorsements: null,
+                    }),
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Access-Control-Allow-Origin': '*',
+                            'Access-Control-Allow-Credentials': 'true'
+                        },
+                        withCredentials: true
+                    });
+
+                console.log('Response:', response.data);
+                props.setSkills(response.data);
+             }
+             else{
+                console.log("AICI INTRA:",{
                     skill_id: props.skills[props.index].skill_id,
                     level: currentLevel,
                     experience: currentExperience,
-
                     endorsements: updatedEndorsementsList,
-                }),
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Access-Control-Allow-Origin': '*',
-                        'Access-Control-Allow-Credentials': 'true'
-                    },
-                    withCredentials: true
                 });
+                const response = await axiosPrivate.put('skills/user',
+                    JSON.stringify({
+                        skill_id: props.skills[props.index].skill_id,
+                        level: currentLevel,
+                        experience: currentExperience,
+                        endorsements: updatedEndorsementsList,
+                    }),
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Access-Control-Allow-Origin': '*',
+                            'Access-Control-Allow-Credentials': 'true'
+                        },
+                        withCredentials: true
+                    });
 
-            console.log('Response:', response.data);
-            props.setSkills(response.data);
+                console.log('Response:', response.data);
+                props.setSkills(response.data);
+             }
 
         } catch (error) {
             console.error('Error saving my skill:', error);
@@ -221,16 +245,37 @@ export default function UserSkillCard(props) {
 
     useEffect(() => {
 
+        if (endorsement === 'Project') {
+            setTempEndoList([
+                {
+                    type: endorsement,
+                    endorsement: "",
+                    description: "",
+                    proj_id: props.projectEndorsement
+                }
+            ]);
+            console.log("Proj id:",props.projectEndorsement );
+            console.log("Post object:", props.endorsementsList);
+        } else {
+            setTempEndoList([
+                {
+                    type: endorsement,
+                    endorsement: endorsement === 'Training' ? training : course,
+                    description: endorsement === 'Training' ? trainingDescpription : courseDescription,
+                    proj_id: ""
+                }
+            ]);
+        }
         // Update the endorsementsList when endorsement, training, or course changes
-        setTempEndoList([
-            {
-                type: endorsement,
-                endorsement: endorsement === 'Training' ? training : course,
-                description: endorsement === 'Training' ? trainingDescpription : courseDescription,
-                proj_id: ""
-            }
-        ]);
-    }, [endorsement, training, course, trainingDescpription, courseDescription]);
+        // setTempEndoList([
+        //     {
+        //         type: endorsement,
+        //         endorsement: endorsement === 'Training' ? training : course,
+        //         description: endorsement === 'Training' ? trainingDescpription : courseDescription,
+        //         proj_id: ""
+        //     }
+        // ]);
+    }, [endorsement, training, course, trainingDescpription, courseDescription, props.projectEndorsement]);
 
     return (
         <>
@@ -348,6 +393,18 @@ export default function UserSkillCard(props) {
                                                 />
                                             </>
                                         )}
+                                         {endorsement === 'Project' && (
+                                            <>
+                                                <Select data={props.list}
+                                                    value={props.projectEndorsement}
+                                                    onChange={props.setProjectEdorsement}
+                                                    comboboxProps={{ zIndex: 1000000000 }}
+                                                    label="Endorsement"
+                                                    placeholder="Choose an edorsement"
+                                                    className=" py-[15px] w-[450px]" />
+                                                    <p>{props.projectEndorsement}</p> 
+                                            </>
+                                        )}
                                         <div className="p-[10px] fixed bottom-0 right-0">
                                             <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-4 py-2 rounded mr-[60px] my-[10px] mt-[20px] mb-[15px]"
                                                 onClick={handleCancel}>
@@ -421,6 +478,19 @@ export default function UserSkillCard(props) {
                                                     onChange={(event) => setCourseDescription(event.currentTarget.value)}
                                                     className=" py-[15px]"
                                                 />
+                                            </>
+                                        )}
+                                        {endorsement === 'Project' && (
+                                            <>
+                                                <Select data={props.list}
+                                                    value={props.projectEndorsement}
+                                                    onChange={props.setProjectEdorsement}
+                                                    comboboxProps={{ zIndex: 1000000000 }}
+                                                    label="Endorsement"
+                                                    placeholder="Choose an edorsement"
+                                                    className=" py-[15px] w-[450px]" />
+                                                    <p>{props.projectEndorsement}</p>
+                                                    
                                             </>
                                         )}
                                         <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-10 py-2 rounded ml-[120px] my-[10px] mt-[20px] mb-[25px] fixed bottom-0 "
