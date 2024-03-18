@@ -98,10 +98,15 @@ export default function ProjectEmployeeCard({ name, roles, period, status, tech_
     }, []);
 
     const handleUpdateRequirements = async () => {
+        const skillRequirements = chosenSkills.map(skill => ({
+            proj_id: project_id,
+            skill_id: skill.id,
+            minimum_level: skill.minimum_level
+        }));
         try {
-            const response = await axiosPrivate.put('projects/skill_requirement',
+            const response = await axiosPrivate.post('projects/skill_requirement',
                 JSON.stringify({
-                    // proposal: proposal_response
+                    skills: skillRequirements
                 }),
                 {
                     headers: {
@@ -111,11 +116,13 @@ export default function ProjectEmployeeCard({ name, roles, period, status, tech_
                     },
                     withCredentials: true
                 });
-
-            console.log('Proposal response:', response.data);
+            console.log('Skill requirement update response:', response.data);
         } catch (error) {
-            console.error('Error fetching updating skill:', error);
+            console.error('Error updating skill requirements:', error);
         }
+        setIsAdding(false)
+        close()
+        
     }
 
     return (

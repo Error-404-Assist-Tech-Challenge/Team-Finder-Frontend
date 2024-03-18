@@ -111,7 +111,7 @@ export default function GenericHeader() {
                 withCredentials: true
             });
             setNotifications(response.data)
-
+            console.log('Notifications', response.data)
         } catch (error) {
             console.error('Error fetching notifications:', error);
         }
@@ -200,12 +200,19 @@ export default function GenericHeader() {
 
 
                         <Modal opened={opened} onClose={close} centered overflow="inside" className="bg-.m-1b7284a3.m-b5489c3c text-white rounded-modal" withCloseButton={false} zIndex={300}>
-                            <div className="flex justify-center py-6 select-none">
-                                <Title>Notifications ({notifications.length})</Title>
+                            <div className="min-h-[600px]">
+                                <div className="flex justify-center py-6 select-none">
+                                    <Title>Notifications ({notifications.length})</Title>
+                                </div>
+                                {notifications.map(notification => (
+                                    <NotificationCard key={notification.proposal_id} notification={notification} setNotifications={setNotifications} />)
+                                )}
+                                <div className="flex justify-center items-center select-none h-[450px]">
+                                    {notifications.length == 0 &&
+                                        <p>You have no unread notifications...</p>
+                                    }
+                                </div>
                             </div>
-                            {notifications.map(notification => (
-                                <NotificationCard key={notification.proposal_id} notification={notification} setNotifications={setNotifications} />)
-                            )}
                         </Modal>
 
 
