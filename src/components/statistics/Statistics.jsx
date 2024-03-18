@@ -25,13 +25,9 @@ export default function StatisticsComp({ index, stat }) {
                         <Card className="text-white font-bold">Level 4: {stat.levels[4]} employees</Card>
                         <Card className="text-white font-bold">Level 5: {stat.levels[5]} employees</Card>
                     </div>
-                    <div className='flex flex-row justify-center'>
+                    <div className='flex flex-row justify-center mt-3'>
                         <div className='flex-grow-0 mr-4'>
                             <PiechartComp index={index} stats={stat} />
-                        </div>
-                        <Divider size="sm" orientation="vertical" />
-                        <div className='flex-grow-0'>
-                            <TotalCountStats index={index} stats={stat} />
                         </div>
 
                     </div>
@@ -39,7 +35,7 @@ export default function StatisticsComp({ index, stat }) {
                 <Divider size="sm"  />
                 <div className='flex items-center'>
                     <p className='font-bold pl-4'>Total {stat.skill_name} employees: {stat.levels[0]}</p>
-                    <div className='ml-[13px] mt-4'>
+                    <div className='ml-[120px] mt-4'>
                         <TotalCountStats index={index} stats={stat}/>
                     </div>
                 </div>
