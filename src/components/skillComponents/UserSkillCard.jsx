@@ -347,7 +347,7 @@ export default function UserSkillCard(props) {
                             <Divider size="sm" orientation="vertical" className='mx-4' />
                             <div className="flex flex-col items-centre">
                                 <div className="flex flex-col justify-center items-center">
-                                    <Title className="pb-[30px] ml-[25px]">Skill Endorsements</Title>
+                                    <Title className="pb-[30px] ml-[50px]">Skill Endorsements</Title>
                                 </div>
                                 {editEndorsement && (
                                     <>
@@ -500,7 +500,7 @@ export default function UserSkillCard(props) {
                         </div>
                     </Modal>
 
-                    <Card className="flex w-[330px] h-[230px] dark:bg-card_modal mx-[40px] my-[20px] rounded-xl dark:text-darktext text-text select-none font-bold"
+                    <Card className="flex w-[330px] h-[230px] dark:bg-card_modal mx-[40px] my-[20px] rounded-xl text-darktext select-none font-bold"
                         onClick={handleOpen} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
                         <Card.Section className="dark:bg-[#495256]">
                             <Title className="flex h-full p-4 justify-center items-center text-center">

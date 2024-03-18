@@ -40,12 +40,12 @@ export default function LevelCirclesCard(props) {
 
             {Array.from({ length: filledCircles }).map((_, index) => (
                 <Button key={`filled-${index}`} variant="filled"
-                    className={`w-[20px] h-[20px] m-[6px] rounded-full p-0 dark:bg-darktext bg-text border-2`} />
+                    className={`w-[20px] h-[20px] m-[6px] rounded-full p-0 bg-darktext border-2`} />
             ))}
 
             {Array.from({ length: emptyCircles }).map((_, index) => (
                 <Button key={`empty-${index}`} variant="outline"
-                    className={`w-[20px] h-[20px] m-[6px] rounded-full p-0 dark:border-darktext border-text border-2`} />
+                    className={`w-[20px] h-[20px] m-[6px] rounded-full p-0 border-darktext border-darktext border-2`} />
             ))}
 
             <Button variant="outline" onClick={() => upgradeSkill(props.id)}
