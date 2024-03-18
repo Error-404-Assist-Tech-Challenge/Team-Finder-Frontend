@@ -110,7 +110,7 @@ export default function OrganizationEmployeesPage() {
                     withCredentials: true
                 });
 
-            console.log('Response:', response.data);
+            console.log('Updated team roles:', response.data);
 
             setTeamRoles(response.data);
 

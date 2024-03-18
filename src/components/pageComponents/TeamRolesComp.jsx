@@ -73,7 +73,7 @@ export default function TeamRolesComp({ teamRoles, setTeamRoles, visible, setVis
                                 </div>
                                 <div className="flex flex-wrap justify-center">
                                     {teamRoles.map(role => (
-                                        <TeamRoleCard key={role.role_id} id={role.id} name={role.name} setTeamRoles={setTeamRoles} />
+                                        <TeamRoleCard key={role.role_id} id={role.id} name={role.name} setTeamRoles={setTeamRoles} used={role.used} />
                                     ))}
                                     <div className="w-full h-[128px] rounded-lg bg-white p-4 my-2 select-none flex items-center justify-center">
                                         {!isAdding && (
