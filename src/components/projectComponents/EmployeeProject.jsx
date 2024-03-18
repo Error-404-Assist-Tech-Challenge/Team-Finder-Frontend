@@ -122,17 +122,16 @@ export default function ProjectEmployeeCard({ name, roles, period, status, tech_
         }
         setIsAdding(false)
         close()
-        
     }
 
     return (
         <>
-            <Modal opened={opened} onClose={close} size={560} transitionProps={{ transition: 'fade', duration: 200 }} className="dark:bg-card_modal text-white select-none" zIndex={350}>
-                <div className="flex flex-col">
-                    <Title className="flex justify-center">
-                        {name}
-                    </Title>
-                    <div className='mt-3 w-full'>
+            <Modal opened={opened} onClose={close} size="100%" transitionProps={{ transition: 'fade', duration: 200 }} className="dark:bg-card_modal text-white select-none" zIndex={350}>
+                <Title className="flex justify-center mb-3">
+                    {name}
+                </Title>
+                <div className="flex">
+                    <div className='w-3/5'>
                         <div className="text-[20px] px-9 py-2">
                             <p className="py-1"><span className="font-bold">Period</span>: {period}</p>
                             <p className="py-1"><span className="font-bold">Start Date</span>: {start.substring(0, 10)}</p>
@@ -196,6 +195,11 @@ export default function ProjectEmployeeCard({ name, roles, period, status, tech_
                                 </div>
                             )}
                         </div>
+                    </div>
+
+                    <Divider size="sm" orientation="vertical" className="mr-5" />
+
+                    <div className='w-2/5'>
                         <Tabs defaultValue="ActiveMembers" color="#FF3D2E">
                             <Tabs.List grow>
                                 <Tabs.Tab value="ActiveMembers" className="text-xl w-[120px]">

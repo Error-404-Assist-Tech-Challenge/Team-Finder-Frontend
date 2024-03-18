@@ -56,8 +56,7 @@ export default function UserSkillCard(props) {
         try {
             let updatedEndorsementsList = props.endorsementsList.concat(tempEndoLsit);
 
-            if (updatedEndorsementsList[0].endorsement == '' && updatedEndorsementsList[0].proj_id == '')
-            {
+            if (updatedEndorsementsList[0].endorsement == '' && updatedEndorsementsList[0].proj_id == '') {
 
                 const response = await axiosPrivate.put('skills/user',
                     JSON.stringify({
@@ -77,9 +76,9 @@ export default function UserSkillCard(props) {
 
                 console.log('Response:', response.data);
                 props.setSkills(response.data);
-             }
-             else{
-                console.log("AICI INTRA:",{
+            }
+            else {
+                console.log("AICI INTRA:", {
                     skill_id: props.skills[props.index].skill_id,
                     level: currentLevel,
                     experience: currentExperience,
@@ -103,7 +102,7 @@ export default function UserSkillCard(props) {
 
                 console.log('Response:', response.data);
                 props.setSkills(response.data);
-             }
+            }
 
         } catch (error) {
             console.error('Error saving my skill:', error);
@@ -233,8 +232,6 @@ export default function UserSkillCard(props) {
             zIndex: 10000002,
         });
 
-
-
     const handleCancel = async () => {
         setEditEndorsement(false)
     }
@@ -254,7 +251,7 @@ export default function UserSkillCard(props) {
                     proj_id: props.projectEndorsement
                 }
             ]);
-            console.log("Proj id:",props.projectEndorsement );
+            console.log("Proj id:", props.projectEndorsement);
             console.log("Post object:", props.endorsementsList);
         } else {
             setTempEndoList([
@@ -393,7 +390,7 @@ export default function UserSkillCard(props) {
                                                 />
                                             </>
                                         )}
-                                         {endorsement === 'Project' && (
+                                        {endorsement === 'Project' && (
                                             <>
                                                 <Select data={props.list}
                                                     value={props.projectEndorsement}
@@ -402,7 +399,7 @@ export default function UserSkillCard(props) {
                                                     label="Endorsement"
                                                     placeholder="Choose an edorsement"
                                                     className=" py-[15px] w-[450px]" />
-                                                    <p>{props.projectEndorsement}</p> 
+                                                <p>{props.projectEndorsement}</p>
                                             </>
                                         )}
                                         <div className="p-[10px] fixed bottom-0 right-0">
@@ -489,8 +486,8 @@ export default function UserSkillCard(props) {
                                                     label="Endorsement"
                                                     placeholder="Choose an edorsement"
                                                     className=" py-[15px] w-[450px]" />
-                                                    <p>{props.projectEndorsement}</p>
-                                                    
+                                                <p>{props.projectEndorsement}</p>
+
                                             </>
                                         )}
                                         <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-10 py-2 rounded ml-[120px] my-[10px] mt-[20px] mb-[25px] fixed bottom-0 "
@@ -506,7 +503,7 @@ export default function UserSkillCard(props) {
                     <Card className="flex w-[330px] h-[230px] dark:bg-card_modal mx-[40px] my-[20px] rounded-xl dark:text-darktext text-text select-none font-bold"
                         onClick={handleOpen} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
                         <Card.Section className="dark:bg-[#495256]">
-                            <Title className="p-4 flex justify-center">
+                            <Title className="flex h-full p-4 justify-center items-center text-center">
                                 {props.skills[props.index].skill_name}
                             </Title>
                         </Card.Section>

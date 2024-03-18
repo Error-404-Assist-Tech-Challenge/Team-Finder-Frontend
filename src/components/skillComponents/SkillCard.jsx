@@ -18,7 +18,7 @@ export const SkillCard = ({ skill, skillCategories, setSkills, visible, setVisib
 
     const [name, setName] = useState(`${skill.name}`);
     const [description, setDescription] = useState(`${skill.description}`);
-    const [category, setCategory] = useState('');
+    const [category, setCategory] = useState(`${skill.category_id}`);
 
     const handleEdit = () => {
         setIsEditing(true);
@@ -167,7 +167,7 @@ export const SkillCard = ({ skill, skillCategories, setSkills, visible, setVisib
                     {isEditing && (<Select
                         allowDeselect={false}
                         placeholder="Select a category"
-                        v
+                        data={skillCategories}
                         value={category}
                         onChange={setCategory}
                         searchable

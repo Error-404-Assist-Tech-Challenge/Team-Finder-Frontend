@@ -49,7 +49,6 @@ export default function OrganizationSkillsPage() {
     useEffect(() => {
         let isMounted = true;
         const controller = new AbortController();
-
         const getSkills = async () => {
             try {
                 const response = await axiosPrivate.get('organizations/skills', {
