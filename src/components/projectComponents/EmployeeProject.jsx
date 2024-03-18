@@ -126,7 +126,7 @@ export default function ProjectEmployeeCard({ name, roles, period, status, tech_
 
     return (
         <>
-            <Modal opened={opened} onClose={close} size="100%" transitionProps={{ transition: 'fade', duration: 200 }} className="dark:bg-card_modal text-white select-none" zIndex={350}>
+            <Modal opened={opened} onClose={close} size="100%" transitionProps={{ transition: 'fade', duration: 200 }} className="dark:bg-card_modal text-[white] select-none" zIndex={350}>
                 <Title className="flex justify-center mb-3">
                     {name}
                 </Title>
@@ -260,7 +260,7 @@ export default function ProjectEmployeeCard({ name, roles, period, status, tech_
                 </div>
             </Modal>
 
-            <Card className="flex w-[350px] h-[280px] dark:bg-card_modal mx-[40px] rounded-xl dark:text-darktext text-text select-none "
+            <Card className="flex w-[350px] h-[280px] dark:bg-card_modal mx-[40px] rounded-xl text-darktext select-none "
                 onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
                 <Card.Section className="dark:bg-[#495256]" onClick={open}>
                     <Title className="py-6 px-2 flex justify-center text-center text-[28px]">

@@ -115,7 +115,7 @@ export default function OrganizationSkillsPage() {
                     </div>
                 )}
                 {!visible && (<>
-                    <div className='bg-darkcanvas select-none h-auto min-h-screen w-full py-[30px] flex flex-wrap justify-center'>
+                    <div className='dark:bg-darkcanvas bg-canvas select-none h-auto min-h-screen w-full py-[30px] flex flex-wrap justify-center'>
                         <div className='w-full'>
                             <OrganizationSkillsComp skills={currentPosts} skillCategories={skillCategories} setSkills={setSkills} />
                         </div>

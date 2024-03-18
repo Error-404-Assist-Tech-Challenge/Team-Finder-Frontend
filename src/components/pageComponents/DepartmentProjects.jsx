@@ -30,7 +30,7 @@ export default function DepartmentProjectsComp({ projects, setProjects }) {
                         />
                     </div>
                     {filteredProjects.map((project, index) => (
-                        <Card className="flex w-[350px] h-[300px] dark:bg-card_modal mx-[40px] my-[40px] rounded-xl dark:text-darktext text-text select-none" key={index}>
+                        <Card className="flex w-[350px] h-[300px] dark:bg-card_modal mx-[40px] my-[40px] rounded-xl text-[white] select-none" key={index}>
                             <Card.Section className="dark:bg-[#495256]">
                                 <Title className="py-6 px-2 flex justify-center text-center text-[28px]">
                                     {project.project_name}

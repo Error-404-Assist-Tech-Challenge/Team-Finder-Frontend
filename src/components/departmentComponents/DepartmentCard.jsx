@@ -103,7 +103,7 @@ export default function DepartmentCard(props) {
         <>
             <div className={`${darkMode && 'dark'}`}>
                 <div className="flex flex-wrap">
-                    <Modal opened={opened} onClose={() => { setIsEditing(false); close(); }} centered overflow="inside" size={500} className="dark:bg-card_modal text-white select-none" zIndex={1000002}>
+                    <Modal opened={opened} onClose={() => { setIsEditing(false); close(); }} centered overflow="inside" size={500} className="dark:bg-card_modal text-[white] select-none" zIndex={1000002}>
                         <div className="flex justify-center">
                             {!isEditing && (<h1 className="text-4xl font-bold mb-[30px]">{props.name} Department</h1>)}
                             {isEditing && (
@@ -168,7 +168,7 @@ export default function DepartmentCard(props) {
                             </Button>
                         </div>
                     </Modal>
-                    <Card onClick={open} className="flex w-[240px] h-[184px] dark:bg-card_modal mx-[40px] my-[20px] rounded-xl dark:text-darktext text-text select-none font-bold"
+                    <Card onClick={open} className="flex w-[240px] h-[184px] dark:bg-card_modal mx-[40px] my-[20px] rounded-xl text-[white] select-none font-bold"
                         onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
                         <Card.Section className="dark:bg-[#495256]">
                             <Title className="p-4 flex justify-center  text-3xl">

@@ -219,7 +219,7 @@ export const SkillCard = ({ skill, skillCategories, setSkills, visible, setVisib
             </Modal>
 
             <Card variant="filled" onClick={open} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}
-                className="flex w-[240px] h-[184px] dark:bg-card_modal mx-[40px] my-[20px] rounded-xl dark:text-darktext text-text select-none font-bold">
+                className="flex w-[240px] h-[184px] dark:bg-card_modal mx-[40px] my-[20px] rounded-xl text-[white] select-none font-bold">
                 <Card.Section className="dark:bg-[#495256]">
                     <Title className="p-4 flex justify-center text-3xl">
                         {skill.name}
