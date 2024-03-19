@@ -69,11 +69,13 @@ export default function SkillEndorsementBadge({index, endorsement, setEndorsemen
                                 </Button>
                             </Badge>
                         </HoverCard.Target>
-                        <HoverCard.Dropdown>
-                            <Text size="sm">
-                                {endorsement.description}
-                            </Text>
-                        </HoverCard.Dropdown>
+                        {endorsement.type != 'Project' && (
+                            <HoverCard.Dropdown>
+                                <Text size="sm">
+                                    {endorsement.description}
+                                </Text>
+                            </HoverCard.Dropdown>
+                        )}
                     </HoverCard>
                 </div>
                 

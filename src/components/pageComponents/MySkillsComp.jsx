@@ -340,8 +340,6 @@ export default function MySkillsComp({ skills, setSkills, skillUpgrades, setSkil
                                         label="Endorsement"
                                         placeholder="Choose an edorsement"
                                         className=" py-[15px] w-[450px]" />
-                                    <p>{projectEndorsement}</p>
-
                                 </>
                             )}
                         </div>
