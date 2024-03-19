@@ -134,6 +134,11 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
             ...project,
             deadline_date: project.deadline_date === "None" ? null : project.deadline_date
         };
+        console.log(JSON.stringify({
+            context: contextChatgpt,
+            project_members: allMembers,
+            project: mappedProject
+        }))
         try {
             const response = await axiosPrivate.post('chat_gpt_feature',
                 JSON.stringify({
@@ -388,7 +393,7 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                                     <div>
                                         <div className="flex flex-wrap justify-center items-center py-9 h-[220px]">
                                             {proposedMembers.length != 0 &&
-                                                <ProposedMembersComp proposedMembers={currentPostsProposed} available_roles={project.available_roles} project_id={project.id} />
+                                                <ProposedMembersComp setNewMembers={setNewMembers} setProposedMembers={setProposedMembers} proposedMembers={currentPostsProposed} available_roles={project.available_roles} project_id={project.id} />
                                             }
                                             {proposedMembers.length == 0 &&
                                                 <p>No members have been proposed for this project...</p>

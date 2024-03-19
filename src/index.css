@@ -103,3 +103,19 @@
 .m-396ce5cb:where([data-selected]) {
     color: #FF3D2E;
 }
+
+.spacer {
+    aspect-ratio: 960/300;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.layer1 {
+    background-image: url('./media/layered-waves1.svg')
+}
+
+.layer2 {
+    background-image: url('./media/layered-waves2.svg')
+}
