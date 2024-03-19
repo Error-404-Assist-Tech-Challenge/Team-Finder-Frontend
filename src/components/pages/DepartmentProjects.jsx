@@ -4,12 +4,19 @@
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { useState, useEffect } from 'react';
 import DepartmentProjectsComp from '../pageComponents/DepartmentProjects';
+import { Loader } from '@mantine/core';
+import React, { useContext } from 'react'
+import { Context } from '../../App';
 
 export default function DepartmentProjects() {
+
     const axiosPrivate = useAxiosPrivate();
     const [projects, setProjects] = useState([])
+    const [visible, setVisible] = useState(true)
+    const [darkMode, setDarkMode] = useContext(Context);
 
     useEffect(() => {
+        setVisible(true);
         let isMounted = true;
         const controller = new AbortController();
 
@@ -27,7 +34,7 @@ export default function DepartmentProjects() {
         }
 
         getDepartmentProjects();
-
+        setVisible(false);
         return () => {
             isMounted = false;
             controller.abort();
@@ -35,8 +42,18 @@ export default function DepartmentProjects() {
     }, [])
 
     return (
-        <>
-            <DepartmentProjectsComp projects={projects} setProjects={setProjects} />
-        </>
+        
+        <div className={`${darkMode && 'dark'}`}>
+            <div className='dark:bg-darkcanvas bg-canvas h-auto min-h-screen select-none'>
+                {visible && (
+                            <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                                <Loader size={30} color="red" />
+                            </div>
+                        )}
+
+                    {!visible &&
+                        <DepartmentProjectsComp projects={projects} setProjects={setProjects} />}
+            </div>
+        </div>
     )
 }
