@@ -5,12 +5,21 @@ import { useState, useContext, useEffect } from 'react';
 import { Context } from '../../App';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
-export default function SkillEndorsementBadge({index, endorsement, setEndorsement, editEndorsement, setEditEndorsement, indexToDelete, setIndexToDelete, setIndexToEdit, handleDeleteEndorsement, indexToEdit}) {
+export default function SkillEndorsementBadge({index, endorsement, setEndorsement, editEndorsement, setEditEndorsement, indexToDelete, setIndexToDelete, setIndexToEdit, handleDeleteEndorsement, indexToEdit,
+                                                training, setTraining, trainingDescription, setTrainingDescription, setCourse, setCourseDescription}) {
 
     const [darkMode, setDarkMode] = useContext(Context);
     const axiosPrivate = useAxiosPrivate();
 
     const handleEditEndorsment = async () => {
+        {endorsement.type === 'Training' && (
+            setTraining(endorsement.endorsement),
+            setTrainingDescription(endorsement.description)
+        )}
+        {endorsement.type === 'Course' && (
+            setCourse(endorsement.endorsement),
+            setCourseDescription(endorsement.description)
+        )}
         setEditEndorsement(true)
         setIndexToEdit(index)
         setEndorsement(endorsement.type)
