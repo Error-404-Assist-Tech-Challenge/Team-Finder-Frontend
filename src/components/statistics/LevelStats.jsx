@@ -1,4 +1,4 @@
-import { PieChart, Pie } from 'recharts';
+import { PieChart, Pie, Tooltip } from 'recharts';
 
 
 export default function LevelStatsComp({index, stats})
@@ -24,18 +24,18 @@ export default function LevelStatsComp({index, stats})
             cnt = cnt + stats[i].levels[5];      
     }
     const data01 = [
-        { name: 'Level 1', value: levelList[1]},
-        { name: 'Level 2', value: levelList[2] },
-        { name: 'Level 3', value: levelList[3] },
-        { name: 'Level 4', value: levelList[4] },
-        { name: 'Level 5', value: levelList[5] },
+        { name: 'Employees at Level 1', value: levelList[1]},
+        { name: 'Employees at Level 2', value: levelList[2] },
+        { name: 'Employees at Level 3', value: levelList[3] },
+        { name: 'Employees at Level 4', value: levelList[4] },
+        { name: 'Employees at Level 5', value: levelList[5] },
     ];
     const data02 = [
-        { name: 'Group A',  value: levelList[1] },
-        { name: 'Group B',  value: levelList[2] },
-        { name: 'Group C',  value: levelList[3] },
-        { name: 'Group D',  value: levelList[4] },
-        { name: 'Group E',  value: levelList[5] },
+        { name: 'Employees at Level 1',  value: levelList[1] },
+        { name: 'Employees at Level 2',  value: levelList[2] },
+        { name: 'Employees at Level 3',  value: levelList[3] },
+        { name: 'Employees at Level 4',  value: levelList[4] },
+        { name: 'Employees at Level 5',  value: levelList[5] },
     ];
     return(
         <div className='mt-4 flex flex-col items-center'>
@@ -65,6 +65,7 @@ export default function LevelStatsComp({index, stats})
     <PieChart width={500} height={500}>
         <Pie data={data01} dataKey="value" cx="50%" cy="50%" outerRadius={130} fill="#E74C3C" />
         <Pie data={data02} dataKey="value" cx="50%" cy="50%" innerRadius={160} outerRadius={200} fill="#922B21" label />
+        <Tooltip />
     </PieChart>
 </div>
     )
