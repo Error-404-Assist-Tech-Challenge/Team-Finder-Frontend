@@ -3,12 +3,10 @@
 import { useEffect, useState } from 'react';
 import { PillsInput, Pill, Combobox, CheckIcon, Group, useCombobox, Button } from '@mantine/core';
 
-export default function ExistingRoleSelect({ roles, teamRoles, setTeamRoles, projectRoles, setProjectRoles }) {
+export default function ExistingRoleSelect({ value, setValue, roles, teamRoles, setTeamRoles, projectRoles, setProjectRoles }) {
 
     const [search, setSearch] = useState('');
-    const [value, setValue] = useState([]);
-    // console.log(value)
-    // console.log('projectRoles', projectRoles)
+
 
     const updateUserRoles = () => {
         const updatedProjectRoles = value.map(item => ({
@@ -22,6 +20,23 @@ export default function ExistingRoleSelect({ roles, teamRoles, setTeamRoles, pro
     useEffect(() => {
         updateUserRoles();
     }, [value, teamRoles])
+
+    const combobox = useCombobox({
+        onDropdownClose: () => combobox.resetSelectedOption(),
+        onDropdownOpen: () => combobox.updateSelectedOptionIndex('active'),
+    });
+
+    useEffect(() => {
+        const mappedProjectRoles = projectRoles.map(role => role.role_id); // only difference
+        teamRoles.map(teamRole => {
+            const correspondingRole = projectRoles.find(role => role.role_id === teamRole.role_id);
+            if (correspondingRole) {
+                teamRole.count = correspondingRole.count;
+            }
+            return teamRole;
+        });
+        setValue(mappedProjectRoles);
+    }, [])
 
     const addCount = (role_id) => {
         setTeamRoles(prevRoles => (
@@ -45,22 +60,7 @@ export default function ExistingRoleSelect({ roles, teamRoles, setTeamRoles, pro
         }
     }
 
-    const combobox = useCombobox({
-        onDropdownClose: () => combobox.resetSelectedOption(),
-        onDropdownOpen: () => combobox.updateSelectedOptionIndex('active'),
-    });
 
-    useEffect(() => {
-        const mappedProjectRoles = projectRoles.map(role => role.role_id); // only difference
-        teamRoles.map(teamRole => {
-            const correspondingRole = projectRoles.find(role => role.role_id === teamRole.role_id);
-            if (correspondingRole) {
-                teamRole.count = correspondingRole.count;
-            }
-            return teamRole;
-        });
-        setValue(mappedProjectRoles);
-    }, [])
 
     const handleValueSelect = (val) => {
         setValue((current) =>

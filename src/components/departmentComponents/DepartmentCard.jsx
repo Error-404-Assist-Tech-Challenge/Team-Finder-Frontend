@@ -163,9 +163,14 @@ export default function DepartmentCard(props) {
                                 className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] rounded  float-left" onClick={handleSave}>
                                 Save
                             </Button>)}
-                            <Button className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] rounded float-right" onClick={deleteDepartment}>
-                                Remove department
-                            </Button>
+                            {props.manager.length == 0
+                                ? <Button className="bg-accent text-white hover:bg-btn_hover font-bold my-[20px] rounded float-right" onClick={deleteDepartment}>
+                                    Remove department
+                                </Button>
+                                : <Button className="bg-[gray] text-white hover:bg-[gray] font-bold my-[20px] rounded float-right" disabled>
+                                    Remove department
+                                </Button>
+                            }
                         </div>
                     </Modal>
                     <Card onClick={open} className="flex w-[240px] h-[184px] dark:bg-card_modal mx-[40px] my-[20px] rounded-xl text-[white] select-none font-bold"

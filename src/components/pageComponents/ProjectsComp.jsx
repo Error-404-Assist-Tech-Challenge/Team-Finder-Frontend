@@ -19,10 +19,11 @@ export default function ProjectsComp({ projects, setProjects }) {
     const pinned = useHeadroom({ fixedAt: 20 });
     const [opened, { open, close }] = useDisclosure(false);
     const [skills, setSkills] = useState([])
-    const [chosenSkills, setChosenSkills] = useState([]);
+    const [chosenSkills, setChosenSkills] = useState([]); // FOR SKILL SELECT
+    const [value, setValue] = useState([]); // FOR SKILL SELECT
     const [roles, setRoles] = useState([])
-    const [teamRoles, setTeamRoles] = useState([]) // FOR SELECT
-    const [projectRoles, setProjectRoles] = useState([]) // FOR SELECT
+    const [teamRoles, setTeamRoles] = useState([]) // FOR ROLE SELECT
+    const [projectRoles, setProjectRoles] = useState([]) // FOR ROLE SELECT
 
     useEffect(() => {
     }, [darkMode]);
@@ -79,12 +80,11 @@ export default function ProjectsComp({ projects, setProjects }) {
                 // console.log('Roles:', response.data);
                 if (isMounted) {
                     setRoles(response.data);
-
-                    const newRoles = response.data.map(role => ({
+                    const mappedRoles = response.data.map(role => ({
                         role_id: role.value,
                         count: 1
                     }));
-                    setTeamRoles(newRoles);
+                    setTeamRoles(mappedRoles);
                 }
             } catch (error) {
                 console.error('Error fetching roles:', error);
@@ -141,13 +141,23 @@ export default function ProjectsComp({ projects, setProjects }) {
             setProjectStatus([null]);
             setProjectDescription('');
             setProjectTech([]);
+
+            const mappedRoles = roles.map(role => ({
+                role_id: role.value,
+                count: 1
+            }));
+            setTeamRoles(mappedRoles);
             setProjectRoles([]);
+            setValue([])
+
             const mappedSkills = skills.map(skill => ({
                 id: skill.id,
                 name: skill.name,
                 minimum_level: 1,
             }));
             setSkills(mappedSkills);
+            setChosenSkills([]);
+
         } catch (error) {
             console.error('Error fetching unused skills:', error);
         }
@@ -163,7 +173,7 @@ export default function ProjectsComp({ projects, setProjects }) {
     const [projectTech, setProjectTech] = useState([])
     const [periodFilter, setPeriodFilter] = useState(null)
     const [statusFilter, setStatusFilter] = useState(null)
-    
+
     const filteredProjects = projects.filter(project => {
         const isPeriodFiltered = periodFilter == null || periodFilter == project.period;
         const isStatusFiltered = statusFilter == null || statusFilter == project.status;
@@ -249,6 +259,8 @@ export default function ProjectsComp({ projects, setProjects }) {
                         setTeamRoles={setTeamRoles}
                         projectRoles={projectRoles}
                         setProjectRoles={setProjectRoles}
+                        value={value}
+                        setValue={setValue}
                     />
                     <SkillSelect
                         skills={skills}
@@ -286,7 +298,7 @@ export default function ProjectsComp({ projects, setProjects }) {
                         />
                     </div>
                     {filteredProjects.map((project, index) => (
-                        <ProjectCard key={index} project={project} setProjects={setProjects} roles={roles} teamRoles={teamRoles} setTeamRoles={setTeamRoles} skills={skills} />
+                        <ProjectCard key={index} project={project} setProjects={setProjects} roles={roles} teamRoles={teamRoles} setTeamRoles={setTeamRoles} skills={skills} setSkills={setSkills} />
                     ))}
                     <div className="w-[350px] h-[280px] mx-[40px] my-[40px] flex justify-center items-center">
                         <Button variant="outline" onClick={open}

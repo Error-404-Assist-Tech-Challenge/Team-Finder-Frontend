@@ -229,7 +229,7 @@ export default function GenericHeader() {
                                     <Text size="s" className="text-center pt-1 " style={{ color: darkMode ? 'white' : 'black' }}>{auth.hq_address}</Text>
                                 </div>
                                 <div className="flex justify-between items-center">
-                                    <Switch className="pt-2" size="lg" color="dark.4" onLabel={sunIcon} offLabel={moonIcon} onClick={toogleDarkMode} />
+                                    <Switch className="pt-2" size="lg" onLabel={sunIcon} offLabel={moonIcon} onClick={toogleDarkMode} />
                                     <Button className="bg-[#FF3D2E] mt-2  hover:bg-btn_hover font-bold text-white" onClick={handleLogout}>Log out</Button>
                                 </div>
                             </Popover.Dropdown>

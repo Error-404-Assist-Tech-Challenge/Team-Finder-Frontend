@@ -7,7 +7,7 @@ const Welcome = () => {
 
     return (
         <>
-            <div className=" z-0 absolute inset-0">
+            <div className="h-screen z-0 absolute inset-0">
                 <div className="spacer layer1"></div>
                 <div className="spacer layer2"></div>
             </div>

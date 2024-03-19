@@ -8,7 +8,7 @@ import { useState } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { SkillSelect } from './SkillSelect';
 
-export default function ProjectEdit({ project, setProjects, roles, teamRoles, setTeamRoles, closeEdit, skills }) {
+export default function ProjectEdit({ project, setProjects, roles, teamRoles, setTeamRoles, closeEdit, setSkills, skills }) {
     const [projectName, setProjectName] = useState(project.name)
     const [projectPeriod, setProjectPeriod] = useState(project.period)
     const startDate = new Date(project.start_date);
@@ -31,6 +31,8 @@ export default function ProjectEdit({ project, setProjects, roles, teamRoles, se
         minimum_level: skill.minimum_level
     }));
     const [chosenSkills, setChosenSkills] = useState(mappedRequiredSkills);
+    const [value, setValue] = useState([]); // FOR SKILL SELECT
+
 
     const axiosPrivate = useAxiosPrivate();
 
@@ -88,6 +90,22 @@ export default function ProjectEdit({ project, setProjects, roles, teamRoles, se
             setProjectStatus([null]);
             setProjectDescription('');
             setProjectTech([]);
+
+            const mappedRoles = roles.map(role => ({
+                role_id: role.value,
+                count: 1
+            }));
+            setTeamRoles(mappedRoles);
+            setProjectRoles([]);
+            setValue([])
+
+            const mappedSkills = skills.map(skill => ({
+                id: skill.id,
+                name: skill.name,
+                minimum_level: 1,
+            }));
+            setSkills(mappedSkills);
+            setChosenSkills([]);
         } catch (error) {
             console.error('Error fetching unused skills:', error);
         }
@@ -170,7 +188,10 @@ export default function ProjectEdit({ project, setProjects, roles, teamRoles, se
                 teamRoles={teamRoles}
                 setTeamRoles={setTeamRoles}
                 projectRoles={projectRoles}
-                setProjectRoles={setProjectRoles} />
+                setProjectRoles={setProjectRoles}
+                value={value}
+                setValue={setValue}
+            />
             <SkillSelect
                 skills={skills}
                 value={chosenSkills}
