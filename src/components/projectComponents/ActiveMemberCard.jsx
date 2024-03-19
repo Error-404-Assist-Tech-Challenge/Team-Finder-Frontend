@@ -7,8 +7,6 @@ import { useDisclosure } from '@mantine/hooks';
 import React, { useState } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
-
-
 export default function ActiveMemberCard({ project_id, employee, setActiveMembers }) {
 
     const axiosPrivate = useAxiosPrivate();
