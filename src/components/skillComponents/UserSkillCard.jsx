@@ -56,8 +56,7 @@ export default function UserSkillCard(props) {
         try {
             let updatedEndorsementsList = props.endorsementsList.concat(tempEndoLsit);
 
-            if (updatedEndorsementsList[0].endorsement == '' && updatedEndorsementsList[0].proj_id == '')
-            {
+            if (updatedEndorsementsList[0].endorsement == '' && updatedEndorsementsList[0].proj_id == '') {
 
                 const response = await axiosPrivate.put('skills/user',
                     JSON.stringify({
@@ -75,16 +74,10 @@ export default function UserSkillCard(props) {
                         withCredentials: true
                     });
 
-                console.log('Response:', response.data);
+                // console.log('Response:', response.data);
                 props.setSkills(response.data);
-             }
-             else{
-                console.log("AICI INTRA:",{
-                    skill_id: props.skills[props.index].skill_id,
-                    level: currentLevel,
-                    experience: currentExperience,
-                    endorsements: updatedEndorsementsList,
-                });
+            }
+            else {
                 const response = await axiosPrivate.put('skills/user',
                     JSON.stringify({
                         skill_id: props.skills[props.index].skill_id,
@@ -101,9 +94,9 @@ export default function UserSkillCard(props) {
                         withCredentials: true
                     });
 
-                console.log('Response:', response.data);
+                // console.log('Response:', response.data);
                 props.setSkills(response.data);
-             }
+            }
 
         } catch (error) {
             console.error('Error saving my skill:', error);
@@ -134,11 +127,8 @@ export default function UserSkillCard(props) {
                     withCredentials: true
                 });
 
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
             props.setSkills(response.data);
-
-
-
         } catch (error) {
             console.error('Error saving my skill:', error);
         }
@@ -152,12 +142,6 @@ export default function UserSkillCard(props) {
         try {
             let updatedEndorsementsList = props.endorsementsList;
             updatedEndorsementsList.splice(indexToDelete, 1);
-            console.log({
-                skill_id: props.skills[props.index].skill_id,
-                level: currentLevel,
-                experience: currentExperience,
-                endorsements: updatedEndorsementsList,
-            });
             const response = await axiosPrivate.put('skills/user',
                 JSON.stringify({
                     skill_id: props.skills[props.index].skill_id,
@@ -175,7 +159,7 @@ export default function UserSkillCard(props) {
                     withCredentials: true
                 });
 
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
 
             props.setSkills(response.data);
         } catch (error) {
@@ -203,7 +187,7 @@ export default function UserSkillCard(props) {
                 },
                 withCredentials: true
             });
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
 
             props.setSkills(response.data);
 
@@ -228,12 +212,10 @@ export default function UserSkillCard(props) {
             ),
             labels: { confirm: 'Delete skill', cancel: "No don't delete it" },
             confirmProps: { color: 'red' },
-            onCancel: () => console.log('Cancel'),
-            onConfirm: () => console.log(handleRemoveSkill()),
+            // onCancel: () => console.log('Cancel'),
+            onConfirm: () => handleRemoveSkill(),
             zIndex: 10000002,
         });
-
-
 
     const handleCancel = async () => {
         setEditEndorsement(false)
@@ -257,8 +239,6 @@ export default function UserSkillCard(props) {
                     proj_id: props.projectEndorsement
                 }
             ]);
-            console.log("Proj id:",props.projectEndorsement );
-            console.log("Post object:", props.endorsementsList);
         } else {
             setTempEndoList([
                 {
@@ -353,7 +333,7 @@ export default function UserSkillCard(props) {
                             <Divider size="sm" orientation="vertical" className='mx-4' />
                             <div className="flex flex-col items-centre">
                                 <div className="flex flex-col justify-center items-center">
-                                    <Title className="pb-[30px] ml-[25px]">Skill Endorsements</Title>
+                                    <Title className="pb-[30px] ml-[50px]">Skill Endorsements</Title>
                                 </div>
                                 {editEndorsement && (
                                     <>
@@ -396,7 +376,7 @@ export default function UserSkillCard(props) {
                                                 />
                                             </>
                                         )}
-                                         {endorsement === 'Project' && (
+                                        {endorsement === 'Project' && (
                                             <>
                                                 <Select data={props.list}
                                                     value={props.projectEndorsement}
@@ -405,6 +385,7 @@ export default function UserSkillCard(props) {
                                                     label="Endorsement"
                                                     placeholder="Choose an edorsement"
                                                     className=" py-[15px] w-[450px]" />
+                                                <p>{props.projectEndorsement}</p>
                                             </>
                                         )}
                                         <div className="p-[10px] fixed bottom-0 right-0">
@@ -493,6 +474,7 @@ export default function UserSkillCard(props) {
                                                     label="Endorsement"
                                                     placeholder="Choose an edorsement"
                                                     className=" py-[15px] w-[450px]" />
+                                                <p>{props.projectEndorsement}</p>
                                             </>
                                         )}
                                          <div className="p-[10px] fixed bottom-0 right-0">
@@ -511,10 +493,10 @@ export default function UserSkillCard(props) {
                         </div>
                     </Modal>
 
-                    <Card className="flex w-[330px] h-[230px] dark:bg-card_modal mx-[40px] my-[20px] rounded-xl dark:text-darktext text-text select-none font-bold"
+                    <Card className="flex w-[330px] h-[230px] dark:bg-card_modal mx-[40px] my-[20px] rounded-xl text-darktext select-none font-bold"
                         onClick={handleOpen} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
                         <Card.Section className="dark:bg-[#495256]">
-                            <Title className="p-4 flex justify-center">
+                            <Title className="flex h-full p-4 justify-center items-center text-center">
                                 {props.skills[props.index].skill_name}
                             </Title>
                         </Card.Section>

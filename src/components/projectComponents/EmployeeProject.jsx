@@ -44,7 +44,7 @@ export default function ProjectEmployeeCard({ name, roles, period, status, tech_
                         withCredentials: true
                     }
                 );
-                console.log('Project Employees:', response.data);
+                // console.log('Project Employees:', response.data);
                 isMounted && setActiveMembers(response.data.active);
                 isMounted && setPastMembers(response.data.past);
                 setVisible(true);
@@ -76,7 +76,7 @@ export default function ProjectEmployeeCard({ name, roles, period, status, tech_
                     },
                     withCredentials: true
                 });
-                console.log('Eligible Skills:', response.data);
+                // console.log('Eligible Skills:', response.data);
                 if (isMounted) {
                     const mappedSkills = response.data.map(skill => ({
                         id: skill.id,
@@ -84,7 +84,7 @@ export default function ProjectEmployeeCard({ name, roles, period, status, tech_
                         minimum_level: 1,
                     }));
                     setSkills(mappedSkills);
-                    console.log(mappedSkills);
+                    // console.log(mappedSkills);
                 }
             } catch (error) {
                 console.error('Error fetching eligible skills:', error);
@@ -116,23 +116,22 @@ export default function ProjectEmployeeCard({ name, roles, period, status, tech_
                     },
                     withCredentials: true
                 });
-            console.log('Skill requirement update response:', response.data);
+            // console.log('Skill requirement update response:', response.data);
         } catch (error) {
             console.error('Error updating skill requirements:', error);
         }
         setIsAdding(false)
         close()
-        
     }
 
     return (
         <>
-            <Modal opened={opened} onClose={close} size={560} transitionProps={{ transition: 'fade', duration: 200 }} className="dark:bg-card_modal text-white select-none" zIndex={350}>
-                <div className="flex flex-col">
-                    <Title className="flex justify-center">
-                        {name}
-                    </Title>
-                    <div className='mt-3 w-full'>
+            <Modal opened={opened} onClose={close} size="100%" transitionProps={{ transition: 'fade', duration: 200 }} className="dark:bg-card_modal text-[white] select-none" zIndex={350}>
+                <Title className="flex justify-center mb-3">
+                    {name}
+                </Title>
+                <div className="flex">
+                    <div className='w-3/5'>
                         <div className="text-[20px] px-9 py-2">
                             <p className="py-1"><span className="font-bold">Period</span>: {period}</p>
                             <p className="py-1"><span className="font-bold">Start Date</span>: {start.substring(0, 10)}</p>
@@ -196,6 +195,11 @@ export default function ProjectEmployeeCard({ name, roles, period, status, tech_
                                 </div>
                             )}
                         </div>
+                    </div>
+
+                    <Divider size="sm" orientation="vertical" className="mr-5" />
+
+                    <div className='w-2/5'>
                         <Tabs defaultValue="ActiveMembers" color="#FF3D2E">
                             <Tabs.List grow>
                                 <Tabs.Tab value="ActiveMembers" className="text-xl w-[120px]">
@@ -256,7 +260,7 @@ export default function ProjectEmployeeCard({ name, roles, period, status, tech_
                 </div>
             </Modal>
 
-            <Card className="flex w-[350px] h-[280px] dark:bg-card_modal mx-[40px] rounded-xl dark:text-darktext text-text select-none "
+            <Card className="flex w-[350px] h-[280px] dark:bg-card_modal mx-[40px] rounded-xl text-darktext select-none "
                 onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
                 <Card.Section className="dark:bg-[#495256]" onClick={open}>
                     <Title className="py-6 px-2 flex justify-center text-center text-[28px]">

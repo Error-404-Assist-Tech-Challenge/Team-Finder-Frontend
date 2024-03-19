@@ -47,7 +47,7 @@ export default function ProposedMemberCard({ setNewMembers, setProposedMembers, 
                     },
                     withCredentials: true
                 });
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
             setNewMembers(response.data.new);
             setProposedMembers(response.data.proposed);
         } catch (error) {
@@ -72,7 +72,7 @@ export default function ProposedMemberCard({ setNewMembers, setProposedMembers, 
                 withCredentials: true
             });
 
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
 
             setNewMembers(response.data.new);
             setProposedMembers(response.data.proposed);
@@ -93,7 +93,7 @@ export default function ProposedMemberCard({ setNewMembers, setProposedMembers, 
                 },
                 withCredentials: true
             });
-            console.log('Available Role', response.data)
+            // console.log('Available Role', response.data)
             setAvailableRoles(response.data)
         } catch (error) {
             console.error('Error fetching available roles:', error);

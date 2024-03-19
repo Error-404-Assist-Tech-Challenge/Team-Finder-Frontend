@@ -42,14 +42,13 @@ export const SkillCategoryCard = ({ name, id, is_used, setSkillCategories, visib
                     withCredentials: true
                 });
 
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
 
             setSkillCategories(response.data);
 
         } catch (error) {
             console.error('Error updating department:', error);
         }
-        window.location.reload();
     }
 
     const deleteCategory = async () => {
@@ -67,14 +66,11 @@ export const SkillCategoryCard = ({ name, id, is_used, setSkillCategories, visib
                 withCredentials: true
             });
 
-            console.log('Response:', response.data);
-
+            // console.log('Response:', response.data);
             setSkillCategories(response.data);
-
         } catch (error) {
             console.error('Error deleting user skills:', error);
         }
-        window.location.reload();
     }
 
     return (

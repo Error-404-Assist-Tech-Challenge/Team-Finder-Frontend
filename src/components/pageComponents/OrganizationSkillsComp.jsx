@@ -47,7 +47,7 @@ export default function OrganizationSkillsComp({ skills, skillCategories, setSki
                     withCredentials: true
                 });
 
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
 
             setSkills(response.data);
 
@@ -167,7 +167,7 @@ export default function OrganizationSkillsComp({ skills, skillCategories, setSki
                             {filteredSkills.map((skill, index) => (
                                 <SkillCard key={index} skill={skill} skillCategories={skillCategories} setSkills={setSkills} visible={visible} setVisible={setVisible} />
                             ))}
-                            <div className='dark:bg-darkcanvas bg-darkcanvas'>
+                            <div className='dark:bg-darkcanvas bg-canvas'>
                                 {auth?.roles.includes("dept_manager") && (
                                     <div className="w-[320px] h-[224px] flex justify-center items-center">
                                         <Button variant="outline" onClick={open}

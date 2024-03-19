@@ -33,7 +33,7 @@ export default function OrganizationDepartmentsComp({ departmentManagers, setDep
                     withCredentials: true
                 });
 
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
 
             setDepartments(response.data);
 
@@ -46,8 +46,8 @@ export default function OrganizationDepartmentsComp({ departmentManagers, setDep
 
     return (
         <>
-            <div className="flex flex-wrap justify-centerbg-darkcanvas">
-                <div className='bg-darkcanvas select-none py-[30px] flex flex-wrap justify-center'>
+            <div className="flex flex-wrap justify-center dark:bg-darkcanvas bg-canvas">
+                <div className='dark:bg-darkcanvas bg-canvas select-none py-[30px] flex flex-wrap justify-center'>
                     {departments.map((department, index) => (
                         <DepartmentCard key={index}
                             id={department.id} manager={department.manager_name} manager_id={department.manager_id} name={department.name} members={department.department_members}

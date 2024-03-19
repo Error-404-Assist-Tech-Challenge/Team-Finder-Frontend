@@ -35,7 +35,7 @@ export default function OrganizationDepartmentsPage() {
                     signal: controller.signal,
                     withCredentials: true
                 });
-                console.log('Departments:', response.data);
+                // console.log('Departments:', response.data);
                 isMounted && setDepartments(response.data);
                 setVisible(false);
 
@@ -65,7 +65,7 @@ export default function OrganizationDepartmentsPage() {
                     signal: controller.signal,
                     withCredentials: true
                 });
-                console.log('Department Managers:', response.data);
+                // console.log('Department Managers:', response.data);
                 if (isMounted) {
                     setDepartmentManagers(response.data);
                 }
@@ -99,16 +99,16 @@ export default function OrganizationDepartmentsPage() {
                         </div>
                     )}
                     {!visible && (
-                        <div className="flex flex-wrap justify-centerbg-darkcanvas">
-                            <div className='bg-darkcanvas select-none h-auto py-[30px] flex flex-wrap'>
+                        <div className="flex flex-wrap justify-centers dark:bg-darkcanvas bg-canvas">
+                            <div className='dark:bg-darkcanvas bg-canvas select-none h-auto py-[30px] flex flex-wrap'>
                                 <OrganizationDepartmentsComp departmentManagers={departmentManagers} setDepartmentManagers={setDepartmentManagers}
-                                    departments={departments} setDepartments={setDepartments} visible={visible} setVisible={setVisible}/>
+                                    departments={departments} setDepartments={setDepartments} visible={visible} setVisible={setVisible} />
                             </div>
                         </div>
                     )}
                 </div>
                 <div className='dark:bg-darkcanvas bg-canvas flex justify-center items-center'>
-                    <PaginationComp totalPosts={departments.length} postsPerPage={postPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage} drawer={false}/>
+                    <PaginationComp totalPosts={departments.length} postsPerPage={postPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage} drawer={false} />
                 </div>
             </div>
         </>

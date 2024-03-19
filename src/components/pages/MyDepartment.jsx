@@ -35,7 +35,7 @@ export default function MyDepartmentPage() {
     const [openedStatsDrawer, { open: openStatsDrawer, close: closeStatsDrawer }] = useDisclosure(false);
 
     const [currentPage, setCurrentPage] = useState(1);
-    const [postPerPage, setPostPerPage] = useState(14);
+    const [postPerPage, setPostPerPage] = useState(11);
     const lastPostIndex = currentPage * postPerPage;
     const firstPostIndex = lastPostIndex - postPerPage;
     const currentPosts = members.slice(firstPostIndex, lastPostIndex);
@@ -53,7 +53,7 @@ export default function MyDepartmentPage() {
                     signal: controller.signal,
                     withCredentials: true
                 });
-                console.log('Department name:', response.data);
+                // console.log('Department name:', response.data);
 
                 if (isMounted) {
                     setDepartmentName(response.data.name);
@@ -82,7 +82,7 @@ export default function MyDepartmentPage() {
                     withCredentials: true
                 });
 
-                console.log('Stats:', response.data);
+                // console.log('Stats:', response.data);
                 setStats(response.data);
 
             } catch (error) {
@@ -112,7 +112,7 @@ export default function MyDepartmentPage() {
                 withCredentials: true
             });
 
-            console.log('Propasals:', response.data);
+            // console.log('Propasals:', response.data);
 
             setProposals(response.data)
 
@@ -135,7 +135,7 @@ export default function MyDepartmentPage() {
                 },
                 withCredentials: true
             });
-            console.log('Department members:', response.data);
+            // console.log('Department members:', response.data);
             setMembers(response.data)
             setVisible(false);
         } catch (error) {

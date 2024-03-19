@@ -32,7 +32,7 @@ export default function OrganizationEmployeesComp({ isAdminOnly, users, setUsers
 
                 navigator.clipboard.writeText(urlWithId)
                     .then(() => {
-                        console.log('URL with ID copied to clipboard:', urlWithId);
+                        // console.log('URL with ID copied to clipboard:', urlWithId);
                     })
                     .catch(err => {
                         console.error('Could not copy URL with ID: ', err);

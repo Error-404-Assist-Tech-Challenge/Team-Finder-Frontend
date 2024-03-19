@@ -93,7 +93,7 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                     withCredentials: true
                 }
             );
-            console.log('Project Employees:', response.data);
+            // console.log('Project Employees:', response.data);
             setAllMembers(response.data)
             setActiveMembers(response.data.active);
             setNewMembers(response.data.new);
@@ -119,7 +119,7 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                 },
                 withCredentials: true
             });
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
             setProjects(response.data);
         } catch (error) {
             console.error('Error deleting project:', error);
@@ -172,7 +172,7 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
             ),
             labels: { confirm: 'Delete project', cancel: "No don't delete it" },
             confirmProps: { color: 'red' },
-            onCancel: () => console.log('Cancel'),
+            // onCancel: () => console.log('Cancel'),
             onConfirm: () => deleteProject(),
         });
 
@@ -405,7 +405,7 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
                 <ProjectEdit project={project} setProjects={setProjects} roles={roles} teamRoles={teamRoles} setTeamRoles={setTeamRoles} closeEdit={closeEdit} skills={skills} />
             </Modal>
 
-            <Card className="flex w-[350px] h-[300px] dark:bg-card_modal mx-[40px] my-[40px] rounded-xl dark:text-darktext text-text select-none"
+            <Card className="flex w-[350px] h-[300px] dark:bg-card_modal mx-[40px] my-[40px] rounded-xl text-[white] select-none"
                 onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
                 <Card.Section className="dark:bg-[#495256]" onClick={handleOpenProject}>
                     <Title className="py-6 px-2 flex justify-center text-center text-[28px]">

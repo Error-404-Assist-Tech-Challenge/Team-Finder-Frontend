@@ -32,7 +32,7 @@ export default function DepartmentEmployee(props) {
                 withCredentials: true
             });
 
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
 
             props.setMembers(response.data)
 
@@ -64,26 +64,26 @@ export default function DepartmentEmployee(props) {
                 ))}
                 <div className="pt-4 flex flex-col justify-start">
                     <p className="p-4 text-xl font-bold">{props.name}'s Endorsements:</p>
-                    <div className="flex flex-wrap"> 
-                        {props.endorsements.length != 0 &&(
+                    <div className="flex flex-wrap">
+                        {props.endorsements.length != 0 && (
                             <>
                                 {props.endorsements.map((endorsement, index) => (
-                                    <HoverCard width={280} shadow="md" zIndex={100000000}>
-                                            <HoverCard.Target>
-                                                <Badge className="m-2" color="gray" size="xl" variant="filled">
-                                                    {endorsement.type} : {endorsement.endorsement}
-                                                </Badge>
-                                            </HoverCard.Target>
-                                            <HoverCard.Dropdown>
+                                    <HoverCard key={index} width={280} shadow="md" zIndex={100000000}>
+                                        <HoverCard.Target>
+                                            <Badge className="m-2" color="gray" size="xl" variant="filled">
+                                                {endorsement.type} : {endorsement.endorsement}
+                                            </Badge>
+                                        </HoverCard.Target>
+                                        <HoverCard.Dropdown>
                                             <Text size="sm">
                                                 {endorsement.description}
                                             </Text>
-                                            </HoverCard.Dropdown>
-                                        </HoverCard>
-                                    ))}
+                                        </HoverCard.Dropdown>
+                                    </HoverCard>
+                                ))}
                             </>
                         )}
-                         {props.endorsements.length == 0 &&(
+                        {props.endorsements.length == 0 && (
                             <Badge className="m-2" color="gray" size="xl" variant="filled">No endorsements</Badge>)}
                     </div>
                 </div>

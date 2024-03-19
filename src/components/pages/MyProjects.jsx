@@ -31,7 +31,7 @@ export default function MyProjects() {
                     signal: controller.signal,
                     withCredentials: true
                 });
-                console.log('Users projects:', response.data);
+                // console.log('Users projects:', response.data);
                 isMounted && setUserProjects(response.data)
                 setVisible(false)
             } catch (error) {
@@ -59,13 +59,13 @@ export default function MyProjects() {
                 {!visible && (
                     <div className={`${darkMode && 'dark'}`}>
                         <div className='dark:bg-darkcanvas bg-canvas h-auto min-h-screen select-none'>
-                            <div className='text-white'>
+                            <div className='dark:text-darktext text-text'>
                                 <Tabs defaultValue="CurrentProjects" color="#FF3D2E" className="py-3">
                                     <Tabs.List grow>
-                                        <Tabs.Tab value="CurrentProjects" className="  text-xl px-[40px]" >
+                                        <Tabs.Tab value="CurrentProjects" className="text-xl px-[40px]" >
                                             Project projects
                                         </Tabs.Tab>
-                                        <Tabs.Tab value="PastProjects" className=" text-xl px-[40px]">
+                                        <Tabs.Tab value="PastProjects" className="text-xl px-[40px]">
                                             Past projects
                                         </Tabs.Tab>
                                     </Tabs.List>

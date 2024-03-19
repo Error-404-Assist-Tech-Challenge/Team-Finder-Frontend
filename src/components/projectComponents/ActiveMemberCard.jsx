@@ -38,7 +38,7 @@ export default function ActiveMemberCard({ project_id, employee, setActiveMember
                     },
                     withCredentials: true
                 });
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
             setActiveMembers(response.data.active);
             setComment('')
         } catch (error) {
@@ -64,7 +64,7 @@ export default function ActiveMemberCard({ project_id, employee, setActiveMember
                     },
                     withCredentials: true
                 });
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
             setActiveMembers(response.data.active)
         } catch (error) {
             console.error('Error updating proposal:', error);
@@ -86,7 +86,7 @@ export default function ActiveMemberCard({ project_id, employee, setActiveMember
                 },
                 withCredentials: true
             });
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
             setActiveMembers(response.data.active);
             setComment('');
         } catch (error) {

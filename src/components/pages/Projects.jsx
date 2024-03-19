@@ -52,7 +52,7 @@ export default function ProjectsPage() {
                     },
                     withCredentials: true
                 });
-                console.log('Projects:', response.data);
+                // console.log('Projects:', response.data);
                 isMounted && setProjects(response.data);
                 setVisible(false);
             } catch (error) {

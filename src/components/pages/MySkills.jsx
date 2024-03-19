@@ -25,7 +25,7 @@ export default function MySkillsPage() {
     const [addedSkill, setAddedSkill] = useState('');
 
     const [currentPage, setCurrentPage] = useState(1);
-    const [postPerPage, setPostPerPage] = useState(5);
+    const [postPerPage, setPostPerPage] = useState(8);
     const lastPostIndex = currentPage * postPerPage;
     const firstPostIndex = lastPostIndex - postPerPage;
     const currentPosts = skills.slice(firstPostIndex, lastPostIndex);
@@ -49,7 +49,7 @@ export default function MySkillsPage() {
                     withCredentials: true
                 });
 
-                console.log('My Skills:', response.data);
+                // console.log('My Skills:', response.data);
 
                 isMounted && setSkills(response.data)
 
@@ -85,7 +85,7 @@ export default function MySkillsPage() {
                     withCredentials: true
                 });
 
-                console.log('My Skill Upgrades:', response.data);
+                // console.log('My Skill Upgrades:', response.data);
 
                 isMounted && setSkillUpgrades(response.data)
 
@@ -120,7 +120,7 @@ export default function MySkillsPage() {
                     },
                     withCredentials: true
                 });
-                console.log('My Unused Skills:', response.data);
+                // console.log('My Unused Skills:', response.data);
                 isMounted && setUnusedSkills(response.data);
                 setVisible(false);
             } catch (error) {

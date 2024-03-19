@@ -18,7 +18,7 @@ export const SkillCard = ({ skill, skillCategories, setSkills, visible, setVisib
 
     const [name, setName] = useState(`${skill.name}`);
     const [description, setDescription] = useState(`${skill.description}`);
-    const [category, setCategory] = useState('');
+    const [category, setCategory] = useState(`${skill.category_id}`);
 
     const handleEdit = () => {
         setIsEditing(true);
@@ -44,7 +44,7 @@ export const SkillCard = ({ skill, skillCategories, setSkills, visible, setVisib
                     withCredentials: true
                 });
 
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
 
             setSkills(response.data);
 
@@ -68,7 +68,7 @@ export const SkillCard = ({ skill, skillCategories, setSkills, visible, setVisib
                 withCredentials: true
             });
 
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
 
             setSkills(response.data);
 
@@ -99,7 +99,7 @@ export const SkillCard = ({ skill, skillCategories, setSkills, visible, setVisib
                     withCredentials: true
                 });
 
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
 
             setSkills(response.data);
 
@@ -125,7 +125,7 @@ export const SkillCard = ({ skill, skillCategories, setSkills, visible, setVisib
                 withCredentials: true
             });
 
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
 
             setSkills(response.data);
 
@@ -167,7 +167,7 @@ export const SkillCard = ({ skill, skillCategories, setSkills, visible, setVisib
                     {isEditing && (<Select
                         allowDeselect={false}
                         placeholder="Select a category"
-                        v
+                        data={skillCategories}
                         value={category}
                         onChange={setCategory}
                         searchable
@@ -219,7 +219,7 @@ export const SkillCard = ({ skill, skillCategories, setSkills, visible, setVisib
             </Modal>
 
             <Card variant="filled" onClick={open} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}
-                className="flex w-[240px] h-[184px] dark:bg-card_modal mx-[40px] my-[20px] rounded-xl dark:text-darktext text-text select-none font-bold">
+                className="flex w-[240px] h-[184px] dark:bg-card_modal mx-[40px] my-[20px] rounded-xl text-[white] select-none font-bold">
                 <Card.Section className="dark:bg-[#495256]">
                     <Title className="p-4 flex justify-center text-3xl">
                         {skill.name}

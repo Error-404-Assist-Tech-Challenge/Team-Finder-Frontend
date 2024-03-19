@@ -35,7 +35,7 @@ export default function MyDepartmentComp({ members, setMembers, }) {
                     signal: controller.signal,
                     withCredentials: true
                 });
-                console.log('Avalaible employees:', response.data);
+                // console.log('Avalaible employees:', response.data);
                 isMounted && setAvalaible(response.data)
             } catch (error) {
                 console.error('Error fetching members without department:', error);
@@ -76,7 +76,7 @@ export default function MyDepartmentComp({ members, setMembers, }) {
                     withCredentials: true
                 });
 
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
 
             setMembers(response.data);
 

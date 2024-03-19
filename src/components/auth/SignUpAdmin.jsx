@@ -12,10 +12,10 @@ const organizationRegex = /^[A-Za-z0-9\s\-.,&'()]+$/;
 const addressRegex = /^[A-Za-z0-9\s\-.,&'()]+$/;
 
 export default function SignUpAdminPage() {
-    
+
     const userRef = useRef();
     const errorRef = useRef();
-    
+
     const [user, setUser] = useState('');
     const [validName, setValidName] = useState(false);
     const [userFocus, setUserFocus] = useState(false);
@@ -31,19 +31,19 @@ export default function SignUpAdminPage() {
     const [address, setAddress] = useState('');
     const [validAddress, setValidAddress] = useState(false);
     const [addressFocus, setAddressFocus] = useState(false);
-    
+
     const [errorMessage, setErrorMessage] = useState('');
-    
+
     const [visible, setVisible] = useState(false);
 
     const { setAuth } = useAuth();
-    
+
     const navigateTo = useNavigate();
-    
+
     const handleLogIn = () => {
         navigateTo('/login');
     };
-    
+
     const handleKeyPress = (e) => {
         if (e.key === 'Enter') {
             handleSignUp(e);
@@ -99,7 +99,7 @@ export default function SignUpAdminPage() {
             const hq_address = response?.data?.hq_address;
             const roles = [...response.data.roles];
 
-            console.log('Your access token is:', accessToken);
+            // console.log('Your access token is:', accessToken);
 
             setAuth({ name, email, org_name, hq_address, roles, accessToken })
 
@@ -149,92 +149,92 @@ export default function SignUpAdminPage() {
 
     return (
         <div className="flex items-center justify-center min-h-screen min-w-full bg-[#272F32] text-[#272F32] select-none">
-             {visible && (
-                    <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                        <Loader size={30} color="red" />
-                    </div>
-                )}
+            {visible && (
+                <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                    <Loader size={30} color="red" />
+                </div>
+            )}
             {!visible && (
-            <Container className="bg-[#505a5e] h-[auto] w-[494px] rounded-[20px] text-white px-[30px]">
-                <Title order={1} className="text-5xl text-select-none text-center py-[50px]">
-                    Team Finder
-                </Title>
-                <p ref={errorRef} className={errorMessage ? "errmsg" : "offscreen"}>{errorMessage}</p>
-                <div className="text-xl">
-                    <TextInput
-                        label="Name"
-                        placeholder="John Doe"
-                        ref={userRef}
-                        autoComplete='off'
-                        error={(!validName && user) && "Name can only contain letters"}
-                        onChange={(e) => setUser(e.target.value)}
-                        required
-                        onKeyDown={handleKeyPress}
-                        onFocus={() => setUserFocus(true)}
-                        onBlur={() => setUserFocus(false)}
-                    />
-                    <TextInput
-                        label="E-mail Address"
-                        placeholder="john.doe@example.com"
-                        autoComplete='off'
-                        error={(!validEmail && email) && "Not a valid email"}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                        onKeyDown={handleKeyPress}
-                        onFocus={() => setEmailFocus(true)}
-                        onBlur={() => setEmailFocus(false)}
-                    />
-                    <PasswordInput
-                        label="Password"
-                        placeholder="Pa$$w0rd123"
-                        autoComplete='off'
-                        error={(!validPassword && password) && "Must have min 8 characters and contain at least a lowercase character, uppercase character, digit, special character (@$!%*?&])"}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        onKeyDown={handleKeyPress}
-                        onFocus={() => setPasswordFocus(true)}
-                        onBlur={() => setPasswordFocus(false)}
-                    />
-                    <TextInput
-                        label="Organization Name"
-                        placeholder="ABC Corporation"
-                        autoComplete='off'
-                        error={(!validOrganization && organization) && "Organization Name can only contain letters, digits and certain punctuation"}
-                        onChange={(e) => setOrganization(e.target.value)}
-                        required
-                        onKeyDown={handleKeyPress}
-                        onFocus={() => setOrganizationFocus(true)}
-                        onBlur={() => setOrganizationFocus(false)}
-                    />
-                    <TextInput
-                        label="Headquaters Address"
-                        placeholder="123 Main Street, Cityville, State, 12345"
-                        autoComplete='off'
-                        error={(!validAddress && address) && "Headquaters Address can only contain letters, digits and certain punctuation"}
-                        onChange={(e) => setAddress(e.target.value)}
-                        required
-                        onKeyDown={handleKeyPress}
-                        onFocus={() => setAddressFocus(true)}
-                        onBlur={() => setAddressFocus(false)}
-                    />
-                </div>
-                <div className="flex justify-center">
-                    <Button variant="filled" size="xl" radius="lg" className="bg-[#FF3D2E]  hover:bg-btn_hover font-bold text-white mt-[50px]"
-                        disabled={!validName || !validAddress || !validPassword || !validOrganization || !validAddress}
-                        onClick={handleSignUp}>
-                        Sign Up
-                    </Button>
-                </div>
-                <div className="text-lg flex items-center justify-between px-[5px] py-[50px]">
-                    <Title order={4}>
-                        Or if you already have an account:
+                <Container className="bg-[#505a5e] h-[auto] w-[494px] rounded-[20px] text-white px-[30px]">
+                    <Title order={1} className="text-5xl text-select-none text-center py-[50px]">
+                        Team Finder
                     </Title>
-                    <Button variant="filled" size="lg" radius="lg" className="bg-[#FF3D2E]  hover:bg-btn_hover font-bold text-white"
-                        onClick={handleLogIn}>
-                        Log in
-                    </Button>
-                </div>
-            </Container>)}
+                    <p ref={errorRef} className={errorMessage ? "errmsg" : "offscreen"}>{errorMessage}</p>
+                    <div className="text-xl">
+                        <TextInput
+                            label="Name"
+                            placeholder="John Doe"
+                            ref={userRef}
+                            autoComplete='off'
+                            error={(!validName && user) && "Name can only contain letters"}
+                            onChange={(e) => setUser(e.target.value)}
+                            required
+                            onKeyDown={handleKeyPress}
+                            onFocus={() => setUserFocus(true)}
+                            onBlur={() => setUserFocus(false)}
+                        />
+                        <TextInput
+                            label="E-mail Address"
+                            placeholder="john.doe@example.com"
+                            autoComplete='off'
+                            error={(!validEmail && email) && "Not a valid email"}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                            onKeyDown={handleKeyPress}
+                            onFocus={() => setEmailFocus(true)}
+                            onBlur={() => setEmailFocus(false)}
+                        />
+                        <PasswordInput
+                            label="Password"
+                            placeholder="Pa$$w0rd123"
+                            autoComplete='off'
+                            error={(!validPassword && password) && "Must have min 8 characters and contain at least a lowercase character, uppercase character, digit, special character (@$!%*?&])"}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                            onKeyDown={handleKeyPress}
+                            onFocus={() => setPasswordFocus(true)}
+                            onBlur={() => setPasswordFocus(false)}
+                        />
+                        <TextInput
+                            label="Organization Name"
+                            placeholder="ABC Corporation"
+                            autoComplete='off'
+                            error={(!validOrganization && organization) && "Organization Name can only contain letters, digits and certain punctuation"}
+                            onChange={(e) => setOrganization(e.target.value)}
+                            required
+                            onKeyDown={handleKeyPress}
+                            onFocus={() => setOrganizationFocus(true)}
+                            onBlur={() => setOrganizationFocus(false)}
+                        />
+                        <TextInput
+                            label="Headquaters Address"
+                            placeholder="123 Main Street, Cityville, State, 12345"
+                            autoComplete='off'
+                            error={(!validAddress && address) && "Headquaters Address can only contain letters, digits and certain punctuation"}
+                            onChange={(e) => setAddress(e.target.value)}
+                            required
+                            onKeyDown={handleKeyPress}
+                            onFocus={() => setAddressFocus(true)}
+                            onBlur={() => setAddressFocus(false)}
+                        />
+                    </div>
+                    <div className="flex justify-center">
+                        <Button variant="filled" size="xl" radius="lg" className="bg-[#FF3D2E]  hover:bg-btn_hover font-bold text-white mt-[50px]"
+                            disabled={!validName || !validAddress || !validPassword || !validOrganization || !validAddress}
+                            onClick={handleSignUp}>
+                            Sign Up
+                        </Button>
+                    </div>
+                    <div className="text-lg flex items-center justify-between px-[5px] py-[50px]">
+                        <Title order={4}>
+                            Or if you already have an account:
+                        </Title>
+                        <Button variant="filled" size="lg" radius="lg" className="bg-[#FF3D2E]  hover:bg-btn_hover font-bold text-white"
+                            onClick={handleLogIn}>
+                            Log in
+                        </Button>
+                    </div>
+                </Container>)}
         </div>
     )
 }

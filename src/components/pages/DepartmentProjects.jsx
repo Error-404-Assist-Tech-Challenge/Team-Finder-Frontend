@@ -19,7 +19,7 @@ export default function DepartmentProjects() {
                     signal: controller.signal,
                     withCredentials: true
                 });
-                console.log('Department projects:', response.data);
+                // console.log('Department projects:', response.data);
                 isMounted && setProjects(response.data)
             } catch (error) {
                 console.error('Error fetching department projects:', error);

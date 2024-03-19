@@ -43,7 +43,7 @@ export default function TeamRolesComp({ teamRoles, setTeamRoles, visible, setVis
                     withCredentials: true
                 });
 
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
 
             setTeamRoles(response.data);
 

@@ -13,11 +13,13 @@ import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { IconCheck } from '@tabler/icons-react';
 import { notifications } from '@mantine/notifications';
 import SkillUpgradeCard from '../skillComponents/SkillUpgradeCard';
+import useAuth from '../../hooks/useAuth';
 
 
 export default function MySkillsComp({ skills, setSkills, skillUpgrades, setSkillUpgrades, unusedSkills, setUnusedSkills, visible, setVisible }) {
 
     const axiosPrivate = useAxiosPrivate();
+    const { auth } = useAuth();
 
     const [opened, { open, close }] = useDisclosure(false);
     const [openedDrawer, { open: openDrawer, close: closeDrawer }] = useDisclosure(false);
@@ -40,6 +42,9 @@ export default function MySkillsComp({ skills, setSkills, skillUpgrades, setSkil
 
     const [endorsementsList, setEndorsementList] = useState([]);
 
+    const title = auth?.roles.includes("dept_manager") ? 'Skill has been added to profile' : 'Your skill proposal proposal has been sent'
+    const message = auth?.roles.includes("dept_manager") ? 'As you are department manager, you do not need to wait for confirmation' : 'Wait for your department manager to approve'
+
     useEffect(() => {
         setChange(true);
     }, [skills]);
@@ -49,12 +54,6 @@ export default function MySkillsComp({ skills, setSkills, skillUpgrades, setSkil
     const handleAddSkill = async () => {
         close();
         try {
-            console.log("In post intra: ", JSON.stringify({
-                skill_id: addedSkill,
-                level: selectedSkillLevel,
-                experience: selectedSkillExperience,
-                endorsements: endorsementsList,
-            }),)
             if (endorsementsList[0].endorsement == '' && endorsementsList[0].proj_id == '') {
                 const response = await axiosPrivate.post('skills/user',
                     JSON.stringify({
@@ -71,7 +70,7 @@ export default function MySkillsComp({ skills, setSkills, skillUpgrades, setSkil
                         },
                         withCredentials: true
                     });
-                console.log('Response:', response.data);
+                // console.log('Response:', response.data);
                 setSkills(response.data);
             }
             else {
@@ -91,7 +90,7 @@ export default function MySkillsComp({ skills, setSkills, skillUpgrades, setSkil
                         },
                         withCredentials: true
                     });
-                console.log('Response:', response.data);
+                // console.log('Response:', response.data);
                 setSkills(response.data);
             }
 
@@ -106,9 +105,10 @@ export default function MySkillsComp({ skills, setSkills, skillUpgrades, setSkil
         } catch (error) {
             console.error('Error fetching unused skills:', error);
         }
+
         const ild = notifications.show({
-            title: 'Skill update proposal saved',
-            message: 'Wait for your department manager approval.',
+            title: title,
+            message: message,
             icon: <IconCheck style={{ width: rem(35), height: rem(35) }} />,
             color: "teal",
             style: { width: 455 },
@@ -125,8 +125,6 @@ export default function MySkillsComp({ skills, setSkills, skillUpgrades, setSkil
                     proj_id: projectEndorsement
                 }
             ]);
-            console.log("Proj id:", projectEndorsement);
-            console.log("Post object:", endorsementsList);
         } else {
             setEndorsementList([
                 {
@@ -151,7 +149,7 @@ export default function MySkillsComp({ skills, setSkills, skillUpgrades, setSkil
                     withCredentials: true
                 });
                 isMounted && setUserProjects(response.data)
-                console.log("Projects:", response.data)
+                // console.log("Projects:", response.data)
             } catch (error) {
                 console.error('Error fetching department members:', error);
             }
@@ -184,7 +182,7 @@ export default function MySkillsComp({ skills, setSkills, skillUpgrades, setSkil
                 {skills.map((skill, index) => (
                     <UserSkillCard key={index} index={index} skills={skills} setSkills={setSkills} unusedSkills={unusedSkills} setUnusedSkills={setUnusedSkills}
                         visible={visible} setVisible={setVisible} endorsementsList={skill.skill_endorsements} setEndorsementList={setEndorsementList} list={list} projectEndorsement={projectEndorsement}
-                        setProjectEdorsement={setProjectEdorsement}/>
+                        setProjectEdorsement={setProjectEdorsement} />
                 ))}
                 <div className="w-[410px] h-[270px] flex justify-center items-center">
                     <Button variant="outline" onClick={open}

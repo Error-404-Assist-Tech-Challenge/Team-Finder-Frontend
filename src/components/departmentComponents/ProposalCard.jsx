@@ -13,11 +13,6 @@ export default function ProposalCard({ proposal, setProposals, proposals }) {
 
     const handleSkillProposal = async (proposal_response) => {
         setProposals(proposals.filter(proposal => proposal.id !== proposal_response.id));
-        console.log(JSON.stringify({
-            user_id: proposal.user_id,
-            skill_id: proposal.skill_id,
-            proposal: proposal_response
-        }))
         try {
             const response = await axiosPrivate.put('skills/proposal',
                 JSON.stringify({
@@ -34,7 +29,7 @@ export default function ProposalCard({ proposal, setProposals, proposals }) {
                     withCredentials: true
                 });
 
-            console.log('Proposal response:', response.data);
+            // console.log('Proposal response:', response.data);
 
             setProposals(response.data)
 
@@ -63,7 +58,7 @@ export default function ProposalCard({ proposal, setProposals, proposals }) {
                     withCredentials: true
                 });
 
-            console.log('Proposal response:', response.data);
+            // console.log('Proposal response:', response.data);
 
             setProposals(response.data)
 
