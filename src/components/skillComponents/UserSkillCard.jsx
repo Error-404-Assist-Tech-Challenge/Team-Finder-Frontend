@@ -80,7 +80,7 @@ export default function UserSkillCard(props) {
                         skill_id: props.skills[props.index].skill_id,
                         level: currentLevel,
                         experience: currentExperience,
-                        endorsements: tempEndoLsit.endorsement == "" ? updatedEndorsementsList.slice(0, -1) : props.endorsementsList,
+                        endorsements: tempEndoLsit[0].endorsement == '' && tempEndoLsit[0].proj_id == '' ? updatedEndorsementsList.slice(0,-1) : updatedEndorsementsList,
                     }),
                     {
                         headers: {
@@ -103,9 +103,11 @@ export default function UserSkillCard(props) {
     const handleSaveEndorsement = async () => {
         close();
         props.setVisible(true);
+        {}
         try {
             let updatedEndorsementsList = props.endorsementsList.concat(tempEndoLsit);
             updatedEndorsementsList.splice(indexToEdit, 1);
+
             const response = await axiosPrivate.put('skills/user',
                 JSON.stringify({
                     skill_id: props.skills[props.index].skill_id,
@@ -320,10 +322,12 @@ export default function UserSkillCard(props) {
                                         onClick={openDeleteModal}>
                                         Remove Skill
                                     </Button>
+                                    {!editEndorsement && (
                                     <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-4 py-2 rounded mx-[10px] mt-[30px] float-right"
                                         onClick={handleSave}>
                                         Save (Request)
                                     </Button>
+                                    )}
                                 </div>
                             </div>
                             <Divider size="sm" orientation="vertical" className='mx-4' />
@@ -385,13 +389,13 @@ export default function UserSkillCard(props) {
                                             </>
                                         )}
                                         <div className="p-[10px] fixed bottom-0 right-0">
-                                            <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-4 py-2 rounded mr-[60px] my-[10px] mt-[20px] mb-[15px]"
+                                            <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-4 py-2 rounded mr-[30px] my-[10px] mt-[20px] mb-[15px]"
                                                 onClick={handleCancel}>
                                                 Cancel
                                             </Button>
                                             <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-4 py-2 rounded mx-[10px] my-[10px] mt-[20px] ml-[130px] mb-[15px] float-right"
                                                 onClick={handleSaveEndorsement}>
-                                                Save Endorsement
+                                                Save Edited Endorsement
                                             </Button>
                                         </div>
                                     </>
@@ -470,7 +474,6 @@ export default function UserSkillCard(props) {
                                                     label="Endorsement"
                                                     placeholder="Choose an edorsement"
                                                     className=" py-[15px] w-[450px]" />
-                                                <p>{props.projectEndorsement}</p>
                                             </>
                                         )}
                                         <div className="p-[10px] fixed bottom-0 right-0">

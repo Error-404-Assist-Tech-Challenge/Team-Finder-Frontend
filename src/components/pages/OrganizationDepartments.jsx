@@ -102,7 +102,7 @@ export default function OrganizationDepartmentsPage() {
                         <div className="flex flex-wrap justify-centers dark:bg-darkcanvas bg-canvas">
                             <div className='dark:bg-darkcanvas bg-canvas select-none h-auto py-[30px] flex flex-wrap'>
                                 <OrganizationDepartmentsComp departmentManagers={departmentManagers} setDepartmentManagers={setDepartmentManagers}
-                                    departments={departments} setDepartments={setDepartments} visible={visible} setVisible={setVisible} />
+                                    departments={currentPosts} setDepartments={setDepartments} visible={visible} setVisible={setVisible} />
                             </div>
                         </div>
                     )}
