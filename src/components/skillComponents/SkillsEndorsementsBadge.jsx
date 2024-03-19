@@ -45,7 +45,7 @@ export default function SkillEndorsementBadge({index, endorsement, setEndorsemen
                 <div className="flex flex-wrap"> 
                     <HoverCard width={280} shadow="md" zIndex={100000000}>
                         <HoverCard.Target>
-                            <Badge variant="filled" color="rgba(250, 245, 240, 1)" size="lg" radius="lg" className='text-black my-[20px] mx-[10px]'>
+                            <Badge color="gray" size="xl" variant="filled" radius="lg" className='text-white my-[20px] mx-[10px]'>
                                 {endorsement.type != 'Project' && (
                                     <Button variant="outline" className={`w-[40px] h-[20px] mb-[3px] mr-[10px] rounded-full p-0 text-accent border-accent border-2`} onClick={handleEditEndorsment}>
                                         Edit
