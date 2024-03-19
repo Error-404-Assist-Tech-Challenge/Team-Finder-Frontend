@@ -4,7 +4,7 @@
 
 import { Card, Avatar, Modal, Button, Text, Loader, Badge, NumberInput, Divider, MultiSelect, Textarea } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 export default function ProposedMemberCard({ setNewMembers, setProposedMembers, project_id, employee }) {
@@ -13,19 +13,52 @@ export default function ProposedMemberCard({ setNewMembers, setProposedMembers, 
     const [opened, { open, close }] = useDisclosure(false);
     const [isHovering, setIsHovering] = useState(false);
 
+    const [teamRoles, setTeamRoles] = useState(employee.proposed_roles);
+    const [workHours, setWorkHours] = useState(employee.proposed_work_hours);
+    const [comment, setComment] = useState(employee.comment);
+
+
     const getInitials = (name) => {
         const names = name.split(' ');
         return names.map((name) => name[0]).join('').toUpperCase();
     };
 
+    useEffect(() => {
+        const fetchAvailableRoles = async () => {
+            try {
+                const response = await axiosPrivate.get(`projects/project_needed_roles?proj_id=${project_id}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Credentials': 'true'
+                    },
+                    withCredentials: true
+                });
+                // console.log('Available Role', response.data)
+                const all_roles = response.data.all_roles
+                const needed_roles = response.data.needed_roles
+                const updated_needed_roles = [...needed_roles];
+                employee.proposed_roles.forEach(role_id => {
+                    if (!needed_roles.some(role => role.value === role_id)) {
+                        const roleName = all_roles.find(role => role.role_id === role_id)?.role_name;
+                        if (roleName) {
+                            updated_needed_roles.push({ value: role_id, label: roleName });
+                        }
+                    }
+                });
+                setAvailableRoles(updated_needed_roles)
+            } catch (error) {
+                console.error('Error fetching available roles:', error);
+            }
+        }
+
+        fetchAvailableRoles();
+    }, [])
+
     const handleOpen = () => {
         open();
-        fetchAvailableRoles();
     }
 
-    const [teamRoles, setTeamRoles] = useState(employee.proposed_roles);
-    const [workHours, setWorkHours] = useState(employee.proposed_work_hours);
-    const [comment, setComment] = useState(employee.comment);
 
     const [availableRoles, setAvailableRoles] = useState([]);
 
@@ -83,22 +116,7 @@ export default function ProposedMemberCard({ setNewMembers, setProposedMembers, 
         close();
     }
 
-    const fetchAvailableRoles = async () => {
-        try {
-            const response = await axiosPrivate.get(`projects/project_needed_roles?proj_id=${project_id}`, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Credentials': 'true'
-                },
-                withCredentials: true
-            });
-            // console.log('Available Role', response.data)
-            setAvailableRoles(response.data)
-        } catch (error) {
-            console.error('Error fetching available roles:', error);
-        }
-    }
+
 
     return (
         <>
