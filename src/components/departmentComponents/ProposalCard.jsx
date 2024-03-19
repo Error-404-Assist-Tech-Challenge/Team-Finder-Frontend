@@ -12,8 +12,12 @@ export default function ProposalCard({ proposal, setProposals, proposals }) {
     const axiosPrivate = useAxiosPrivate();
 
     const handleSkillProposal = async (proposal_response) => {
-        setProposals(proposals.filter(proposal => proposal.id !== proposal_response.id));
         try {
+
+            const index = proposals.findIndex(p => p.user_id === proposal.user_id && p.skill_id === proposal.skill_id);
+            const updatedProposals = [...proposals.slice(0, index), ...proposals.slice(index + 1)];
+            setProposals(updatedProposals);
+
             const response = await axiosPrivate.put('skills/proposal',
                 JSON.stringify({
                     user_id: proposal.user_id,
@@ -28,21 +32,20 @@ export default function ProposalCard({ proposal, setProposals, proposals }) {
                     },
                     withCredentials: true
                 });
-
             // console.log('Proposal response:', response.data);
-
-            setProposals(response.data)
-
+            // setProposals(response.data)
         } catch (error) {
             console.error('Error fetching updating skill:', error);
         }
     }
 
     const handleProjectProposal = async (proposal_response, proposal_type) => {
-
-        setProposals(proposals.filter(proposal => proposal.id !== proposal_response.id));
-
         try {
+
+            const index = proposals.findIndex(p => p.user_id === proposal.user_id && p.skill_id === proposal.skill_id);
+            const updatedProposals = [...proposals.slice(0, index), ...proposals.slice(index + 1)];
+            setProposals(updatedProposals);
+
             const response = await axiosPrivate.post('projects/manage_proposal',
                 JSON.stringify({
                     assignment_id: proposal.assignment_id,
@@ -60,7 +63,7 @@ export default function ProposalCard({ proposal, setProposals, proposals }) {
 
             // console.log('Proposal response:', response.data);
 
-            setProposals(response.data)
+            // setProposals(response.data)
 
         } catch (error) {
             console.error('Error responding to proposal:', error);
