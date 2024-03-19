@@ -220,7 +220,10 @@ export default function UserSkillCard(props) {
     const handleCancel = async () => {
         setEditEndorsement(false)
     }
-
+    const handleCancelAddEndo = async () => {
+        setAddEndorsement(false)
+    }
+    
     const handelAddEndorsement = async () => {
         setAddEndorsement(true)
     }
@@ -402,7 +405,9 @@ export default function UserSkillCard(props) {
                                         <div className='flex flex-col'>
                                             {props.skills[props.index].skill_endorsements.map((endorsement, index) => (
                                                 <SkillEndorsementBadge key={index} index={index} endorsement={endorsement} setEndorsement={setEndorsement} editEndorsement={editEndorsement} setEditEndorsement={setEditEndorsement}
-                                                    indexToDelete={indexToDelete} setIndexToDelete={setIndexToDelete} setIndexToEdit={setIndexToEdit} handleDeleteEndorsement={handleDeleteEndorsement} indexToEdit={indexToEdit} />
+                                                    indexToDelete={indexToDelete} setIndexToDelete={setIndexToDelete} setIndexToEdit={setIndexToEdit} handleDeleteEndorsement={handleDeleteEndorsement} indexToEdit={indexToEdit} 
+                                                    training={training} setTraining={setTraining} trainingDescpription={trainingDescpription} setTrainingDescription={setTrainingDescription} setCourse={setCourse}
+                                                    setCourseDescription={setCourseDescription}/>
                                             ))}
                                         </div>
                                         <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-10 py-2 rounded ml-[120px] my-[10px] mt-[20px] mb-[25px] fixed bottom-0 "
@@ -470,13 +475,18 @@ export default function UserSkillCard(props) {
                                                     placeholder="Choose an edorsement"
                                                     className=" py-[15px] w-[450px]" />
                                                 <p>{props.projectEndorsement}</p>
-
                                             </>
                                         )}
-                                        <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-10 py-2 rounded ml-[120px] my-[10px] mt-[20px] mb-[25px] fixed bottom-0 "
+                                         <div className="p-[10px] fixed bottom-0 right-0">
+                                        <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-4 py-2 rounded mr-[60px] my-[10px] mt-[20px] mb-[15px]"
+                                                onClick={handleCancelAddEndo}>
+                                                Cancel
+                                        </Button>
+                                        <Button className="bg-accent text-white hover:bg-btn_hover font-bold px-4 py-2 rounded mx-[10px] my-[10px] mt-[20px] ml-[130px] mb-[15px] float-right"
                                             onClick={handleSave}>
                                             Save endorsement
                                         </Button>
+                                        </div>
                                     </div>
                                 )}
                             </div>
