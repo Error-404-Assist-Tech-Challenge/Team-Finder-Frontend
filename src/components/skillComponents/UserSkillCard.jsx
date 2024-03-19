@@ -80,7 +80,7 @@ export default function UserSkillCard(props) {
                         skill_id: props.skills[props.index].skill_id,
                         level: currentLevel,
                         experience: currentExperience,
-                        endorsements: tempEndoLsit.endorsement == "" ? updatedEndorsementsList.slice(0, 1) : props.endorsementsList,
+                        endorsements: tempEndoLsit.endorsement == "" ? updatedEndorsementsList.slice(0, -1) : props.endorsementsList,
                     }),
                     {
                         headers: {
