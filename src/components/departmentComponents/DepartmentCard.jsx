@@ -51,7 +51,7 @@ export default function DepartmentCard(props) {
                     withCredentials: true
                 });
 
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
 
             props.setDepartments(response.data);
 
@@ -88,7 +88,7 @@ export default function DepartmentCard(props) {
                 withCredentials: true
             });
 
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
 
             props.setDepartments(response.data);
 

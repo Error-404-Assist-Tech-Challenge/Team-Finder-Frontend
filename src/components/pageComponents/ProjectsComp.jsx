@@ -41,7 +41,7 @@ export default function ProjectsComp({ projects, setProjects }) {
                     },
                     withCredentials: true
                 });
-                console.log('Skills:', response.data);
+                // console.log('Skills:', response.data);
                 if (isMounted) {
                     const mappedSkills = response.data.map(skill => ({
                         id: skill.value,
@@ -49,7 +49,7 @@ export default function ProjectsComp({ projects, setProjects }) {
                         minimum_level: 1,
                     }));
                     setSkills(mappedSkills);
-                    console.log(mappedSkills);
+                    // console.log(mappedSkills);
                 }
             } catch (error) {
                 console.error('Error fetching skills:', error);
@@ -76,7 +76,7 @@ export default function ProjectsComp({ projects, setProjects }) {
                     },
                     withCredentials: true
                 });
-                console.log('Roles:', response.data);
+                // console.log('Roles:', response.data);
                 if (isMounted) {
                     setRoles(response.data);
 
@@ -132,7 +132,7 @@ export default function ProjectsComp({ projects, setProjects }) {
                     },
                     withCredentials: true
                 });
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
             setProjects(response.data);
             setProjectName('')
             setProjectPeriod('')

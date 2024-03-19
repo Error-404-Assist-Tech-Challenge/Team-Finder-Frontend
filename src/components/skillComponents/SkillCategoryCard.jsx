@@ -42,7 +42,7 @@ export const SkillCategoryCard = ({ name, id, is_used, setSkillCategories, visib
                     withCredentials: true
                 });
 
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
 
             setSkillCategories(response.data);
 
@@ -66,7 +66,7 @@ export const SkillCategoryCard = ({ name, id, is_used, setSkillCategories, visib
                 withCredentials: true
             });
 
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
             setSkillCategories(response.data);
         } catch (error) {
             console.error('Error deleting user skills:', error);

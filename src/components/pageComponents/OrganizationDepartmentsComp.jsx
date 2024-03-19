@@ -33,7 +33,7 @@ export default function OrganizationDepartmentsComp({ departmentManagers, setDep
                     withCredentials: true
                 });
 
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
 
             setDepartments(response.data);
 

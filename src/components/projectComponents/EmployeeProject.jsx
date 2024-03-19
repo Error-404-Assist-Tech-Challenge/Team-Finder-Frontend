@@ -44,7 +44,7 @@ export default function ProjectEmployeeCard({ name, roles, period, status, tech_
                         withCredentials: true
                     }
                 );
-                console.log('Project Employees:', response.data);
+                // console.log('Project Employees:', response.data);
                 isMounted && setActiveMembers(response.data.active);
                 isMounted && setPastMembers(response.data.past);
                 setVisible(true);
@@ -76,7 +76,7 @@ export default function ProjectEmployeeCard({ name, roles, period, status, tech_
                     },
                     withCredentials: true
                 });
-                console.log('Eligible Skills:', response.data);
+                // console.log('Eligible Skills:', response.data);
                 if (isMounted) {
                     const mappedSkills = response.data.map(skill => ({
                         id: skill.id,
@@ -84,7 +84,7 @@ export default function ProjectEmployeeCard({ name, roles, period, status, tech_
                         minimum_level: 1,
                     }));
                     setSkills(mappedSkills);
-                    console.log(mappedSkills);
+                    // console.log(mappedSkills);
                 }
             } catch (error) {
                 console.error('Error fetching eligible skills:', error);
@@ -116,7 +116,7 @@ export default function ProjectEmployeeCard({ name, roles, period, status, tech_
                     },
                     withCredentials: true
                 });
-            console.log('Skill requirement update response:', response.data);
+            // console.log('Skill requirement update response:', response.data);
         } catch (error) {
             console.error('Error updating skill requirements:', error);
         }

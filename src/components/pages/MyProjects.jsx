@@ -31,7 +31,7 @@ export default function MyProjects() {
                     signal: controller.signal,
                     withCredentials: true
                 });
-                console.log('Users projects:', response.data);
+                // console.log('Users projects:', response.data);
                 isMounted && setUserProjects(response.data)
                 setVisible(false)
             } catch (error) {

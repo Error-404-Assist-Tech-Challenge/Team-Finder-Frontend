@@ -22,8 +22,6 @@ export default function EmployeeCard({ isAdminOnly, employee, setUsers, visible,
     const removeRole = async (e, role) => {
         close();
         setVisible(true);
-        console.log('user_id:', employee.id);
-        console.log('role_name:', role);
         try {
             const response = await axiosPrivate.delete('organizations/roles', {
                 headers: {
@@ -38,7 +36,7 @@ export default function EmployeeCard({ isAdminOnly, employee, setUsers, visible,
                 withCredentials: true
             });
 
-            console.log(response.data);
+            // console.log(response.data);
 
             setUsers(response.data);
 
@@ -54,8 +52,6 @@ export default function EmployeeCard({ isAdminOnly, employee, setUsers, visible,
     const assignRole = async (e, role) => {
         close();
         setVisible(true);
-        console.log('user_id:', employee.id);
-        console.log('role_name:', role);
         try {
             const response = await axiosPrivate.post('organizations/roles',
                 JSON.stringify({
@@ -71,7 +67,7 @@ export default function EmployeeCard({ isAdminOnly, employee, setUsers, visible,
                     withCredentials: true
                 });
 
-            console.log(response.data);
+            // console.log(response.data);
 
             setUsers(response.data);
 

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
@@ -26,7 +27,7 @@ export const NotificationCard = ({ notification, setNotifications }) => {
                     },
                     withCredentials: true
                 });
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
         } catch (error) {
             console.error('Error fetching updating skill:', error);
         }

@@ -30,7 +30,7 @@ export default function TeamRoleCard({ id, name, setTeamRoles, used }) {
                     withCredentials: true
                 });
 
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
 
             setTeamRoles(response.data);
 
@@ -55,7 +55,7 @@ export default function TeamRoleCard({ id, name, setTeamRoles, used }) {
                 withCredentials: true
             });
 
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
 
             setTeamRoles(response.data);
 

@@ -29,14 +29,14 @@ export default function OrganizationSkillsPage() {
 
 
     const [currentPage, setCurrentPage] = useState(1);
-    const [postPerPage, setPostPerPage] = useState(9);
+    const [postPerPage, setPostPerPage] = useState(11);
 
     const lastPostIndex = currentPage * postPerPage;
     const firstPostIndex = lastPostIndex - postPerPage;
     const currentPosts = skills.slice(firstPostIndex, lastPostIndex);
 
     const [currentPageCatego, setCurrentPageCatego] = useState(1);
-    const [postPerPageCatego, setPostPerPageVatego] = useState(5);
+    const [postPerPageCatego, setPostPerPageVatego] = useState(3);
 
     const lastPostIndexCatego = currentPageCatego * postPerPageCatego;
     const firstPostIndexCatego = lastPostIndexCatego - postPerPageCatego;
@@ -60,7 +60,7 @@ export default function OrganizationSkillsPage() {
                     },
                     withCredentials: true
                 });
-                console.log('Skills:', response.data);
+                // console.log('Skills:', response.data);
                 isMounted && setSkills(response.data);
                 setVisible(false);
             } catch (error) {
@@ -91,7 +91,7 @@ export default function OrganizationSkillsPage() {
                     },
                     withCredentials: true
                 });
-                console.log('Skill Categories:', response.data);
+                // console.log('Skill Categories:', response.data);
                 isMounted && setSkillCategories(response.data);
             } catch (error) {
                 console.error('Error fetching organization skill categories:', error);

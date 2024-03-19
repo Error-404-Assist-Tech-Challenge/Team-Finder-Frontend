@@ -44,7 +44,7 @@ export const SkillCard = ({ skill, skillCategories, setSkills, visible, setVisib
                     withCredentials: true
                 });
 
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
 
             setSkills(response.data);
 
@@ -68,7 +68,7 @@ export const SkillCard = ({ skill, skillCategories, setSkills, visible, setVisib
                 withCredentials: true
             });
 
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
 
             setSkills(response.data);
 
@@ -99,7 +99,7 @@ export const SkillCard = ({ skill, skillCategories, setSkills, visible, setVisib
                     withCredentials: true
                 });
 
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
 
             setSkills(response.data);
 
@@ -125,7 +125,7 @@ export const SkillCard = ({ skill, skillCategories, setSkills, visible, setVisib
                 withCredentials: true
             });
 
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
 
             setSkills(response.data);
 

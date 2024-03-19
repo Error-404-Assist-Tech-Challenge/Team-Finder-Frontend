@@ -47,7 +47,7 @@ export default function NewMemberCard({ setNewMembers, setProposedMembers, proje
                     },
                     withCredentials: true
                 });
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
             setNewMembers(response.data.new);
             setProposedMembers(response.data.proposed);
             fetchAvailableRoles();
@@ -71,7 +71,7 @@ export default function NewMemberCard({ setNewMembers, setProposedMembers, proje
                 },
                 withCredentials: true
             });
-            console.log('Available Role', response.data)
+            // console.log('Available Role', response.data)
             setAvailableRoles(response.data)
         } catch (error) {
             console.error('Error fetching available roles:', error);

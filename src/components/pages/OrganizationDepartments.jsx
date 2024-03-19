@@ -35,7 +35,7 @@ export default function OrganizationDepartmentsPage() {
                     signal: controller.signal,
                     withCredentials: true
                 });
-                console.log('Departments:', response.data);
+                // console.log('Departments:', response.data);
                 isMounted && setDepartments(response.data);
                 setVisible(false);
 
@@ -65,7 +65,7 @@ export default function OrganizationDepartmentsPage() {
                     signal: controller.signal,
                     withCredentials: true
                 });
-                console.log('Department Managers:', response.data);
+                // console.log('Department Managers:', response.data);
                 if (isMounted) {
                     setDepartmentManagers(response.data);
                 }

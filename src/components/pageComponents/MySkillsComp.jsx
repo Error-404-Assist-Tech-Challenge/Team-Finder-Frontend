@@ -54,12 +54,6 @@ export default function MySkillsComp({ skills, setSkills, skillUpgrades, setSkil
     const handleAddSkill = async () => {
         close();
         try {
-            console.log("In post intra: ", JSON.stringify({
-                skill_id: addedSkill,
-                level: selectedSkillLevel,
-                experience: selectedSkillExperience,
-                endorsements: endorsementsList,
-            }),)
             if (endorsementsList[0].endorsement == '' && endorsementsList[0].proj_id == '') {
                 const response = await axiosPrivate.post('skills/user',
                     JSON.stringify({
@@ -76,7 +70,7 @@ export default function MySkillsComp({ skills, setSkills, skillUpgrades, setSkil
                         },
                         withCredentials: true
                     });
-                console.log('Response:', response.data);
+                // console.log('Response:', response.data);
                 setSkills(response.data);
             }
             else {
@@ -96,7 +90,7 @@ export default function MySkillsComp({ skills, setSkills, skillUpgrades, setSkil
                         },
                         withCredentials: true
                     });
-                console.log('Response:', response.data);
+                // console.log('Response:', response.data);
                 setSkills(response.data);
             }
 
@@ -131,8 +125,6 @@ export default function MySkillsComp({ skills, setSkills, skillUpgrades, setSkil
                     proj_id: projectEndorsement
                 }
             ]);
-            console.log("Proj id:", projectEndorsement);
-            console.log("Post object:", endorsementsList);
         } else {
             setEndorsementList([
                 {
@@ -157,7 +149,7 @@ export default function MySkillsComp({ skills, setSkills, skillUpgrades, setSkil
                     withCredentials: true
                 });
                 isMounted && setUserProjects(response.data)
-                console.log("Projects:", response.data)
+                // console.log("Projects:", response.data)
             } catch (error) {
                 console.error('Error fetching department members:', error);
             }

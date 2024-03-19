@@ -27,7 +27,7 @@ export default function SkillUpgradeCard({ skill_name, setSkillUpgrades, id, lev
                     },
                     withCredentials: true
                 });
-            console.log('Upgrade response:', response.data);
+            // console.log('Upgrade response:', response.data);
             setSkillUpgrades(response.data)
         } catch (error) {
             console.error('Error fetching upgrading skill:', error);
@@ -47,7 +47,7 @@ export default function SkillUpgradeCard({ skill_name, setSkillUpgrades, id, lev
                 },
                 withCredentials: true
             });
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
             setSkillUpgrades(response.data)
         } catch (error) {
             console.error('Error deleting user skills:', error);

@@ -47,7 +47,7 @@ export default function OrganizationSkillsComp({ skills, skillCategories, setSki
                     withCredentials: true
                 });
 
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
 
             setSkills(response.data);
 

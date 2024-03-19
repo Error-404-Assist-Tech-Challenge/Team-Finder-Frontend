@@ -52,7 +52,7 @@ export default function OrganizationEmployeesPage() {
                     signal: controller.signal,
                     withCredentials: true
                 });
-                console.log('Team Roles:', response.data);
+                // console.log('Team Roles:', response.data);
                 isMounted && setTeamRoles(response.data)
             } catch (error) {
                 console.error('Error fetching organization members:', error);
@@ -76,7 +76,7 @@ export default function OrganizationEmployeesPage() {
                     signal: controller.signal,
                     withCredentials: true
                 });
-                console.log('Users:', response.data);
+                // console.log('Users:', response.data);
                 isMounted && setUsers(response.data)
                 setVisible(false);
             } catch (error) {
@@ -110,7 +110,7 @@ export default function OrganizationEmployeesPage() {
                     withCredentials: true
                 });
 
-            console.log('Updated team roles:', response.data);
+            // console.log('Updated team roles:', response.data);
 
             setTeamRoles(response.data);
 

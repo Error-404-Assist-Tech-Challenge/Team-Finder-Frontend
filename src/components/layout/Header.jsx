@@ -111,7 +111,7 @@ export default function GenericHeader() {
                 withCredentials: true
             });
             setNotifications(response.data)
-            console.log('Notifications', response.data)
+            // console.log('Notifications', response.data)
         } catch (error) {
             console.error('Error fetching notifications:', error);
         }

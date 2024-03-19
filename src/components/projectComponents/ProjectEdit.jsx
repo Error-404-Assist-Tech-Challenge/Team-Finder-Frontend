@@ -56,8 +56,6 @@ export default function ProjectEdit({ project, setProjects, roles, teamRoles, se
             return !chosenSkills.some(modifiedSkill => modifiedSkill.id === originalSkill.skill_id);
         }).map(skill => ({ ...skill, skill_id: skill.skill_id, required: false })));
 
-        console.log('projectRequirements', projectRequirements);
-
         try {
             const response = await axiosPrivate.put('/project',
                 JSON.stringify({
@@ -81,7 +79,7 @@ export default function ProjectEdit({ project, setProjects, roles, teamRoles, se
                     withCredentials: true
                 });
 
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
             setProjects(response.data);
             setProjectName('')
             setProjectPeriod('')
