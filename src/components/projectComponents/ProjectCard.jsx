@@ -130,12 +130,16 @@ export default function ProjectCard({ project, setProjects, roles, teamRoles, se
         setListFromChatgpt(true)
         setVisible(true)
         setPartiallyAvailable(true)
+        const mappedProject = {
+            ...project,
+            deadline_date: project.deadline_date === "None" ? null : project.deadline_date
+        };
         try {
             const response = await axiosPrivate.post('chat_gpt_feature',
                 JSON.stringify({
                     context: contextChatgpt,
                     project_members: allMembers,
-                    project: project
+                    project: mappedProject
                 }),
                 {
                     headers: {

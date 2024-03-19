@@ -75,7 +75,7 @@ export default function TeamRolesComp({ teamRoles, setTeamRoles, visible, setVis
                                     {teamRoles.map(role => (
                                         <TeamRoleCard key={role.role_id} id={role.id} name={role.name} setTeamRoles={setTeamRoles} used={role.used} />
                                     ))}
-                                    <div className="w-full h-[128px] rounded-lg bg-white p-4 my-2 select-none flex items-center justify-center">
+                                    <div className="w-[408px] h-[128px] rounded-lg bg-white p-4 my-2 select-none flex items-center justify-center">
                                         {!isAdding && (
                                             <Button variant="outline" onClick={() => setIsAdding(true)}
                                                 className={`relative w-[60px] h-[60px] m-[6px] rounded-full p-0 text-accent border-accent border-[5px] hover:text-accent`}>

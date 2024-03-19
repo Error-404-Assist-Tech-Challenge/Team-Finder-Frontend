@@ -30,7 +30,7 @@ export default function OrganizationCategoriesComp({ skillCategories, setSkillCa
                     withCredentials: true
                 });
 
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
 
             setSkillCategories(response.data);
 
