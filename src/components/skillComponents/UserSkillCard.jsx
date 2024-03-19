@@ -55,14 +55,7 @@ export default function UserSkillCard(props) {
         props.setVisible(true);
         try {
             let updatedEndorsementsList = props.endorsementsList.concat(tempEndoLsit);
-            console.log(JSON.stringify({
-                skill_id: props.skills[props.index].skill_id,
-                level: currentLevel,
-                experience: currentExperience,
-                endorsements: null,
-            }))
             if (updatedEndorsementsList[0].endorsement == '' && updatedEndorsementsList[0].proj_id == '') {
-
                 const response = await axiosPrivate.put('skills/user',
                     JSON.stringify({
                         skill_id: props.skills[props.index].skill_id,
@@ -87,7 +80,7 @@ export default function UserSkillCard(props) {
                         skill_id: props.skills[props.index].skill_id,
                         level: currentLevel,
                         experience: currentExperience,
-                        endorsements: updatedEndorsementsList,
+                        endorsements: tempEndoLsit.endorsement == "" ? updatedEndorsementsList.slice(0, 1) : props.endorsementsList,
                     }),
                     {
                         headers: {
@@ -97,7 +90,6 @@ export default function UserSkillCard(props) {
                         },
                         withCredentials: true
                     });
-
                 // console.log('Response:', response.data);
                 props.setSkills(response.data);
             }

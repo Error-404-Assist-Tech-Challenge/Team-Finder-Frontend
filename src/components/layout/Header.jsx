@@ -190,7 +190,7 @@ export default function GenericHeader() {
                                 <Badge
                                     size="md"
                                     circle
-                                    className="bg-accent text-lg"
+                                    className="bg-accent text-md"
                                     style={{ position: 'absolute', bottom: 0, right: 0 }}
                                 >
                                     {notifications.length}
