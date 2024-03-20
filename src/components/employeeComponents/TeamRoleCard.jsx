@@ -30,12 +30,12 @@ export default function TeamRoleCard({ id, name, setTeamRoles, used }) {
                     withCredentials: true
                 });
 
-            // console.log('Response:', response.data);
+            console.log('Response:', response.data);
 
             setTeamRoles(response.data);
 
         } catch (error) {
-            console.error('Error adding skill to department:', error);
+            console.error('Error updating team roles:', error);
         }
 
         setIsEditing(false);
