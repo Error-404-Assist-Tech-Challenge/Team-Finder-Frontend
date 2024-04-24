@@ -1,41 +1,65 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-unused-vars */
 import { Container, Title, TextInput, PasswordInput, Button, Loader } from '@mantine/core';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import { useRef, useState, useEffect } from 'react';
 import useAuth from '../../hooks/useAuth'
 import axios from '../../api/axios';
 
-export default function LoginPage() {
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+
+export default function NewPassword() {
 
     const { setAuth } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
+    const { ref_id } = useParams();
     const from = location.state?.from?.pathname || "/myskills";
     const [visible, setVisible] = useState(false);
 
-    const handleSignUp = () => {
-        navigate('/signup');
-    };
-
-    const handleResetPassword = () => {
-        navigate('/resetpassword');
-    };
+    useEffect(() => {
+        const checkToken = async (e) => {
+            try {
+                const response = await axios.get(`users/verify_password_reset_token?token=${ref_id}`,
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Access-Control-Allow-Origin': '*',
+                            'Access-Control-Allow-Credentials': 'true'
+                        },
+                        withCredentials: true
+                    });
+                console.log(response)
+                setEmail(response?.data?.email);
+            } catch (err) {
+                if (!err?.response) {
+                    setErrorMessage('No Server Response');
+                } else if (err.response?.status === 401) {
+                    navigate('/invalid');
+                } else {
+                    setErrorMessage('Reset Password Failed')
+                }
+                console.error(err);
+            }
+        };
+        checkToken();
+    }, [])
 
     const handleKeyPress = (e) => {
         if (e.key === 'Enter') {
-            handleLogIn(e);
+            handleLogInWithNewPassword(e);
         }
     };
 
-    const handleLogIn = async (e) => {
+    const handleLogInWithNewPassword = async (e) => {
         setVisible(true);
         e.preventDefault();
         try {
-            const response = await axios.post('users/login',
+            const response = await axios.put('users/reset_password',
                 JSON.stringify({
-                    email: email,
                     password: password,
+                    token: ref_id
                 }),
                 {
                     headers: {
@@ -78,8 +102,14 @@ export default function LoginPage() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
+    const [validPassword, setValidPassword] = useState(false);
+    const [passwordFocus, setPasswordFocus] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+
+    useEffect(() => {
+        setValidPassword(passwordRegex.test(password));
+    }, [password])
+
 
     useEffect(() => {
         userRef.current.focus();
@@ -87,7 +117,7 @@ export default function LoginPage() {
 
     useEffect(() => {
         setErrorMessage('');
-    }, [email, password]);
+    }, [password]);
 
     return (
         <>
@@ -114,38 +144,25 @@ export default function LoginPage() {
                                 ref={userRef}
                                 value={email}
                                 autoComplete='off'
-                                onChange={(e) => setEmail(e.target.value)}
                                 required
+                                disabled
                             />
                             <PasswordInput
                                 label="Password"
                                 placeholder="Pa$$w0rd123"
-                                value={password}
+                                autoComplete='off'
+                                error={(!validPassword && password) && "Must have min 8 characters and contain at least a lowercase character, uppercase character, digit, special character (@$!%*?&])"}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
-                                onKeyDown={handleKeyPress}
+                                onFocus={() => setPasswordFocus(true)}
+                                onBlur={() => setPasswordFocus(false)}
                             />
                         </div>
                         <div className="flex justify-center">
                             <Button variant="filled" size="xl" radius="lg" className="bg-[#FF3D2E]  hover:bg-btn_hover text-white font-bold mt-[50px]"
-                                disabled={!email || !password}
-                                onClick={handleLogIn} >
-                                Log in
-                            </Button>
-                        </div>
-                        <div className="text-lg flex items-center justify-between px-[20px] py-[50px]">
-                            <Title order={4} className='text-white'>
-                                Or if you don't have an account:
-                            </Title>
-                            <Button variant="filled" size="lg" radius="lg" className="bg-[#FF3D2E]  hover:bg-btn_hover font-bold text-white"
-                                onClick={handleSignUp}>
-                                Sign up
-                            </Button>
-                        </div>
-                        <div className="text-lg flex items-center justify-center px-[20px]">
-                            <Button variant="filled" size="lg" radius="lg" className=" hover:bg-[#505a5e] hover:text-bg font-bold text-white"
-                                onClick={handleResetPassword}>
-                                Forgot password?
+                                disabled={!validPassword}
+                                onClick={handleLogInWithNewPassword} >
+                                Set new password
                             </Button>
                         </div>
                     </Container>)}

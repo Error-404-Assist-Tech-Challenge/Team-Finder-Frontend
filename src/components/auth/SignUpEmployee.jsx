@@ -12,7 +12,7 @@ const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$
 export default function SignUpEmployeePage() {
 
     const { setAuth } = useAuth();
-    const naviage = useNavigate();
+    const navigate = useNavigate();
     const { ref_id } = useParams();
     const [visible, setVisible] = useState(false);
 
@@ -38,7 +38,7 @@ export default function SignUpEmployeePage() {
                 if (!err?.response) {
                     setErrorMessage('No Server Response');
                 } else if (err.response?.status === 401) {
-                    naviage('/invalid');
+                    navigate('/invalid');
                 } else {
                     setErrorMessage('Registration Failed')
                 }
@@ -50,7 +50,7 @@ export default function SignUpEmployeePage() {
     }, [])
 
     const handleLogIn = () => {
-        naviage('/login');
+        navigate('/login');
     };
 
     const handleKeyPress = (e) => {
@@ -95,7 +95,7 @@ export default function SignUpEmployeePage() {
 
             setAuth({ name, email, org_name, hq_address, roles, accessToken })
 
-            naviage('/myskills');
+            navigate('/myskills');
         } catch (err) {
             setVisible(false);
             if (!err?.response) {

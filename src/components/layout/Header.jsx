@@ -122,7 +122,7 @@ export default function GenericHeader() {
 
         const interval = setInterval(() => {
             getNotifications();
-        }, 10000);
+        }, 2000);
 
         return () => clearInterval(interval);
     }, []);
@@ -220,7 +220,7 @@ export default function GenericHeader() {
                             <Popover.Target>
                                 <Avatar radius="xl" className="dark:bg-darkcanvas bg-gray-100" />
                             </Popover.Target>
-                            <Popover.Dropdown style={{ backgroundColor: darkMode ? 'rgba(217, 221, 222, 0.37)' : 'rgba(237, 241, 242, 1)', border: '0' }}>
+                            <Popover.Dropdown style={{ backgroundColor: darkMode ? 'rgba(39, 47, 50, 1)' : 'rgba(237, 241, 242, 1)', border: '0' }}>
                                 <div>
                                     <Text size="s" className="text-center pt-1 " style={{ color: darkMode ? 'white' : 'black' }}>{auth.name}</Text>
                                     <Text size="s" className="text-center pt-1 " style={{ color: darkMode ? 'white' : 'black' }}>{auth.email}</Text>
