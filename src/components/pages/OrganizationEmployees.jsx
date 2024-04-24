@@ -31,7 +31,7 @@ export default function OrganizationEmployeesPage() {
 
     // Pagination for Drawer
     const [currentPagetRole, setCurrentPagetRole] = useState(1);
-    const [postPerPagetRole, setPostPerPagetRole] = useState(4);
+    const [postPerPagetRole, setPostPerPagetRole] = useState(3);
     const lastPostIndextRole = currentPagetRole * postPerPagetRole;
     const firstPostIndextRole = lastPostIndextRole - postPerPagetRole;
     const currentPoststRole = teamRoles.slice(firstPostIndextRole, lastPostIndextRole);

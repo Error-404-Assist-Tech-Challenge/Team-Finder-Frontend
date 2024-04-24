@@ -28,6 +28,8 @@ import PersistLogin from './components/auth/PersistLogin';
 import SignUpEmployeePage from './components/auth/SignUpEmployee';
 import Invalid from './components/pages/Invalid';
 import { ModalsProvider } from '@mantine/modals';
+import ResetPassword from './components/auth/ResetPassword';
+import NewPassword from './components/auth/NewPassword';
 
 export const Context = React.createContext();
 
@@ -49,6 +51,8 @@ export default function App() {
                             <Route path="signup/:ref_id" element={<SignUpEmployeePage />} />
                             <Route path="unauthorized" element={<Unauthorized />} />
                             <Route path="invalid" element={<Invalid />} />
+                            <Route path="resetpassword" element={<ResetPassword />} />
+                            <Route path="newpassword/:ref_id" element={<NewPassword />} />
 
                             <Route element={<PersistLogin />}>
 

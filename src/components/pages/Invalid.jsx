@@ -8,7 +8,7 @@ const Invalid = () => {
     return (
         <article className="bg-darkcanvas h-screen flex flex-col items-center justify-center">
             <Title order={1} className="text-white text-5xl select-none text-center mb-[100px]">
-                Your link <span className="text-accent">invalid</span> or <span className="text-accent">expired</span>
+                Your link is <span className="text-accent">invalid</span> or <span className="text-accent">expired</span>
             </Title>
             <div className="flex space-x">
                 <Button variant="filled" size="xl" radius="lg" className="bg-accent mx-[50px]"
