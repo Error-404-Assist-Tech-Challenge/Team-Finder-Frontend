@@ -48,7 +48,7 @@ export default function LoginPage() {
             const hq_address = response?.data?.hq_address;
             const roles = [...response.data.roles];
 
-            // console.log('Your access token is:', accessToken);
+            console.log('Your access token is:', accessToken);
 
             setAuth({ name, email, org_name, hq_address, roles, accessToken })
 
