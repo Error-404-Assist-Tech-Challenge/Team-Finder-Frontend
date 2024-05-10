@@ -8,10 +8,12 @@ import { useHeadroom } from '@mantine/hooks';
 import { Context } from '../../App';
 import useAuth from '../../hooks/useAuth'
 import GenericHeader from '../layout/Header';
+import { useMediaQuery } from '@mantine/hooks';
 
 
 export default function MainPage({Content}) {
-
+    
+    const isMobile = useMediaQuery('(max-width: 640px)');
     const { setAuth } = useAuth();
     const [darkMode, setDarkMode] = useContext(Context);
     const pinned = useHeadroom({ fixedAt: 20 });
@@ -32,8 +34,9 @@ export default function MainPage({Content}) {
                                 right: 0,
                                 height: rem(60),
                                 zIndex: 200,
-                                transform: `translate3d(0, ${pinned ? 0 : rem(-80)}, 0)`,
+                                transform: `translate3d(0, ${pinned ? 0 : (isMobile ? 0 : rem(-80))}, 0)`, // Conditional transformation
                                 transition: 'transform 400ms ease',
+                                width: '100%',
                             }}
                             >
                             <GenericHeader />
