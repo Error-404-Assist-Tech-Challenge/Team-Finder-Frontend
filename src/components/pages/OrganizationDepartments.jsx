@@ -19,7 +19,7 @@ export default function OrganizationDepartmentsPage() {
     const [visible, setVisible] = useState(true);
 
     const [currentPage, setCurrentPage] = useState(1);
-    const [postPerPage, setPostPerPage] = useState(9);
+    const [postPerPage, setPostPerPage] = useState(11);
     const lastPostIndex = currentPage * postPerPage;
     const firstPostIndex = lastPostIndex - postPerPage;
     const currentPosts = departments.slice(firstPostIndex, lastPostIndex);

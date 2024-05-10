@@ -128,7 +128,7 @@ export default function GenericHeader() {
 
         const interval = setInterval(() => {
             getNotifications();
-        }, 10000);
+        }, 2000);
 
         return () => clearInterval(interval);
     }, []);
@@ -227,6 +227,7 @@ export default function GenericHeader() {
                                         {notifications.length}
                                     </Badge>
                                 </div>
+
                             </Button>
 
                             <Button className='hover:bg-transparent px-0' onClick={openDrawer}>
@@ -235,7 +236,11 @@ export default function GenericHeader() {
                                         style={{ width: rem(35), height: rem(35), color: darkMode ? 'white' : 'black' }}
                                         stroke={1.5}
                                     />
-                                </div>
+                            </div>
+                
+
+
+   
                             </Button>
 
                             <Drawer opened={openedDrawer} onClose={closeDrawer} title="Messages" position="right" overlayProps={{ backgroundOpacity: 0.3, blur: 2 }}>

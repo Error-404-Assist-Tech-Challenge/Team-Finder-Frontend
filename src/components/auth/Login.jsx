@@ -18,6 +18,10 @@ export default function LoginPage() {
         navigate('/signup');
     };
 
+    const handleResetPassword = () => {
+        navigate('/resetpassword');
+    };
+
     const handleKeyPress = (e) => {
         if (e.key === 'Enter') {
             handleLogIn(e);
@@ -136,6 +140,12 @@ export default function LoginPage() {
                             <Button variant="filled" size="lg" radius="lg" className="bg-[#FF3D2E]  hover:bg-btn_hover font-bold text-white"
                                 onClick={handleSignUp}>
                                 Sign up
+                            </Button>
+                        </div>
+                        <div className="text-lg flex items-center justify-center px-[20px]">
+                            <Button variant="filled" size="lg" radius="lg" className=" hover:bg-[#505a5e] hover:text-bg font-bold text-white"
+                                onClick={handleResetPassword}>
+                                Forgot password?
                             </Button>
                         </div>
                     </Container>)}

@@ -160,7 +160,7 @@ export default function SignUpAdminPage() {
                     </div>
                 )}
                 {!visible && (
-                    <Container className="bg-[#505a5e] h-[auto] w-[494px] rounded-[20px] text-white px-[30px] z-11">
+                    <Container className="bg-[#505a5e] h-[auto] w-[494px] rounded-[20px] text-white px-[30px] z-10">
                         <Title order={1} className="text-5xl text-select-none text-center py-[50px]">
                             Team Finder
                         </Title>
